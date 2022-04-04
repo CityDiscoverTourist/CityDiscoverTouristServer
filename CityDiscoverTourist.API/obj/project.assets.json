@@ -1,11 +1,48 @@
 {
   "version": 3,
   "targets": {
-    "net6.0": {}
+    "net6.0": {
+      "CityDiscoverTourist.Business/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v6.0",
+        "dependencies": {
+          "CityDiscoverTourist.Data": "1.0.0"
+        },
+        "compile": {
+          "bin/placeholder/CityDiscoverTourist.Business.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/CityDiscoverTourist.Business.dll": {}
+        }
+      },
+      "CityDiscoverTourist.Data/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v6.0",
+        "compile": {
+          "bin/placeholder/CityDiscoverTourist.Data.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/CityDiscoverTourist.Data.dll": {}
+        }
+      }
+    }
   },
-  "libraries": {},
+  "libraries": {
+    "CityDiscoverTourist.Business/1.0.0": {
+      "type": "project",
+      "path": "../CityDiscoverTourist.Business/CityDiscoverTourist.Business.csproj",
+      "msbuildProject": "../CityDiscoverTourist.Business/CityDiscoverTourist.Business.csproj"
+    },
+    "CityDiscoverTourist.Data/1.0.0": {
+      "type": "project",
+      "path": "../CityDiscoverTourist.Data/CityDiscoverTourist.Data.csproj",
+      "msbuildProject": "../CityDiscoverTourist.Data/CityDiscoverTourist.Data.csproj"
+    }
+  },
   "projectFileDependencyGroups": {
-    "net6.0": []
+    "net6.0": [
+      "CityDiscoverTourist.Business >= 1.0.0"
+    ]
   },
   "packageFolders": {
     "C:\\Users\\Admin\\.nuget\\packages\\": {}
@@ -33,7 +70,11 @@
       "frameworks": {
         "net6.0": {
           "targetAlias": "net6.0",
-          "projectReferences": {}
+          "projectReferences": {
+            "D:\\C#\\CityDiscoverTourist\\CityDiscoverTourist.Business\\CityDiscoverTourist.Business.csproj": {
+              "projectPath": "D:\\C#\\CityDiscoverTourist\\CityDiscoverTourist.Business\\CityDiscoverTourist.Business.csproj"
+            }
+          }
         }
       },
       "warningProperties": {
