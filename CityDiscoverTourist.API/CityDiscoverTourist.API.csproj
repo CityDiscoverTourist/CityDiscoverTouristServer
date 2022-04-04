@@ -7,7 +7,18 @@
     </PropertyGroup>
 
     <ItemGroup>
+        <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
+    </ItemGroup>
+
+    <ItemGroup>
       <ProjectReference Include="..\CityDiscoverTourist.Business\CityDiscoverTourist.Business.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="AWS" />
+      <Folder Include="Cache" />
+      <Folder Include="Config" />
+      <Folder Include="Controllers" />
     </ItemGroup>
 
 </Project>

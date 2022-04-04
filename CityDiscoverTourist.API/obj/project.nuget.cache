@@ -1,8 +1,15 @@
 {
   "version": 2,
-  "dgSpecHash": "XgnPO656A9QvQaE3o1AjB/5Nbz83Dl0yv5z26x72oLQiuosIgFeAiHVjdQd1/Hie70f8B/aSNiNNHctQch/fEw==",
+  "dgSpecHash": "WAB1OmtiMady21X/BPGSanMcgme4wfBpEDEXnzIvNqguFR5pL6gjn0UnDAFqKB1oP35dtaggUA4qnvk93vl6GQ==",
   "success": true,
   "projectFilePath": "D:\\C#\\CityDiscoverTourist\\CityDiscoverTourist.API\\CityDiscoverTourist.API.csproj",
-  "expectedPackageFiles": [],
+  "expectedPackageFiles": [
+    "C:\\Users\\Admin\\.nuget\\packages\\microsoft.extensions.apidescription.server\\3.0.0\\microsoft.extensions.apidescription.server.3.0.0.nupkg.sha512",
+    "C:\\Users\\Admin\\.nuget\\packages\\microsoft.openapi\\1.2.3\\microsoft.openapi.1.2.3.nupkg.sha512",
+    "C:\\Users\\Admin\\.nuget\\packages\\swashbuckle.aspnetcore\\6.2.3\\swashbuckle.aspnetcore.6.2.3.nupkg.sha512",
+    "C:\\Users\\Admin\\.nuget\\packages\\swashbuckle.aspnetcore.swagger\\6.2.3\\swashbuckle.aspnetcore.swagger.6.2.3.nupkg.sha512",
+    "C:\\Users\\Admin\\.nuget\\packages\\swashbuckle.aspnetcore.swaggergen\\6.2.3\\swashbuckle.aspnetcore.swaggergen.6.2.3.nupkg.sha512",
+    "C:\\Users\\Admin\\.nuget\\packages\\swashbuckle.aspnetcore.swaggerui\\6.2.3\\swashbuckle.aspnetcore.swaggerui.6.2.3.nupkg.sha512"
+  ],
   "logs": []
 }
