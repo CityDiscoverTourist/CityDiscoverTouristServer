@@ -1,11 +1,12 @@
+using CityDiscoverTourist.API.Config;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-
-builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.SetupDatabase(builder.Configuration);
+builder.Services.SetupFirebaseAuth(builder.Configuration);
+builder.Services.SetupServices(builder.Configuration);
+builder.Services.SetupSwagger(builder.Configuration);
 
 var app = builder.Build();
 

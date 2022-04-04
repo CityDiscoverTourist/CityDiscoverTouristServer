@@ -3,6 +3,8 @@ logs
 *.log
 npm-debug.log*
 
+*.json
+
 appsettings.json
 
 # Runtime data

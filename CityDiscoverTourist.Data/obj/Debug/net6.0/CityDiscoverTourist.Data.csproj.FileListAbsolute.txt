@@ -10,3 +10,5 @@ D:\C#\CityDiscoverTourist\CityDiscoverTourist.Data\obj\Debug\net6.0\CityDiscover
 D:\C#\CityDiscoverTourist\CityDiscoverTourist.Data\obj\Debug\net6.0\CityDiscoverTourist.Data.dll
 D:\C#\CityDiscoverTourist\CityDiscoverTourist.Data\obj\Debug\net6.0\ref\CityDiscoverTourist.Data.dll
 D:\C#\CityDiscoverTourist\CityDiscoverTourist.Data\obj\Debug\net6.0\CityDiscoverTourist.Data.pdb
+D:\C#\CityDiscoverTourist\CityDiscoverTourist.Data\bin\Debug\net6.0\CityDiscoverTourist.Data.runtimeconfig.json
+D:\C#\CityDiscoverTourist\CityDiscoverTourist.Data\obj\Debug\net6.0\CityDiscoverTourist.Data.genruntimeconfig.cache
