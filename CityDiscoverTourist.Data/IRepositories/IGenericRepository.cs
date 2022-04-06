@@ -1,4 +1,5 @@
 ﻿using System.Linq.Expressions;
+using CityDiscoverTourist.Data.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace CityDiscoverTourist.Data.IRepositories
@@ -11,7 +12,7 @@ namespace CityDiscoverTourist.Data.IRepositories
 
         DbSet<T> DbSet();
 
-        Task<T?> Get(K id);
+        Task<T> Get(K id);
 
         Task<T> Add(T entity);
 

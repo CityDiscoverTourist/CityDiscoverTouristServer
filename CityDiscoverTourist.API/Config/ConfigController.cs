@@ -1,6 +1,8 @@
 using System.Text.RegularExpressions;
 using CityDiscoverTourist.Business.IServices;
 using CityDiscoverTourist.Business.IServices.Services;
+using CityDiscoverTourist.Data.IRepositories;
+using CityDiscoverTourist.Data.IRepositories.Repositories;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Mvc.ApplicationModels;
 using Microsoft.OpenApi.Models;
@@ -14,7 +16,13 @@ public static class ConfigController
 {
     public static void SetupServices(this IServiceCollection services, IConfiguration configuration)
     {
-        services.AddTransient<IAuthService, AuthService>();
+        services.AddScoped<IAuthService, AuthService>();
+        services.AddScoped<IQuestService, QuestSerivce>();
+    }
+
+    public static void SetupRepositories(this IServiceCollection services, IConfiguration configuration)
+    {
+        services.AddScoped<IQuestRepository, QuestRepository>();
     }
 
     public static void SetupSwagger(this IServiceCollection services, IConfiguration configuration)
@@ -70,7 +78,9 @@ public static class ConfigController
         services.AddControllers(options =>
         {
             options.Conventions.Add(new RouteTokenTransformerConvention(new LowercaseDashedParameterTransformer()));
-        });
+        }).AddNewtonsoftJson(options =>
+            options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
+        );
     }
 
     internal class LowercaseDashedParameterTransformer : IOutboundParameterTransformer

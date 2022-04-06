@@ -15,5 +15,11 @@ RCityDiscoverTourist.Data/obj/Debug/net6.0/CityDiscoverTourist.Data.AssemblyInfo
 tCityDiscoverTourist.Business/obj/Debug/net6.0/CityDiscoverTourist.Business.GeneratedMSBuildEditorConfig.editorconfig,7\5\757a4694213dc80f0e5b1719b9094e8704fffade
 Š
 ZCityDiscoverTourist.Business/obj/Debug/net6.0/CityDiscoverTourist.Business.AssemblyInfo.cs,a\0\a034ffee85128bc489bc9fd8d49f5686efb45629
-_
-/CityDiscoverTourist.API/Response/ApiResponse.cs,c\7\c7b0328067af0edea920b5ba659fd9520b41dd8e
+f
+6CityDiscoverTourist.Business/IServices/IAuthService.cs,5\2\523e69e9c32f9aff3552a99158f33b83a731b747
+p
+@CityDiscoverTourist.Business/CityDiscoverTourist.Business.csproj,5\f\5f8fd0bf79705ea057a3cc76fd16b2185d049d02
+v
+FCityDiscoverTourist.Data/Migrations/20220404120212_Initial.Designer.cs,c\9\c9cda1130637771e261071e869e32c20bb3cd7a5
+e
+5CityDiscoverTourist.API/Controllers/AuthController.cs,4\5\452accddcdeaa103ec44623ab818d34c9f7df027

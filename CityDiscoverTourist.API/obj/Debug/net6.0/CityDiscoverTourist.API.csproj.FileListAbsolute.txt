@@ -87,3 +87,6 @@ D:\C#\CityDiscoverTourist\CityDiscoverTourist.API\bin\Debug\net6.0\Microsoft.Asp
 D:\C#\CityDiscoverTourist\CityDiscoverTourist.API\bin\Debug\net6.0\Microsoft.OData.Core.dll
 D:\C#\CityDiscoverTourist\CityDiscoverTourist.API\bin\Debug\net6.0\Microsoft.OData.Edm.dll
 D:\C#\CityDiscoverTourist\CityDiscoverTourist.API\bin\Debug\net6.0\Microsoft.Spatial.dll
+D:\C#\CityDiscoverTourist\CityDiscoverTourist.API\bin\Debug\net6.0\Microsoft.AspNetCore.JsonPatch.dll
+D:\C#\CityDiscoverTourist\CityDiscoverTourist.API\bin\Debug\net6.0\Microsoft.AspNetCore.Mvc.NewtonsoftJson.dll
+D:\C#\CityDiscoverTourist\CityDiscoverTourist.API\bin\Debug\net6.0\Newtonsoft.Json.Bson.dll

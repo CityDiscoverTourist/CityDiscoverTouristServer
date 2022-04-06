@@ -37,7 +37,7 @@ namespace CityDiscoverTourist.Data.IRepositories.Repositories
             return entity;
         }
 
-        public async Task<T?> Get(K id)
+        public async Task<T> Get(K id)
         {
             return await _context.Set<T>().FindAsync(id);
         }
