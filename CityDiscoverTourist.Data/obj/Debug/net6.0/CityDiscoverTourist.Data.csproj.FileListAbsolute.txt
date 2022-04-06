@@ -1,0 +1,14 @@
+D:\C#\CityDiscoverTourist\CityDiscoverTourist.Data\bin\Debug\net6.0\CityDiscoverTourist.Data.deps.json
+D:\C#\CityDiscoverTourist\CityDiscoverTourist.Data\bin\Debug\net6.0\CityDiscoverTourist.Data.dll
+D:\C#\CityDiscoverTourist\CityDiscoverTourist.Data\bin\Debug\net6.0\ref\CityDiscoverTourist.Data.dll
+D:\C#\CityDiscoverTourist\CityDiscoverTourist.Data\bin\Debug\net6.0\CityDiscoverTourist.Data.pdb
+D:\C#\CityDiscoverTourist\CityDiscoverTourist.Data\obj\Debug\net6.0\CityDiscoverTourist.Data.csproj.AssemblyReference.cache
+D:\C#\CityDiscoverTourist\CityDiscoverTourist.Data\obj\Debug\net6.0\CityDiscoverTourist.Data.GeneratedMSBuildEditorConfig.editorconfig
+D:\C#\CityDiscoverTourist\CityDiscoverTourist.Data\obj\Debug\net6.0\CityDiscoverTourist.Data.AssemblyInfoInputs.cache
+D:\C#\CityDiscoverTourist\CityDiscoverTourist.Data\obj\Debug\net6.0\CityDiscoverTourist.Data.AssemblyInfo.cs
+D:\C#\CityDiscoverTourist\CityDiscoverTourist.Data\obj\Debug\net6.0\CityDiscoverTourist.Data.csproj.CoreCompileInputs.cache
+D:\C#\CityDiscoverTourist\CityDiscoverTourist.Data\obj\Debug\net6.0\CityDiscoverTourist.Data.dll
+D:\C#\CityDiscoverTourist\CityDiscoverTourist.Data\obj\Debug\net6.0\ref\CityDiscoverTourist.Data.dll
+D:\C#\CityDiscoverTourist\CityDiscoverTourist.Data\obj\Debug\net6.0\CityDiscoverTourist.Data.pdb
+D:\C#\CityDiscoverTourist\CityDiscoverTourist.Data\bin\Debug\net6.0\CityDiscoverTourist.Data.runtimeconfig.json
+D:\C#\CityDiscoverTourist\CityDiscoverTourist.Data\obj\Debug\net6.0\CityDiscoverTourist.Data.genruntimeconfig.cache
