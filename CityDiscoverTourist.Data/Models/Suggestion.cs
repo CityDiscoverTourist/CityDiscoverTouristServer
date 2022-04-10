@@ -3,12 +3,15 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CityDiscoverTourist.Data.Models;
 
-public class QuestType
+public class Suggestion
 {
     [Key]
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public int Id { get; set; }
-    public string? Name { get; set; }
+    public string? Content { get; set; }
+
+    public Task? Task { get; set; }
+    public int TaskId { get; set; }
+
     public string? Status { get; set; }
-    public List<Quest>? Quests { get; set; }
 }

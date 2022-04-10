@@ -3,12 +3,17 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CityDiscoverTourist.Data.Models;
 
-public class QuestType
+public class OrderDetail
 {
     [Key]
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public int Id { get; set; }
-    public string? Name { get; set; }
+
+    public int Quantity { get; set; }
+    public string? PaymentMethod { get; set; }
+    public string? DiscountPercent { get; set; }
     public string? Status { get; set; }
-    public List<Quest>? Quests { get; set; }
+
+    public Order Order { get; set; }
+    public int OrderId { get; set; }
 }
