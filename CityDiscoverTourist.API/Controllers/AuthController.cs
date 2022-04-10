@@ -1,4 +1,5 @@
 using CityDiscoverTourist.Business.Data;
+using CityDiscoverTourist.Business.Data.RequestModel;
 using CityDiscoverTourist.Business.IServices;
 using Microsoft.AspNetCore.Mvc;
 

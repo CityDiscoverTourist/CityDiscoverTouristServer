@@ -13,7 +13,6 @@ namespace CityDiscoverTourist.Data.IRepositories.Repositories
             _context = context;
         }
 
-
         public DbSet<T> DbSet()
         {
             return _context.Set<T>();

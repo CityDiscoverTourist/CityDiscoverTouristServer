@@ -1,4 +1,4 @@
-namespace CityDiscoverTourist.Business.Data;
+namespace CityDiscoverTourist.Business.Data.RequestModel;
 
 public class LoginFirebaseModel
 {
