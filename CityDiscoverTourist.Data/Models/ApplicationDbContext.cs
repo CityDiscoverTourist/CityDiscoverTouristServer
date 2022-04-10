@@ -22,4 +22,5 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     public DbSet<OrderDetail> OrderDetails { get; set; }
     public DbSet<Order> Orders { get; set; }
     public DbSet<Location> Locations { get; set; }
+    public DbSet<Contact> Contacts { get; set; }
 }
