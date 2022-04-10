@@ -3,11 +3,11 @@ using CityDiscoverTourist.Data.Models;
 
 namespace CityDiscoverTourist.Business.IServices.Services;
 
-public class QuestSerivce: IQuestService
+public class QuestService: IQuestService
 {
     private readonly IQuestRepository _questRepository;
 
-    public QuestSerivce(IQuestRepository questRepository)
+    public QuestService(IQuestRepository questRepository)
     {
         _questRepository = questRepository;
     }

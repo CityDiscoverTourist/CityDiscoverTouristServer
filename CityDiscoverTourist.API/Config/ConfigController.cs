@@ -17,12 +17,24 @@ public static class ConfigController
     public static void SetupServices(this IServiceCollection services, IConfiguration configuration)
     {
         services.AddScoped<IAuthService, AuthService>();
-        services.AddScoped<IQuestService, QuestSerivce>();
+        services.AddScoped<IQuestService, QuestService>();
     }
 
     public static void SetupRepositories(this IServiceCollection services, IConfiguration configuration)
     {
         services.AddScoped<IQuestRepository, QuestRepository>();
+        services.AddScoped<IQuestTypeRepository, QuestTypeRepository>();
+        services.AddScoped<ITaskRepository, TaskRepository>();
+        services.AddScoped<ITaskTypeRepository, TaskTypeRepository>();
+        services.AddScoped<ISuggestionRepository, SuggestionRepository>();
+        services.AddScoped<IRewardRepository, RewardRepository>();
+        services.AddScoped<IOrderRepository, OrderRepository>();
+        services.AddScoped<IOrderDetailRepository, OrderDetailRepository>();
+        services.AddScoped<ILocationRepository, LocationRepository>();
+        services.AddScoped<IFeedbackRepository, FeedbackRepository>();
+        services.AddScoped<IExperienceRepository, ExperienceRepository>();
+        services.AddScoped<IContactRepository, ContactRepository>();
+        services.AddScoped<IAnswerRepository, AnswerRepository>();
     }
 
     public static void SetupSwagger(this IServiceCollection services, IConfiguration configuration)
