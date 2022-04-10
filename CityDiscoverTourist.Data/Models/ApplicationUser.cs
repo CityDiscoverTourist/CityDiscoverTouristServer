@@ -4,5 +4,4 @@ namespace CityDiscoverTourist.Data.Models;
 
 public class ApplicationUser: IdentityUser
 {
-
 }
