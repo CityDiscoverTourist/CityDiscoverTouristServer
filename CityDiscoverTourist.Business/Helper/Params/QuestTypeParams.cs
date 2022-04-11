@@ -1,7 +1,7 @@
 namespace CityDiscoverTourist.Business.Helper.Params;
 
-public class QuestParams : QueryStringParams
+public class QuestTypeParams : QueryStringParams
 {
-    public string? Status { get; set; }
     public string? Name { get; set; }
+    public string? Status { get; set; }
 }

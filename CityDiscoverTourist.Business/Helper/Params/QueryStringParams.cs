@@ -1,6 +1,6 @@
 ﻿namespace CityDiscoverTourist.Business.Helper.Params
 {
-    public abstract class QueryStringParam
+    public abstract class QueryStringParams
     {
         private const int MaxPageSize = 100;
 

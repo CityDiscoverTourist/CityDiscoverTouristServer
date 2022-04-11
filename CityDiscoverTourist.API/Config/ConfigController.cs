@@ -20,9 +20,12 @@ public static class ConfigController
     {
         services.AddScoped<ISortHelper<Quest>, SortHelper<Quest>>();
         services.AddScoped<IDataShaper<Quest>, DataShaper<Quest>>();
+        services.AddScoped<ISortHelper<QuestType>, SortHelper<QuestType>>();
+        services.AddScoped<IDataShaper<QuestType>, DataShaper<QuestType>>();
 
         services.AddScoped<IAuthService, AuthService>();
         services.AddScoped<IQuestService, QuestService>();
+        services.AddScoped<IQuestTypeService, QuestTypeService>();
     }
 
     public static void SetupRepositories(this IServiceCollection services, IConfiguration configuration)
