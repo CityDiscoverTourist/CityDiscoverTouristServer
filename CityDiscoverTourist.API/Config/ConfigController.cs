@@ -16,19 +16,27 @@ namespace CityDiscoverTourist.API.Config;
 /// </summary>
 public static class ConfigController
 {
-    public static void SetupServices(this IServiceCollection services, IConfiguration configuration)
+    public static void SetupServices(this IServiceCollection services)
+    {
+
+
+        services.AddScoped<IAuthService, AuthService>();
+        services.AddScoped<IQuestService, QuestService>();
+        services.AddScoped<IQuestTypeService, QuestTypeService>();
+        services.AddScoped<ITaskTypeService, TaskTypeService>();
+    }
+
+    public static void SetupHelper(this IServiceCollection services)
     {
         services.AddScoped<ISortHelper<Quest>, SortHelper<Quest>>();
         services.AddScoped<IDataShaper<Quest>, DataShaper<Quest>>();
         services.AddScoped<ISortHelper<QuestType>, SortHelper<QuestType>>();
         services.AddScoped<IDataShaper<QuestType>, DataShaper<QuestType>>();
-
-        services.AddScoped<IAuthService, AuthService>();
-        services.AddScoped<IQuestService, QuestService>();
-        services.AddScoped<IQuestTypeService, QuestTypeService>();
+        services.AddScoped<ISortHelper<TaskType>, SortHelper<TaskType>>();
+        services.AddScoped<IDataShaper<TaskType>, DataShaper<TaskType>>();
     }
 
-    public static void SetupRepositories(this IServiceCollection services, IConfiguration configuration)
+    public static void SetupRepositories(this IServiceCollection services)
     {
         services.AddScoped<IQuestRepository, QuestRepository>();
         services.AddScoped<IQuestTypeRepository, QuestTypeRepository>();
