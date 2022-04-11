@@ -34,7 +34,7 @@
 
         public static ApiResponse<TData> Created<TData>(TData data) where TData : class
         {
-            return new ApiResponse<TData>("", data, "success");
+            return new ApiResponse<TData>("", data, "data modified");
         }
 
     }

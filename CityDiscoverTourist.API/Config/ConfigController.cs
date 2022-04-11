@@ -1,8 +1,10 @@
 using System.Text.RegularExpressions;
+using CityDiscoverTourist.Business.Helper;
 using CityDiscoverTourist.Business.IServices;
 using CityDiscoverTourist.Business.IServices.Services;
 using CityDiscoverTourist.Data.IRepositories;
 using CityDiscoverTourist.Data.IRepositories.Repositories;
+using CityDiscoverTourist.Data.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Mvc.ApplicationModels;
 using Microsoft.OpenApi.Models;
@@ -16,6 +18,9 @@ public static class ConfigController
 {
     public static void SetupServices(this IServiceCollection services, IConfiguration configuration)
     {
+        services.AddScoped<ISortHelper<Quest>, SortHelper<Quest>>();
+        services.AddScoped<IDataShaper<Quest>, DataShaper<Quest>>();
+
         services.AddScoped<IAuthService, AuthService>();
         services.AddScoped<IQuestService, QuestService>();
     }
@@ -91,7 +96,10 @@ public static class ConfigController
         {
             options.Conventions.Add(new RouteTokenTransformerConvention(new LowercaseDashedParameterTransformer()));
         }).AddNewtonsoftJson(options =>
-            options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
+            {
+                options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
+                options.SerializerSettings.NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore;
+            }
         );
     }
 

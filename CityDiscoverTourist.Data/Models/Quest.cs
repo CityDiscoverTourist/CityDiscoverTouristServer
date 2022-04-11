@@ -1,5 +1,8 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Runtime.Serialization;
+using System.Text.Json.Serialization;
+using Newtonsoft.Json;
 
 namespace CityDiscoverTourist.Data.Models;
 
@@ -17,10 +20,12 @@ public class Quest
     public DateTime? CreatedDate { get; set; }
     public string? Status { get; set; }
 
+    [Newtonsoft.Json.JsonIgnore()]
     public QuestType? QuestType { get; set; }
     public int QuestTypeId { get; set; }
 
     public List<Task>? Tasks { get; set; }
+
     public List<FeedBack>? FeedBack { get; set; }
 
     public List<Location>? Locations { get; set; }

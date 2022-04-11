@@ -1,5 +1,12 @@
+using CityDiscoverTourist.API.Response;
+using CityDiscoverTourist.Business.Data.RequestModel;
+using CityDiscoverTourist.Business.Data.ResponseModel;
+using CityDiscoverTourist.Business.Helper;
+using CityDiscoverTourist.Business.Helper.Params;
 using CityDiscoverTourist.Business.IServices;
+using CityDiscoverTourist.Data.Models;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 
 namespace CityDiscoverTourist.API.Controllers;
 
@@ -15,10 +22,55 @@ public class QuestController : ControllerBase
         _questService = questService;
     }
 
-    [HttpGet("{id:guid}")]
-    public IActionResult Index(Guid id)
+    [HttpGet]
+    //[Cached(600)]
+    public ApiResponse<PageList<Entity>> GetTutorRequest([FromQuery] QuestParams param)
     {
-        var a = _questService.Get(id).Result;
-        return Ok(_questService.Get(id));
+        var entity = _questService.GetAll(param);
+
+        var metadata = new
+        {
+            entity.TotalCount,
+            entity.TotalPages,
+            entity.PageSize,
+            entity.CurrentPage,
+            entity.HasNext,
+            entity.HasPrevious,
+        };
+        Response.Headers.Add("X-Pagination", JsonConvert.SerializeObject(metadata));
+
+        return ApiResponse<List<Entity>>.Ok2(entity, metadata);
     }
+
+    [HttpGet("{id:guid}")]
+    //[Cached(600)]
+
+    public async Task<ApiResponse<QuestResponseModel>> Get(Guid id, string? fields)
+    {
+        var entity = await _questService.Get(id, fields);
+
+        return ApiResponse<QuestResponseModel>.Ok(entity);
+    }
+
+    [HttpPost]
+    public async Task<ApiResponse<QuestResponseModel>> Post(QuestRequestModel data)
+    {
+        var entity = await _questService.CreateAsync(data);
+        return ApiResponse<Quest>.Created(entity);
+    }
+
+    [HttpPut]
+    public async Task<ApiResponse<QuestResponseModel>> Put(QuestRequestModel data)
+    {
+        var entity = await _questService.UpdateAsync(data);
+        return ApiResponse<Quest>.Created(entity);
+    }
+
+    [HttpDelete("{id:guid}")]
+    public async Task<ActionResult<ApiResponse<QuestResponseModel>>> Delete(Guid id)
+    {
+        var entity = await _questService.DeleteAsync(id);
+        return ApiResponse<Quest>.Ok(entity);
+    }
+
 }

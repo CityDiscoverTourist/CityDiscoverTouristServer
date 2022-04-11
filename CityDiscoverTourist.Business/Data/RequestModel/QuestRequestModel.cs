@@ -1,8 +1,6 @@
-using CityDiscoverTourist.Business.Helper;
+namespace CityDiscoverTourist.Business.Data.RequestModel;
 
-namespace CityDiscoverTourist.Business.Data.ResponseModel;
-
-public class QuestResponseModel
+public class QuestRequestModel
 {
     public Guid Id { get; set; }
     public string? Name { get; set; }
@@ -11,9 +9,7 @@ public class QuestResponseModel
     public string? EstimateTime { get; set; }
     public DateTime? AvailableTime { get; set; } = null;
 
-    public DateTime? CreatedDate { get; set; }
-    public string? Status { get; set; }
+    public string? Status { get; set; } = "Pending";
 
     public int QuestTypeId { get; set; }
-
 }

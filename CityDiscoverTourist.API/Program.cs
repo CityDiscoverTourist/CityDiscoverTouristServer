@@ -1,4 +1,5 @@
 using CityDiscoverTourist.API.Config;
+using CityDiscoverTourist.Business.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -8,6 +9,8 @@ builder.Services.SetupFirebaseAuth(builder.Configuration);
 builder.Services.SetupRepositories(builder.Configuration);
 builder.Services.SetupServices(builder.Configuration);
 builder.Services.SetupSwagger(builder.Configuration);
+
+builder.Services.AddAutoMapper(typeof(AutoMapperProfile).Assembly);
 
 var app = builder.Build();
 

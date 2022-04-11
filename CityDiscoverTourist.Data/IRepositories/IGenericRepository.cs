@@ -18,6 +18,6 @@ namespace CityDiscoverTourist.Data.IRepositories
 
         Task<T> Update(T entity);
 
-        Task<T?> Delete(K id);
+        Task<T> Delete(K id);
     }
 }
