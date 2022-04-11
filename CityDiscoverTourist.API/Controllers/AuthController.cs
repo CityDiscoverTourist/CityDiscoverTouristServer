@@ -11,12 +11,12 @@ namespace CityDiscoverTourist.API.Controllers;
 public class AuthController : ControllerBase
 {
     private readonly IAuthService _authService;
+
     // GET
     public AuthController(IAuthService authService)
     {
         _authService = authService;
     }
-
 
     [HttpPost("loginFirebase")]
     public async Task<ActionResult<LoginResponseModel>> LoginFirebase(LoginFirebaseModel model)

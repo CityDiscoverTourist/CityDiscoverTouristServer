@@ -2715,11 +2715,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\C#\\CityDiscoverTourist\\CityDiscoverTourist.Data\\CityDiscoverTourist.Data.csproj",
+      "projectUniqueName": "C:\\Users\\Admin\\Source\\Repos\\CityDiscoverTouristServer\\CityDiscoverTourist.Data\\CityDiscoverTourist.Data.csproj",
       "projectName": "CityDiscoverTourist.Data",
-      "projectPath": "D:\\C#\\CityDiscoverTourist\\CityDiscoverTourist.Data\\CityDiscoverTourist.Data.csproj",
+      "projectPath": "C:\\Users\\Admin\\Source\\Repos\\CityDiscoverTouristServer\\CityDiscoverTourist.Data\\CityDiscoverTourist.Data.csproj",
       "packagesPath": "C:\\Users\\Admin\\.nuget\\packages\\",
-      "outputPath": "D:\\C#\\CityDiscoverTourist\\CityDiscoverTourist.Data\\obj\\",
+      "outputPath": "C:\\Users\\Admin\\Source\\Repos\\CityDiscoverTouristServer\\CityDiscoverTourist.Data\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\Admin\\AppData\\Roaming\\NuGet\\NuGet.Config",
