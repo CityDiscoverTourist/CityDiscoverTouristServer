@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "F8RLZw3IOCcFJUttblRQ5btSKSx1GKId25v0ufAeVbIXcq6PFYks6nWhyqXIT5txi8T3J9CjNgABM72bAePcJw==",
+  "dgSpecHash": "dCmxlAzVwGR+HuO/khTHzKHJ/TmS0L3+gCjcNP3ir7kav6pbGf51KQDXCSiQCQT8Ao0jClynGJBCU2fX0I5eDg==",
   "success": true,
-  "projectFilePath": "C:\\Users\\Admin\\Source\\Repos\\CityDiscoverTouristServer\\CityDiscoverTourist.Data\\CityDiscoverTourist.Data.csproj",
+  "projectFilePath": "D:\\C#\\CityDiscoverTourist\\CityDiscoverTourist.Data\\CityDiscoverTourist.Data.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Admin\\.nuget\\packages\\humanizer.core\\2.8.26\\humanizer.core.2.8.26.nupkg.sha512",
     "C:\\Users\\Admin\\.nuget\\packages\\microsoft.aspnetcore.authentication\\2.2.0\\microsoft.aspnetcore.authentication.2.2.0.nupkg.sha512",

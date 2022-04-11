@@ -5558,11 +5558,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Admin\\Source\\Repos\\CityDiscoverTouristServer\\CityDiscoverTourist.Business\\CityDiscoverTourist.Business.csproj",
+      "projectUniqueName": "D:\\C#\\CityDiscoverTourist\\CityDiscoverTourist.Business\\CityDiscoverTourist.Business.csproj",
       "projectName": "CityDiscoverTourist.Business",
-      "projectPath": "C:\\Users\\Admin\\Source\\Repos\\CityDiscoverTouristServer\\CityDiscoverTourist.Business\\CityDiscoverTourist.Business.csproj",
+      "projectPath": "D:\\C#\\CityDiscoverTourist\\CityDiscoverTourist.Business\\CityDiscoverTourist.Business.csproj",
       "packagesPath": "C:\\Users\\Admin\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Admin\\Source\\Repos\\CityDiscoverTouristServer\\CityDiscoverTourist.Business\\obj\\",
+      "outputPath": "D:\\C#\\CityDiscoverTourist\\CityDiscoverTourist.Business\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\Admin\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -5579,8 +5579,8 @@
         "net6.0": {
           "targetAlias": "net6.0",
           "projectReferences": {
-            "C:\\Users\\Admin\\Source\\Repos\\CityDiscoverTouristServer\\CityDiscoverTourist.Data\\CityDiscoverTourist.Data.csproj": {
-              "projectPath": "C:\\Users\\Admin\\Source\\Repos\\CityDiscoverTouristServer\\CityDiscoverTourist.Data\\CityDiscoverTourist.Data.csproj"
+            "D:\\C#\\CityDiscoverTourist\\CityDiscoverTourist.Data\\CityDiscoverTourist.Data.csproj": {
+              "projectPath": "D:\\C#\\CityDiscoverTourist\\CityDiscoverTourist.Data\\CityDiscoverTourist.Data.csproj"
             }
           }
         }

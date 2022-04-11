@@ -8,6 +8,7 @@ using CityDiscoverTourist.Data.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Mvc.ApplicationModels;
 using Microsoft.OpenApi.Models;
+using Task = CityDiscoverTourist.Data.Models.Task;
 
 namespace CityDiscoverTourist.API.Config;
 
@@ -18,12 +19,13 @@ public static class ConfigController
 {
     public static void SetupServices(this IServiceCollection services)
     {
-
-
         services.AddScoped<IAuthService, AuthService>();
         services.AddScoped<IQuestService, QuestService>();
         services.AddScoped<IQuestTypeService, QuestTypeService>();
         services.AddScoped<ITaskTypeService, TaskTypeService>();
+        services.AddScoped<ITaskService, TaskService>();
+        services.AddScoped<IExperienceService, ExperienceService>();
+        services.AddScoped<IRewardService, RewardService>();
     }
 
     public static void SetupHelper(this IServiceCollection services)
@@ -34,6 +36,10 @@ public static class ConfigController
         services.AddScoped<IDataShaper<QuestType>, DataShaper<QuestType>>();
         services.AddScoped<ISortHelper<TaskType>, SortHelper<TaskType>>();
         services.AddScoped<IDataShaper<TaskType>, DataShaper<TaskType>>();
+        services.AddScoped<ISortHelper<Task>, SortHelper<Task>>();
+        services.AddScoped<IDataShaper<Task>, DataShaper<Task>>();
+        services.AddScoped<ISortHelper<Reward>, SortHelper<Reward>>();
+        services.AddScoped<IDataShaper<Reward>, DataShaper<Reward>>();
     }
 
     public static void SetupRepositories(this IServiceCollection services)
@@ -58,7 +64,7 @@ public static class ConfigController
         services.AddSwaggerGen();
         services.AddSwaggerGen(c =>
         {
-            c.SwaggerDoc("v1", new OpenApiInfo { Title = "City Tuorist", Version = "v1" });
+            c.SwaggerDoc("v1", new OpenApiInfo { Title = "City Tourist", Version = "v1" });
         });
 
         services.AddSwaggerGen(setup =>
