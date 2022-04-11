@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Admin\\Source\\Repos\\CityDiscoverTouristServer\\CityDiscoverTourist.Data\\CityDiscoverTourist.Data.csproj": {}
+    "D:\\C#\\CityDiscoverTourist\\CityDiscoverTourist.Data\\CityDiscoverTourist.Data.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Admin\\Source\\Repos\\CityDiscoverTouristServer\\CityDiscoverTourist.Data\\CityDiscoverTourist.Data.csproj": {
+    "D:\\C#\\CityDiscoverTourist\\CityDiscoverTourist.Data\\CityDiscoverTourist.Data.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Admin\\Source\\Repos\\CityDiscoverTouristServer\\CityDiscoverTourist.Data\\CityDiscoverTourist.Data.csproj",
+        "projectUniqueName": "D:\\C#\\CityDiscoverTourist\\CityDiscoverTourist.Data\\CityDiscoverTourist.Data.csproj",
         "projectName": "CityDiscoverTourist.Data",
-        "projectPath": "C:\\Users\\Admin\\Source\\Repos\\CityDiscoverTouristServer\\CityDiscoverTourist.Data\\CityDiscoverTourist.Data.csproj",
+        "projectPath": "D:\\C#\\CityDiscoverTourist\\CityDiscoverTourist.Data\\CityDiscoverTourist.Data.csproj",
         "packagesPath": "C:\\Users\\Admin\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Admin\\Source\\Repos\\CityDiscoverTouristServer\\CityDiscoverTourist.Data\\obj\\",
+        "outputPath": "D:\\C#\\CityDiscoverTourist\\CityDiscoverTourist.Data\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\Admin\\AppData\\Roaming\\NuGet\\NuGet.Config",

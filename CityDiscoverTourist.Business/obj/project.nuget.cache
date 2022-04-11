@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "v/cuPjRePt0j4579hTnWXSsx803luUh0Ist9TSVNYq6L2qz6QPhMhqZ1kdsaHWkdnK6JM9m0DXoSAeIgCVRVlQ==",
+  "dgSpecHash": "NtrmNvzA43OxMIvj/qtHaimg1y/ocbCIMcuakpdmxeT0jKcFqldurMz7qrgFwLJfbNM5XrKNAs3aXdEe1eMkXQ==",
   "success": true,
-  "projectFilePath": "C:\\Users\\Admin\\Source\\Repos\\CityDiscoverTouristServer\\CityDiscoverTourist.Business\\CityDiscoverTourist.Business.csproj",
+  "projectFilePath": "D:\\C#\\CityDiscoverTourist\\CityDiscoverTourist.Business\\CityDiscoverTourist.Business.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Admin\\.nuget\\packages\\automapper\\11.0.0\\automapper.11.0.0.nupkg.sha512",
     "C:\\Users\\Admin\\.nuget\\packages\\automapper.extensions.microsoft.dependencyinjection\\11.0.0\\automapper.extensions.microsoft.dependencyinjection.11.0.0.nupkg.sha512",

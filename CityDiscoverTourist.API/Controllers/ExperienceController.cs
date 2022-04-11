@@ -17,16 +17,15 @@ namespace CityDiscoverTourist.API.Controllers;
 [ApiController]
 public class ExperienceController : ControllerBase
 {
-    private readonly ExperienceService _experienceService;
+    private readonly IExperienceService _experienceService;
 
-    public ExperienceController(ExperienceService taskService)
+    public ExperienceController(IExperienceService taskService)
     {
         _experienceService = taskService;
     }
 
     [HttpGet("{id:int}")]
     //[Cached(600)]
-
     public async Task<ApiResponse<ExperienceResponseModel>> Get(int id, string? fields)
     {
         var entity = await _experienceService.Get(id, fields);

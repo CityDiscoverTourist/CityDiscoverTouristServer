@@ -24,8 +24,8 @@ public static class ConfigController
         services.AddScoped<IQuestTypeService, QuestTypeService>();
         services.AddScoped<ITaskTypeService, TaskTypeService>();
         services.AddScoped<ITaskService, TaskService>();
-        services.AddScoped<IRewardService, RewardService>();
         services.AddScoped<IExperienceService, ExperienceService>();
+        services.AddScoped<IRewardService, RewardService>();
     }
 
     public static void SetupHelper(this IServiceCollection services)

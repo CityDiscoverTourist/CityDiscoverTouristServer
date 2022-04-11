@@ -29,11 +29,6 @@ public class ExperienceService: IExperienceService
         return _mapper.Map<ExperienceResponseModel>(entity);
     }
 
-    public Task<ExperienceResponseModel> Get(Guid id, string? fields)
-    {
-        throw new NotImplementedException();
-    }
-
     public async Task<ExperienceResponseModel> CreateAsync(ExperienceRequestModel request)
     {
         var entity = _mapper.Map<Experience>(request);
