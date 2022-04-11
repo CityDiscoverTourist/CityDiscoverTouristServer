@@ -3,6 +3,7 @@ using CityDiscoverTourist.Business.Data.RequestModel;
 using CityDiscoverTourist.Business.Data.ResponseModel;
 using CityDiscoverTourist.Business.Helper;
 using CityDiscoverTourist.Data.Models;
+using Task = CityDiscoverTourist.Data.Models.Task;
 
 namespace CityDiscoverTourist.Business.Data;
 
@@ -18,5 +19,14 @@ public class AutoMapperProfile : Profile
 
         CreateMap<TaskTypeRequestModel, TaskType>().ReverseMap();
         CreateMap<TaskTypeResponseModel, TaskType>().ReverseMap();
+
+        CreateMap<TaskRequestModel, Task>().ReverseMap();
+        CreateMap<TaskResponseModel, Task>().ReverseMap();
+
+        CreateMap<RewardRequestModel, Reward>().ReverseMap();
+        CreateMap<RewardResponseModel, Reward>().ReverseMap();
+
+        CreateMap<ExperienceRequestModel, Experience>().ReverseMap();
+        CreateMap<ExperienceResponseModel, Experience>().ReverseMap();
     }
 }

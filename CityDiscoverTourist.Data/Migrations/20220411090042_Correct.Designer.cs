@@ -4,6 +4,7 @@ using CityDiscoverTourist.Data.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CityDiscoverTourist.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220411090042_Correct")]
+    partial class Correct
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -330,7 +332,7 @@ namespace CityDiscoverTourist.Data.Migrations
 
                     b.Property<DateTime?>("CreatedDate")
                         .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("datetime2").HasDefaultValue("getdate()");
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
@@ -394,7 +396,7 @@ namespace CityDiscoverTourist.Data.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("ReceivedDate")
-                        .HasColumnType("datetime2").HasDefaultValue("getdate()");
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Status")
                         .HasColumnType("nvarchar(max)");
