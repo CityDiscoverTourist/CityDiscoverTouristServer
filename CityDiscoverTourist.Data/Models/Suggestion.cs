@@ -3,11 +3,8 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CityDiscoverTourist.Data.Models;
 
-public class Suggestion
+public class Suggestion: BaseEntity
 {
-    [Key]
-    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-    public int Id { get; set; }
     public string? Content { get; set; }
 
     public Task? Task { get; set; }

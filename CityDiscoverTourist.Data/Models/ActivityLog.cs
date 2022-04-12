@@ -1,9 +1,7 @@
 namespace CityDiscoverTourist.Data.Models;
 
-public class ActivityLog
+public class ActivityLog: BaseEntity
 {
-    public int Id { get; set; }
-
     public ApplicationUser Customer { get; set; }
     public string? UserId { get; set; }
 

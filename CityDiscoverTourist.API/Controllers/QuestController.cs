@@ -1,3 +1,4 @@
+using AutoMapper;
 using CityDiscoverTourist.API.Response;
 using CityDiscoverTourist.Business.Data.RequestModel;
 using CityDiscoverTourist.Business.Data.ResponseModel;
@@ -16,10 +17,12 @@ namespace CityDiscoverTourist.API.Controllers;
 public class QuestController : ControllerBase
 {
     private readonly IQuestService _questService;
+    private readonly IMapper _mapper;
 
-    public QuestController(IQuestService questService)
+    public QuestController(IQuestService questService, IMapper mapper)
     {
         _questService = questService;
+        _mapper = mapper;
     }
 
     [HttpGet]
