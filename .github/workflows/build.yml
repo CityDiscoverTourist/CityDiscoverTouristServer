@@ -1,13 +1,13 @@
-name: Build
+name: CI-CD
 on:
   push:
     branches:
-      - master
+      - main
   pull_request:
     types: [opened, synchronize, reopened]
 jobs:
   build:
-    name: Build
+    name: CI-CD
     runs-on: windows-latest
     steps:
       - name: Set up JDK 11
