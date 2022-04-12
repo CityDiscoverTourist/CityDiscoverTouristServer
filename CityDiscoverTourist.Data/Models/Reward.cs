@@ -3,11 +3,8 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CityDiscoverTourist.Data.Models;
 
-public class Reward
+public class Reward: BaseEntity
 {
-    [Key]
-    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-    public int Id { get; set; }
     public string? Name { get; set; }
     public DateTime ReceivedDate { get; set; }
     public DateTime? ExpiredDate { get; set; }

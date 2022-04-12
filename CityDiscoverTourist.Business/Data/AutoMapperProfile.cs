@@ -13,6 +13,7 @@ public class AutoMapperProfile : Profile
     {
         CreateMap<QuestResponseModel, Quest>().ReverseMap();
         CreateMap<QuestRequestModel, Quest>().ReverseMap();
+        CreateMap<PageList<QuestRequestModel>, Quest>().ReverseMap();
 
         CreateMap<QuestTypeRequestModel, QuestType>().ReverseMap();
         CreateMap<QuestTypeResponseModel, QuestType>().ReverseMap();

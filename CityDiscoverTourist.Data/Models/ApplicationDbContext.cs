@@ -19,8 +19,6 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     public DbSet<ActivityLog> ActivityLogs { get; set; }
     public DbSet<Reward> Rewards { get; set; }
     public DbSet<Experience> Experiences { get; set; }
-    public DbSet<OrderDetail> OrderDetails { get; set; }
-    public DbSet<Order> Orders { get; set; }
     public DbSet<Location> Locations { get; set; }
     public DbSet<Contact> Contacts { get; set; }
 }

@@ -3,12 +3,8 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CityDiscoverTourist.Data.Models;
 
-public class TaskType
+public class TaskType: BaseEntity
 {
-    [Key]
-    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-    public int Id { get; set; }
-
     public string? Name { get; set; }
     public string? Status { get; set; }
 

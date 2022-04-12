@@ -50,8 +50,6 @@ public static class ConfigController
         services.AddScoped<ITaskTypeRepository, TaskTypeRepository>();
         services.AddScoped<ISuggestionRepository, SuggestionRepository>();
         services.AddScoped<IRewardRepository, RewardRepository>();
-        services.AddScoped<IOrderRepository, OrderRepository>();
-        services.AddScoped<IOrderDetailRepository, OrderDetailRepository>();
         services.AddScoped<ILocationRepository, LocationRepository>();
         services.AddScoped<IFeedbackRepository, FeedbackRepository>();
         services.AddScoped<IExperienceRepository, ExperienceRepository>();
