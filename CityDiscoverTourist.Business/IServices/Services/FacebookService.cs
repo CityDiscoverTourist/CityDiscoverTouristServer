@@ -103,8 +103,8 @@ public class FacebookService: IFacebookService
             Email = facebookUser.Email,
             SecurityStamp = Guid.NewGuid().ToString(),
             EmailConfirmed = true,
-            NormalizedEmail = facebookUser.Email!.ToUpper(),
-            NormalizedUserName = facebookUser.FullName!.ToUpper(),
+            NormalizedEmail = facebookUser.Email!.ToUpper(new CultureInfo("en-US", false)),
+            NormalizedUserName = facebookUser.FullName!.ToUpper(new CultureInfo("en-US", false)),
             PhoneNumberConfirmed = false,
         };
         var loginInfo = new ExternalLoginInfo(new ClaimsPrincipal(), "Facebook", facebookUser.FacebookId, "Facebook");
