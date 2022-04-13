@@ -1,4 +1,5 @@
 using System;
+using AutoMapper;
 using CityDiscoverTourist.API.Controllers;
 using CityDiscoverTourist.Business.Data.RequestModel;
 using CityDiscoverTourist.Business.Data.ResponseModel;
@@ -18,7 +19,7 @@ public class QuestControllerTest
         questService.Setup(x => x.CreateAsync(It.IsAny<QuestRequestModel>()))
             .ReturnsAsync((QuestRequestModel request) => new QuestResponseModel()
             {
-                Id = new Guid(),
+                Id = Guid.Empty,
                 Name = request.Name,
                 Description = request.Description,
                 Price = request.Price,
@@ -27,8 +28,9 @@ public class QuestControllerTest
                 EstimateTime = "120",
                 QuestTypeId = 1
             });
+        var mapperMock = new Mock<IMapper>();
 
-        var controller = new QuestController(questService.Object, null);
+        var controller = new QuestController(questService.Object, mapperMock.Object);
 
         var result = controller.Post(new QuestRequestModel()
         {
@@ -51,7 +53,7 @@ public class QuestControllerTest
         questService.Setup(x => x.Get(It.IsAny<Guid>(), It.IsAny<string>()))
             .ReturnsAsync(new QuestResponseModel()
             {
-                Id = new Guid(),
+                Id = Guid.Empty,
                 Name = "Test",
                 Description = "TestDescription",
                 Price = 100,
@@ -61,9 +63,11 @@ public class QuestControllerTest
                 QuestTypeId = 1
             });
 
-        var controller = new QuestController(questService.Object, null);
+        var mapperMock = new Mock<IMapper>();
 
-        var result = controller.Get(new Guid(), "");
+        var controller = new QuestController(questService.Object, mapperMock.Object);
+
+        var result = controller.Get(Guid.Empty, "");
 
         Assert.Equal("TestDescription", result.Result.Data.Description);
     }
