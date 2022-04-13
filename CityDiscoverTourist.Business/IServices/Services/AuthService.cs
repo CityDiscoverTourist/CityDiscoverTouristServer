@@ -85,23 +85,12 @@ public class AuthService: IAuthService
         return token;
     }
 
-
-    public ClaimsPrincipal GetPrincipalFromExpiredToken(string token)
-    {
-        throw new NotImplementedException();
-    }
-
     public string GenerateRefreshToken()
     {
         var randomNumber = new byte[32];
         using var rng = RandomNumberGenerator.Create();
         rng.GetBytes(randomNumber);
         return Convert.ToBase64String(randomNumber);
-    }
-
-    public void RevokeRefreshToken(ApplicationUser user, string refreshToken)
-    {
-        throw new NotImplementedException();
     }
 
     public Task<bool> VerifyPhoneNumberByDigitCode(string username, int code)
