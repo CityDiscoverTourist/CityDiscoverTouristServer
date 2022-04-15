@@ -38,7 +38,9 @@
           "CityDiscoverTourist.Business": "1.0.0",
           "Microsoft.NET.Test.Sdk": "16.11.0",
           "Moq": "4.17.2",
+          "OpenCover": "4.7.922",
           "coverlet.collector": "3.1.0",
+          "coverlet.msbuild": "2.7.0",
           "xunit": "2.4.1",
           "xunit.runner.visualstudio": "2.4.3",
           "Microsoft.AspNetCore.Antiforgery": "6.0.0.0",
@@ -301,7 +303,7 @@
           "System.Threading.Channels": "6.0.0.0",
           "System.Threading.Reference": "6.0.0.0",
           "System.Threading.Overlapped": "6.0.0.0",
-          "System.Threading.Tasks.Dataflow": "6.0.0.0",
+          "System.Threading.Tasks.Dataflow.Reference": "6.0.0.0",
           "System.Threading.Tasks.Reference": "6.0.0.0",
           "System.Threading.Tasks.Extensions.Reference": "6.0.0.0",
           "System.Threading.Tasks.Parallel": "6.0.0.0",
@@ -385,6 +387,7 @@
         }
       },
       "coverlet.collector/3.1.0": {},
+      "coverlet.msbuild/2.7.0": {},
       "FirebaseAdmin/2.3.0": {
         "dependencies": {
           "Google.Api.Gax.Rest": "3.2.0",
@@ -532,6 +535,17 @@
           "Microsoft.AspNetCore.Authentication.Abstractions": "2.2.0",
           "Microsoft.AspNetCore.Http": "2.2.0",
           "Microsoft.AspNetCore.Http.Extensions": "2.2.0"
+        }
+      },
+      "Microsoft.AspNetCore.Authentication.Facebook/6.0.4": {
+        "runtime": {
+          "lib/net6.0/Microsoft.AspNetCore.Authentication.Facebook.dll": {
+            "assemblyVersion": "6.0.4.0",
+            "fileVersion": "6.0.422.17204"
+          }
+        },
+        "compile": {
+          "lib/net6.0/Microsoft.AspNetCore.Authentication.Facebook.dll": {}
         }
       },
       "Microsoft.AspNetCore.Authentication.JwtBearer/6.0.3": {
@@ -891,6 +905,44 @@
         },
         "compile": {
           "ref/netstandard2.1/Microsoft.Bcl.AsyncInterfaces.dll": {}
+        }
+      },
+      "Microsoft.Build/17.1.0": {
+        "dependencies": {
+          "Microsoft.Build.Framework": "17.1.0",
+          "Microsoft.NET.StringTools": "1.0.0",
+          "Microsoft.Win32.Registry": "4.7.0",
+          "System.Collections.Immutable": "6.0.0",
+          "System.Configuration.ConfigurationManager": "4.7.0",
+          "System.Reflection.Metadata": "5.0.0",
+          "System.Security.Principal.Windows": "4.7.0",
+          "System.Text.Encoding.CodePages": "4.7.0",
+          "System.Text.Json": "6.0.0",
+          "System.Threading.Tasks.Dataflow": "6.0.0"
+        },
+        "runtime": {
+          "lib/net6.0/Microsoft.Build.dll": {
+            "assemblyVersion": "15.1.0.0",
+            "fileVersion": "17.1.0.7609"
+          }
+        },
+        "compile": {
+          "lib/net6.0/Microsoft.Build.dll": {}
+        }
+      },
+      "Microsoft.Build.Framework/17.1.0": {
+        "dependencies": {
+          "Microsoft.Win32.Registry": "4.7.0",
+          "System.Security.Permissions": "4.7.0"
+        },
+        "runtime": {
+          "lib/netstandard2.0/Microsoft.Build.Framework.dll": {
+            "assemblyVersion": "15.1.0.0",
+            "fileVersion": "17.1.0.7609"
+          }
+        },
+        "compile": {
+          "lib/netstandard2.0/Microsoft.Build.Framework.dll": {}
         }
       },
       "Microsoft.CodeAnalysis.Analyzers/3.3.2": {},
@@ -1372,6 +1424,21 @@
         "dependencies": {
           "Microsoft.Extensions.Primitives": "6.0.0",
           "System.Buffers": "4.5.1"
+        }
+      },
+      "Microsoft.NET.StringTools/1.0.0": {
+        "dependencies": {
+          "System.Memory": "4.5.4",
+          "System.Runtime.CompilerServices.Unsafe": "6.0.0"
+        },
+        "runtime": {
+          "lib/netstandard2.0/Microsoft.NET.StringTools.dll": {
+            "assemblyVersion": "1.0.0.0",
+            "fileVersion": "1.0.0.26302"
+          }
+        },
+        "compile": {
+          "lib/netstandard2.0/Microsoft.NET.StringTools.dll": {}
         }
       },
       "Microsoft.NET.Test.Sdk/16.11.0": {
@@ -1868,6 +1935,7 @@
           "lib/netstandard2.0/NuGet.Frameworks.dll": {}
         }
       },
+      "OpenCover/4.7.922": {},
       "Portable.BouncyCastle/1.9.0": {
         "runtime": {
           "lib/netstandard2.0/BouncyCastle.Crypto.dll": {
@@ -2068,6 +2136,9 @@
             "assemblyVersion": "4.0.3.0",
             "fileVersion": "4.700.19.56404"
           }
+        },
+        "compile": {
+          "ref/netstandard2.0/System.Configuration.ConfigurationManager.dll": {}
         }
       },
       "System.Console/4.3.0": {
@@ -2714,6 +2785,7 @@
           "System.Runtime": "4.3.0"
         }
       },
+      "System.Threading.Tasks.Dataflow/6.0.0": {},
       "System.Threading.Tasks.Extensions/4.5.4": {},
       "System.Threading.Timer/4.3.0": {
         "dependencies": {
@@ -2868,6 +2940,7 @@
           "CityDiscoverTourist.Business": "1.0.0",
           "FirebaseAdmin": "2.3.0",
           "Microsoft.AspNet.WebApi.Versioning": "4.1.1",
+          "Microsoft.AspNetCore.Authentication.Facebook": "6.0.4",
           "Microsoft.AspNetCore.Authentication.JwtBearer": "6.0.3",
           "Microsoft.AspNetCore.Mvc.NewtonsoftJson": "6.0.3",
           "Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation": "6.0.3",
@@ -2875,6 +2948,7 @@
           "Microsoft.AspNetCore.Mvc.Versioning.ApiExplorer": "5.0.0",
           "Microsoft.AspNetCore.OData.Versioning": "5.0.0",
           "Microsoft.Azure.KeyVault": "3.0.5",
+          "Microsoft.Build": "17.1.0",
           "Swashbuckle.AspNetCore": "6.2.3"
         },
         "runtime": {
@@ -4475,7 +4549,7 @@
         },
         "compileOnly": true
       },
-      "System.Threading.Tasks.Dataflow/6.0.0.0": {
+      "System.Threading.Tasks.Dataflow.Reference/6.0.0.0": {
         "compile": {
           "System.Threading.Tasks.Dataflow.dll": {}
         },
@@ -4649,6 +4723,13 @@
       "path": "coverlet.collector/3.1.0",
       "hashPath": "coverlet.collector.3.1.0.nupkg.sha512"
     },
+    "coverlet.msbuild/2.7.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-AHs0G2xaPg9zUiyCC8yYzQLNLaRUKjN0eU8NwGA+eQJIXye1f21gmMIZXRJnkg5he46AohQZBg2TMjw9Z6Wt4A==",
+      "path": "coverlet.msbuild/2.7.0",
+      "hashPath": "coverlet.msbuild.2.7.0.nupkg.sha512"
+    },
     "FirebaseAdmin/2.3.0": {
       "type": "package",
       "serviceable": true,
@@ -4732,6 +4813,13 @@
       "sha512": "sha512-XlVJzJ5wPOYW+Y0J6Q/LVTEyfS4ssLXmt60T0SPP+D8abVhBTl+cgw2gDHlyKYIkcJg7btMVh383NDkMVqD/fg==",
       "path": "microsoft.aspnetcore.authentication.core/2.2.0",
       "hashPath": "microsoft.aspnetcore.authentication.core.2.2.0.nupkg.sha512"
+    },
+    "Microsoft.AspNetCore.Authentication.Facebook/6.0.4": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-SJxAg/FvRKbeNPCc2Q81hCoHYF0PIA+HWoRozN5xiB/C5iZEK7C20E5aovlBcdCMzPQSpb/wsuRoc/GkG6WW+Q==",
+      "path": "microsoft.aspnetcore.authentication.facebook/6.0.4",
+      "hashPath": "microsoft.aspnetcore.authentication.facebook.6.0.4.nupkg.sha512"
     },
     "Microsoft.AspNetCore.Authentication.JwtBearer/6.0.3": {
       "type": "package",
@@ -4963,6 +5051,20 @@
       "sha512": "sha512-K63Y4hORbBcKLWH5wnKgzyn7TOfYzevIEwIedQHBIkmkEBA9SCqgvom+XTuE+fAFGvINGkhFItaZ2dvMGdT5iw==",
       "path": "microsoft.bcl.asyncinterfaces/1.0.0",
       "hashPath": "microsoft.bcl.asyncinterfaces.1.0.0.nupkg.sha512"
+    },
+    "Microsoft.Build/17.1.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-GgSHR/GRzRBuGYxUKetYABpASX6IwmNRUe+Fyo/h/eE9z7aGOASytbQLGA+8SO6MAcrT5Ela4h3Yys+qLhc9GA==",
+      "path": "microsoft.build/17.1.0",
+      "hashPath": "microsoft.build.17.1.0.nupkg.sha512"
+    },
+    "Microsoft.Build.Framework/17.1.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-7PPEbjuL/lKQ8ftblxwBZKf5alZCA4GDvBTiO3UAVxtRe52a2jL3mc8TpKNiJZzytGz7fKdR5ClDCs7+Uw4hMg==",
+      "path": "microsoft.build.framework/17.1.0",
+      "hashPath": "microsoft.build.framework.17.1.0.nupkg.sha512"
     },
     "Microsoft.CodeAnalysis.Analyzers/3.3.2": {
       "type": "package",
@@ -5223,6 +5325,13 @@
       "path": "microsoft.net.http.headers/2.2.0",
       "hashPath": "microsoft.net.http.headers.2.2.0.nupkg.sha512"
     },
+    "Microsoft.NET.StringTools/1.0.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-ZYVcoDM0LnSyT5nWoRGfShYdOecCw2sOXWwP6j1Z0u48Xq3+BVvZ+EiPCX9/8Gz439giW+O1H1kWF9Eb/w6rVg==",
+      "path": "microsoft.net.stringtools/1.0.0",
+      "hashPath": "microsoft.net.stringtools.1.0.0.nupkg.sha512"
+    },
     "Microsoft.NET.Test.Sdk/16.11.0": {
       "type": "package",
       "serviceable": true,
@@ -5362,6 +5471,13 @@
       "sha512": "sha512-c5JVjuVAm4f7E9Vj+v09Z9s2ZsqFDjBpcsyS3M9xRo0bEdm/LVZSzLxxNvfvAwRiiE8nwe1h2G4OwiwlzFKXlA==",
       "path": "nuget.frameworks/5.0.0",
       "hashPath": "nuget.frameworks.5.0.0.nupkg.sha512"
+    },
+    "OpenCover/4.7.922": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-Mwqq3r8cHj7qazNzWp1K9zmU15amC9bzMvFK83zM4D+ATSN/IOkJGZh6kEvXnTVJjl6LN6U/4QCdRHxulAISuA==",
+      "path": "opencover/4.7.922",
+      "hashPath": "opencover.4.7.922.nupkg.sha512"
     },
     "Portable.BouncyCastle/1.9.0": {
       "type": "package",
@@ -6041,6 +6157,13 @@
       "sha512": "sha512-LbSxKEdOUhVe8BezB/9uOGGppt+nZf6e1VFyw6v3DN6lqitm0OSn2uXMOdtP0M3W4iMcqcivm2J6UgqiwwnXiA==",
       "path": "system.threading.tasks/4.3.0",
       "hashPath": "system.threading.tasks.4.3.0.nupkg.sha512"
+    },
+    "System.Threading.Tasks.Dataflow/6.0.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-+tyDCU3/B1lDdOOAJywHQoFwyXIUghIaP2BxG79uvhfTnO+D9qIgjVlL/JV2NTliYbMHpd6eKDmHp2VHpij7MA==",
+      "path": "system.threading.tasks.dataflow/6.0.0",
+      "hashPath": "system.threading.tasks.dataflow.6.0.0.nupkg.sha512"
     },
     "System.Threading.Tasks.Extensions/4.5.4": {
       "type": "package",
@@ -7455,7 +7578,7 @@
       "serviceable": false,
       "sha512": ""
     },
-    "System.Threading.Tasks.Dataflow/6.0.0.0": {
+    "System.Threading.Tasks.Dataflow.Reference/6.0.0.0": {
       "type": "referenceassembly",
       "serviceable": false,
       "sha512": ""

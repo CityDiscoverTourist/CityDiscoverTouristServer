@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <title>D:\C#\CityDiscoverTourist\CityDiscoverTourist.Data\Migrations\20220410084005_TaskType.cs</title>
+    <script type="text/javascript" src="../js/dotcover.sourceview.js"></script>
+    <link rel="stylesheet" type="text/css" href="../css/dotcover.report.css" />
+  </head>
+  <body>
+    <pre id="content" class="source-code">
+using System;
+using Microsoft.EntityFrameworkCore.Migrations;
+
+#nullable disable
+
+namespace CityDiscoverTourist.Data.Migrations
+{
+    public partial class TaskType : Migration
+    {
+        protected override void Up(MigrationBuilder migrationBuilder)
+        {
+            migrationBuilder.AddColumn&lt;string&gt;(
+                name: &quot;Address&quot;,
+                table: &quot;Tasks&quot;,
+                type: &quot;nvarchar(max)&quot;,
+                nullable: false,
+                defaultValue: &quot;&quot;);
+
+            migrationBuilder.AddColumn&lt;string&gt;(
+                name: &quot;Description&quot;,
+                table: &quot;Tasks&quot;,
+                type: &quot;nvarchar(max)&quot;,
+                nullable: false,
+                defaultValue: &quot;&quot;);
+
+            migrationBuilder.AddColumn&lt;int&gt;(
+                name: &quot;Duration&quot;,
+                table: &quot;Tasks&quot;,
+                type: &quot;int&quot;,
+                nullable: false,
+                defaultValue: 0);
+
+            migrationBuilder.AddColumn&lt;int&gt;(
+                name: &quot;Experience&quot;,
+                table: &quot;Tasks&quot;,
+                type: &quot;int&quot;,
+                nullable: false,
+                defaultValue: 0);
+
+            migrationBuilder.AddColumn&lt;string&gt;(
+                name: &quot;Name&quot;,
+                table: &quot;Tasks&quot;,
+                type: &quot;nvarchar(max)&quot;,
+                nullable: false,
+                defaultValue: &quot;&quot;);
+
+            migrationBuilder.AddColumn&lt;Guid&gt;(
+                name: &quot;QuestId&quot;,
+                table: &quot;Tasks&quot;,
+                type: &quot;uniqueidentifier&quot;,
+                nullable: false,
+                defaultValue: new Guid(&quot;00000000-0000-0000-0000-000000000000&quot;));
+
+            migrationBuilder.AddColumn&lt;string&gt;(
+                name: &quot;Status&quot;,
+                table: &quot;Tasks&quot;,
+                type: &quot;nvarchar(max)&quot;,
+                nullable: false,
+                defaultValue: &quot;&quot;);
+
+            migrationBuilder.AddColumn&lt;int&gt;(
+                name: &quot;TaskTypeId&quot;,
+                table: &quot;Tasks&quot;,
+                type: &quot;int&quot;,
+                nullable: false,
+                defaultValue: 0);
+
+            migrationBuilder.AddColumn&lt;string&gt;(
+                name: &quot;UrlStory&quot;,
+                table: &quot;Tasks&quot;,
+                type: &quot;nvarchar(max)&quot;,
+                nullable: false,
+                defaultValue: &quot;&quot;);
+
+            migrationBuilder.CreateTable(
+                name: &quot;TaskType&quot;,
+                columns: table =&gt; new
+                {
+                    Id = table.Column&lt;int&gt;(type: &quot;int&quot;, nullable: false)
+                        .Annotation(&quot;SqlServer:Identity&quot;, &quot;1, 1&quot;),
+                    Name = table.Column&lt;string&gt;(type: &quot;nvarchar(max)&quot;, nullable: false),
+                    Status = table.Column&lt;string&gt;(type: &quot;nvarchar(max)&quot;, nullable: false)
+                },
+                constraints: table =&gt;
+                {
+                    table.PrimaryKey(&quot;PK_TaskType&quot;, x =&gt; x.Id);
+                });
+
+            migrationBuilder.CreateIndex(
+                name: &quot;IX_Tasks_QuestId&quot;,
+                table: &quot;Tasks&quot;,
+                column: &quot;QuestId&quot;);
+
+            migrationBuilder.CreateIndex(
+                name: &quot;IX_Tasks_TaskTypeId&quot;,
+                table: &quot;Tasks&quot;,
+                column: &quot;TaskTypeId&quot;);
+
+            migrationBuilder.AddForeignKey(
+                name: &quot;FK_Tasks_Quests_QuestId&quot;,
+                table: &quot;Tasks&quot;,
+                column: &quot;QuestId&quot;,
+                principalTable: &quot;Quests&quot;,
+                principalColumn: &quot;Id&quot;,
+                onDelete: ReferentialAction.Cascade);
+
+            migrationBuilder.AddForeignKey(
+                name: &quot;FK_Tasks_TaskType_TaskTypeId&quot;,
+                table: &quot;Tasks&quot;,
+                column: &quot;TaskTypeId&quot;,
+                principalTable: &quot;TaskType&quot;,
+                principalColumn: &quot;Id&quot;,
+                onDelete: ReferentialAction.Cascade);
+        }
+
+        protected override void Down(MigrationBuilder migrationBuilder)
+        {
+            migrationBuilder.DropForeignKey(
+                name: &quot;FK_Tasks_Quests_QuestId&quot;,
+                table: &quot;Tasks&quot;);
+
+            migrationBuilder.DropForeignKey(
+                name: &quot;FK_Tasks_TaskType_TaskTypeId&quot;,
+                table: &quot;Tasks&quot;);
+
+            migrationBuilder.DropTable(
+                name: &quot;TaskType&quot;);
+
+            migrationBuilder.DropIndex(
+                name: &quot;IX_Tasks_QuestId&quot;,
+                table: &quot;Tasks&quot;);
+
+            migrationBuilder.DropIndex(
+                name: &quot;IX_Tasks_TaskTypeId&quot;,
+                table: &quot;Tasks&quot;);
+
+            migrationBuilder.DropColumn(
+                name: &quot;Address&quot;,
+                table: &quot;Tasks&quot;);
+
+            migrationBuilder.DropColumn(
+                name: &quot;Description&quot;,
+                table: &quot;Tasks&quot;);
+
+            migrationBuilder.DropColumn(
+                name: &quot;Duration&quot;,
+                table: &quot;Tasks&quot;);
+
+            migrationBuilder.DropColumn(
+                name: &quot;Experience&quot;,
+                table: &quot;Tasks&quot;);
+
+            migrationBuilder.DropColumn(
+                name: &quot;Name&quot;,
+                table: &quot;Tasks&quot;);
+
+            migrationBuilder.DropColumn(
+                name: &quot;QuestId&quot;,
+                table: &quot;Tasks&quot;);
+
+            migrationBuilder.DropColumn(
+                name: &quot;Status&quot;,
+                table: &quot;Tasks&quot;);
+
+            migrationBuilder.DropColumn(
+                name: &quot;TaskTypeId&quot;,
+                table: &quot;Tasks&quot;);
+
+            migrationBuilder.DropColumn(
+                name: &quot;UrlStory&quot;,
+                table: &quot;Tasks&quot;);
+        }
+    }
+}
+
+    </pre>
+    <script type="text/javascript">
+      highlightRanges([[11,9,11,10,0],[12,13,17,35,0],[19,13,24,35,0],[26,13,31,34,0],[33,13,38,34,0],[40,13,45,35,0],[47,13,52,81,0],[54,13,59,35,0],[61,13,66,34,0],[68,13,73,35,0],[75,13,77,35,0],[77,35,83,18,0],[83,18,85,17,0],[85,17,85,18,0],[85,18,86,21,0],[86,21,86,64,0],[86,64,87,17,0],[87,17,87,18,0],[87,18,87,20,0],[89,13,92,36,0],[94,13,97,39,0],[99,13,105,54,0],[107,13,113,54,0],[114,9,114,10,0],[117,9,117,10,0],[118,13,120,33,0],[122,13,124,33,0],[126,13,127,35,0],[129,13,131,33,0],[133,13,135,33,0],[137,13,139,33,0],[141,13,143,33,0],[145,13,147,33,0],[149,13,151,33,0],[153,13,155,33,0],[157,13,159,33,0],[161,13,163,33,0],[165,13,167,33,0],[169,13,171,33,0],[172,9,172,10,0]]);
+    </script>
+  </body>
+</html>

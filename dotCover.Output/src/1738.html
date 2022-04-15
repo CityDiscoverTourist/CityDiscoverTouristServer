@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <title>D:\C#\CityDiscoverTourist\CityDiscoverTourist.Data\Migrations\20220406105839_Quest.Designer.cs</title>
+    <script type="text/javascript" src="../js/dotcover.sourceview.js"></script>
+    <link rel="stylesheet" type="text/css" href="../css/dotcover.report.css" />
+  </head>
+  <body>
+    <pre id="content" class="source-code">
+// &lt;auto-generated /&gt;
+using System;
+using CityDiscoverTourist.Data.Models;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
+
+#nullable disable
+
+namespace CityDiscoverTourist.Data.Migrations
+{
+    [DbContext(typeof(ApplicationDbContext))]
+    [Migration(&quot;20220406105839_Quest&quot;)]
+    partial class Quest
+    {
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+        {
+#pragma warning disable 612, 618
+            modelBuilder
+                .HasAnnotation(&quot;ProductVersion&quot;, &quot;6.0.3&quot;)
+                .HasAnnotation(&quot;Relational:MaxIdentifierLength&quot;, 128);
+
+            SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
+
+            modelBuilder.Entity(&quot;CityDiscoverTourist.Data.Models.ApplicationUser&quot;, b =&gt;
+                {
+                    b.Property&lt;string&gt;(&quot;Id&quot;)
+                        .HasColumnType(&quot;nvarchar(450)&quot;);
+
+                    b.Property&lt;int&gt;(&quot;AccessFailedCount&quot;)
+                        .HasColumnType(&quot;int&quot;);
+
+                    b.Property&lt;string&gt;(&quot;ConcurrencyStamp&quot;)
+                        .IsConcurrencyToken()
+                        .HasColumnType(&quot;nvarchar(max)&quot;);
+
+                    b.Property&lt;string&gt;(&quot;Email&quot;)
+                        .HasMaxLength(256)
+                        .HasColumnType(&quot;nvarchar(256)&quot;);
+
+                    b.Property&lt;bool&gt;(&quot;EmailConfirmed&quot;)
+                        .HasColumnType(&quot;bit&quot;);
+
+                    b.Property&lt;bool&gt;(&quot;LockoutEnabled&quot;)
+                        .HasColumnType(&quot;bit&quot;);
+
+                    b.Property&lt;DateTimeOffset?&gt;(&quot;LockoutEnd&quot;)
+                        .HasColumnType(&quot;datetimeoffset&quot;);
+
+                    b.Property&lt;string&gt;(&quot;NormalizedEmail&quot;)
+                        .HasMaxLength(256)
+                        .HasColumnType(&quot;nvarchar(256)&quot;);
+
+                    b.Property&lt;string&gt;(&quot;NormalizedUserName&quot;)
+                        .HasMaxLength(256)
+                        .HasColumnType(&quot;nvarchar(256)&quot;);
+
+                    b.Property&lt;string&gt;(&quot;PasswordHash&quot;)
+                        .HasColumnType(&quot;nvarchar(max)&quot;);
+
+                    b.Property&lt;string&gt;(&quot;PhoneNumber&quot;)
+                        .HasColumnType(&quot;nvarchar(max)&quot;);
+
+                    b.Property&lt;bool&gt;(&quot;PhoneNumberConfirmed&quot;)
+                        .HasColumnType(&quot;bit&quot;);
+
+                    b.Property&lt;string&gt;(&quot;SecurityStamp&quot;)
+                        .HasColumnType(&quot;nvarchar(max)&quot;);
+
+                    b.Property&lt;bool&gt;(&quot;TwoFactorEnabled&quot;)
+                        .HasColumnType(&quot;bit&quot;);
+
+                    b.Property&lt;string&gt;(&quot;UserName&quot;)
+                        .HasMaxLength(256)
+                        .HasColumnType(&quot;nvarchar(256)&quot;);
+
+                    b.HasKey(&quot;Id&quot;);
+
+                    b.HasIndex(&quot;NormalizedEmail&quot;)
+                        .HasDatabaseName(&quot;EmailIndex&quot;);
+
+                    b.HasIndex(&quot;NormalizedUserName&quot;)
+                        .IsUnique()
+                        .HasDatabaseName(&quot;UserNameIndex&quot;)
+                        .HasFilter(&quot;[NormalizedUserName] IS NOT NULL&quot;);
+
+                    b.ToTable(&quot;AspNetUsers&quot;, (string)null);
+                });
+
+            modelBuilder.Entity(&quot;CityDiscoverTourist.Data.Models.Quest&quot;, b =&gt;
+                {
+                    b.Property&lt;Guid&gt;(&quot;Id&quot;)
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType(&quot;uniqueidentifier&quot;);
+
+                    b.HasKey(&quot;Id&quot;);
+
+                    b.ToTable(&quot;Quests&quot;);
+                });
+
+            modelBuilder.Entity(&quot;Microsoft.AspNetCore.Identity.IdentityRole&quot;, b =&gt;
+                {
+                    b.Property&lt;string&gt;(&quot;Id&quot;)
+                        .HasColumnType(&quot;nvarchar(450)&quot;);
+
+                    b.Property&lt;string&gt;(&quot;ConcurrencyStamp&quot;)
+                        .IsConcurrencyToken()
+                        .HasColumnType(&quot;nvarchar(max)&quot;);
+
+                    b.Property&lt;string&gt;(&quot;Name&quot;)
+                        .HasMaxLength(256)
+                        .HasColumnType(&quot;nvarchar(256)&quot;);
+
+                    b.Property&lt;string&gt;(&quot;NormalizedName&quot;)
+                        .HasMaxLength(256)
+                        .HasColumnType(&quot;nvarchar(256)&quot;);
+
+                    b.HasKey(&quot;Id&quot;);
+
+                    b.HasIndex(&quot;NormalizedName&quot;)
+                        .IsUnique()
+                        .HasDatabaseName(&quot;RoleNameIndex&quot;)
+                        .HasFilter(&quot;[NormalizedName] IS NOT NULL&quot;);
+
+                    b.ToTable(&quot;AspNetRoles&quot;, (string)null);
+                });
+
+            modelBuilder.Entity(&quot;Microsoft.AspNetCore.Identity.IdentityRoleClaim&lt;string&gt;&quot;, b =&gt;
+                {
+                    b.Property&lt;int&gt;(&quot;Id&quot;)
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType(&quot;int&quot;);
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property&lt;int&gt;(&quot;Id&quot;), 1L, 1);
+
+                    b.Property&lt;string&gt;(&quot;ClaimType&quot;)
+                        .HasColumnType(&quot;nvarchar(max)&quot;);
+
+                    b.Property&lt;string&gt;(&quot;ClaimValue&quot;)
+                        .HasColumnType(&quot;nvarchar(max)&quot;);
+
+                    b.Property&lt;string&gt;(&quot;RoleId&quot;)
+                        .IsRequired()
+                        .HasColumnType(&quot;nvarchar(450)&quot;);
+
+                    b.HasKey(&quot;Id&quot;);
+
+                    b.HasIndex(&quot;RoleId&quot;);
+
+                    b.ToTable(&quot;AspNetRoleClaims&quot;, (string)null);
+                });
+
+            modelBuilder.Entity(&quot;Microsoft.AspNetCore.Identity.IdentityUserClaim&lt;string&gt;&quot;, b =&gt;
+                {
+                    b.Property&lt;int&gt;(&quot;Id&quot;)
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType(&quot;int&quot;);
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property&lt;int&gt;(&quot;Id&quot;), 1L, 1);
+
+                    b.Property&lt;string&gt;(&quot;ClaimType&quot;)
+                        .HasColumnType(&quot;nvarchar(max)&quot;);
+
+                    b.Property&lt;string&gt;(&quot;ClaimValue&quot;)
+                        .HasColumnType(&quot;nvarchar(max)&quot;);
+
+                    b.Property&lt;string&gt;(&quot;UserId&quot;)
+                        .IsRequired()
+                        .HasColumnType(&quot;nvarchar(450)&quot;);
+
+                    b.HasKey(&quot;Id&quot;);
+
+                    b.HasIndex(&quot;UserId&quot;);
+
+                    b.ToTable(&quot;AspNetUserClaims&quot;, (string)null);
+                });
+
+            modelBuilder.Entity(&quot;Microsoft.AspNetCore.Identity.IdentityUserLogin&lt;string&gt;&quot;, b =&gt;
+                {
+                    b.Property&lt;string&gt;(&quot;LoginProvider&quot;)
+                        .HasColumnType(&quot;nvarchar(450)&quot;);
+
+                    b.Property&lt;string&gt;(&quot;ProviderKey&quot;)
+                        .HasColumnType(&quot;nvarchar(450)&quot;);
+
+                    b.Property&lt;string&gt;(&quot;ProviderDisplayName&quot;)
+                        .HasColumnType(&quot;nvarchar(max)&quot;);
+
+                    b.Property&lt;string&gt;(&quot;UserId&quot;)
+                        .IsRequired()
+                        .HasColumnType(&quot;nvarchar(450)&quot;);
+
+                    b.HasKey(&quot;LoginProvider&quot;, &quot;ProviderKey&quot;);
+
+                    b.HasIndex(&quot;UserId&quot;);
+
+                    b.ToTable(&quot;AspNetUserLogins&quot;, (string)null);
+                });
+
+            modelBuilder.Entity(&quot;Microsoft.AspNetCore.Identity.IdentityUserRole&lt;string&gt;&quot;, b =&gt;
+                {
+                    b.Property&lt;string&gt;(&quot;UserId&quot;)
+                        .HasColumnType(&quot;nvarchar(450)&quot;);
+
+                    b.Property&lt;string&gt;(&quot;RoleId&quot;)
+                        .HasColumnType(&quot;nvarchar(450)&quot;);
+
+                    b.HasKey(&quot;UserId&quot;, &quot;RoleId&quot;);
+
+                    b.HasIndex(&quot;RoleId&quot;);
+
+                    b.ToTable(&quot;AspNetUserRoles&quot;, (string)null);
+                });
+
+            modelBuilder.Entity(&quot;Microsoft.AspNetCore.Identity.IdentityUserToken&lt;string&gt;&quot;, b =&gt;
+                {
+                    b.Property&lt;string&gt;(&quot;UserId&quot;)
+                        .HasColumnType(&quot;nvarchar(450)&quot;);
+
+                    b.Property&lt;string&gt;(&quot;LoginProvider&quot;)
+                        .HasColumnType(&quot;nvarchar(450)&quot;);
+
+                    b.Property&lt;string&gt;(&quot;Name&quot;)
+                        .HasColumnType(&quot;nvarchar(450)&quot;);
+
+                    b.Property&lt;string&gt;(&quot;Value&quot;)
+                        .HasColumnType(&quot;nvarchar(max)&quot;);
+
+                    b.HasKey(&quot;UserId&quot;, &quot;LoginProvider&quot;, &quot;Name&quot;);
+
+                    b.ToTable(&quot;AspNetUserTokens&quot;, (string)null);
+                });
+
+            modelBuilder.Entity(&quot;Microsoft.AspNetCore.Identity.IdentityRoleClaim&lt;string&gt;&quot;, b =&gt;
+                {
+                    b.HasOne(&quot;Microsoft.AspNetCore.Identity.IdentityRole&quot;, null)
+                        .WithMany()
+                        .HasForeignKey(&quot;RoleId&quot;)
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity(&quot;Microsoft.AspNetCore.Identity.IdentityUserClaim&lt;string&gt;&quot;, b =&gt;
+                {
+                    b.HasOne(&quot;CityDiscoverTourist.Data.Models.ApplicationUser&quot;, null)
+                        .WithMany()
+                        .HasForeignKey(&quot;UserId&quot;)
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity(&quot;Microsoft.AspNetCore.Identity.IdentityUserLogin&lt;string&gt;&quot;, b =&gt;
+                {
+                    b.HasOne(&quot;CityDiscoverTourist.Data.Models.ApplicationUser&quot;, null)
+                        .WithMany()
+                        .HasForeignKey(&quot;UserId&quot;)
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity(&quot;Microsoft.AspNetCore.Identity.IdentityUserRole&lt;string&gt;&quot;, b =&gt;
+                {
+                    b.HasOne(&quot;Microsoft.AspNetCore.Identity.IdentityRole&quot;, null)
+                        .WithMany()
+                        .HasForeignKey(&quot;RoleId&quot;)
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne(&quot;CityDiscoverTourist.Data.Models.ApplicationUser&quot;, null)
+                        .WithMany()
+                        .HasForeignKey(&quot;UserId&quot;)
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity(&quot;Microsoft.AspNetCore.Identity.IdentityUserToken&lt;string&gt;&quot;, b =&gt;
+                {
+                    b.HasOne(&quot;CityDiscoverTourist.Data.Models.ApplicationUser&quot;, null)
+                        .WithMany()
+                        .HasForeignKey(&quot;UserId&quot;)
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+#pragma warning restore 612, 618
+        }
+    }
+}
+
+    </pre>
+    <script type="text/javascript">
+      highlightRanges([[19,9,19,10,0],[21,13,23,71,0],[25,13,25,85,0],[27,13,28,17,0],[28,17,28,18,0],[28,18,29,21,0],[29,21,30,57,0],[30,57,32,21,0],[32,21,33,47,0],[33,47,35,21,0],[35,21,37,57,0],[37,57,39,21,0],[39,21,41,57,0],[41,57,43,21,0],[43,21,44,47,0],[44,47,46,21,0],[46,21,47,47,0],[47,47,49,21,0],[49,21,50,58,0],[50,58,52,21,0],[52,21,54,57,0],[54,57,56,21,0],[56,21,58,57,0],[58,57,60,21,0],[60,21,61,57,0],[61,57,63,21,0],[63,21,64,57,0],[64,57,66,21,0],[66,21,67,47,0],[67,47,69,21,0],[69,21,70,57,0],[70,57,72,21,0],[72,21,73,47,0],[73,47,75,21,0],[75,21,77,57,0],[77,57,79,21,0],[79,21,79,36,0],[79,36,81,21,0],[81,21,82,56,0],[82,56,84,21,0],[84,21,87,72,0],[87,72,89,21,0],[89,21,89,60,0],[89,60,90,17,0],[90,17,90,18,0],[90,18,90,20,0],[92,13,93,17,0],[93,17,93,18,0],[93,18,94,21,0],[94,21,96,60,0],[96,60,98,21,0],[98,21,98,36,0],[98,36,100,21,0],[100,21,100,41,0],[100,41,101,17,0],[101,17,101,18,0],[101,18,101,20,0],[103,13,104,17,0],[104,17,104,18,0],[104,18,105,21,0],[105,21,106,57,0],[106,57,108,21,0],[108,21,110,57,0],[110,57,112,21,0],[112,21,114,57,0],[114,57,116,21,0],[116,21,118,57,0],[118,57,120,21,0],[120,21,120,36,0],[120,36,122,21,0],[122,21,125,68,0],[125,68,127,21,0],[127,21,127,60,0],[127,60,128,17,0],[128,17,128,18,0],[128,18,128,20,0],[130,13,131,17,0],[131,17,131,18,0],[131,18,132,21,0],[132,21,134,47,0],[134,47,136,21,0],[136,21,136,104,0],[136,104,138,21,0],[138,21,139,57,0],[139,57,141,21,0],[141,21,142,57,0],[142,57,144,21,0],[144,21,146,57,0],[146,57,148,21,0],[148,21,148,36,0],[148,36,150,21,0],[150,21,150,42,0],[150,42,152,21,0],[152,21,152,65,0],[152,65,153,17,0],[153,17,153,18,0],[153,18,153,20,0],[155,13,156,17,0],[156,17,156,18,0],[156,18,157,21,0],[157,21,159,47,0],[159,47,161,21,0],[161,21,161,104,0],[161,104,163,21,0],[163,21,164,57,0],[164,57,166,21,0],[166,21,167,57,0],[167,57,169,21,0],[169,21,171,57,0],[171,57,173,21,0],[173,21,173,36,0],[173,36,175,21,0],[175,21,175,42,0],[175,42,177,21,0],[177,21,177,65,0],[177,65,178,17,0],[178,17,178,18,0],[178,18,178,20,0],[180,13,181,17,0],[181,17,181,18,0],[181,18,182,21,0],[182,21,183,57,0],[183,57,185,21,0],[185,21,186,57,0],[186,57,188,21,0],[188,21,189,57,0],[189,57,191,21,0],[191,21,193,57,0],[193,57,195,21,0],[195,21,195,62,0],[195,62,197,21,0],[197,21,197,42,0],[197,42,199,21,0],[199,21,199,65,0],[199,65,200,17,0],[200,17,200,18,0],[200,18,200,20,0],[202,13,203,17,0],[203,17,203,18,0],[203,18,204,21,0],[204,21,205,57,0],[205,57,207,21,0],[207,21,208,57,0],[208,57,210,21,0],[210,21,210,50,0],[210,50,212,21,0],[212,21,212,42,0],[212,42,214,21,0],[214,21,214,64,0],[214,64,215,17,0],[215,17,215,18,0],[215,18,215,20,0],[217,13,218,17,0],[218,17,218,18,0],[218,18,219,21,0],[219,21,220,57,0],[220,57,222,21,0],[222,21,223,57,0],[223,57,225,21,0],[225,21,226,57,0],[226,57,228,21,0],[228,21,229,57,0],[229,57,231,21,0],[231,21,231,65,0],[231,65,233,21,0],[233,21,233,65,0],[233,65,234,17,0],[234,17,234,18,0],[234,18,234,20,0],[236,13,237,17,0],[237,17,237,18,0],[237,18,238,21,0],[238,21,242,39,0],[242,39,243,17,0],[243,17,243,18,0],[243,18,243,20,0],[245,13,246,17,0],[246,17,246,18,0],[246,18,247,21,0],[247,21,251,39,0],[251,39,252,17,0],[252,17,252,18,0],[252,18,252,20,0],[254,13,255,17,0],[255,17,255,18,0],[255,18,256,21,0],[256,21,260,39,0],[260,39,261,17,0],[261,17,261,18,0],[261,18,261,20,0],[263,13,264,17,0],[264,17,264,18,0],[264,18,265,21,0],[265,21,269,39,0],[269,39,271,21,0],[271,21,275,39,0],[275,39,276,17,0],[276,17,276,18,0],[276,18,276,20,0],[278,13,279,17,0],[279,17,279,18,0],[279,18,280,21,0],[280,21,284,39,0],[284,39,285,17,0],[285,17,285,18,0],[285,18,285,20,0],[287,9,287,10,0]]);
+    </script>
+  </body>
+</html>

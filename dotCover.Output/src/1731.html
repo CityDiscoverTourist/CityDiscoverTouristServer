@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <title>D:\C#\CityDiscoverTourist\CityDiscoverTourist.Data\Models\Reward.cs</title>
+    <script type="text/javascript" src="../js/dotcover.sourceview.js"></script>
+    <link rel="stylesheet" type="text/css" href="../css/dotcover.report.css" />
+  </head>
+  <body>
+    <pre id="content" class="source-code">
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+
+namespace CityDiscoverTourist.Data.Models;
+
+public class Reward: BaseEntity
+{
+    public string? Name { get; set; }
+    public DateTime ReceivedDate { get; set; }
+    public DateTime? ExpiredDate { get; set; }
+
+    public ApplicationUser Customer { get; set; }
+    public string? CustomerId { get; set; }
+
+    public string? Status { get; set; }
+}
+    </pre>
+    <script type="text/javascript">
+      highlightRanges([[8,27,8,31,0],[8,32,8,36,0],[9,36,9,40,0],[9,41,9,45,0],[10,36,10,40,0],[10,41,10,45,0],[12,39,12,43,0],[12,44,12,48,0],[13,33,13,37,0],[13,38,13,42,0],[15,29,15,33,0],[15,34,15,38,0]]);
+    </script>
+  </body>
+</html>

@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <title>D:\C#\CityDiscoverTourist\CityDiscoverTourist.Business\Helper\DataShaper.cs</title>
+    <script type="text/javascript" src="../js/dotcover.sourceview.js"></script>
+    <link rel="stylesheet" type="text/css" href="../css/dotcover.report.css" />
+  </head>
+  <body>
+    <pre id="content" class="source-code">
+using System.Reflection;
+using TutorHelper_v2.Business.Helper;
+
+namespace CityDiscoverTourist.Business.Helper;
+
+public class DataShaper&lt;T&gt; : IDataShaper&lt;T&gt;
+{
+    public PropertyInfo[] Properties { get; set; }
+
+    public DataShaper()
+    {
+        Properties = typeof(T).GetProperties(BindingFlags.Public | BindingFlags.Instance);
+    }
+    public IEnumerable&lt;Entity&gt; ShapeData(IEnumerable&lt;T&gt; entities, string? fieldsString)
+    {
+        var requiredProperties = GetRequiredProperties(fieldsString);
+        return FetchData(entities, requiredProperties);
+    }
+    public Entity ShapeData(T entity, string? fieldsString)
+    {
+        var requiredProperties = GetRequiredProperties(fieldsString);
+        return FetchDataForEntity(entity, requiredProperties);
+    }
+    private IEnumerable&lt;PropertyInfo&gt; GetRequiredProperties(string? fieldsString)
+    {
+        var requiredProperties = new List&lt;PropertyInfo&gt;();
+        if (!string.IsNullOrWhiteSpace(fieldsString))
+        {
+            var fields = fieldsString.Split(&#39;,&#39;, StringSplitOptions.RemoveEmptyEntries);
+            foreach (var field in fields)
+            {
+                var property = Properties.FirstOrDefault(pi =&gt; pi.Name.Equals(field.Trim(), StringComparison.InvariantCultureIgnoreCase));
+                if (property == null)
+                    continue;
+                requiredProperties.Add(property);
+            }
+        }
+        else
+        {
+            requiredProperties = Properties.ToList();
+        }
+        return requiredProperties;
+    }
+    private IEnumerable&lt;Entity&gt; FetchData(IEnumerable&lt;T&gt; entities, IEnumerable&lt;PropertyInfo&gt; requiredProperties)
+    {
+        var shapedData = new List&lt;Entity&gt;();
+        foreach (var entity in entities)
+        {
+            var shapedObject = FetchDataForEntity(entity, requiredProperties);
+            shapedData.Add(shapedObject);
+        }
+        return shapedData;
+    }
+    private Entity FetchDataForEntity(T entity, IEnumerable&lt;PropertyInfo&gt; requiredProperties)
+    {
+        var shapedObject = new Entity();
+        foreach (var property in requiredProperties)
+        {
+            var objectPropertyValue = property.GetValue(entity);
+            shapedObject!.TryAdd(property.Name, objectPropertyValue);
+        }
+        return shapedObject;
+    }
+}
+    </pre>
+    <script type="text/javascript">
+      highlightRanges([[8,40,8,44,0],[8,45,8,49,0],[10,5,10,24,0],[11,5,11,6,0],[12,9,12,91,0],[13,5,13,6,0],[15,5,15,6,0],[16,9,16,70,0],[17,9,17,56,0],[18,5,18,6,0],[20,5,20,6,0],[21,9,21,70,0],[22,9,22,63,0],[23,5,23,6,0],[25,5,25,6,0],[26,9,26,59,0],[27,9,27,54,0],[28,9,28,10,0],[29,13,29,89,0],[30,13,30,20,0],[30,22,30,31,0],[30,32,30,34,0],[30,35,30,41,0],[31,13,31,14,0],[32,17,32,64,0],[32,64,32,137,0],[32,137,32,139,0],[33,17,33,38,0],[34,21,34,30,0],[35,17,35,50,0],[36,13,36,14,0],[37,9,37,10,0],[39,9,39,10,0],[40,13,40,54,0],[41,9,41,10,0],[42,9,42,35,0],[43,5,43,6,0],[45,5,45,6,0],[46,9,46,45,0],[47,9,47,16,0],[47,18,47,28,0],[47,29,47,31,0],[47,32,47,40,0],[48,9,48,10,0],[49,13,49,79,0],[50,13,50,42,0],[51,9,51,10,0],[52,9,52,27,0],[53,5,53,6,0],[55,5,55,6,0],[56,9,56,41,0],[57,9,57,16,0],[57,18,57,30,0],[57,31,57,33,0],[57,34,57,52,0],[58,9,58,10,0],[59,13,59,65,0],[60,13,60,70,0],[61,9,61,10,0],[62,9,62,29,0],[63,5,63,6,0]]);
+    </script>
+  </body>
+</html>

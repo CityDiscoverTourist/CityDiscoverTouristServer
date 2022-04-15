@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <title>D:\C#\CityDiscoverTourist\CityDiscoverTourist.Data\Migrations\20220410084005_TaskType.Designer.cs</title>
+    <script type="text/javascript" src="../js/dotcover.sourceview.js"></script>
+    <link rel="stylesheet" type="text/css" href="../css/dotcover.report.css" />
+  </head>
+  <body>
+    <pre id="content" class="source-code">
+// &lt;auto-generated /&gt;
+using System;
+using CityDiscoverTourist.Data.Models;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
+
+#nullable disable
+
+namespace CityDiscoverTourist.Data.Migrations
+{
+    [DbContext(typeof(ApplicationDbContext))]
+    [Migration(&quot;20220410084005_TaskType&quot;)]
+    partial class TaskType
+    {
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+        {
+#pragma warning disable 612, 618
+            modelBuilder
+                .HasAnnotation(&quot;ProductVersion&quot;, &quot;6.0.3&quot;)
+                .HasAnnotation(&quot;Relational:MaxIdentifierLength&quot;, 128);
+
+            SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
+
+            modelBuilder.Entity(&quot;CityDiscoverTourist.Data.Models.ApplicationUser&quot;, b =&gt;
+                {
+                    b.Property&lt;string&gt;(&quot;Id&quot;)
+                        .HasColumnType(&quot;nvarchar(450)&quot;);
+
+                    b.Property&lt;int&gt;(&quot;AccessFailedCount&quot;)
+                        .HasColumnType(&quot;int&quot;);
+
+                    b.Property&lt;string&gt;(&quot;ConcurrencyStamp&quot;)
+                        .IsConcurrencyToken()
+                        .HasColumnType(&quot;nvarchar(max)&quot;);
+
+                    b.Property&lt;string&gt;(&quot;Email&quot;)
+                        .HasMaxLength(256)
+                        .HasColumnType(&quot;nvarchar(256)&quot;);
+
+                    b.Property&lt;bool&gt;(&quot;EmailConfirmed&quot;)
+                        .HasColumnType(&quot;bit&quot;);
+
+                    b.Property&lt;bool&gt;(&quot;LockoutEnabled&quot;)
+                        .HasColumnType(&quot;bit&quot;);
+
+                    b.Property&lt;DateTimeOffset?&gt;(&quot;LockoutEnd&quot;)
+                        .HasColumnType(&quot;datetimeoffset&quot;);
+
+                    b.Property&lt;string&gt;(&quot;NormalizedEmail&quot;)
+                        .HasMaxLength(256)
+                        .HasColumnType(&quot;nvarchar(256)&quot;);
+
+                    b.Property&lt;string&gt;(&quot;NormalizedUserName&quot;)
+                        .HasMaxLength(256)
+                        .HasColumnType(&quot;nvarchar(256)&quot;);
+
+                    b.Property&lt;string&gt;(&quot;PasswordHash&quot;)
+                        .HasColumnType(&quot;nvarchar(max)&quot;);
+
+                    b.Property&lt;string&gt;(&quot;PhoneNumber&quot;)
+                        .HasColumnType(&quot;nvarchar(max)&quot;);
+
+                    b.Property&lt;bool&gt;(&quot;PhoneNumberConfirmed&quot;)
+                        .HasColumnType(&quot;bit&quot;);
+
+                    b.Property&lt;string&gt;(&quot;SecurityStamp&quot;)
+                        .HasColumnType(&quot;nvarchar(max)&quot;);
+
+                    b.Property&lt;bool&gt;(&quot;TwoFactorEnabled&quot;)
+                        .HasColumnType(&quot;bit&quot;);
+
+                    b.Property&lt;string&gt;(&quot;UserName&quot;)
+                        .HasMaxLength(256)
+                        .HasColumnType(&quot;nvarchar(256)&quot;);
+
+                    b.HasKey(&quot;Id&quot;);
+
+                    b.HasIndex(&quot;NormalizedEmail&quot;)
+                        .HasDatabaseName(&quot;EmailIndex&quot;);
+
+                    b.HasIndex(&quot;NormalizedUserName&quot;)
+                        .IsUnique()
+                        .HasDatabaseName(&quot;UserNameIndex&quot;)
+                        .HasFilter(&quot;[NormalizedUserName] IS NOT NULL&quot;);
+
+                    b.ToTable(&quot;AspNetUsers&quot;, (string)null);
+                });
+
+            modelBuilder.Entity(&quot;CityDiscoverTourist.Data.Models.Quest&quot;, b =&gt;
+                {
+                    b.Property&lt;Guid&gt;(&quot;Id&quot;)
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType(&quot;uniqueidentifier&quot;);
+
+                    b.Property&lt;DateTime&gt;(&quot;AvailableTime&quot;)
+                        .HasColumnType(&quot;datetime2&quot;);
+
+                    b.Property&lt;DateTime&gt;(&quot;CreatedDate&quot;)
+                        .HasColumnType(&quot;datetime2&quot;);
+
+                    b.Property&lt;string&gt;(&quot;Description&quot;)
+                        .IsRequired()
+                        .HasColumnType(&quot;nvarchar(max)&quot;);
+
+                    b.Property&lt;string&gt;(&quot;EstimateTime&quot;)
+                        .IsRequired()
+                        .HasColumnType(&quot;nvarchar(max)&quot;);
+
+                    b.Property&lt;string&gt;(&quot;Name&quot;)
+                        .IsRequired()
+                        .HasColumnType(&quot;nvarchar(max)&quot;);
+
+                    b.Property&lt;float&gt;(&quot;Price&quot;)
+                        .HasColumnType(&quot;real&quot;);
+
+                    b.Property&lt;int&gt;(&quot;QuestTypeId&quot;)
+                        .HasColumnType(&quot;int&quot;);
+
+                    b.Property&lt;string&gt;(&quot;Status&quot;)
+                        .IsRequired()
+                        .HasColumnType(&quot;nvarchar(max)&quot;);
+
+                    b.HasKey(&quot;Id&quot;);
+
+                    b.HasIndex(&quot;QuestTypeId&quot;);
+
+                    b.ToTable(&quot;Quests&quot;);
+                });
+
+            modelBuilder.Entity(&quot;CityDiscoverTourist.Data.Models.QuestType&quot;, b =&gt;
+                {
+                    b.Property&lt;int&gt;(&quot;Id&quot;)
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType(&quot;int&quot;);
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property&lt;int&gt;(&quot;Id&quot;), 1L, 1);
+
+                    b.Property&lt;string&gt;(&quot;Name&quot;)
+                        .IsRequired()
+                        .HasColumnType(&quot;nvarchar(max)&quot;);
+
+                    b.Property&lt;string&gt;(&quot;Status&quot;)
+                        .IsRequired()
+                        .HasColumnType(&quot;nvarchar(max)&quot;);
+
+                    b.HasKey(&quot;Id&quot;);
+
+                    b.ToTable(&quot;QuestTypes&quot;);
+                });
+
+            modelBuilder.Entity(&quot;CityDiscoverTourist.Data.Models.Task&quot;, b =&gt;
+                {
+                    b.Property&lt;int&gt;(&quot;Id&quot;)
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType(&quot;int&quot;);
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property&lt;int&gt;(&quot;Id&quot;), 1L, 1);
+
+                    b.Property&lt;string&gt;(&quot;Address&quot;)
+                        .IsRequired()
+                        .HasColumnType(&quot;nvarchar(max)&quot;);
+
+                    b.Property&lt;string&gt;(&quot;Description&quot;)
+                        .IsRequired()
+                        .HasColumnType(&quot;nvarchar(max)&quot;);
+
+                    b.Property&lt;int&gt;(&quot;Duration&quot;)
+                        .HasColumnType(&quot;int&quot;);
+
+                    b.Property&lt;int&gt;(&quot;Experience&quot;)
+                        .HasColumnType(&quot;int&quot;);
+
+                    b.Property&lt;string&gt;(&quot;Name&quot;)
+                        .IsRequired()
+                        .HasColumnType(&quot;nvarchar(max)&quot;);
+
+                    b.Property&lt;Guid&gt;(&quot;QuestId&quot;)
+                        .HasColumnType(&quot;uniqueidentifier&quot;);
+
+                    b.Property&lt;string&gt;(&quot;Status&quot;)
+                        .IsRequired()
+                        .HasColumnType(&quot;nvarchar(max)&quot;);
+
+                    b.Property&lt;int&gt;(&quot;TaskTypeId&quot;)
+                        .HasColumnType(&quot;int&quot;);
+
+                    b.Property&lt;string&gt;(&quot;UrlStory&quot;)
+                        .IsRequired()
+                        .HasColumnType(&quot;nvarchar(max)&quot;);
+
+                    b.HasKey(&quot;Id&quot;);
+
+                    b.HasIndex(&quot;QuestId&quot;);
+
+                    b.HasIndex(&quot;TaskTypeId&quot;);
+
+                    b.ToTable(&quot;Tasks&quot;);
+                });
+
+            modelBuilder.Entity(&quot;CityDiscoverTourist.Data.Models.TaskType&quot;, b =&gt;
+                {
+                    b.Property&lt;int&gt;(&quot;Id&quot;)
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType(&quot;int&quot;);
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property&lt;int&gt;(&quot;Id&quot;), 1L, 1);
+
+                    b.Property&lt;string&gt;(&quot;Name&quot;)
+                        .IsRequired()
+                        .HasColumnType(&quot;nvarchar(max)&quot;);
+
+                    b.Property&lt;string&gt;(&quot;Status&quot;)
+                        .IsRequired()
+                        .HasColumnType(&quot;nvarchar(max)&quot;);
+
+                    b.HasKey(&quot;Id&quot;);
+
+                    b.ToTable(&quot;TaskType&quot;);
+                });
+
+            modelBuilder.Entity(&quot;Microsoft.AspNetCore.Identity.IdentityRole&quot;, b =&gt;
+                {
+                    b.Property&lt;string&gt;(&quot;Id&quot;)
+                        .HasColumnType(&quot;nvarchar(450)&quot;);
+
+                    b.Property&lt;string&gt;(&quot;ConcurrencyStamp&quot;)
+                        .IsConcurrencyToken()
+                        .HasColumnType(&quot;nvarchar(max)&quot;);
+
+                    b.Property&lt;string&gt;(&quot;Name&quot;)
+                        .HasMaxLength(256)
+                        .HasColumnType(&quot;nvarchar(256)&quot;);
+
+                    b.Property&lt;string&gt;(&quot;NormalizedName&quot;)
+                        .HasMaxLength(256)
+                        .HasColumnType(&quot;nvarchar(256)&quot;);
+
+                    b.HasKey(&quot;Id&quot;);
+
+                    b.HasIndex(&quot;NormalizedName&quot;)
+                        .IsUnique()
+                        .HasDatabaseName(&quot;RoleNameIndex&quot;)
+                        .HasFilter(&quot;[NormalizedName] IS NOT NULL&quot;);
+
+                    b.ToTable(&quot;AspNetRoles&quot;, (string)null);
+                });
+
+            modelBuilder.Entity(&quot;Microsoft.AspNetCore.Identity.IdentityRoleClaim&lt;string&gt;&quot;, b =&gt;
+                {
+                    b.Property&lt;int&gt;(&quot;Id&quot;)
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType(&quot;int&quot;);
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property&lt;int&gt;(&quot;Id&quot;), 1L, 1);
+
+                    b.Property&lt;string&gt;(&quot;ClaimType&quot;)
+                        .HasColumnType(&quot;nvarchar(max)&quot;);
+
+                    b.Property&lt;string&gt;(&quot;ClaimValue&quot;)
+                        .HasColumnType(&quot;nvarchar(max)&quot;);
+
+                    b.Property&lt;string&gt;(&quot;RoleId&quot;)
+                        .IsRequired()
+                        .HasColumnType(&quot;nvarchar(450)&quot;);
+
+                    b.HasKey(&quot;Id&quot;);
+
+                    b.HasIndex(&quot;RoleId&quot;);
+
+                    b.ToTable(&quot;AspNetRoleClaims&quot;, (string)null);
+                });
+
+            modelBuilder.Entity(&quot;Microsoft.AspNetCore.Identity.IdentityUserClaim&lt;string&gt;&quot;, b =&gt;
+                {
+                    b.Property&lt;int&gt;(&quot;Id&quot;)
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType(&quot;int&quot;);
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property&lt;int&gt;(&quot;Id&quot;), 1L, 1);
+
+                    b.Property&lt;string&gt;(&quot;ClaimType&quot;)
+                        .HasColumnType(&quot;nvarchar(max)&quot;);
+
+                    b.Property&lt;string&gt;(&quot;ClaimValue&quot;)
+                        .HasColumnType(&quot;nvarchar(max)&quot;);
+
+                    b.Property&lt;string&gt;(&quot;UserId&quot;)
+                        .IsRequired()
+                        .HasColumnType(&quot;nvarchar(450)&quot;);
+
+                    b.HasKey(&quot;Id&quot;);
+
+                    b.HasIndex(&quot;UserId&quot;);
+
+                    b.ToTable(&quot;AspNetUserClaims&quot;, (string)null);
+                });
+
+            modelBuilder.Entity(&quot;Microsoft.AspNetCore.Identity.IdentityUserLogin&lt;string&gt;&quot;, b =&gt;
+                {
+                    b.Property&lt;string&gt;(&quot;LoginProvider&quot;)
+                        .HasColumnType(&quot;nvarchar(450)&quot;);
+
+                    b.Property&lt;string&gt;(&quot;ProviderKey&quot;)
+                        .HasColumnType(&quot;nvarchar(450)&quot;);
+
+                    b.Property&lt;string&gt;(&quot;ProviderDisplayName&quot;)
+                        .HasColumnType(&quot;nvarchar(max)&quot;);
+
+                    b.Property&lt;string&gt;(&quot;UserId&quot;)
+                        .IsRequired()
+                        .HasColumnType(&quot;nvarchar(450)&quot;);
+
+                    b.HasKey(&quot;LoginProvider&quot;, &quot;ProviderKey&quot;);
+
+                    b.HasIndex(&quot;UserId&quot;);
+
+                    b.ToTable(&quot;AspNetUserLogins&quot;, (string)null);
+                });
+
+            modelBuilder.Entity(&quot;Microsoft.AspNetCore.Identity.IdentityUserRole&lt;string&gt;&quot;, b =&gt;
+                {
+                    b.Property&lt;string&gt;(&quot;UserId&quot;)
+                        .HasColumnType(&quot;nvarchar(450)&quot;);
+
+                    b.Property&lt;string&gt;(&quot;RoleId&quot;)
+                        .HasColumnType(&quot;nvarchar(450)&quot;);
+
+                    b.HasKey(&quot;UserId&quot;, &quot;RoleId&quot;);
+
+                    b.HasIndex(&quot;RoleId&quot;);
+
+                    b.ToTable(&quot;AspNetUserRoles&quot;, (string)null);
+                });
+
+            modelBuilder.Entity(&quot;Microsoft.AspNetCore.Identity.IdentityUserToken&lt;string&gt;&quot;, b =&gt;
+                {
+                    b.Property&lt;string&gt;(&quot;UserId&quot;)
+                        .HasColumnType(&quot;nvarchar(450)&quot;);
+
+                    b.Property&lt;string&gt;(&quot;LoginProvider&quot;)
+                        .HasColumnType(&quot;nvarchar(450)&quot;);
+
+                    b.Property&lt;string&gt;(&quot;Name&quot;)
+                        .HasColumnType(&quot;nvarchar(450)&quot;);
+
+                    b.Property&lt;string&gt;(&quot;Value&quot;)
+                        .HasColumnType(&quot;nvarchar(max)&quot;);
+
+                    b.HasKey(&quot;UserId&quot;, &quot;LoginProvider&quot;, &quot;Name&quot;);
+
+                    b.ToTable(&quot;AspNetUserTokens&quot;, (string)null);
+                });
+
+            modelBuilder.Entity(&quot;CityDiscoverTourist.Data.Models.Quest&quot;, b =&gt;
+                {
+                    b.HasOne(&quot;CityDiscoverTourist.Data.Models.QuestType&quot;, &quot;QuestType&quot;)
+                        .WithMany(&quot;Quests&quot;)
+                        .HasForeignKey(&quot;QuestTypeId&quot;)
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation(&quot;QuestType&quot;);
+                });
+
+            modelBuilder.Entity(&quot;CityDiscoverTourist.Data.Models.Task&quot;, b =&gt;
+                {
+                    b.HasOne(&quot;CityDiscoverTourist.Data.Models.Quest&quot;, &quot;Quest&quot;)
+                        .WithMany(&quot;Tasks&quot;)
+                        .HasForeignKey(&quot;QuestId&quot;)
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne(&quot;CityDiscoverTourist.Data.Models.TaskType&quot;, &quot;TaskType&quot;)
+                        .WithMany(&quot;Tasks&quot;)
+                        .HasForeignKey(&quot;TaskTypeId&quot;)
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation(&quot;Quest&quot;);
+
+                    b.Navigation(&quot;TaskType&quot;);
+                });
+
+            modelBuilder.Entity(&quot;Microsoft.AspNetCore.Identity.IdentityRoleClaim&lt;string&gt;&quot;, b =&gt;
+                {
+                    b.HasOne(&quot;Microsoft.AspNetCore.Identity.IdentityRole&quot;, null)
+                        .WithMany()
+                        .HasForeignKey(&quot;RoleId&quot;)
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity(&quot;Microsoft.AspNetCore.Identity.IdentityUserClaim&lt;string&gt;&quot;, b =&gt;
+                {
+                    b.HasOne(&quot;CityDiscoverTourist.Data.Models.ApplicationUser&quot;, null)
+                        .WithMany()
+                        .HasForeignKey(&quot;UserId&quot;)
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity(&quot;Microsoft.AspNetCore.Identity.IdentityUserLogin&lt;string&gt;&quot;, b =&gt;
+                {
+                    b.HasOne(&quot;CityDiscoverTourist.Data.Models.ApplicationUser&quot;, null)
+                        .WithMany()
+                        .HasForeignKey(&quot;UserId&quot;)
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity(&quot;Microsoft.AspNetCore.Identity.IdentityUserRole&lt;string&gt;&quot;, b =&gt;
+                {
+                    b.HasOne(&quot;Microsoft.AspNetCore.Identity.IdentityRole&quot;, null)
+                        .WithMany()
+                        .HasForeignKey(&quot;RoleId&quot;)
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne(&quot;CityDiscoverTourist.Data.Models.ApplicationUser&quot;, null)
+                        .WithMany()
+                        .HasForeignKey(&quot;UserId&quot;)
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity(&quot;Microsoft.AspNetCore.Identity.IdentityUserToken&lt;string&gt;&quot;, b =&gt;
+                {
+                    b.HasOne(&quot;CityDiscoverTourist.Data.Models.ApplicationUser&quot;, null)
+                        .WithMany()
+                        .HasForeignKey(&quot;UserId&quot;)
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity(&quot;CityDiscoverTourist.Data.Models.Quest&quot;, b =&gt;
+                {
+                    b.Navigation(&quot;Tasks&quot;);
+                });
+
+            modelBuilder.Entity(&quot;CityDiscoverTourist.Data.Models.QuestType&quot;, b =&gt;
+                {
+                    b.Navigation(&quot;Quests&quot;);
+                });
+
+            modelBuilder.Entity(&quot;CityDiscoverTourist.Data.Models.TaskType&quot;, b =&gt;
+                {
+                    b.Navigation(&quot;Tasks&quot;);
+                });
+#pragma warning restore 612, 618
+        }
+    }
+}
+
+    </pre>
+    <script type="text/javascript">
+      highlightRanges([[19,9,19,10,0],[21,13,23,71,0],[25,13,25,85,0],[27,13,28,17,0],[28,17,28,18,0],[28,18,29,21,0],[29,21,30,57,0],[30,57,32,21,0],[32,21,33,47,0],[33,47,35,21,0],[35,21,37,57,0],[37,57,39,21,0],[39,21,41,57,0],[41,57,43,21,0],[43,21,44,47,0],[44,47,46,21,0],[46,21,47,47,0],[47,47,49,21,0],[49,21,50,58,0],[50,58,52,21,0],[52,21,54,57,0],[54,57,56,21,0],[56,21,58,57,0],[58,57,60,21,0],[60,21,61,57,0],[61,57,63,21,0],[63,21,64,57,0],[64,57,66,21,0],[66,21,67,47,0],[67,47,69,21,0],[69,21,70,57,0],[70,57,72,21,0],[72,21,73,47,0],[73,47,75,21,0],[75,21,77,57,0],[77,57,79,21,0],[79,21,79,36,0],[79,36,81,21,0],[81,21,82,56,0],[82,56,84,21,0],[84,21,87,72,0],[87,72,89,21,0],[89,21,89,60,0],[89,60,90,17,0],[90,17,90,18,0],[90,18,90,20,0],[92,13,93,17,0],[93,17,93,18,0],[93,18,94,21,0],[94,21,96,60,0],[96,60,98,21,0],[98,21,99,53,0],[99,53,101,21,0],[101,21,102,53,0],[102,53,104,21,0],[104,21,106,57,0],[106,57,108,21,0],[108,21,110,57,0],[110,57,112,21,0],[112,21,114,57,0],[114,57,116,21,0],[116,21,117,48,0],[117,48,119,21,0],[119,21,120,47,0],[120,47,122,21,0],[122,21,124,57,0],[124,57,126,21,0],[126,21,126,36,0],[126,36,128,21,0],[128,21,128,47,0],[128,47,130,21,0],[130,21,130,41,0],[130,41,131,17,0],[131,17,131,18,0],[131,18,131,20,0],[133,13,134,17,0],[134,17,134,18,0],[134,18,135,21,0],[135,21,137,47,0],[137,47,139,21,0],[139,21,139,104,0],[139,104,141,21,0],[141,21,143,57,0],[143,57,145,21,0],[145,21,147,57,0],[147,57,149,21,0],[149,21,149,36,0],[149,36,151,21,0],[151,21,151,45,0],[151,45,152,17,0],[152,17,152,18,0],[152,18,152,20,0],[154,13,155,17,0],[155,17,155,18,0],[155,18,156,21,0],[156,21,158,47,0],[158,47,160,21,0],[160,21,160,104,0],[160,104,162,21,0],[162,21,164,57,0],[164,57,166,21,0],[166,21,168,57,0],[168,57,170,21,0],[170,21,171,47,0],[171,47,173,21,0],[173,21,174,47,0],[174,47,176,21,0],[176,21,178,57,0],[178,57,180,21,0],[180,21,181,60,0],[181,60,183,21,0],[183,21,185,57,0],[185,57,187,21,0],[187,21,188,47,0],[188,47,190,21,0],[190,21,192,57,0],[192,57,194,21,0],[194,21,194,36,0],[194,36,196,21,0],[196,21,196,43,0],[196,43,198,21,0],[198,21,198,46,0],[198,46,200,21,0],[200,21,200,40,0],[200,40,201,17,0],[201,17,201,18,0],[201,18,201,20,0],[203,13,204,17,0],[204,17,204,18,0],[204,18,205,21,0],[205,21,207,47,0],[207,47,209,21,0],[209,21,209,104,0],[209,104,211,21,0],[211,21,213,57,0],[213,57,215,21,0],[215,21,217,57,0],[217,57,219,21,0],[219,21,219,36,0],[219,36,221,21,0],[221,21,221,43,0],[221,43,222,17,0],[222,17,222,18,0],[222,18,222,20,0],[224,13,225,17,0],[225,17,225,18,0],[225,18,226,21,0],[226,21,227,57,0],[227,57,229,21,0],[229,21,231,57,0],[231,57,233,21,0],[233,21,235,57,0],[235,57,237,21,0],[237,21,239,57,0],[239,57,241,21,0],[241,21,241,36,0],[241,36,243,21,0],[243,21,246,68,0],[246,68,248,21,0],[248,21,248,60,0],[248,60,249,17,0],[249,17,249,18,0],[249,18,249,20,0],[251,13,252,17,0],[252,17,252,18,0],[252,18,253,21,0],[253,21,255,47,0],[255,47,257,21,0],[257,21,257,104,0],[257,104,259,21,0],[259,21,260,57,0],[260,57,262,21,0],[262,21,263,57,0],[263,57,265,21,0],[265,21,267,57,0],[267,57,269,21,0],[269,21,269,36,0],[269,36,271,21,0],[271,21,271,42,0],[271,42,273,21,0],[273,21,273,65,0],[273,65,274,17,0],[274,17,274,18,0],[274,18,274,20,0],[276,13,277,17,0],[277,17,277,18,0],[277,18,278,21,0],[278,21,280,47,0],[280,47,282,21,0],[282,21,282,104,0],[282,104,284,21,0],[284,21,285,57,0],[285,57,287,21,0],[287,21,288,57,0],[288,57,290,21,0],[290,21,292,57,0],[292,57,294,21,0],[294,21,294,36,0],[294,36,296,21,0],[296,21,296,42,0],[296,42,298,21,0],[298,21,298,65,0],[298,65,299,17,0],[299,17,299,18,0],[299,18,299,20,0],[301,13,302,17,0],[302,17,302,18,0],[302,18,303,21,0],[303,21,304,57,0],[304,57,306,21,0],[306,21,307,57,0],[307,57,309,21,0],[309,21,310,57,0],[310,57,312,21,0],[312,21,314,57,0],[314,57,316,21,0],[316,21,316,62,0],[316,62,318,21,0],[318,21,318,42,0],[318,42,320,21,0],[320,21,320,65,0],[320,65,321,17,0],[321,17,321,18,0],[321,18,321,20,0],[323,13,324,17,0],[324,17,324,18,0],[324,18,325,21,0],[325,21,326,57,0],[326,57,328,21,0],[328,21,329,57,0],[329,57,331,21,0],[331,21,331,50,0],[331,50,333,21,0],[333,21,333,42,0],[333,42,335,21,0],[335,21,335,64,0],[335,64,336,17,0],[336,17,336,18,0],[336,18,336,20,0],[338,13,339,17,0],[339,17,339,18,0],[339,18,340,21,0],[340,21,341,57,0],[341,57,343,21,0],[343,21,344,57,0],[344,57,346,21,0],[346,21,347,57,0],[347,57,349,21,0],[349,21,350,57,0],[350,57,352,21,0],[352,21,352,65,0],[352,65,354,21,0],[354,21,354,65,0],[354,65,355,17,0],[355,17,355,18,0],[355,18,355,20,0],[357,13,358,17,0],[358,17,358,18,0],[358,18,359,21,0],[359,21,363,39,0],[363,39,365,21,0],[365,21,365,47,0],[365,47,366,17,0],[366,17,366,18,0],[366,18,366,20,0],[368,13,369,17,0],[369,17,369,18,0],[369,18,370,21,0],[370,21,374,39,0],[374,39,376,21,0],[376,21,380,39,0],[380,39,382,21,0],[382,21,382,43,0],[382,43,384,21,0],[384,21,384,46,0],[384,46,385,17,0],[385,17,385,18,0],[385,18,385,20,0],[387,13,388,17,0],[388,17,388,18,0],[388,18,389,21,0],[389,21,393,39,0],[393,39,394,17,0],[394,17,394,18,0],[394,18,394,20,0],[396,13,397,17,0],[397,17,397,18,0],[397,18,398,21,0],[398,21,402,39,0],[402,39,403,17,0],[403,17,403,18,0],[403,18,403,20,0],[405,13,406,17,0],[406,17,406,18,0],[406,18,407,21,0],[407,21,411,39,0],[411,39,412,17,0],[412,17,412,18,0],[412,18,412,20,0],[414,13,415,17,0],[415,17,415,18,0],[415,18,416,21,0],[416,21,420,39,0],[420,39,422,21,0],[422,21,426,39,0],[426,39,427,17,0],[427,17,427,18,0],[427,18,427,20,0],[429,13,430,17,0],[430,17,430,18,0],[430,18,431,21,0],[431,21,435,39,0],[435,39,436,17,0],[436,17,436,18,0],[436,18,436,20,0],[438,13,439,17,0],[439,17,439,18,0],[439,18,440,21,0],[440,21,440,43,0],[440,43,441,17,0],[441,17,441,18,0],[441,18,441,20,0],[443,13,444,17,0],[444,17,444,18,0],[444,18,445,21,0],[445,21,445,44,0],[445,44,446,17,0],[446,17,446,18,0],[446,18,446,20,0],[448,13,449,17,0],[449,17,449,18,0],[449,18,450,21,0],[450,21,450,43,0],[450,43,451,17,0],[451,17,451,18,0],[451,18,451,20,0],[453,9,453,10,0]]);
+    </script>
+  </body>
+</html>

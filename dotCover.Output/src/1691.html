@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <title>D:\C#\CityDiscoverTourist\CityDiscoverTourist.Business\IServices\Services\RewardService.cs</title>
+    <script type="text/javascript" src="../js/dotcover.sourceview.js"></script>
+    <link rel="stylesheet" type="text/css" href="../css/dotcover.report.css" />
+  </head>
+  <body>
+    <pre id="content" class="source-code">
+using AutoMapper;
+using CityDiscoverTourist.Business.Data.RequestModel;
+using CityDiscoverTourist.Business.Data.ResponseModel;
+using CityDiscoverTourist.Business.Helper;
+using CityDiscoverTourist.Business.Helper.Params;
+using CityDiscoverTourist.Data.IRepositories;
+using CityDiscoverTourist.Data.Models;
+
+namespace CityDiscoverTourist.Business.IServices.Services;
+
+public class RewardService : IRewardService
+{
+    private readonly IRewardRepository  _rewardRepository;
+    private readonly IMapper _mapper;
+    private readonly ISortHelper&lt;Reward&gt; _sortHelper;
+    private readonly IDataShaper&lt;Reward&gt; _dataShaper;
+
+    public RewardService(IRewardRepository rewardRepository, IMapper mapper, ISortHelper&lt;Reward&gt; sortHelper, IDataShaper&lt;Reward&gt; dataShaper)
+    {
+        _rewardRepository = rewardRepository;
+        _mapper = mapper;
+        _sortHelper = sortHelper;
+        _dataShaper = dataShaper;
+    }
+
+    public PageList&lt;Entity&gt; GetAll(RewardParams @params)
+    {
+        var listAll = _rewardRepository.GetAll();
+
+        Search(ref listAll, @params);
+
+        var sortedQuests = _sortHelper.ApplySort(listAll, @params.OrderBy);
+        var shapedData = _dataShaper.ShapeData(sortedQuests, @params.Fields);
+
+        return PageList&lt;Entity&gt;.ToPageList(shapedData, @params.PageNume, @params.PageSize);
+    }
+
+    public async Task&lt;RewardResponseModel&gt; Get(int id, string? fields)
+    {
+        var entity = await _rewardRepository.Get(id);
+
+        //var shaped = _dataShaper.ShapeData(entity, fields);
+
+        return _mapper.Map&lt;RewardResponseModel&gt;(entity);
+    }
+
+    public async Task&lt;RewardResponseModel&gt; CreateAsync(RewardRequestModel request)
+    {
+        var entity = _mapper.Map&lt;Reward&gt;(request);
+        entity = await _rewardRepository.Add(entity);
+        return _mapper.Map&lt;RewardResponseModel&gt;(entity);
+    }
+
+    public async Task&lt;RewardResponseModel&gt; UpdateAsync(RewardRequestModel request)
+    {
+        var entity = _mapper.Map&lt;Reward&gt;(request);
+        entity = await _rewardRepository.Update(entity);
+        return _mapper.Map&lt;RewardResponseModel&gt;(entity);
+    }
+
+    public async Task&lt;RewardResponseModel&gt; DeleteAsync(int id)
+    {
+        var entity = await _rewardRepository.Delete(id);
+        return _mapper.Map&lt;RewardResponseModel&gt;(entity);
+    }
+
+    private static void Search(ref IQueryable&lt;Reward&gt; entities, RewardParams param)
+    {
+        if (!entities.Any() || string.IsNullOrWhiteSpace(param.Name) &amp;&amp; !param.ExpiredDate.HasValue) return;
+
+        entities = entities.Where(x =&gt; x.Name!.Contains(param.Name!) || x.ExpiredDate.Equals(param.ExpiredDate));
+    }
+}
+    </pre>
+    <script type="text/javascript">
+      highlightRanges([[18,5,18,141,0],[19,5,19,6,0],[20,9,20,46,0],[21,9,21,26,0],[22,9,22,34,0],[23,9,23,34,0],[24,5,24,6,0],[27,5,27,6,0],[28,9,28,50,0],[30,9,30,38,0],[32,9,32,76,0],[33,9,33,78,0],[35,9,35,92,0],[36,5,36,6,0],[39,5,39,6,0],[40,9,40,54,0],[44,9,44,57,0],[45,5,45,6,0],[48,5,48,6,0],[49,9,49,51,0],[50,9,50,54,0],[51,9,51,57,0],[52,5,52,6,0],[55,5,55,6,0],[56,9,56,51,0],[57,9,57,57,0],[58,9,58,57,0],[59,5,59,6,0],[62,5,62,6,0],[63,9,63,57,0],[64,9,64,57,0],[65,5,65,6,0],[68,5,68,6,0],[69,9,69,101,0],[69,102,69,109,0],[71,9,71,114,0],[72,5,72,6,0]]);
+    </script>
+  </body>
+</html>

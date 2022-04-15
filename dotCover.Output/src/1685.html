@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <title>D:\C#\CityDiscoverTourist\CityDiscoverTourist.Business\Helper\EmailHelper\Message.cs</title>
+    <script type="text/javascript" src="../js/dotcover.sourceview.js"></script>
+    <link rel="stylesheet" type="text/css" href="../css/dotcover.report.css" />
+  </head>
+  <body>
+    <pre id="content" class="source-code">
+using Microsoft.AspNetCore.Http;
+using MimeKit;
+
+namespace TutorHelper_v2.Business.Helper.EmailHelper;
+
+public abstract class Message
+{
+    protected Message(IEnumerable&lt;string&gt; to, string subject, string context, IFormFileCollection attachments)
+    {
+        To = new List&lt;MailboxAddress&gt;();
+
+        To.AddRange(to.Select(x =&gt; new MailboxAddress(&quot;&quot;, x)));
+
+        Subject = subject;
+        Content = context;
+        Attachments = attachments;
+    }
+
+    public List&lt;MailboxAddress&gt; To { get; set; }
+    public string Subject { get; set; }
+    public string Content { get; set; }
+    public IFormFileCollection Attachments { get; set; }
+}
+    </pre>
+    <script type="text/javascript">
+      highlightRanges([[8,5,8,111,0],[9,5,9,6,0],[10,9,10,41,0],[12,9,12,36,0],[12,36,12,61,0],[12,61,12,64,0],[14,9,14,27,0],[15,9,15,27,0],[16,9,16,35,0],[17,5,17,6,0],[19,38,19,42,0],[19,43,19,47,0],[20,29,20,33,0],[20,34,20,38,0],[21,29,21,33,0],[21,34,21,38,0],[22,46,22,50,0],[22,51,22,55,0]]);
+    </script>
+  </body>
+</html>

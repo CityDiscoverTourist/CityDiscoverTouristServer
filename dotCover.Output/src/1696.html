@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <title>D:\C#\CityDiscoverTourist\CityDiscoverTourist.Business\Helper\PageList.cs</title>
+    <script type="text/javascript" src="../js/dotcover.sourceview.js"></script>
+    <link rel="stylesheet" type="text/css" href="../css/dotcover.report.css" />
+  </head>
+  <body>
+    <pre id="content" class="source-code">
+namespace CityDiscoverTourist.Business.Helper
+{
+    public class PageList&lt;T&gt; : List&lt;T&gt;
+    {
+        public int CurrentPage { get; private set; }
+        public int TotalPages { get; private set; }
+        public int PageSize { get; private set; }
+        public int TotalCount { get; private set; }
+        public bool HasPrevious =&gt; CurrentPage &gt; 1;
+        public bool HasNext =&gt; CurrentPage &lt; TotalPages;
+        public IEnumerable&lt;T&gt; Data { get; set; }
+
+        public PageList(List&lt;T&gt; items, int count, int pageNum, int pageSize)
+        {
+            Data = items;
+            TotalCount = count;
+            PageSize = pageNum;
+            CurrentPage = pageNum;
+            TotalPages = (int)Math.Ceiling(count / (double)pageSize);
+
+            AddRange(items);
+        }
+
+        public static PageList&lt;T&gt; ToPageList(IEnumerable&lt;T&gt; source, int pageNum, int pageSize)
+        {
+            var count = source.Count();
+            var item = source.Skip((pageNum - 1) * pageSize)
+                .Take(pageSize).ToList();
+
+            return new PageList&lt;T&gt;(item, count, pageNum, pageSize);
+        }
+    }
+}
+    </pre>
+    <script type="text/javascript">
+      highlightRanges([[5,34,5,38,0],[5,39,5,51,0],[6,33,6,37,0],[6,38,6,50,0],[7,31,7,35,0],[7,36,7,48,0],[8,33,8,37,0],[8,38,8,50,0],[9,36,9,51,0],[10,32,10,56,0],[11,38,11,42,0],[11,43,11,47,0],[13,9,13,77,0],[14,9,14,10,0],[15,13,15,26,0],[16,13,16,32,0],[17,13,17,32,0],[18,13,18,35,0],[19,13,19,70,0],[21,13,21,29,0],[22,9,22,10,0],[25,9,25,10,0],[26,13,26,40,0],[27,13,28,42,0],[30,13,30,68,0],[31,9,31,10,0]]);
+    </script>
+  </body>
+</html>

@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <title>D:\C#\CityDiscoverTourist\CityDiscoverTourist.API\Response\ApiResponse.cs</title>
+    <script type="text/javascript" src="../js/dotcover.sourceview.js"></script>
+    <link rel="stylesheet" type="text/css" href="../css/dotcover.report.css" />
+  </head>
+  <body>
+    <pre id="content" class="source-code">
+namespace CityDiscoverTourist.API.Response;
+
+    public class ApiResponse&lt;T&gt;
+    {
+        public ApiResponse(string message, T data, string status)
+        {
+            Message = message;
+            Data = data;
+            Status = status;
+        }
+
+        private ApiResponse(string message, T data, object paging, string status)
+        {
+            Message = message;
+            Data = data;
+            Pagination = paging;
+            Status = status;
+        }
+
+        public string Message { get; }
+        public T Data { get; }
+        public object Pagination { get; }
+        public string Status { get; }
+
+        public static ApiResponse&lt;TData&gt; Ok&lt;TData&gt;(TData data) where TData : class
+        {
+            return new ApiResponse&lt;TData&gt;(&quot;&quot;, data, &quot;success&quot;);
+        }
+
+        public static ApiResponse&lt;TData&gt; Ok2&lt;TData&gt;(TData data, object paging) where TData : class
+        {
+            return new ApiResponse&lt;TData&gt;(&quot;&quot;, data, paging, &quot;success&quot;);
+        }
+
+        public static ApiResponse&lt;TData&gt; Created&lt;TData&gt;(TData data) where TData : class
+        {
+            return new ApiResponse&lt;TData&gt;(&quot;&quot;, data, &quot;data modified&quot;);
+        }
+
+    }
+    </pre>
+    <script type="text/javascript">
+      highlightRanges([[5,9,5,66,1],[6,9,6,10,1],[7,13,7,31,1],[8,13,8,25,1],[9,13,9,29,1],[10,9,10,10,1],[12,9,12,82,0],[13,9,13,10,0],[14,13,14,31,0],[15,13,15,25,0],[16,13,16,33,0],[17,13,17,29,0],[18,9,18,10,0],[20,33,20,37,0],[21,25,21,29,1],[22,36,22,40,0],[23,32,23,36,0],[26,9,26,10,1],[27,13,27,64,1],[28,9,28,10,1],[31,9,31,10,0],[32,13,32,72,0],[33,9,33,10,0],[36,9,36,10,1],[37,13,37,70,1],[38,9,38,10,1]]);
+    </script>
+  </body>
+</html>

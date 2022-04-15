@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <title>D:\C#\CityDiscoverTourist\CityDiscoverTourist.Data\Models\ActivityLog.cs</title>
+    <script type="text/javascript" src="../js/dotcover.sourceview.js"></script>
+    <link rel="stylesheet" type="text/css" href="../css/dotcover.report.css" />
+  </head>
+  <body>
+    <pre id="content" class="source-code">
+namespace CityDiscoverTourist.Data.Models;
+
+public class ActivityLog: BaseEntity
+{
+    public ApplicationUser Customer { get; set; }
+    public string? UserId { get; set; }
+
+    public string? Action { get; set; }
+    public string? Controller { get; set; }
+    public string? Description { get; set; }
+    public string? IpAddress { get; set; }
+    public DateTime CreatedDate { get; set; }
+}
+    </pre>
+    <script type="text/javascript">
+      highlightRanges([[5,39,5,43,0],[5,44,5,48,0],[6,29,6,33,0],[6,34,6,38,0],[8,29,8,33,0],[8,34,8,38,0],[9,33,9,37,0],[9,38,9,42,0],[10,34,10,38,0],[10,39,10,43,0],[11,32,11,36,0],[11,37,11,41,0],[12,35,12,39,0],[12,40,12,44,0]]);
+    </script>
+  </body>
+</html>

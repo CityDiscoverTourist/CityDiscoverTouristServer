@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <title>D:\C#\CityDiscoverTourist\CityDiscoverTourist.Data\Migrations\20220412045047_RemoveOrderOrderDetail.cs</title>
+    <script type="text/javascript" src="../js/dotcover.sourceview.js"></script>
+    <link rel="stylesheet" type="text/css" href="../css/dotcover.report.css" />
+  </head>
+  <body>
+    <pre id="content" class="source-code">
+using System;
+using Microsoft.EntityFrameworkCore.Migrations;
+
+#nullable disable
+
+namespace CityDiscoverTourist.Data.Migrations
+{
+    public partial class RemoveOrderOrderDetail : Migration
+    {
+        protected override void Up(MigrationBuilder migrationBuilder)
+        {
+            migrationBuilder.DropTable(
+                name: &quot;OrderDetails&quot;);
+
+            migrationBuilder.DropTable(
+                name: &quot;Orders&quot;);
+        }
+
+        protected override void Down(MigrationBuilder migrationBuilder)
+        {
+            migrationBuilder.CreateTable(
+                name: &quot;Orders&quot;,
+                columns: table =&gt; new
+                {
+                    Id = table.Column&lt;int&gt;(type: &quot;int&quot;, nullable: false)
+                        .Annotation(&quot;SqlServer:Identity&quot;, &quot;1, 1&quot;),
+                    CustomerId = table.Column&lt;string&gt;(type: &quot;nvarchar(450)&quot;, nullable: true),
+                    DiscountPrice = table.Column&lt;int&gt;(type: &quot;int&quot;, nullable: false),
+                    OrderDate = table.Column&lt;DateTime&gt;(type: &quot;datetime2&quot;, nullable: false),
+                    OrderDetailId = table.Column&lt;int&gt;(type: &quot;int&quot;, nullable: false),
+                    Price = table.Column&lt;float&gt;(type: &quot;real&quot;, nullable: false),
+                    Status = table.Column&lt;string&gt;(type: &quot;nvarchar(max)&quot;, nullable: true)
+                },
+                constraints: table =&gt;
+                {
+                    table.PrimaryKey(&quot;PK_Orders&quot;, x =&gt; x.Id);
+                    table.ForeignKey(
+                        name: &quot;FK_Orders_AspNetUsers_CustomerId&quot;,
+                        column: x =&gt; x.CustomerId,
+                        principalTable: &quot;AspNetUsers&quot;,
+                        principalColumn: &quot;Id&quot;);
+                });
+
+            migrationBuilder.CreateTable(
+                name: &quot;OrderDetails&quot;,
+                columns: table =&gt; new
+                {
+                    Id = table.Column&lt;int&gt;(type: &quot;int&quot;, nullable: false)
+                        .Annotation(&quot;SqlServer:Identity&quot;, &quot;1, 1&quot;),
+                    OrderId = table.Column&lt;int&gt;(type: &quot;int&quot;, nullable: false),
+                    DiscountPercent = table.Column&lt;string&gt;(type: &quot;nvarchar(max)&quot;, nullable: true),
+                    PaymentMethod = table.Column&lt;string&gt;(type: &quot;nvarchar(max)&quot;, nullable: true),
+                    Quantity = table.Column&lt;int&gt;(type: &quot;int&quot;, nullable: false),
+                    Status = table.Column&lt;string&gt;(type: &quot;nvarchar(max)&quot;, nullable: true)
+                },
+                constraints: table =&gt;
+                {
+                    table.PrimaryKey(&quot;PK_OrderDetails&quot;, x =&gt; x.Id);
+                    table.ForeignKey(
+                        name: &quot;FK_OrderDetails_Orders_OrderId&quot;,
+                        column: x =&gt; x.OrderId,
+                        principalTable: &quot;Orders&quot;,
+                        principalColumn: &quot;Id&quot;,
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateIndex(
+                name: &quot;IX_OrderDetails_OrderId&quot;,
+                table: &quot;OrderDetails&quot;,
+                column: &quot;OrderId&quot;);
+
+            migrationBuilder.CreateIndex(
+                name: &quot;IX_Orders_CustomerId&quot;,
+                table: &quot;Orders&quot;,
+                column: &quot;CustomerId&quot;);
+        }
+    }
+}
+
+    </pre>
+    <script type="text/javascript">
+      highlightRanges([[11,9,11,10,0],[12,13,13,39,0],[15,13,16,33,0],[17,9,17,10,0],[20,9,20,10,0],[21,13,23,35,0],[23,35,33,18,0],[33,18,35,17,0],[35,17,35,18,0],[35,18,36,21,0],[36,21,36,62,0],[36,62,37,21,0],[37,21,41,48,0],[41,48,42,17,0],[42,17,42,18,0],[42,18,42,20,0],[44,13,46,35,0],[46,35,55,18,0],[55,18,57,17,0],[57,17,57,18,0],[57,18,58,21,0],[58,21,58,68,0],[58,68,59,21,0],[59,21,64,62,0],[64,62,65,17,0],[65,17,65,18,0],[65,18,65,20,0],[67,13,70,36,0],[72,13,75,39,0],[76,9,76,10,0]]);
+    </script>
+  </body>
+</html>

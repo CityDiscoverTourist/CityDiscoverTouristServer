@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <title>D:\C#\CityDiscoverTourist\CityDiscoverTourist.API\Config\ConfigFirebase.cs</title>
+    <script type="text/javascript" src="../js/dotcover.sourceview.js"></script>
+    <link rel="stylesheet" type="text/css" href="../css/dotcover.report.css" />
+  </head>
+  <body>
+    <pre id="content" class="source-code">
+using System.Text;
+using CityDiscoverTourist.Data.Models;
+using FirebaseAdmin;
+using Google.Apis.Auth.OAuth2;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.IdentityModel.Tokens;
+
+namespace CityDiscoverTourist.API.Config;
+
+public static class ConfigFirebase
+{
+    public static void SetupFirebaseAuth(this IServiceCollection services, IConfiguration configuration)
+    {
+        services.AddIdentity&lt;ApplicationUser, IdentityRole&gt;(opt =&gt;
+            {
+                opt.Password.RequireUppercase = false;
+                opt.Password.RequireDigit = false;
+                opt.User.RequireUniqueEmail = true;
+                opt.SignIn.RequireConfirmedEmail = true;
+                opt.Lockout.AllowedForNewUsers = true;
+                opt.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(2);
+                opt.Lockout.MaxFailedAccessAttempts = 3;
+            }).AddEntityFrameworkStores&lt;ApplicationDbContext&gt;()
+            .AddDefaultTokenProviders();
+        services.AddAuthentication().AddFacebook(options =&gt;
+        {
+            options.AppId = &quot;531990824494705&quot;;
+            options.AppSecret = &quot;66835ceb1352abc8a9e13a66fbeadaa8&quot;;
+        });
+        FirebaseApp.Create(new AppOptions
+        {
+            Credential = GoogleCredential.FromFile(&quot;tutor-helper-6faa2-firebase-adminsdk-xritk-0556e13e56.json&quot;)
+        });
+        services.AddAuthentication(opt =&gt;
+        {
+            opt.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+            opt.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            opt.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+        }).AddJwtBearer(options =&gt;
+        {
+            options.RequireHttpsMetadata = false;
+            options.SaveToken = true;
+            options.TokenValidationParameters = new TokenValidationParameters
+            {
+                ValidateIssuer = false,
+                ValidateAudience = false,
+                ValidateIssuerSigningKey = true,
+                ValidAudience = configuration[&quot;JWT:ValidAudience&quot;],
+                ValidIssuer = configuration[&quot;JWT:ValidIssuer&quot;],
+                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration[&quot;JWT:Secret&quot;])),
+            };
+        });
+}
+}
+    </pre>
+    <script type="text/javascript">
+      highlightRanges([[14,5,14,6,0],[15,9,16,13,0],[16,13,16,14,0],[16,14,17,17,0],[17,17,17,55,0],[17,55,18,17,0],[18,17,18,51,0],[18,51,19,17,0],[19,17,19,52,0],[19,52,20,17,0],[20,17,20,57,0],[20,57,21,17,0],[21,17,21,55,0],[21,55,22,17,0],[22,17,22,78,0],[22,78,23,17,0],[23,17,23,57,0],[23,57,24,13,0],[24,13,24,14,0],[24,14,25,41,0],[26,9,27,9,0],[27,9,27,10,0],[27,10,28,13,0],[28,13,28,47,0],[28,47,29,13,0],[29,13,29,68,0],[29,68,30,9,0],[30,9,30,10,0],[30,10,30,12,0],[31,9,34,12,0],[35,9,36,9,0],[36,9,36,10,0],[36,10,37,13,0],[37,13,37,84,0],[37,84,38,13,0],[38,13,38,81,0],[38,81,39,13,0],[39,13,39,72,0],[39,72,40,9,0],[40,9,40,10,0],[40,10,41,9,0],[41,9,41,10,0],[41,10,42,13,0],[42,13,42,50,0],[42,50,43,13,0],[43,13,43,38,0],[43,38,44,13,0],[44,13,52,15,0],[52,15,53,9,0],[53,9,53,10,0],[53,10,53,12,0],[54,1,54,2,0]]);
+    </script>
+  </body>
+</html>

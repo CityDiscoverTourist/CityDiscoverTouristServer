@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <title>D:\C#\CityDiscoverTourist\CityDiscoverTourist.Data\Models\Task.cs</title>
+    <script type="text/javascript" src="../js/dotcover.sourceview.js"></script>
+    <link rel="stylesheet" type="text/css" href="../css/dotcover.report.css" />
+  </head>
+  <body>
+    <pre id="content" class="source-code">
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+
+namespace CityDiscoverTourist.Data.Models;
+
+public class Task: BaseEntity
+{
+    public string? Name { get; set; }
+    public string? Address { get; set; }
+    public string? Description { get; set; }
+    public int Duration { get; set; }
+    public int Experience { get; set; }
+    public string? UrlStory { get; set; }
+
+    public TaskType? TaskType { get; set; }
+    public int TaskTypeId { get; set; }
+
+    public Quest? Quest { get; set; }
+    public Guid QuestId { get; set; }
+
+    public Answer? Answer { get; set; }
+
+    public string? Status { get; set; }
+    public List&lt;Suggestion&gt;? Suggestions { get; set; }
+}
+    </pre>
+    <script type="text/javascript">
+      highlightRanges([[8,27,8,31,0],[8,32,8,36,0],[9,30,9,34,0],[9,35,9,39,0],[10,34,10,38,0],[10,39,10,43,0],[11,27,11,31,0],[11,32,11,36,0],[12,29,12,33,0],[12,34,12,38,0],[13,31,13,35,0],[13,36,13,40,0],[15,33,15,37,0],[15,38,15,42,0],[16,29,16,33,0],[16,34,16,38,0],[18,27,18,31,0],[18,32,18,36,0],[19,27,19,31,0],[19,32,19,36,0],[21,29,21,33,0],[21,34,21,38,0],[23,29,23,33,0],[23,34,23,38,0],[24,44,24,48,0],[24,49,24,53,0]]);
+    </script>
+  </body>
+</html>

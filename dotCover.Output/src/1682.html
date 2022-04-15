@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <title>D:\C#\CityDiscoverTourist\CityDiscoverTourist.API\Config\ConfigDatabase.cs</title>
+    <script type="text/javascript" src="../js/dotcover.sourceview.js"></script>
+    <link rel="stylesheet" type="text/css" href="../css/dotcover.report.css" />
+  </head>
+  <body>
+    <pre id="content" class="source-code">
+using CityDiscoverTourist.Data.Models;
+using Microsoft.EntityFrameworkCore;
+
+namespace CityDiscoverTourist.API.Config;
+
+public static class ConfigDatabase
+{
+    public static void SetupDatabase(this IServiceCollection services, IConfiguration configuration)
+    {
+        services.AddDbContext&lt;ApplicationDbContext&gt;(options =&gt;
+            options.UseSqlServer(configuration.GetConnectionString(&quot;DefaultConnection&quot;) ?? string.Empty, o =&gt;
+                o.EnableRetryOnFailure()));
+    }
+}
+    </pre>
+    <script type="text/javascript">
+      highlightRanges([[9,5,9,6,0],[10,9,11,13,0],[11,13,12,17,0],[12,17,12,41,0],[12,41,12,42,0],[12,42,12,44,0],[13,5,13,6,0]]);
+    </script>
+  </body>
+</html>

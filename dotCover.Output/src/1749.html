@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <title>D:\C#\CityDiscoverTourist\CityDiscoverTourist.Data\Migrations\20220410090036_CreateEntity2.cs</title>
+    <script type="text/javascript" src="../js/dotcover.sourceview.js"></script>
+    <link rel="stylesheet" type="text/css" href="../css/dotcover.report.css" />
+  </head>
+  <body>
+    <pre id="content" class="source-code">
+using System;
+using Microsoft.EntityFrameworkCore.Migrations;
+
+#nullable disable
+
+namespace CityDiscoverTourist.Data.Migrations
+{
+    public partial class CreateEntity2 : Migration
+    {
+        protected override void Up(MigrationBuilder migrationBuilder)
+        {
+            migrationBuilder.DropForeignKey(
+                name: &quot;FK_FeedBack_Quests_QuestId&quot;,
+                table: &quot;FeedBack&quot;);
+
+            migrationBuilder.DropForeignKey(
+                name: &quot;FK_Suggestion_Tasks_TaskId&quot;,
+                table: &quot;Suggestion&quot;);
+
+            migrationBuilder.DropPrimaryKey(
+                name: &quot;PK_Suggestion&quot;,
+                table: &quot;Suggestion&quot;);
+
+            migrationBuilder.DropPrimaryKey(
+                name: &quot;PK_FeedBack&quot;,
+                table: &quot;FeedBack&quot;);
+
+            migrationBuilder.RenameTable(
+                name: &quot;Suggestion&quot;,
+                newName: &quot;Suggestions&quot;);
+
+            migrationBuilder.RenameTable(
+                name: &quot;FeedBack&quot;,
+                newName: &quot;FeedBacks&quot;);
+
+            migrationBuilder.RenameIndex(
+                name: &quot;IX_Suggestion_TaskId&quot;,
+                table: &quot;Suggestions&quot;,
+                newName: &quot;IX_Suggestions_TaskId&quot;);
+
+            migrationBuilder.RenameIndex(
+                name: &quot;IX_FeedBack_QuestId&quot;,
+                table: &quot;FeedBacks&quot;,
+                newName: &quot;IX_FeedBacks_QuestId&quot;);
+
+            migrationBuilder.AddPrimaryKey(
+                name: &quot;PK_Suggestions&quot;,
+                table: &quot;Suggestions&quot;,
+                column: &quot;Id&quot;);
+
+            migrationBuilder.AddPrimaryKey(
+                name: &quot;PK_FeedBacks&quot;,
+                table: &quot;FeedBacks&quot;,
+                column: &quot;Id&quot;);
+
+            migrationBuilder.CreateTable(
+                name: &quot;ActivityLogs&quot;,
+                columns: table =&gt; new
+                {
+                    Id = table.Column&lt;int&gt;(type: &quot;int&quot;, nullable: false)
+                        .Annotation(&quot;SqlServer:Identity&quot;, &quot;1, 1&quot;),
+                    UserId1 = table.Column&lt;string&gt;(type: &quot;nvarchar(450)&quot;, nullable: true),
+                    UserId = table.Column&lt;Guid&gt;(type: &quot;uniqueidentifier&quot;, nullable: false),
+                    Action = table.Column&lt;string&gt;(type: &quot;nvarchar(max)&quot;, nullable: true),
+                    Controller = table.Column&lt;string&gt;(type: &quot;nvarchar(max)&quot;, nullable: true),
+                    Description = table.Column&lt;string&gt;(type: &quot;nvarchar(max)&quot;, nullable: true),
+                    IPAddress = table.Column&lt;string&gt;(type: &quot;nvarchar(max)&quot;, nullable: true),
+                    CreatedDate = table.Column&lt;DateTime&gt;(type: &quot;datetime2&quot;, nullable: false)
+                },
+                constraints: table =&gt;
+                {
+                    table.PrimaryKey(&quot;PK_ActivityLogs&quot;, x =&gt; x.Id);
+                    table.ForeignKey(
+                        name: &quot;FK_ActivityLogs_AspNetUsers_UserId1&quot;,
+                        column: x =&gt; x.UserId1,
+                        principalTable: &quot;AspNetUsers&quot;,
+                        principalColumn: &quot;Id&quot;);
+                });
+
+            migrationBuilder.CreateTable(
+                name: &quot;Answers&quot;,
+                columns: table =&gt; new
+                {
+                    Id = table.Column&lt;int&gt;(type: &quot;int&quot;, nullable: false)
+                        .Annotation(&quot;SqlServer:Identity&quot;, &quot;1, 1&quot;),
+                    RightAnswer = table.Column&lt;string&gt;(type: &quot;nvarchar(max)&quot;, nullable: true),
+                    Status = table.Column&lt;string&gt;(type: &quot;nvarchar(max)&quot;, nullable: true),
+                    TaskId = table.Column&lt;int&gt;(type: &quot;int&quot;, nullable: false)
+                },
+                constraints: table =&gt;
+                {
+                    table.PrimaryKey(&quot;PK_Answers&quot;, x =&gt; x.Id);
+                    table.ForeignKey(
+                        name: &quot;FK_Answers_Tasks_TaskId&quot;,
+                        column: x =&gt; x.TaskId,
+                        principalTable: &quot;Tasks&quot;,
+                        principalColumn: &quot;Id&quot;,
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateIndex(
+                name: &quot;IX_ActivityLogs_UserId1&quot;,
+                table: &quot;ActivityLogs&quot;,
+                column: &quot;UserId1&quot;);
+
+            migrationBuilder.CreateIndex(
+                name: &quot;IX_Answers_TaskId&quot;,
+                table: &quot;Answers&quot;,
+                column: &quot;TaskId&quot;);
+
+            migrationBuilder.AddForeignKey(
+                name: &quot;FK_FeedBacks_Quests_QuestId&quot;,
+                table: &quot;FeedBacks&quot;,
+                column: &quot;QuestId&quot;,
+                principalTable: &quot;Quests&quot;,
+                principalColumn: &quot;Id&quot;);
+
+            migrationBuilder.AddForeignKey(
+                name: &quot;FK_Suggestions_Tasks_TaskId&quot;,
+                table: &quot;Suggestions&quot;,
+                column: &quot;TaskId&quot;,
+                principalTable: &quot;Tasks&quot;,
+                principalColumn: &quot;Id&quot;,
+                onDelete: ReferentialAction.Cascade);
+        }
+
+        protected override void Down(MigrationBuilder migrationBuilder)
+        {
+            migrationBuilder.DropForeignKey(
+                name: &quot;FK_FeedBacks_Quests_QuestId&quot;,
+                table: &quot;FeedBacks&quot;);
+
+            migrationBuilder.DropForeignKey(
+                name: &quot;FK_Suggestions_Tasks_TaskId&quot;,
+                table: &quot;Suggestions&quot;);
+
+            migrationBuilder.DropTable(
+                name: &quot;ActivityLogs&quot;);
+
+            migrationBuilder.DropTable(
+                name: &quot;Answers&quot;);
+
+            migrationBuilder.DropPrimaryKey(
+                name: &quot;PK_Suggestions&quot;,
+                table: &quot;Suggestions&quot;);
+
+            migrationBuilder.DropPrimaryKey(
+                name: &quot;PK_FeedBacks&quot;,
+                table: &quot;FeedBacks&quot;);
+
+            migrationBuilder.RenameTable(
+                name: &quot;Suggestions&quot;,
+                newName: &quot;Suggestion&quot;);
+
+            migrationBuilder.RenameTable(
+                name: &quot;FeedBacks&quot;,
+                newName: &quot;FeedBack&quot;);
+
+            migrationBuilder.RenameIndex(
+                name: &quot;IX_Suggestions_TaskId&quot;,
+                table: &quot;Suggestion&quot;,
+                newName: &quot;IX_Suggestion_TaskId&quot;);
+
+            migrationBuilder.RenameIndex(
+                name: &quot;IX_FeedBacks_QuestId&quot;,
+                table: &quot;FeedBack&quot;,
+                newName: &quot;IX_FeedBack_QuestId&quot;);
+
+            migrationBuilder.AddPrimaryKey(
+                name: &quot;PK_Suggestion&quot;,
+                table: &quot;Suggestion&quot;,
+                column: &quot;Id&quot;);
+
+            migrationBuilder.AddPrimaryKey(
+                name: &quot;PK_FeedBack&quot;,
+                table: &quot;FeedBack&quot;,
+                column: &quot;Id&quot;);
+
+            migrationBuilder.AddForeignKey(
+                name: &quot;FK_FeedBack_Quests_QuestId&quot;,
+                table: &quot;FeedBack&quot;,
+                column: &quot;QuestId&quot;,
+                principalTable: &quot;Quests&quot;,
+                principalColumn: &quot;Id&quot;);
+
+            migrationBuilder.AddForeignKey(
+                name: &quot;FK_Suggestion_Tasks_TaskId&quot;,
+                table: &quot;Suggestion&quot;,
+                column: &quot;TaskId&quot;,
+                principalTable: &quot;Tasks&quot;,
+                principalColumn: &quot;Id&quot;,
+                onDelete: ReferentialAction.Cascade);
+        }
+    }
+}
+
+    </pre>
+    <script type="text/javascript">
+      highlightRanges([[11,9,11,10,0],[12,13,14,36,0],[16,13,18,38,0],[20,13,22,38,0],[24,13,26,36,0],[28,13,30,41,0],[32,13,34,39,0],[36,13,39,51,0],[41,13,44,50,0],[46,13,49,31,0],[51,13,54,31,0],[56,13,58,35,0],[58,35,69,18,0],[69,18,71,17,0],[71,17,71,18,0],[71,18,72,21,0],[72,21,72,68,0],[72,68,73,21,0],[73,21,77,48,0],[77,48,78,17,0],[78,17,78,18,0],[78,18,78,20,0],[80,13,82,35,0],[82,35,89,18,0],[89,18,91,17,0],[91,17,91,18,0],[91,18,92,21,0],[92,21,92,63,0],[92,63,93,21,0],[93,21,98,62,0],[98,62,99,17,0],[99,17,99,18,0],[99,18,99,20,0],[101,13,104,36,0],[106,13,109,35,0],[111,13,116,40,0],[118,13,124,54,0],[125,9,125,10,0],[128,9,128,10,0],[129,13,131,37,0],[133,13,135,39,0],[137,13,138,39,0],[140,13,141,34,0],[143,13,145,39,0],[147,13,149,37,0],[151,13,153,40,0],[155,13,157,38,0],[159,13,162,50,0],[164,13,167,49,0],[169,13,172,31,0],[174,13,177,31,0],[179,13,184,40,0],[186,13,192,54,0],[193,9,193,10,0]]);
+    </script>
+  </body>
+</html>

@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <title>D:\C#\CityDiscoverTourist\CityDiscoverTourist.Data\Models\Location.cs</title>
+    <script type="text/javascript" src="../js/dotcover.sourceview.js"></script>
+    <link rel="stylesheet" type="text/css" href="../css/dotcover.report.css" />
+  </head>
+  <body>
+    <pre id="content" class="source-code">
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+
+namespace CityDiscoverTourist.Data.Models;
+
+public class Location: BaseEntity
+{
+    public string? Name { get; set; }
+    public string? Description { get; set; }
+    public string? Longitude { get; set; }
+    public string? Latitude { get; set; }
+    public string? Address { get; set; }
+    public string? Status { get; set; }
+
+    public List&lt;Quest&gt;? Quests { get; set; }
+}
+    </pre>
+    <script type="text/javascript">
+      highlightRanges([[8,27,8,31,0],[8,32,8,36,0],[9,34,9,38,0],[9,39,9,43,0],[10,32,10,36,0],[10,37,10,41,0],[11,31,11,35,0],[11,36,11,40,0],[12,30,12,34,0],[12,35,12,39,0],[13,29,13,33,0],[13,34,13,38,0],[15,34,15,38,0],[15,39,15,43,0]]);
+    </script>
+  </body>
+</html>

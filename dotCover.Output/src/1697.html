@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <title>D:\C#\CityDiscoverTourist\CityDiscoverTourist.Business\Helper\SortHelper.cs</title>
+    <script type="text/javascript" src="../js/dotcover.sourceview.js"></script>
+    <link rel="stylesheet" type="text/css" href="../css/dotcover.report.css" />
+  </head>
+  <body>
+    <pre id="content" class="source-code">
+using System.Reflection;
+using System.Text;
+using System.Linq.Dynamic;
+
+namespace CityDiscoverTourist.Business.Helper
+{
+    public class SortHelper&lt;T&gt; : ISortHelper&lt;T&gt;
+    {
+        public IQueryable&lt;T&gt; ApplySort(IQueryable&lt;T&gt; entities, string? orderByQueryString)
+        {
+            if (!entities.Any())
+                return entities;
+            if (string.IsNullOrWhiteSpace(orderByQueryString))
+            {
+                return entities;
+            }
+            var orderParams = orderByQueryString.Trim().Split(&#39;,&#39;);
+            var propertyInfos = typeof(T).GetProperties(BindingFlags.Public | BindingFlags.Instance);
+            var orderQueryBuilder = new StringBuilder();
+            foreach (var param in orderParams)
+            {
+                if (string.IsNullOrWhiteSpace(param))
+                    continue;
+                var propertyFromQueryName = param.Split(&quot; &quot;)[0];
+                var objectProperty = propertyInfos.FirstOrDefault(pi =&gt; pi.Name.Equals(propertyFromQueryName, StringComparison.InvariantCultureIgnoreCase));
+                if (objectProperty == null)
+                    continue;
+                var sortingOrder = param.EndsWith(&quot; desc&quot;) ? &quot;descending&quot; : &quot;ascending&quot;;
+                orderQueryBuilder.Append($&quot;{objectProperty.Name.ToString()} {sortingOrder}, &quot;);
+            }
+            var orderQuery = orderQueryBuilder.ToString().TrimEnd(&#39;,&#39;, &#39; &#39;);
+            return entities.OrderBy(orderQuery);
+        }
+    }
+}
+    </pre>
+    <script type="text/javascript">
+      highlightRanges([[10,9,10,10,0],[11,13,11,33,0],[12,17,12,33,0],[13,13,13,63,0],[14,13,14,14,0],[15,17,15,33,0],[17,13,17,68,0],[18,13,18,102,0],[19,13,19,57,0],[20,13,20,20,0],[20,22,20,31,0],[20,32,20,34,0],[20,35,20,46,0],[21,13,21,14,0],[22,17,22,54,0],[23,21,23,30,0],[24,17,24,65,0],[25,17,25,73,0],[25,73,25,155,0],[25,155,25,157,0],[26,17,26,44,0],[27,21,27,30,0],[28,17,28,89,0],[29,17,29,96,0],[30,13,30,14,0],[31,13,31,77,0],[32,13,32,49,0],[33,9,33,10,0]]);
+    </script>
+  </body>
+</html>

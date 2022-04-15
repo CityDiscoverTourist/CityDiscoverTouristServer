@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <title>D:\C#\CityDiscoverTourist\CityDiscoverTourist.Test\QuestControllerTest.cs</title>
+    <script type="text/javascript" src="../js/dotcover.sourceview.js"></script>
+    <link rel="stylesheet" type="text/css" href="../css/dotcover.report.css" />
+  </head>
+  <body>
+    <pre id="content" class="source-code">
+using System;
+using AutoMapper;
+using CityDiscoverTourist.API.Controllers;
+using CityDiscoverTourist.Business.Data.RequestModel;
+using CityDiscoverTourist.Business.Data.ResponseModel;
+using CityDiscoverTourist.Business.Helper.Params;
+using CityDiscoverTourist.Business.IServices;
+using Moq;
+using Xunit;
+
+namespace CityDiscoverTourist.Test;
+
+public class QuestControllerTest
+{
+    [Fact]
+    public void Test1()
+    {
+        var questService = new Mock&lt;IQuestService&gt;();
+        questService.Setup(x =&gt; x.CreateAsync(It.IsAny&lt;QuestRequestModel&gt;()))
+            .ReturnsAsync((QuestRequestModel request) =&gt; new QuestResponseModel()
+            {
+                Id = Guid.Empty,
+                Name = request.Name,
+                Description = request.Description,
+                Price = request.Price,
+                Status = &quot;Pending&quot;,
+                AvailableTime = DateTime.Now,
+                EstimateTime = &quot;120&quot;,
+                QuestTypeId = 1
+            });
+        var mapperMock = new Mock&lt;IMapper&gt;();
+
+        var controller = new QuestController(questService.Object, mapperMock.Object);
+
+        var result = controller.Post(new QuestRequestModel()
+        {
+            Name = &quot;Test&quot;,
+            Description = &quot;Test&quot;,
+            Price = 100,
+            Status = &quot;Pending&quot;,
+            AvailableTime = DateTime.Now,
+            EstimateTime = &quot;120&quot;,
+            QuestTypeId = 1
+        });
+
+        Assert.Equal(&quot;Test&quot;, result.Result.Data.Description);
+    }
+
+    [Fact]
+    public void Test2()
+    {
+        var questService = new Mock&lt;IQuestService&gt;();
+        questService.Setup(x =&gt; x.Get(It.IsAny&lt;Guid&gt;(), It.IsAny&lt;string&gt;()))
+            .ReturnsAsync(new QuestResponseModel()
+            {
+                Id = Guid.Empty,
+                Name = &quot;Test&quot;,
+                Description = &quot;TestDescription&quot;,
+                Price = 100,
+                Status = &quot;Pending&quot;,
+                AvailableTime = DateTime.Now,
+                EstimateTime = &quot;120&quot;,
+                QuestTypeId = 1
+            });
+
+        var mapperMock = new Mock&lt;IMapper&gt;();
+
+        var controller = new QuestController(questService.Object, mapperMock.Object);
+
+        var result = controller.Get(Guid.Empty, &quot;&quot;);
+
+        Assert.Equal(&quot;TestDescription&quot;, result.Result.Data.Description);
+    }
+}
+    </pre>
+    <script type="text/javascript">
+      highlightRanges([[17,5,17,6,1],[18,9,18,54,1],[19,9,20,58,1],[20,58,30,14,1],[30,14,30,16,1],[31,9,31,46,1],[33,9,33,86,1],[35,9,44,12,1],[46,9,46,62,1],[47,5,47,6,1],[51,5,51,6,1],[52,9,52,54,1],[53,9,64,16,1],[66,9,66,46,1],[68,9,68,86,1],[70,9,70,53,1],[72,9,72,73,1],[73,5,73,6,1]]);
+    </script>
+  </body>
+</html>

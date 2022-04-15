@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <title>D:\C#\CityDiscoverTourist\CityDiscoverTourist.Data\Migrations\20220411085437_correctTypo.cs</title>
+    <script type="text/javascript" src="../js/dotcover.sourceview.js"></script>
+    <link rel="stylesheet" type="text/css" href="../css/dotcover.report.css" />
+  </head>
+  <body>
+    <pre id="content" class="source-code">
+using System;
+using Microsoft.EntityFrameworkCore.Migrations;
+
+#nullable disable
+
+namespace CityDiscoverTourist.Data.Migrations
+{
+    public partial class correctTypo : Migration
+    {
+        protected override void Up(MigrationBuilder migrationBuilder)
+        {
+            migrationBuilder.AlterColumn&lt;DateTime&gt;(
+                name: &quot;CreatedDate&quot;,
+                table: &quot;Quests&quot;,
+                type: &quot;datetime2&quot;,
+                nullable: true,
+                oldClrType: typeof(DateTime),
+                oldType: &quot;datetime2&quot;);
+        }
+
+        protected override void Down(MigrationBuilder migrationBuilder)
+        {
+            migrationBuilder.AlterColumn&lt;DateTime&gt;(
+                name: &quot;CreatedDate&quot;,
+                table: &quot;Quests&quot;,
+                type: &quot;datetime2&quot;,
+                nullable: false,
+                defaultValue: new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                oldClrType: typeof(DateTime),
+                oldType: &quot;datetime2&quot;,
+                oldNullable: true);
+        }
+    }
+}
+
+    </pre>
+    <script type="text/javascript">
+      highlightRanges([[11,9,11,10,0],[12,13,18,39,0],[19,9,19,10,0],[22,9,22,10,0],[23,13,31,36,0],[32,9,32,10,0]]);
+    </script>
+  </body>
+</html>

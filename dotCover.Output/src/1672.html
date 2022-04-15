@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <title>D:\C#\CityDiscoverTourist\CityDiscoverTourist.API\Program.cs</title>
+    <script type="text/javascript" src="../js/dotcover.sourceview.js"></script>
+    <link rel="stylesheet" type="text/css" href="../css/dotcover.report.css" />
+  </head>
+  <body>
+    <pre id="content" class="source-code">
+using CityDiscoverTourist.API.Config;
+using CityDiscoverTourist.Business.Data;
+
+var builder = WebApplication.CreateBuilder(args);
+
+// Add services to the container.
+builder.Services.SetupDatabase(builder.Configuration);
+builder.Services.SetupFirebaseAuth(builder.Configuration);
+builder.Services.SetupRepositories();
+builder.Services.SetupHelper();
+builder.Services.SetupServices();
+builder.Services.SetupSwagger(builder.Configuration);
+
+builder.Services.AddAutoMapper(typeof(AutoMapperProfile).Assembly);
+
+var app = builder.Build();
+
+// Configure the HTTP request pipeline.
+if (app.Environment.IsDevelopment())
+{
+    app.UseSwagger();
+    app.UseSwaggerUI();
+}
+
+app.UseHttpsRedirection();
+
+app.UseAuthorization();
+
+app.MapControllers();
+
+app.Run();
+    </pre>
+    <script type="text/javascript">
+      highlightRanges([[4,1,4,50,0],[7,1,7,55,0],[8,1,8,59,0],[9,1,9,38,0],[10,1,10,32,0],[11,1,11,34,0],[12,1,12,54,0],[14,1,14,68,0],[16,1,16,27,0],[19,1,19,37,0],[20,1,20,2,0],[21,5,21,22,0],[22,5,22,24,0],[23,1,23,2,0],[25,1,25,27,0],[27,1,27,24,0],[29,1,29,22,0],[31,1,31,11,0]]);
+    </script>
+  </body>
+</html>

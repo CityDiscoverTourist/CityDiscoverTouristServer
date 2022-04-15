@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <title>D:\C#\CityDiscoverTourist\CityDiscoverTourist.Data\Migrations\20220410093141_CreateEntity3.cs</title>
+    <script type="text/javascript" src="../js/dotcover.sourceview.js"></script>
+    <link rel="stylesheet" type="text/css" href="../css/dotcover.report.css" />
+  </head>
+  <body>
+    <pre id="content" class="source-code">
+using System;
+using Microsoft.EntityFrameworkCore.Migrations;
+
+#nullable disable
+
+namespace CityDiscoverTourist.Data.Migrations
+{
+    public partial class CreateEntity3 : Migration
+    {
+        protected override void Up(MigrationBuilder migrationBuilder)
+        {
+            migrationBuilder.DropForeignKey(
+                name: &quot;FK_ActivityLogs_AspNetUsers_UserId1&quot;,
+                table: &quot;ActivityLogs&quot;);
+
+            migrationBuilder.DropIndex(
+                name: &quot;IX_Answers_TaskId&quot;,
+                table: &quot;Answers&quot;);
+
+            migrationBuilder.RenameColumn(
+                name: &quot;IPAddress&quot;,
+                table: &quot;ActivityLogs&quot;,
+                newName: &quot;IpAddress&quot;);
+
+            migrationBuilder.RenameColumn(
+                name: &quot;UserId1&quot;,
+                table: &quot;ActivityLogs&quot;,
+                newName: &quot;CustomerId&quot;);
+
+            migrationBuilder.RenameIndex(
+                name: &quot;IX_ActivityLogs_UserId1&quot;,
+                table: &quot;ActivityLogs&quot;,
+                newName: &quot;IX_ActivityLogs_CustomerId&quot;);
+
+            migrationBuilder.AlterColumn&lt;string&gt;(
+                name: &quot;CustomerId&quot;,
+                table: &quot;FeedBacks&quot;,
+                type: &quot;nvarchar(450)&quot;,
+                nullable: true,
+                oldClrType: typeof(int),
+                oldType: &quot;int&quot;);
+
+            migrationBuilder.AlterColumn&lt;string&gt;(
+                name: &quot;UserId&quot;,
+                table: &quot;ActivityLogs&quot;,
+                type: &quot;nvarchar(max)&quot;,
+                nullable: true,
+                oldClrType: typeof(Guid),
+                oldType: &quot;uniqueidentifier&quot;);
+
+            migrationBuilder.CreateTable(
+                name: &quot;Experiences&quot;,
+                columns: table =&gt; new
+                {
+                    Id = table.Column&lt;int&gt;(type: &quot;int&quot;, nullable: false)
+                        .Annotation(&quot;SqlServer:Identity&quot;, &quot;1, 1&quot;),
+                    TotalScore = table.Column&lt;int&gt;(type: &quot;int&quot;, nullable: false),
+                    CustomerId = table.Column&lt;string&gt;(type: &quot;nvarchar(450)&quot;, nullable: true),
+                    Status = table.Column&lt;string&gt;(type: &quot;nvarchar(max)&quot;, nullable: true)
+                },
+                constraints: table =&gt;
+                {
+                    table.PrimaryKey(&quot;PK_Experiences&quot;, x =&gt; x.Id);
+                    table.ForeignKey(
+                        name: &quot;FK_Experiences_AspNetUsers_CustomerId&quot;,
+                        column: x =&gt; x.CustomerId,
+                        principalTable: &quot;AspNetUsers&quot;,
+                        principalColumn: &quot;Id&quot;);
+                });
+
+            migrationBuilder.CreateTable(
+                name: &quot;Locations&quot;,
+                columns: table =&gt; new
+                {
+                    Id = table.Column&lt;int&gt;(type: &quot;int&quot;, nullable: false)
+                        .Annotation(&quot;SqlServer:Identity&quot;, &quot;1, 1&quot;),
+                    Name = table.Column&lt;string&gt;(type: &quot;nvarchar(max)&quot;, nullable: true),
+                    Description = table.Column&lt;string&gt;(type: &quot;nvarchar(max)&quot;, nullable: true),
+                    Longitude = table.Column&lt;string&gt;(type: &quot;nvarchar(max)&quot;, nullable: true),
+                    Latitude = table.Column&lt;string&gt;(type: &quot;nvarchar(max)&quot;, nullable: true),
+                    Address = table.Column&lt;string&gt;(type: &quot;nvarchar(max)&quot;, nullable: true),
+                    Status = table.Column&lt;string&gt;(type: &quot;nvarchar(max)&quot;, nullable: true)
+                },
+                constraints: table =&gt;
+                {
+                    table.PrimaryKey(&quot;PK_Locations&quot;, x =&gt; x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: &quot;Orders&quot;,
+                columns: table =&gt; new
+                {
+                    Id = table.Column&lt;int&gt;(type: &quot;int&quot;, nullable: false)
+                        .Annotation(&quot;SqlServer:Identity&quot;, &quot;1, 1&quot;),
+                    Price = table.Column&lt;float&gt;(type: &quot;real&quot;, nullable: false),
+                    DiscountPrice = table.Column&lt;int&gt;(type: &quot;int&quot;, nullable: false),
+                    OrderDetailId = table.Column&lt;int&gt;(type: &quot;int&quot;, nullable: false),
+                    OrderDate = table.Column&lt;DateTime&gt;(type: &quot;datetime2&quot;, nullable: false),
+                    CustomerId = table.Column&lt;string&gt;(type: &quot;nvarchar(450)&quot;, nullable: true),
+                    Status = table.Column&lt;string&gt;(type: &quot;nvarchar(max)&quot;, nullable: true)
+                },
+                constraints: table =&gt;
+                {
+                    table.PrimaryKey(&quot;PK_Orders&quot;, x =&gt; x.Id);
+                    table.ForeignKey(
+                        name: &quot;FK_Orders_AspNetUsers_CustomerId&quot;,
+                        column: x =&gt; x.CustomerId,
+                        principalTable: &quot;AspNetUsers&quot;,
+                        principalColumn: &quot;Id&quot;);
+                });
+
+            migrationBuilder.CreateTable(
+                name: &quot;Rewards&quot;,
+                columns: table =&gt; new
+                {
+                    Id = table.Column&lt;int&gt;(type: &quot;int&quot;, nullable: false)
+                        .Annotation(&quot;SqlServer:Identity&quot;, &quot;1, 1&quot;),
+                    Name = table.Column&lt;string&gt;(type: &quot;nvarchar(max)&quot;, nullable: true),
+                    ExpiredDate = table.Column&lt;DateTime&gt;(type: &quot;datetime2&quot;, nullable: true),
+                    RecievedDate = table.Column&lt;DateTime&gt;(type: &quot;datetime2&quot;, nullable: false),
+                    CustomerId = table.Column&lt;string&gt;(type: &quot;nvarchar(450)&quot;, nullable: true),
+                    Status = table.Column&lt;string&gt;(type: &quot;nvarchar(max)&quot;, nullable: true)
+                },
+                constraints: table =&gt;
+                {
+                    table.PrimaryKey(&quot;PK_Rewards&quot;, x =&gt; x.Id);
+                    table.ForeignKey(
+                        name: &quot;FK_Rewards_AspNetUsers_CustomerId&quot;,
+                        column: x =&gt; x.CustomerId,
+                        principalTable: &quot;AspNetUsers&quot;,
+                        principalColumn: &quot;Id&quot;);
+                });
+
+            migrationBuilder.CreateTable(
+                name: &quot;LocationQuest&quot;,
+                columns: table =&gt; new
+                {
+                    LocationsId = table.Column&lt;int&gt;(type: &quot;int&quot;, nullable: false),
+                    QuestsId = table.Column&lt;Guid&gt;(type: &quot;uniqueidentifier&quot;, nullable: false)
+                },
+                constraints: table =&gt;
+                {
+                    table.PrimaryKey(&quot;PK_LocationQuest&quot;, x =&gt; new { x.LocationsId, x.QuestsId });
+                    table.ForeignKey(
+                        name: &quot;FK_LocationQuest_Locations_LocationsId&quot;,
+                        column: x =&gt; x.LocationsId,
+                        principalTable: &quot;Locations&quot;,
+                        principalColumn: &quot;Id&quot;,
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: &quot;FK_LocationQuest_Quests_QuestsId&quot;,
+                        column: x =&gt; x.QuestsId,
+                        principalTable: &quot;Quests&quot;,
+                        principalColumn: &quot;Id&quot;,
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: &quot;OrderDetails&quot;,
+                columns: table =&gt; new
+                {
+                    Id = table.Column&lt;int&gt;(type: &quot;int&quot;, nullable: false)
+                        .Annotation(&quot;SqlServer:Identity&quot;, &quot;1, 1&quot;),
+                    Quantity = table.Column&lt;int&gt;(type: &quot;int&quot;, nullable: false),
+                    PaymentMethod = table.Column&lt;string&gt;(type: &quot;nvarchar(max)&quot;, nullable: true),
+                    DiscountPercent = table.Column&lt;string&gt;(type: &quot;nvarchar(max)&quot;, nullable: true),
+                    Status = table.Column&lt;string&gt;(type: &quot;nvarchar(max)&quot;, nullable: true),
+                    OrderId = table.Column&lt;int&gt;(type: &quot;int&quot;, nullable: false)
+                },
+                constraints: table =&gt;
+                {
+                    table.PrimaryKey(&quot;PK_OrderDetails&quot;, x =&gt; x.Id);
+                    table.ForeignKey(
+                        name: &quot;FK_OrderDetails_Orders_OrderId&quot;,
+                        column: x =&gt; x.OrderId,
+                        principalTable: &quot;Orders&quot;,
+                        principalColumn: &quot;Id&quot;,
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateIndex(
+                name: &quot;IX_FeedBacks_CustomerId&quot;,
+                table: &quot;FeedBacks&quot;,
+                column: &quot;CustomerId&quot;);
+
+            migrationBuilder.CreateIndex(
+                name: &quot;IX_Answers_TaskId&quot;,
+                table: &quot;Answers&quot;,
+                column: &quot;TaskId&quot;,
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: &quot;IX_Experiences_CustomerId&quot;,
+                table: &quot;Experiences&quot;,
+                column: &quot;CustomerId&quot;,
+                unique: true,
+                filter: &quot;[CustomerId] IS NOT NULL&quot;);
+
+            migrationBuilder.CreateIndex(
+                name: &quot;IX_LocationQuest_QuestsId&quot;,
+                table: &quot;LocationQuest&quot;,
+                column: &quot;QuestsId&quot;);
+
+            migrationBuilder.CreateIndex(
+                name: &quot;IX_OrderDetails_OrderId&quot;,
+                table: &quot;OrderDetails&quot;,
+                column: &quot;OrderId&quot;);
+
+            migrationBuilder.CreateIndex(
+                name: &quot;IX_Orders_CustomerId&quot;,
+                table: &quot;Orders&quot;,
+                column: &quot;CustomerId&quot;);
+
+            migrationBuilder.CreateIndex(
+                name: &quot;IX_Rewards_CustomerId&quot;,
+                table: &quot;Rewards&quot;,
+                column: &quot;CustomerId&quot;);
+
+            migrationBuilder.AddForeignKey(
+                name: &quot;FK_ActivityLogs_AspNetUsers_CustomerId&quot;,
+                table: &quot;ActivityLogs&quot;,
+                column: &quot;CustomerId&quot;,
+                principalTable: &quot;AspNetUsers&quot;,
+                principalColumn: &quot;Id&quot;);
+
+            migrationBuilder.AddForeignKey(
+                name: &quot;FK_FeedBacks_AspNetUsers_CustomerId&quot;,
+                table: &quot;FeedBacks&quot;,
+                column: &quot;CustomerId&quot;,
+                principalTable: &quot;AspNetUsers&quot;,
+                principalColumn: &quot;Id&quot;);
+        }
+
+        protected override void Down(MigrationBuilder migrationBuilder)
+        {
+            migrationBuilder.DropForeignKey(
+                name: &quot;FK_ActivityLogs_AspNetUsers_CustomerId&quot;,
+                table: &quot;ActivityLogs&quot;);
+
+            migrationBuilder.DropForeignKey(
+                name: &quot;FK_FeedBacks_AspNetUsers_CustomerId&quot;,
+                table: &quot;FeedBacks&quot;);
+
+            migrationBuilder.DropTable(
+                name: &quot;Experiences&quot;);
+
+            migrationBuilder.DropTable(
+                name: &quot;LocationQuest&quot;);
+
+            migrationBuilder.DropTable(
+                name: &quot;OrderDetails&quot;);
+
+            migrationBuilder.DropTable(
+                name: &quot;Rewards&quot;);
+
+            migrationBuilder.DropTable(
+                name: &quot;Locations&quot;);
+
+            migrationBuilder.DropTable(
+                name: &quot;Orders&quot;);
+
+            migrationBuilder.DropIndex(
+                name: &quot;IX_FeedBacks_CustomerId&quot;,
+                table: &quot;FeedBacks&quot;);
+
+            migrationBuilder.DropIndex(
+                name: &quot;IX_Answers_TaskId&quot;,
+                table: &quot;Answers&quot;);
+
+            migrationBuilder.RenameColumn(
+                name: &quot;IpAddress&quot;,
+                table: &quot;ActivityLogs&quot;,
+                newName: &quot;IPAddress&quot;);
+
+            migrationBuilder.RenameColumn(
+                name: &quot;CustomerId&quot;,
+                table: &quot;ActivityLogs&quot;,
+                newName: &quot;UserId1&quot;);
+
+            migrationBuilder.RenameIndex(
+                name: &quot;IX_ActivityLogs_CustomerId&quot;,
+                table: &quot;ActivityLogs&quot;,
+                newName: &quot;IX_ActivityLogs_UserId1&quot;);
+
+            migrationBuilder.AlterColumn&lt;int&gt;(
+                name: &quot;CustomerId&quot;,
+                table: &quot;FeedBacks&quot;,
+                type: &quot;int&quot;,
+                nullable: false,
+                defaultValue: 0,
+                oldClrType: typeof(string),
+                oldType: &quot;nvarchar(450)&quot;,
+                oldNullable: true);
+
+            migrationBuilder.AlterColumn&lt;Guid&gt;(
+                name: &quot;UserId&quot;,
+                table: &quot;ActivityLogs&quot;,
+                type: &quot;uniqueidentifier&quot;,
+                nullable: false,
+                defaultValue: new Guid(&quot;00000000-0000-0000-0000-000000000000&quot;),
+                oldClrType: typeof(string),
+                oldType: &quot;nvarchar(max)&quot;,
+                oldNullable: true);
+
+            migrationBuilder.CreateIndex(
+                name: &quot;IX_Answers_TaskId&quot;,
+                table: &quot;Answers&quot;,
+                column: &quot;TaskId&quot;);
+
+            migrationBuilder.AddForeignKey(
+                name: &quot;FK_ActivityLogs_AspNetUsers_UserId1&quot;,
+                table: &quot;ActivityLogs&quot;,
+                column: &quot;UserId1&quot;,
+                principalTable: &quot;AspNetUsers&quot;,
+                principalColumn: &quot;Id&quot;);
+        }
+    }
+}
+
+    </pre>
+    <script type="text/javascript">
+      highlightRanges([[11,9,11,10,0],[12,13,14,40,0],[16,13,18,35,0],[20,13,23,39,0],[25,13,28,40,0],[30,13,33,56,0],[35,13,41,33,0],[43,13,49,46,0],[51,13,53,35,0],[53,35,60,18,0],[60,18,62,17,0],[62,17,62,18,0],[62,18,63,21,0],[63,21,63,67,0],[63,67,64,21,0],[64,21,68,48,0],[68,48,69,17,0],[69,17,69,18,0],[69,18,69,20,0],[71,13,73,35,0],[73,35,83,18,0],[83,18,85,17,0],[85,17,85,18,0],[85,18,86,21,0],[86,21,86,65,0],[86,65,87,17,0],[87,17,87,18,0],[87,18,87,20,0],[89,13,91,35,0],[91,35,101,18,0],[101,18,103,17,0],[103,17,103,18,0],[103,18,104,21,0],[104,21,104,62,0],[104,62,105,21,0],[105,21,109,48,0],[109,48,110,17,0],[110,17,110,18,0],[110,18,110,20,0],[112,13,114,35,0],[114,35,123,18,0],[123,18,125,17,0],[125,17,125,18,0],[125,18,126,21,0],[126,21,126,63,0],[126,63,127,21,0],[127,21,131,48,0],[131,48,132,17,0],[132,17,132,18,0],[132,18,132,20,0],[134,13,136,35,0],[136,35,140,18,0],[140,18,142,17,0],[142,17,142,18,0],[142,18,143,21,0],[143,21,143,98,0],[143,98,144,21,0],[144,21,149,62,0],[149,62,150,21,0],[150,21,155,62,0],[155,62,156,17,0],[156,17,156,18,0],[156,18,156,20,0],[158,13,160,35,0],[160,35,169,18,0],[169,18,171,17,0],[171,17,171,18,0],[171,18,172,21,0],[172,21,172,68,0],[172,68,173,21,0],[173,21,178,62,0],[178,62,179,17,0],[179,17,179,18,0],[179,18,179,20,0],[181,13,184,39,0],[186,13,190,31,0],[192,13,197,53,0],[199,13,202,37,0],[204,13,207,36,0],[209,13,212,39,0],[214,13,217,39,0],[219,13,224,40,0],[226,13,231,40,0],[232,9,232,10,0],[235,9,235,10,0],[236,13,238,40,0],[240,13,242,37,0],[244,13,245,38,0],[247,13,248,40,0],[250,13,251,39,0],[253,13,254,34,0],[256,13,257,36,0],[259,13,260,33,0],[262,13,264,37,0],[266,13,268,35,0],[270,13,273,39,0],[275,13,278,37,0],[280,13,283,53,0],[285,13,293,36,0],[295,13,303,36,0],[305,13,308,35,0],[310,13,315,40,0],[316,9,316,10,0]]);
+    </script>
+  </body>
+</html>

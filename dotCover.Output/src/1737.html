@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <title>D:\C#\CityDiscoverTourist\CityDiscoverTourist.Data\Migrations\20220406105839_Quest.cs</title>
+    <script type="text/javascript" src="../js/dotcover.sourceview.js"></script>
+    <link rel="stylesheet" type="text/css" href="../css/dotcover.report.css" />
+  </head>
+  <body>
+    <pre id="content" class="source-code">
+using System;
+using Microsoft.EntityFrameworkCore.Migrations;
+
+#nullable disable
+
+namespace CityDiscoverTourist.Data.Migrations
+{
+    public partial class Quest : Migration
+    {
+        protected override void Up(MigrationBuilder migrationBuilder)
+        {
+            migrationBuilder.CreateTable(
+                name: &quot;Quests&quot;,
+                columns: table =&gt; new
+                {
+                    Id = table.Column&lt;Guid&gt;(type: &quot;uniqueidentifier&quot;, nullable: false)
+                },
+                constraints: table =&gt;
+                {
+                    table.PrimaryKey(&quot;PK_Quests&quot;, x =&gt; x.Id);
+                });
+        }
+
+        protected override void Down(MigrationBuilder migrationBuilder)
+        {
+            migrationBuilder.DropTable(
+                name: &quot;Quests&quot;);
+        }
+    }
+}
+
+    </pre>
+    <script type="text/javascript">
+      highlightRanges([[11,9,11,10,0],[12,13,14,35,0],[14,35,17,18,0],[17,18,19,17,0],[19,17,19,18,0],[19,18,20,21,0],[20,21,20,62,0],[20,62,21,17,0],[21,17,21,18,0],[21,18,21,20,0],[22,9,22,10,0],[25,9,25,10,0],[26,13,27,33,0],[28,9,28,10,0]]);
+    </script>
+  </body>
+</html>

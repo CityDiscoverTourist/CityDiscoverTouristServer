@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <title>D:\C#\CityDiscoverTourist\CityDiscoverTourist.Data\Migrations\20220410094043_Contact1.cs</title>
+    <script type="text/javascript" src="../js/dotcover.sourceview.js"></script>
+    <link rel="stylesheet" type="text/css" href="../css/dotcover.report.css" />
+  </head>
+  <body>
+    <pre id="content" class="source-code">
+using Microsoft.EntityFrameworkCore.Migrations;
+
+#nullable disable
+
+namespace CityDiscoverTourist.Data.Migrations
+{
+    public partial class Contact1 : Migration
+    {
+        protected override void Up(MigrationBuilder migrationBuilder)
+        {
+            migrationBuilder.CreateTable(
+                name: &quot;Contacts&quot;,
+                columns: table =&gt; new
+                {
+                    Id = table.Column&lt;int&gt;(type: &quot;int&quot;, nullable: false)
+                        .Annotation(&quot;SqlServer:Identity&quot;, &quot;1, 1&quot;),
+                    Name = table.Column&lt;string&gt;(type: &quot;nvarchar(max)&quot;, nullable: true),
+                    UrlSocial = table.Column&lt;string&gt;(type: &quot;nvarchar(max)&quot;, nullable: true),
+                    Address = table.Column&lt;string&gt;(type: &quot;nvarchar(max)&quot;, nullable: true)
+                },
+                constraints: table =&gt;
+                {
+                    table.PrimaryKey(&quot;PK_Contacts&quot;, x =&gt; x.Id);
+                });
+        }
+
+        protected override void Down(MigrationBuilder migrationBuilder)
+        {
+            migrationBuilder.DropTable(
+                name: &quot;Contacts&quot;);
+        }
+    }
+}
+
+    </pre>
+    <script type="text/javascript">
+      highlightRanges([[10,9,10,10,0],[11,13,13,35,0],[13,35,20,18,0],[20,18,22,17,0],[22,17,22,18,0],[22,18,23,21,0],[23,21,23,64,0],[23,64,24,17,0],[24,17,24,18,0],[24,18,24,20,0],[25,9,25,10,0],[28,9,28,10,0],[29,13,30,35,0],[31,9,31,10,0]]);
+    </script>
+  </body>
+</html>

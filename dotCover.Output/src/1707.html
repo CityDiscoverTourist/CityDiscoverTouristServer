@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <title>D:\C#\CityDiscoverTourist\CityDiscoverTourist.Business\Data\ResponseModel\QuestResponseModel.cs</title>
+    <script type="text/javascript" src="../js/dotcover.sourceview.js"></script>
+    <link rel="stylesheet" type="text/css" href="../css/dotcover.report.css" />
+  </head>
+  <body>
+    <pre id="content" class="source-code">
+using CityDiscoverTourist.Business.Helper;
+
+namespace CityDiscoverTourist.Business.Data.ResponseModel;
+
+public class QuestResponseModel
+{
+    public Guid Id { get; set; }
+    public string? Name { get; set; }
+    public string? Description { get; set; }
+    public float Price { get; set; }
+    public string? EstimateTime { get; set; }
+    public DateTime? AvailableTime { get; set; } = null;
+
+    public DateTime? CreatedDate { get; set; }
+    public string? Status { get; set; }
+
+    public int QuestTypeId { get; set; }
+
+}
+    </pre>
+    <script type="text/javascript">
+      highlightRanges([[7,22,7,26,0],[7,27,7,31,1],[8,27,8,31,0],[8,32,8,36,1],[9,34,9,38,1],[9,39,9,43,1],[10,26,10,30,0],[10,31,10,35,1],[11,35,11,39,0],[11,40,11,44,1],[12,38,12,42,0],[12,43,12,47,1],[12,52,12,56,1],[14,36,14,40,0],[14,41,14,45,0],[15,29,15,33,0],[15,34,15,38,1],[17,30,17,34,0],[17,35,17,39,1]]);
+    </script>
+  </body>
+</html>

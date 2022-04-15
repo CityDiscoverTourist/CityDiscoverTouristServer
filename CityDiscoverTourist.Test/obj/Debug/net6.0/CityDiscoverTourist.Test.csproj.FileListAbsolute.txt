@@ -500,3 +500,7 @@ D:\C#\CityDiscoverTourist\CityDiscoverTourist.Test\obj\Debug\net6.0\CityDiscover
 D:\C#\CityDiscoverTourist\CityDiscoverTourist.Test\obj\Debug\net6.0\ref\CityDiscoverTourist.Test.dll
 D:\C#\CityDiscoverTourist\CityDiscoverTourist.Test\obj\Debug\net6.0\CityDiscoverTourist.Test.pdb
 D:\C#\CityDiscoverTourist\CityDiscoverTourist.Test\obj\Debug\net6.0\CityDiscoverTourist.Test.genruntimeconfig.cache
+D:\C#\CityDiscoverTourist\CityDiscoverTourist.Test\bin\Debug\net6.0\Microsoft.AspNetCore.Authentication.Facebook.dll
+D:\C#\CityDiscoverTourist\CityDiscoverTourist.Test\bin\Debug\net6.0\Microsoft.Build.dll
+D:\C#\CityDiscoverTourist\CityDiscoverTourist.Test\bin\Debug\net6.0\Microsoft.Build.Framework.dll
+D:\C#\CityDiscoverTourist\CityDiscoverTourist.Test\bin\Debug\net6.0\Microsoft.NET.StringTools.dll

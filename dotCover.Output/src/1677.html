@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <title>D:\C#\CityDiscoverTourist\CityDiscoverTourist.API\Controllers\QuestTypeController.cs</title>
+    <script type="text/javascript" src="../js/dotcover.sourceview.js"></script>
+    <link rel="stylesheet" type="text/css" href="../css/dotcover.report.css" />
+  </head>
+  <body>
+    <pre id="content" class="source-code">
+using CityDiscoverTourist.API.Response;
+using CityDiscoverTourist.Business.Data.RequestModel;
+using CityDiscoverTourist.Business.Data.ResponseModel;
+using CityDiscoverTourist.Business.Helper;
+using CityDiscoverTourist.Business.Helper.Params;
+using CityDiscoverTourist.Business.IServices;
+using CityDiscoverTourist.Data.Models;
+using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
+
+namespace CityDiscoverTourist.API.Controllers;
+
+[Route(&quot;api/v{version:apiVersion}/[controller]s&quot;)]
+[ApiVersion(&quot;1.0&quot;)]
+[ApiController]
+public class QuestTypeController : ControllerBase
+{
+    private readonly IQuestTypeService _questTypeService;
+
+    public QuestTypeController(IQuestTypeService questTypeService)
+    {
+        _questTypeService = questTypeService;
+    }
+
+    [HttpGet]
+    //[Cached(600)]
+    public ApiResponse&lt;PageList&lt;Entity&gt;&gt; GetTutorRequest([FromQuery] QuestTypeParams param)
+    {
+        var entity = _questTypeService.GetAll(param);
+
+        var metadata = new
+        {
+            entity.TotalCount,
+            entity.TotalPages,
+            entity.PageSize,
+            entity.CurrentPage,
+            entity.HasNext,
+            entity.HasPrevious,
+        };
+        Response.Headers.Add(&quot;X-Pagination&quot;, JsonConvert.SerializeObject(metadata));
+
+        return ApiResponse&lt;List&lt;Entity&gt;&gt;.Ok2(entity, metadata);
+    }
+
+    [HttpGet(&quot;{id:int}&quot;)]
+    //[Cached(600)]
+
+    public async Task&lt;ApiResponse&lt;QuestTypeResponseModel&gt;&gt; Get(int id, string? fields)
+    {
+        var entity = await _questTypeService.Get(id, fields);
+
+        return ApiResponse&lt;QuestType&gt;.Ok(entity);
+    }
+
+    [HttpPost]
+    public async Task&lt;ApiResponse&lt;QuestTypeResponseModel&gt;&gt; Post(QuestTypeRequestModel data)
+    {
+        var entity = await _questTypeService.CreateAsync(data);
+        return ApiResponse&lt;QuestType&gt;.Created(entity);
+    }
+
+    [HttpPut]
+    public async Task&lt;ApiResponse&lt;QuestTypeResponseModel&gt;&gt; Put(QuestTypeRequestModel data)
+    {
+        var entity = await _questTypeService.UpdateAsync(data);
+        return ApiResponse&lt;QuestType&gt;.Created(entity);
+    }
+
+    [HttpDelete(&quot;{id:int}&quot;)]
+    public async Task&lt;ActionResult&lt;ApiResponse&lt;QuestTypeResponseModel&gt;&gt;&gt; Delete(int id)
+    {
+        var entity = await _questTypeService.DeleteAsync(id);
+        return ApiResponse&lt;QuestType&gt;.Ok(entity);
+    }
+
+}
+    </pre>
+    <script type="text/javascript">
+      highlightRanges([[20,5,20,67,0],[21,5,21,6,0],[22,9,22,46,0],[23,5,23,6,0],[28,5,28,6,0],[29,9,29,54,0],[31,9,39,11,0],[40,9,40,85,0],[42,9,42,64,0],[43,5,43,6,0],[49,5,49,6,0],[50,9,50,62,0],[52,9,52,50,0],[53,5,53,6,0],[57,5,57,6,0],[58,9,58,64,0],[59,9,59,55,0],[60,5,60,6,0],[64,5,64,6,0],[65,9,65,64,0],[66,9,66,55,0],[67,5,67,6,0],[71,5,71,6,0],[72,9,72,62,0],[73,9,73,50,0],[74,5,74,6,0]]);
+    </script>
+  </body>
+</html>

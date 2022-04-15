@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <title>D:\C#\CityDiscoverTourist\CityDiscoverTourist.Data\Models\ApplicationUser.cs</title>
+    <script type="text/javascript" src="../js/dotcover.sourceview.js"></script>
+    <link rel="stylesheet" type="text/css" href="../css/dotcover.report.css" />
+  </head>
+  <body>
+    <pre id="content" class="source-code">
+using Microsoft.AspNetCore.Identity;
+
+namespace CityDiscoverTourist.Data.Models;
+
+public class ApplicationUser: IdentityUser
+{
+     public List&lt;ActivityLog&gt;? ActivityLogs { get; set; }
+     public List&lt;Reward&gt;? Rewards { get; set; }
+     public List&lt;FeedBack&gt;? FeedBacks { get; set; }
+
+     public Experience Experience { get; set; }
+}
+    </pre>
+    <script type="text/javascript">
+      highlightRanges([[7,47,7,51,0],[7,52,7,56,0],[8,37,8,41,0],[8,42,8,46,0],[9,41,9,45,0],[9,46,9,50,0],[11,37,11,41,0],[11,42,11,46,0]]);
+    </script>
+  </body>
+</html>

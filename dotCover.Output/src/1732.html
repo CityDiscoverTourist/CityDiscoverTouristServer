@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <title>D:\C#\CityDiscoverTourist\CityDiscoverTourist.Data\Models\Suggestion.cs</title>
+    <script type="text/javascript" src="../js/dotcover.sourceview.js"></script>
+    <link rel="stylesheet" type="text/css" href="../css/dotcover.report.css" />
+  </head>
+  <body>
+    <pre id="content" class="source-code">
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+
+namespace CityDiscoverTourist.Data.Models;
+
+public class Suggestion: BaseEntity
+{
+    public string? Content { get; set; }
+
+    public Task? Task { get; set; }
+    public int TaskId { get; set; }
+
+    public string? Status { get; set; }
+}
+    </pre>
+    <script type="text/javascript">
+      highlightRanges([[8,30,8,34,0],[8,35,8,39,0],[10,25,10,29,0],[10,30,10,34,0],[11,25,11,29,0],[11,30,11,34,0],[13,29,13,33,0],[13,34,13,38,0]]);
+    </script>
+  </body>
+</html>
