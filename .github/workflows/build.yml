@@ -43,9 +43,13 @@ jobs:
         shell: powershell
         run: |
           dotnet tool install --global dotnet-sonarscanner
-          .\.sonar\scanner\dotnet-sonarscanner begin /k:"CityDiscoverTourist_CityDiscoverTouristServer" /o:"citydiscovertourist" /d:sonar.login="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io" /d:sonar.dotnet.excludeTestProjects=true	/d:sonar.cs.vscoveragexml.reportsPaths=coverage.xml
+          .\.sonar\scanner\dotnet-sonarscanner begin /k:"CityDiscoverTourist_CityDiscoverTouristServer" /o:"citydiscovertourist" /d:sonar.login="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io" /d:sonar.dotnet.excludeTestProjects=true	/d:sonar.cs.opencover.reportsPaths=coverage.xml
           dotnet build CityDiscoverTourist.sln
           
-          dotnet test --blame --no-restore --no-build --collect:"XPlat Code Coverage" reportgenerator -reports:"D:\\C#\\CityDiscoverTourist\\CityDiscoverTourist.Test\\TestResults\\cf120fb8-067e-4fcc-a401-64d5a9f6b584\\coverage.cobertura.xml" "-targetdir:sonarqubecoverage" "-reporttypes:SonarQube"
+          & D:\Download\opencover.4.7.1221\OpenCover.Console.exe -target:"dotnet.exe" 
+            -targetargs:"test --no-build"
+            -returntargetcode
+            -output:coverage.xml
+            -register:user
           
           .\.sonar\scanner\dotnet-sonarscanner end /d:sonar.login="${{ secrets.SONAR_TOKEN }}"
