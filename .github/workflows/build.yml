@@ -42,8 +42,8 @@ jobs:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         shell: powershell
         run: |
-          .\.sonar\scanner\dotnet-sonarscanner begin /k:"CityDiscoverTourist_CityDiscoverTouristServer" /o:"citydiscovertourist" /d:sonar.login="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io" /d:sonar.cs.dotcover.reportsPaths=dotCover.Output.html 
+          .\.sonar\scanner\dotnet-sonarscanner begin /k:"CityDiscoverTourist_CityDiscoverTouristServer" /o:"citydiscovertourist" /d:sonar.login="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io" /d:sonar.cs.dotcover.reportsPaths=dotCover.Output.html /d:sonar.cs.xunit.reportsPaths:"D:\C#\CityDiscoverTourist\dotCover.Output.html" 
           dotnet build CityDiscoverTourist.sln 
           dotnet dotcover test --dcReportType=HTML
-          /d:sonar.cs.xunit.reportsPaths:"D:\C#\CityDiscoverTourist\dotCover.Output.html"
+          
           .\.sonar\scanner\dotnet-sonarscanner end /d:sonar.login="${{ secrets.SONAR_TOKEN }}"
