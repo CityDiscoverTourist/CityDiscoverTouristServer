@@ -45,6 +45,6 @@ jobs:
           .\.sonar\scanner\dotnet-sonarscanner begin /k:"CityDiscoverTourist_CityDiscoverTouristServer" /o:"citydiscovertourist" /d:sonar.login="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io" /d:sonar.dotnet.excludeTestProjects=true	
           dotnet build CityDiscoverTourist.sln
           
-          dotnet test --no-build --collect:"XPlat Code Coverage" reportgenerator -reports:"D:\\C#\\CityDiscoverTourist\\CityDiscoverTourist.Test\\TestResults\\cf120fb8-067e-4fcc-a401-64d5a9f6b584\\coverage.cobertura.xml" "-targetdir:sonarqubecoverage" "-reporttypes:SonarQube"
+          dotnet test --blame --no-restore --no-build --collect:"XPlat Code Coverage" reportgenerator -reports:"D:\\C#\\CityDiscoverTourist\\CityDiscoverTourist.Test\\TestResults\\cf120fb8-067e-4fcc-a401-64d5a9f6b584\\coverage.cobertura.xml" "-targetdir:sonarqubecoverage" "-reporttypes:SonarQube"
 
           .\.sonar\scanner\dotnet-sonarscanner end /d:sonar.login="${{ secrets.SONAR_TOKEN }}"
