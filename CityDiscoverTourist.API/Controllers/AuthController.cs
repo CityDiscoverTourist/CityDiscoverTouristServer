@@ -1,4 +1,3 @@
-using CityDiscoverTourist.Business.Data;
 using CityDiscoverTourist.Business.Data.RequestModel;
 using CityDiscoverTourist.Business.IServices;
 using Microsoft.AspNetCore.Mvc;
@@ -11,11 +10,13 @@ namespace CityDiscoverTourist.API.Controllers;
 public class AuthController : ControllerBase
 {
     private readonly IAuthService _authService;
+    private readonly IFacebookService _facebookService;
 
     // GET
-    public AuthController(IAuthService authService)
+    public AuthController(IAuthService authService, IFacebookService facebookService)
     {
         _authService = authService;
+        _facebookService = facebookService;
     }
 
     [HttpPost("loginFirebase")]
@@ -24,7 +25,7 @@ public class AuthController : ControllerBase
         return Ok(await _authService.LoginFirebase(model));
     }
 
-    [HttpPost("refresh")]
+    /*[HttpPost("refresh")]
     public IActionResult Refresh(string accessToken)
     {
         var principal = _authService.GetPrincipalFromExpiredToken(accessToken);
@@ -33,11 +34,18 @@ public class AuthController : ControllerBase
         var newRefreshToken = _authService.GenerateRefreshToken();
 
         return Ok(new { token = newToken.EncodedPayload, newRefreshToken });
-    }
+    }*/
 
     [HttpPost("confirm-phone")]
     public async Task<IActionResult> ConfirmPhone(string username, int code)
     {
         return Ok(await _authService.VerifyPhoneNumberByDigitCode(username, code));
+    }
+
+    [HttpPost("login-facebook")]
+    public async Task<IActionResult> FacebookLoginAsync([FromQuery] string resource)
+    {
+        var authorizationTokens = await _facebookService.LoginFacebookAsync(resource);
+        return Ok(authorizationTokens);
     }
 }

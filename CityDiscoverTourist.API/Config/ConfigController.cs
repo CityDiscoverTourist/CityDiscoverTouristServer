@@ -27,6 +27,7 @@ public static class ConfigController
         services.AddScoped<ITaskService, TaskService>();
         services.AddScoped<IExperienceService, ExperienceService>();
         services.AddScoped<IRewardService, RewardService>();
+        services.AddScoped<IFacebookService, FacebookService>();
     }
 
     public static void SetupHelper(this IServiceCollection services)
