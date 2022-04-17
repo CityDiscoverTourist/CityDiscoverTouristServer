@@ -20,17 +20,14 @@ public class Quest
     public QuestType? QuestType { get; set; }
     public int QuestTypeId { get; set; }
 
-    public List<Task>? Tasks { get; set; }
+    public List<Task> Tasks { get; set; }
 
-    public List<FeedBack>? FeedBack { get; set; }
-    public List<CustomerQuest>? CustomerQuests { get; set; }
-    public List<Location>? Locations { get; set; }
+    public List<FeedBack> FeedBack { get; set; }
+    public List<CustomerQuest> CustomerQuests { get; set; }
+    public List<Location> Locations { get; set; }
 
-    public ApplicationUser Customer { get; set; }
-    public string CustomerId { get; set; }
-
-    public Commission Commission { get; set; }
-    public int CommissionId { get; set; }
+    /*public ApplicationUser Customer { get; set; }
+    public string CustomerId { get; set; }*/
 
     public Quest()
     {
