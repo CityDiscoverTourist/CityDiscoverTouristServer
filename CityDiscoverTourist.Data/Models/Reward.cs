@@ -10,7 +10,12 @@ public class Reward: BaseEntity
     public DateTime? ExpiredDate { get; set; }
 
     public ApplicationUser Customer { get; set; }
-    public string? CustomerId { get; set; }
+    public string CustomerId { get; set; }
 
     public string? Status { get; set; }
+
+    public Reward()
+    {
+        ReceivedDate = DateTime.UtcNow.Date;
+    }
 }

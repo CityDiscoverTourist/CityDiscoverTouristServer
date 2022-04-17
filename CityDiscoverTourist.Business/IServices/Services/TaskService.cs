@@ -68,6 +68,6 @@ public class TaskService: ITaskService
     {
         if (!entities.Any() || string.IsNullOrWhiteSpace(param.Name) && string.IsNullOrWhiteSpace(param.Description)) return;
 
-        entities = entities.Where(x => x.Name!.Contains(param.Name!) || x.Description!.Contains(param.Description!));
+        entities = entities.Where(x => x.Description!.Contains(param.Description!));
     }
 }
