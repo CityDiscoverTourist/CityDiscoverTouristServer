@@ -57,6 +57,12 @@ public static class ConfigController
         services.AddScoped<IExperienceRepository, ExperienceRepository>();
         services.AddScoped<IContactRepository, ContactRepository>();
         services.AddScoped<IAnswerRepository, AnswerRepository>();
+        services.AddScoped<ICustomerAnswerRepository, CustomerAnswerRepository>();
+        services.AddScoped<ICustomerTaskRepository, CustomerTaskRepository>();
+        services.AddScoped<ICustomerQuestRepository, CustomerQuestRepository>();
+        services.AddScoped<ICommissionRepository, CommissionRepository>();
+        services.AddScoped<INoteRepository, NoteRepository>();
+        services.AddScoped<IPaymentRepository, PaymentRepository>();
     }
 
     public static void SetupSwagger(this IServiceCollection services, IConfiguration configuration)
