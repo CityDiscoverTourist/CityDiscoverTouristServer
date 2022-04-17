@@ -21,7 +21,7 @@ public class Task: BaseEntity
     public Answer? Answer { get; set; }
 
     public string? Status { get; set; }
-    public List<Suggestion>? Suggestions { get; set; }
+    public List<Suggestion> Suggestions { get; set; }
     public List<CustomerTask>? CustomerTasks { get; set; }
     public Task()
     {

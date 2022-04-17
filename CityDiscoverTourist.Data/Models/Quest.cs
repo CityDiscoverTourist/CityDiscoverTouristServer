@@ -23,11 +23,15 @@ public class Quest
     public List<Task>? Tasks { get; set; }
 
     public List<FeedBack>? FeedBack { get; set; }
-    //public List<CustomerQuest>? CustomerQuests { get; set; }
+    public List<CustomerQuest>? CustomerQuests { get; set; }
     public List<Location>? Locations { get; set; }
 
-    /*public ApplicationUser Customer { get; set; }
-    public string CustomerId { get; set; }*/
+    public ApplicationUser Customer { get; set; }
+    public string CustomerId { get; set; }
+
+    public Commission Commission { get; set; }
+    public int CommissionId { get; set; }
+
     public Quest()
     {
         CreatedDate = DateTime.UtcNow.Date;

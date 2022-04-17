@@ -23,8 +23,8 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     public DbSet<Contact> Contacts { get; set; }
     public DbSet<CustomerAnswer> CustomerAnswers { get; set; }
     public DbSet<CustomerTask> CustomerTasks { get; set; }
-    //public DbSet<CustomerQuest> CustomerQuests { get; set; }
+    public DbSet<CustomerQuest> CustomerQuests { get; set; }
     public DbSet<Note> Notes { get; set; }
-    //public DbSet<Payment> Payments { get; set; }
-    //public DbSet<Commission> Commissions { get; set; }
+    public DbSet<Payment> Payments { get; set; }
+    public DbSet<Commission> Commissions { get; set; }
 }
