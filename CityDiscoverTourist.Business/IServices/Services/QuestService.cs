@@ -34,7 +34,7 @@ public class QuestService: IQuestService
         return PageList<QuestResponseModel>.ToPageList(mappedData, param.PageNume, param.PageSize);
     }
 
-    public async Task<QuestResponseModel> Get(Guid id, string? fields)
+    public async Task<QuestResponseModel> Get(Guid id)
     {
         var entity = await _questRepository.Get(id);
 

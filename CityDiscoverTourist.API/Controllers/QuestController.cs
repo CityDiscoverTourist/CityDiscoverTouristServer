@@ -46,9 +46,9 @@ public class QuestController : ControllerBase
     [HttpGet("{id:guid}")]
     //[Cached(600)]
 
-    public async Task<ApiResponse<QuestResponseModel>> Get(Guid id, string? fields)
+    public async Task<ApiResponse<QuestResponseModel>> Get(Guid id)
     {
-        var entity = await _questService.Get(id, fields);
+        var entity = await _questService.Get(id);
 
         return ApiResponse<QuestResponseModel>.Ok(entity);
     }
@@ -61,7 +61,7 @@ public class QuestController : ControllerBase
     }
 
     [HttpPut]
-    public async Task<ApiResponse<QuestResponseModel>> Put(QuestRequestModel data)
+    public async Task<ApiResponse<QuestResponseModel>> Put([FromBody] QuestRequestModel data)
     {
         var entity = await _questService.UpdateAsync(data);
         return ApiResponse<Quest>.Created(entity);

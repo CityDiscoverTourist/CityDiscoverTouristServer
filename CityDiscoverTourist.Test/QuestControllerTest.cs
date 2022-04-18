@@ -50,7 +50,7 @@ public class QuestControllerTest
     public void Test2()
     {
         var questService = new Mock<IQuestService>();
-        questService.Setup(x => x.Get(It.IsAny<Guid>(), It.IsAny<string>()))
+        questService.Setup(x => x.Get(It.IsAny<Guid>()))
             .ReturnsAsync(new QuestResponseModel()
             {
                 Id = Guid.Empty,
@@ -67,7 +67,7 @@ public class QuestControllerTest
 
         var controller = new QuestController(questService.Object);
 
-        var result = controller.Get(Guid.Empty, "");
+        var result = controller.Get(Guid.Empty);
 
         Assert.Equal("TestDescription", result.Result.Data.Description);
     }

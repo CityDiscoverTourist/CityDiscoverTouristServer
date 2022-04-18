@@ -4,6 +4,7 @@ using CityDiscoverTourist.Data.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CityDiscoverTourist.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220418134858_ModifyEntity")]
+    partial class ModifyEntity
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -159,13 +161,7 @@ namespace CityDiscoverTourist.Data.Migrations
                     b.Property<string>("Percent")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid>("QuestId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.HasKey("Id");
-
-                    b.HasIndex("QuestId")
-                        .IsUnique();
 
                     b.ToTable("Commissions");
                 });
@@ -427,9 +423,6 @@ namespace CityDiscoverTourist.Data.Migrations
                     b.Property<DateTime?>("CreatedDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("CreatedBy")
-                        .HasColumnType("nvarchar(450)");
-
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
 
@@ -455,8 +448,6 @@ namespace CityDiscoverTourist.Data.Migrations
                         .HasColumnType("datetime2");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("CreatedBy");
 
                     b.HasIndex("QuestTypeId");
 
@@ -792,17 +783,6 @@ namespace CityDiscoverTourist.Data.Migrations
                     b.Navigation("Task");
                 });
 
-            modelBuilder.Entity("CityDiscoverTourist.Data.Models.Commission", b =>
-                {
-                    b.HasOne("CityDiscoverTourist.Data.Models.Quest", "Quest")
-                        .WithOne("Commission")
-                        .HasForeignKey("CityDiscoverTourist.Data.Models.Commission", "QuestId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Quest");
-                });
-
             modelBuilder.Entity("CityDiscoverTourist.Data.Models.CustomerAnswer", b =>
                 {
                     b.HasOne("CityDiscoverTourist.Data.Models.CustomerTask", null)
@@ -890,17 +870,11 @@ namespace CityDiscoverTourist.Data.Migrations
 
             modelBuilder.Entity("CityDiscoverTourist.Data.Models.Quest", b =>
                 {
-                    b.HasOne("CityDiscoverTourist.Data.Models.ApplicationUser", "Customer")
-                        .WithMany("Quests")
-                        .HasForeignKey("CreatedBy");
-
                     b.HasOne("CityDiscoverTourist.Data.Models.QuestType", "QuestType")
                         .WithMany("Quests")
                         .HasForeignKey("QuestTypeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Customer");
 
                     b.Navigation("QuestType");
                 });
@@ -1035,8 +1009,6 @@ namespace CityDiscoverTourist.Data.Migrations
 
                     b.Navigation("FeedBacks");
 
-                    b.Navigation("Quests");
-
                     b.Navigation("Rewards");
                 });
 
@@ -1054,8 +1026,6 @@ namespace CityDiscoverTourist.Data.Migrations
 
             modelBuilder.Entity("CityDiscoverTourist.Data.Models.Quest", b =>
                 {
-                    b.Navigation("Commission");
-
                     b.Navigation("CustomerQuests");
 
                     b.Navigation("FeedBack");
