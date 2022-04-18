@@ -14,13 +14,13 @@ public class ExperienceService: IExperienceService
     private readonly IExperienceRepository _experienceRepository;
     private readonly IMapper _mapper;
 
-    public ExperienceService(IExperienceRepository taskRepository, IMapper mapper)
+    public ExperienceService(IExperienceRepository experienceRepository, IMapper mapper)
     {
-        _experienceRepository = taskRepository;
+        _experienceRepository = experienceRepository;
         _mapper = mapper;
     }
 
-    public async Task<ExperienceResponseModel> Get(int id, string? fields)
+    public async Task<ExperienceResponseModel> Get(int id)
     {
         var entity = await _experienceRepository.Get(id);
 

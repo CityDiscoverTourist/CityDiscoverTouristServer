@@ -26,9 +26,9 @@ public class ExperienceController : ControllerBase
 
     [HttpGet("{id:int}")]
     //[Cached(600)]
-    public async Task<ApiResponse<ExperienceResponseModel>> Get(int id, string? fields)
+    public async Task<ApiResponse<ExperienceResponseModel>> Get(int id)
     {
-        var entity = await _experienceService.Get(id, fields);
+        var entity = await _experienceService.Get(id);
 
         return ApiResponse<Experience>.Ok(entity);
     }
