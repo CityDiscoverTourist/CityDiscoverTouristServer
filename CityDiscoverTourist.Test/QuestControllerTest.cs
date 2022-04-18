@@ -30,7 +30,7 @@ public class QuestControllerTest
             });
         var mapperMock = new Mock<IMapper>();
 
-        var controller = new QuestController(questService.Object, mapperMock.Object);
+        var controller = new QuestController(questService.Object);
 
         var result = controller.Post(new QuestRequestModel()
         {
@@ -65,7 +65,7 @@ public class QuestControllerTest
 
         var mapperMock = new Mock<IMapper>();
 
-        var controller = new QuestController(questService.Object, mapperMock.Object);
+        var controller = new QuestController(questService.Object);
 
         var result = controller.Get(Guid.Empty, "");
 
