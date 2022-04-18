@@ -27,6 +27,7 @@ public class Quest
     public List<FeedBack> FeedBack { get; set; }
     public List<CustomerQuest> CustomerQuests { get; set; }
     public List<Location> Locations { get; set; }
+    public List<QuestNote>? QuestNotes { get; set; }
 
     /*public ApplicationUser Customer { get; set; }
     public string CustomerId { get; set; }*/
