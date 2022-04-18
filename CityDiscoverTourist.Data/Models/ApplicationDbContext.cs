@@ -27,4 +27,5 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     public DbSet<Note> Notes { get; set; }
     public DbSet<Payment> Payments { get; set; }
     public DbSet<Commission> Commissions { get; set; }
+    public DbSet<QuestNote> QuestNotes { get; set; }
 }
