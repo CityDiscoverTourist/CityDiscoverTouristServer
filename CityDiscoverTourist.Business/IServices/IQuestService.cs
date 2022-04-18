@@ -7,7 +7,7 @@ namespace CityDiscoverTourist.Business.IServices;
 
 public interface IQuestService
 {
-    public PageList<Entity> GetAll(QuestParams param);
+    public PageList<QuestResponseModel> GetAll(QuestParams param);
     public Task<QuestResponseModel> Get(Guid id, string? fields);
     public Task<QuestResponseModel> CreateAsync(QuestRequestModel request);
     public Task<QuestResponseModel> UpdateAsync(QuestRequestModel request);
