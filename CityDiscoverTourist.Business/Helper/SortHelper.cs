@@ -1,6 +1,6 @@
 ﻿using System.Reflection;
 using System.Text;
-using System.Linq.Dynamic;
+using System.Linq.Dynamic.Core;
 
 namespace CityDiscoverTourist.Business.Helper
 {

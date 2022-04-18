@@ -12,28 +12,26 @@ public class QuestService: IQuestService
 {
     private readonly IQuestRepository _questRepository;
     private readonly ISortHelper<Quest> _sortHelper;
-    private readonly IDataShaper<Quest> _dataShaper;
     private readonly IMapper _mapper;
 
-    public QuestService(IQuestRepository questRepository, ISortHelper<Quest> sortHelper, IDataShaper<Quest> dataShaper, IMapper mapper)
+    public QuestService(IQuestRepository questRepository, ISortHelper<Quest> sortHelper, IMapper mapper)
     {
         _questRepository = questRepository;
         _sortHelper = sortHelper;
-        _dataShaper = dataShaper;
         _mapper = mapper;
     }
 
 
-    public PageList<Entity> GetAll(QuestParams param)
+    public PageList<QuestResponseModel> GetAll(QuestParams param)
     {
         var listAll = _questRepository.GetAll();
 
         Search(ref listAll, param);
 
         var sortedQuests = _sortHelper.ApplySort(listAll, param.OrderBy);
-        var shapedData = _dataShaper.ShapeData(sortedQuests, param.Fields);
-
-        return PageList<Entity>.ToPageList(shapedData, param.PageNume, param.PageSize);
+        //var shapedData = _dataShaper.ShapeData(sortedQuests, param.Fields);
+        var mappedData = _mapper.Map<IEnumerable<QuestResponseModel>>(sortedQuests);
+        return PageList<QuestResponseModel>.ToPageList(mappedData, param.PageNume, param.PageSize);
     }
 
     public async Task<QuestResponseModel> Get(Guid id, string? fields)
@@ -66,10 +64,29 @@ public class QuestService: IQuestService
     }
 
 
-    private static void Search(ref IQueryable<Quest> entities, QuestParams param)
+    /*private static void Search(ref IQueryable<Quest> entities, QuestParams param)
     {
         if (!entities.Any() || string.IsNullOrWhiteSpace(param.Name) && string.IsNullOrWhiteSpace(param.Status)) return;
 
         entities = entities.Where(r => r.Status!.Contains(param.Status!));
+
+
+    }*/
+    private static void Search(ref IQueryable<Quest> entities, QuestParams param)
+    {
+        if (!entities.Any()) return;
+
+        if(param.Name != null)
+        {
+            entities = entities.Where(r => r.Title!.Contains(param.Name));
+        }
+        if (param.Description != null)
+        {
+            entities = entities.Where(r => r.Description!.Contains(param.Description));
+        }
+        if (param.Status != null)
+        {
+            entities = entities.Where(r => r.Status!.Contains(param.Status));
+        }
     }
 }
