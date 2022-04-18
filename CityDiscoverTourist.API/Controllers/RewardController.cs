@@ -45,9 +45,9 @@ public class RewardController : ControllerBase
     [HttpGet("{id:int}")]
     //[Cached(600)]
 
-    public async Task<ApiResponse<RewardResponseModel>> Get(int id, string? fields)
+    public async Task<ApiResponse<RewardResponseModel>> Get(int id)
     {
-        var entity = await _rewardService.Get(id, fields);
+        var entity = await _rewardService.Get(id);
 
         return ApiResponse<Task>.Ok(entity);
     }
