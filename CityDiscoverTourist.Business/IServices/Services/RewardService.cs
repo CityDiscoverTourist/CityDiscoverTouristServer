@@ -35,7 +35,7 @@ public class RewardService : IRewardService
         return PageList<Entity>.ToPageList(shapedData, @params.PageNume, @params.PageSize);
     }
 
-    public async Task<RewardResponseModel> Get(int id, string? fields)
+    public async Task<RewardResponseModel> Get(int id)
     {
         var entity = await _rewardRepository.Get(id);
 
