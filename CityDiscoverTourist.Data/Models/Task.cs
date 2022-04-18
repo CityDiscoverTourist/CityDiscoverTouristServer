@@ -9,7 +9,7 @@ public class Task: BaseEntity
     public string? Description { get; set; }
     public int Duration { get; set; }
     public string? Address { get; set; }
-    public DateTime? CreatedDate { get; set; } = null;
+    public DateTime? CreatedDate { get; set; }
     public DateTime? UpdatedDate { get; set; } = null;
 
     public TaskType? TaskType { get; set; }

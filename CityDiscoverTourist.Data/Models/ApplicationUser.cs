@@ -10,7 +10,7 @@ public class ApplicationUser: IdentityUser
      public List<CustomerTask>? CustomerTasks { get; set; }
      public List<CustomerQuest>? CustomerQuests { get; set; }
 
-     //public List<Quest>? Quests { get; set; }
+     public List<Quest>? Quests { get; set; }
 
      public Experience? Experience { get; set; }
 }

@@ -4,6 +4,7 @@ using CityDiscoverTourist.Data.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CityDiscoverTourist.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220418141314_Comm")]
+    partial class Comm
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -427,7 +429,7 @@ namespace CityDiscoverTourist.Data.Migrations
                     b.Property<DateTime?>("CreatedDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("CreatedBy")
+                    b.Property<string>("CustomerId")
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Description")
@@ -456,7 +458,7 @@ namespace CityDiscoverTourist.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CreatedBy");
+                    b.HasIndex("CustomerId");
 
                     b.HasIndex("QuestTypeId");
 
@@ -892,7 +894,7 @@ namespace CityDiscoverTourist.Data.Migrations
                 {
                     b.HasOne("CityDiscoverTourist.Data.Models.ApplicationUser", "Customer")
                         .WithMany("Quests")
-                        .HasForeignKey("CreatedBy");
+                        .HasForeignKey("CustomerId");
 
                     b.HasOne("CityDiscoverTourist.Data.Models.QuestType", "QuestType")
                         .WithMany("Quests")
