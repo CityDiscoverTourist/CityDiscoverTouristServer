@@ -1,4 +1,6 @@
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.Runtime.Serialization;
 
 namespace CityDiscoverTourist.Data.Models;
 
@@ -12,10 +14,10 @@ public class Quest
     public string? EstimatedTime { get; set; }
     public string? EstimatedDistance { get; set; }
     public DateTime? AvailableTime { get; set; } = null;
-
-    public DateTime? CreatedDate { get; }
-    public DateTime? UpdatedDate { get; }
     public string? Status { get; set; }
+
+    public DateTime? CreatedDate { get; set; } = null;
+    public DateTime? UpdatedDate { get; set; } = null;
 
     public QuestType? QuestType { get; set; }
     public int QuestTypeId { get; set; }
@@ -29,9 +31,4 @@ public class Quest
     /*public ApplicationUser Customer { get; set; }
     public string CustomerId { get; set; }*/
 
-    public Quest()
-    {
-        CreatedDate = DateTime.UtcNow.Date;
-        UpdatedDate = DateTime.UtcNow.Date;
-    }
 }

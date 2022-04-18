@@ -17,17 +17,15 @@ namespace CityDiscoverTourist.API.Controllers;
 public class QuestController : ControllerBase
 {
     private readonly IQuestService _questService;
-    private readonly IMapper _mapper;
 
-    public QuestController(IQuestService questService, IMapper mapper)
+    public QuestController(IQuestService questService)
     {
         _questService = questService;
-        _mapper = mapper;
     }
 
     [HttpGet]
     //[Cached(600)]
-    public ApiResponse<PageList<Entity>> GetTutorRequest([FromQuery] QuestParams param)
+    public ApiResponse<PageList<QuestResponseModel>> GetTutorRequest([FromQuery] QuestParams param)
     {
         var entity = _questService.GetAll(param);
 
@@ -42,7 +40,7 @@ public class QuestController : ControllerBase
         };
         Response.Headers.Add("X-Pagination", JsonConvert.SerializeObject(metadata));
 
-        return ApiResponse<List<Entity>>.Ok2(entity, metadata);
+        return ApiResponse<List<QuestResponseModel>>.Ok2(entity, metadata);
     }
 
     [HttpGet("{id:guid}")]

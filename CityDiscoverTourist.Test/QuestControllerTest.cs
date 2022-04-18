@@ -20,12 +20,12 @@ public class QuestControllerTest
             .ReturnsAsync((QuestRequestModel request) => new QuestResponseModel()
             {
                 Id = Guid.Empty,
-                Name = request.Name,
+                Title = request.Title,
                 Description = request.Description,
                 Price = request.Price,
                 Status = "Pending",
                 AvailableTime = DateTime.Now,
-                EstimateTime = "120",
+                EstimatedTime = "120",
                 QuestTypeId = 1
             });
         var mapperMock = new Mock<IMapper>();
@@ -34,12 +34,12 @@ public class QuestControllerTest
 
         var result = controller.Post(new QuestRequestModel()
         {
-            Name = "Test",
+            Title = "Test",
             Description = "Test",
             Price = 100,
             Status = "Pending",
             AvailableTime = DateTime.Now,
-            EstimateTime = "120",
+            EstimatedTime = "120",
             QuestTypeId = 1
         });
 
@@ -54,12 +54,12 @@ public class QuestControllerTest
             .ReturnsAsync(new QuestResponseModel()
             {
                 Id = Guid.Empty,
-                Name = "Test",
+                Title = "Test",
                 Description = "TestDescription",
                 Price = 100,
                 Status = "Pending",
                 AvailableTime = DateTime.Now,
-                EstimateTime = "120",
+                EstimatedTime = "120",
                 QuestTypeId = 1
             });
 

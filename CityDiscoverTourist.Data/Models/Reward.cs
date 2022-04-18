@@ -6,7 +6,7 @@ namespace CityDiscoverTourist.Data.Models;
 public class Reward: BaseEntity
 {
     public string? Name { get; set; }
-    public DateTime ReceivedDate { get; set; }
+    public DateTime? ReceivedDate { get; set; } = null;
     public DateTime? ExpiredDate { get; set; }
 
     public ApplicationUser Customer { get; set; }
