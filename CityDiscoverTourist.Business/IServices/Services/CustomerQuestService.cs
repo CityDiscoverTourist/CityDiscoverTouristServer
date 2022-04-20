@@ -11,41 +11,52 @@ namespace CityDiscoverTourist.Business.IServices.Services;
 
 public class CustomerQuestService: ICustomerQuestService
 {
-    private readonly ICustomerQuestRepository _customerQuestService;
+    private readonly ICustomerQuestRepository _customerQuestRepository;
+    private readonly ITaskRepository _taskRepository;
     private readonly IMapper _mapper;
 
-    public CustomerQuestService(ICustomerQuestRepository noteRepository, IMapper mapper)
+    public CustomerQuestService(ICustomerQuestRepository customerQuestRepository, IMapper mapper, ITaskRepository taskRepository)
     {
-        _customerQuestService = noteRepository;
+        _customerQuestRepository = customerQuestRepository;
         _mapper = mapper;
+        _taskRepository = taskRepository;
     }
 
     public async Task<CustomerQuestResponseModel> Get(int id)
     {
-        var entity = await _customerQuestService.Get(id);
-
-        //var shaped = _dataShaper.ShapeData(entity, fields);
+        var entity = await _customerQuestRepository.Get(id);
 
         return _mapper.Map<CustomerQuestResponseModel>(entity);
     }
 
     public async Task<CustomerQuestResponseModel> CreateAsync(CustomerQuestRequestModel request)
     {
+        var numberOfTask = CountTaskInQuest(request.QuestId);
         var entity = _mapper.Map<CustomerQuest>(request);
-        entity = await _customerQuestService.Add(entity);
+        var beginPoint = numberOfTask * 120;
+
+        entity.BeginPoint = beginPoint.ToString();
+        entity = await _customerQuestRepository.Add(entity);
         return _mapper.Map<CustomerQuestResponseModel>(entity);
     }
 
     public async Task<CustomerQuestResponseModel> UpdateAsync(CustomerQuestRequestModel request)
     {
         var entity = _mapper.Map<CustomerQuest>(request);
-        entity = await _customerQuestService.Update(entity);
+        entity = await _customerQuestRepository.Update(entity);
         return _mapper.Map<CustomerQuestResponseModel>(entity);
     }
 
     public async Task<CustomerQuestResponseModel> DeleteAsync(int id)
     {
-        var entity = await _customerQuestService.Delete(id);
+        var entity = await _customerQuestRepository.Delete(id);
         return _mapper.Map<CustomerQuestResponseModel>(entity);
+    }
+
+    private int CountTaskInQuest(Guid questId)
+    {
+        var listAll = _taskRepository.GetAll();
+        var count = listAll.Count(r => r.QuestId.Equals(questId));
+        return count;
     }
 }

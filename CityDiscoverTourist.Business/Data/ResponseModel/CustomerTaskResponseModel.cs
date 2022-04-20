@@ -6,5 +6,5 @@ public class CustomerTaskResponseModel
     public string? Status { get; set; }
     public DateTime? CreatedDate { get; set; } = null;
     public int TaskId { get; set; }
-    public Guid ApplicationUserId { get; set; }
+    public string? CustomerId { get; set; }
 }
