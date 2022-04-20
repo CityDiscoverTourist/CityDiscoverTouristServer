@@ -14,6 +14,7 @@ public class CustomerQuestService: ICustomerQuestService
     private readonly ICustomerQuestRepository _customerQuestRepository;
     private readonly ITaskRepository _taskRepository;
     private readonly IMapper _mapper;
+    private const int BaseMultiplier = 150;
 
     public CustomerQuestService(ICustomerQuestRepository customerQuestRepository, IMapper mapper, ITaskRepository taskRepository)
     {
@@ -33,7 +34,7 @@ public class CustomerQuestService: ICustomerQuestService
     {
         var numberOfTask = CountTaskInQuest(request.QuestId);
         var entity = _mapper.Map<CustomerQuest>(request);
-        var beginPoint = numberOfTask * 120;
+        var beginPoint = numberOfTask * BaseMultiplier;
 
         entity.BeginPoint = beginPoint.ToString();
         entity = await _customerQuestRepository.Add(entity);
