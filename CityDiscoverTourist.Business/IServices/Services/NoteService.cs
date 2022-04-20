@@ -14,7 +14,7 @@ public class NoteService: INoteService
     private readonly INoteRepository _noteRepository;
     private readonly IMapper _mapper;
 
-    public NoteService(INoteRepository noteRepository, Mapper mapper)
+    public NoteService(INoteRepository noteRepository, IMapper mapper)
     {
         _noteRepository = noteRepository;
         _mapper = mapper;
@@ -23,8 +23,6 @@ public class NoteService: INoteService
     public async Task<Note> Get(int id)
     {
         var entity = await _noteRepository.Get(id);
-
-        //var shaped = _dataShaper.ShapeData(entity, fields);
 
         return _mapper.Map<Note>(entity);
     }
