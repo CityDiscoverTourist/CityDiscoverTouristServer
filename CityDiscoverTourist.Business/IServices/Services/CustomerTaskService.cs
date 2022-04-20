@@ -24,8 +24,6 @@ public class CustomerTaskService: ICustomerTaskService
     {
         var entity = await _customerTaskService.Get(id);
 
-        //var shaped = _dataShaper.ShapeData(entity, fields);
-
         return _mapper.Map<CustomerTaskResponseModel>(entity);
     }
 
