@@ -23,23 +23,22 @@ public class TaskService: ITaskService
         _dataShaper = dataShaper;
     }
 
-    public PageList<Entity> GetAll(TaskParams @params)
+    public PageList<TaskResponseModel> GetAll(TaskParams @params)
     {
         var listAll = _taskRepository.GetAll();
 
         Search(ref listAll, @params);
 
         var sortedQuests = _sortHelper.ApplySort(listAll, @params.OrderBy);
-        var shapedData = _dataShaper.ShapeData(sortedQuests, @params.Fields);
+        //var shapedData = _dataShaper.ShapeData(sortedQuests, @params.Fields);
+        var mappedData = _mapper.Map<IEnumerable<TaskResponseModel>>(sortedQuests);
 
-        return PageList<Entity>.ToPageList(shapedData, @params.PageNume, @params.PageSize);
+        return PageList<TaskResponseModel>.ToPageList(mappedData, @params.PageNume, @params.PageSize);
     }
 
-    public async Task<TaskResponseModel> Get(int id, string? fields)
+    public async Task<TaskResponseModel> Get(int id)
     {
         var entity = await _taskRepository.Get(id);
-
-        //var shaped = _dataShaper.ShapeData(entity, fields);
 
         return _mapper.Map<TaskResponseModel>(entity);
     }
@@ -69,5 +68,12 @@ public class TaskService: ITaskService
         if (!entities.Any() || string.IsNullOrWhiteSpace(param.Name) && string.IsNullOrWhiteSpace(param.Description)) return;
 
         entities = entities.Where(x => x.Description!.Contains(param.Description!));
+    }
+
+    public int CountTaskInQuest(Guid questId)
+    {
+        var listAll = _taskRepository.GetAll();
+        var count = listAll.Count(r => r.QuestId.Equals(questId));
+        return count;
     }
 }

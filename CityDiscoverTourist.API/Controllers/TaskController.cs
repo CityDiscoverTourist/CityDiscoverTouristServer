@@ -24,7 +24,7 @@ public class TaskController : ControllerBase
 
     [HttpGet]
     //[Cached(600)]
-    public ApiResponse<PageList<Entity>> GetTutorReTask([FromQuery] TaskParams param)
+    public ApiResponse<PageList<TaskResponseModel>> GetTutorReTask([FromQuery] TaskParams param)
     {
         var entity = _taskService.GetAll(param);
 
@@ -39,15 +39,15 @@ public class TaskController : ControllerBase
         };
         Response.Headers.Add("X-Pagination", JsonConvert.SerializeObject(metadata));
 
-        return ApiResponse<List<Entity>>.Ok2(entity, metadata);
+        return ApiResponse<List<TaskResponseModel>>.Ok2(entity, metadata);
     }
 
     [HttpGet("{id:int}")]
     //[Cached(600)]
 
-    public async Task<ApiResponse<TaskResponseModel>> Get(int id, string? fields)
+    public async Task<ApiResponse<TaskResponseModel>> Get(int id)
     {
-        var entity = await _taskService.Get(id, fields);
+        var entity = await _taskService.Get(id);
 
         return ApiResponse<Task>.Ok(entity);
     }
@@ -73,4 +73,9 @@ public class TaskController : ControllerBase
         return ApiResponse<Task>.Ok(entity);
     }
 
+    [HttpGet("count-tasks")]
+    public int Count([FromQuery] Guid questId)
+    {
+        return _taskService.CountTaskInQuest(questId);
+    }
 }
