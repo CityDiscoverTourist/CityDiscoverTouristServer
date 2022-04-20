@@ -9,7 +9,7 @@ public class CustomerAnswerService: ICustomerAnswerService
     private readonly ICustomerAnswerRepository _answerRepository;
     private readonly IMapper _mapper;
 
-    public CustomerAnswerService(ICustomerAnswerRepository answerRepository, Mapper mapper)
+    public CustomerAnswerService(ICustomerAnswerRepository answerRepository, IMapper mapper)
     {
         _answerRepository = answerRepository;
         _mapper = mapper;

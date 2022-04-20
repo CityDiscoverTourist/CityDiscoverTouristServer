@@ -12,40 +12,34 @@ namespace CityDiscoverTourist.Business.IServices.Services;
 public class ContactService: IContactService
 {
     private readonly IContactRepository _contactRepository;
-    private readonly IMapper _mapper;
 
-    public ContactService(IContactRepository experienceRepository, IMapper mapper)
+    public ContactService(IContactRepository experienceRepository)
     {
         _contactRepository = experienceRepository;
-        _mapper = mapper;
     }
 
     public async Task<Contact> Get(int id)
     {
         var entity = await _contactRepository.Get(id);
 
-        //var shaped = _dataShaper.ShapeData(entity, fields);
-
-        return _mapper.Map<Contact>(entity);
+        return entity;
     }
 
     public async Task<Contact> CreateAsync(Contact request)
     {
-        var entity = _mapper.Map<Contact>(request);
-        entity = await _contactRepository.Add(entity);
-        return _mapper.Map<Contact>(entity);
+        var entity = await _contactRepository.Add(request);
+        return entity;
     }
 
     public async Task<Contact> UpdateAsync(Contact request)
     {
-        var entity = _mapper.Map<Contact>(request);
-        entity = await _contactRepository.Update(entity);
-        return _mapper.Map<Contact>(entity);
+        var entity = await _contactRepository.Update(request);
+        return entity;
     }
 
     public async Task<Contact> DeleteAsync(int id)
     {
         var entity = await _contactRepository.Delete(id);
-        return _mapper.Map<Contact>(entity);
+        return entity;
     }
 }

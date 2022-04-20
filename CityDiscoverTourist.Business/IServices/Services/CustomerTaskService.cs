@@ -14,7 +14,7 @@ public class CustomerTaskService: ICustomerTaskService
     private readonly ICustomerTaskRepository _customerTaskService;
     private readonly IMapper _mapper;
 
-    public CustomerTaskService(ICustomerTaskRepository noteRepository, Mapper mapper)
+    public CustomerTaskService(ICustomerTaskRepository noteRepository, IMapper mapper)
     {
         _customerTaskService = noteRepository;
         _mapper = mapper;
@@ -23,8 +23,6 @@ public class CustomerTaskService: ICustomerTaskService
     public async Task<CustomerTaskResponseModel> Get(int id)
     {
         var entity = await _customerTaskService.Get(id);
-
-        //var shaped = _dataShaper.ShapeData(entity, fields);
 
         return _mapper.Map<CustomerTaskResponseModel>(entity);
     }

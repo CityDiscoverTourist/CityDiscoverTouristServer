@@ -28,6 +28,13 @@ public static class ConfigController
         services.AddScoped<IExperienceService, ExperienceService>();
         services.AddScoped<IRewardService, RewardService>();
         services.AddScoped<IFacebookService, FacebookService>();
+        services.AddScoped<IContactService, ContactService>();
+        services.AddScoped<ICommissionService, CommissionService>();
+        services.AddScoped<INoteService, NoteService>();
+        services.AddScoped<ICustomerAnswerService, CustomerAnswerService>();
+        services.AddScoped<ICustomerQuestService, CustomerQuestService>();
+        services.AddScoped<ICustomerTaskService, CustomerTaskService>();
+
     }
 
     public static void SetupHelper(this IServiceCollection services)

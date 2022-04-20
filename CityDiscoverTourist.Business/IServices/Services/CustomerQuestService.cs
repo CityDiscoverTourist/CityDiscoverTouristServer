@@ -14,7 +14,7 @@ public class CustomerQuestService: ICustomerQuestService
     private readonly ICustomerQuestRepository _customerQuestService;
     private readonly IMapper _mapper;
 
-    public CustomerQuestService(ICustomerQuestRepository noteRepository, Mapper mapper)
+    public CustomerQuestService(ICustomerQuestRepository noteRepository, IMapper mapper)
     {
         _customerQuestService = noteRepository;
         _mapper = mapper;

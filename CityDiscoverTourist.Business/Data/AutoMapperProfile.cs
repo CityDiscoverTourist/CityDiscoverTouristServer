@@ -13,7 +13,6 @@ public class AutoMapperProfile : Profile
     {
         CreateMap<QuestResponseModel, Quest>().ReverseMap();
         CreateMap<QuestRequestModel, Quest>().ReverseMap();
-        CreateMap<PageList<QuestRequestModel>, Quest>().ReverseMap();
 
         CreateMap<QuestTypeRequestModel, QuestType>().ReverseMap();
         CreateMap<QuestTypeResponseModel, QuestType>().ReverseMap();
@@ -29,5 +28,12 @@ public class AutoMapperProfile : Profile
 
         CreateMap<ExperienceRequestModel, Experience>().ReverseMap();
         CreateMap<ExperienceResponseModel, Experience>().ReverseMap();
+
+        CreateMap<CustomerTaskRequestModel, CustomerTask>().ReverseMap();
+        CreateMap<CustomerTaskResponseModel, CustomerTask>().ReverseMap();
+
+        CreateMap<CustomerQuestRequestModel, CustomerQuest>().ReverseMap();
+        CreateMap<CustomerQuestResponseModel, CustomerQuest>().ReverseMap();
+
     }
 }
