@@ -44,7 +44,7 @@ jobs:
         run: |
           dotnet tool install JetBrains.dotCover.GlobalTool -g
           .\.sonar\scanner\dotnet-sonarscanner begin /k:"CityDiscoverTourist_CityDiscoverTouristServer" /o:"citydiscovertourist" /d:sonar.login="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io" /d:sonar.cs.dotcover.reportsPaths=AppCoverageReport.html 
-          dotCover.exe --output=AppCoverageReport.html --reportType=HTML
+          dotnet dotcover --output=AppCoverageReport.html --reportType=HTML
           dotnet build CityDiscoverTourist.sln 
-          dotnet test --no-build --collect:"XPlat Code Coverage" reportgenerator "-reports:*\TestResults\*\coverage.cobertura.xml" "-targetdir:sonarqubecoverage" "-reporttypes:SonarQube"
+            dotnet dotcover test --no-build
           .\.sonar\scanner\dotnet-sonarscanner end /d:sonar.login="${{ secrets.SONAR_TOKEN }}"
