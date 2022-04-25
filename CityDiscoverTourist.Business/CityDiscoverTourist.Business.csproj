@@ -19,6 +19,7 @@
     <ItemGroup>
       <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="11.0.0" />
       <PackageReference Include="FirebaseAdmin" Version="2.3.0" />
+      <PackageReference Include="GoogleMaps.LocationServices" Version="1.2.0.5" />
       <PackageReference Include="MailKit" Version="3.2.0" />
       <PackageReference Include="Microsoft.AspNetCore.Mvc.Core" Version="2.2.5" />
       <PackageReference Include="System.Linq.Dynamic" Version="1.0.8" />

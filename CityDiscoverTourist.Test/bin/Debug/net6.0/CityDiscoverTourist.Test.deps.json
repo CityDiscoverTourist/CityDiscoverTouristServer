@@ -482,6 +482,17 @@
           "lib/netstandard2.0/Google.Apis.Core.dll": {}
         }
       },
+      "GoogleMaps.LocationServices/1.2.0.5": {
+        "runtime": {
+          "lib/netstandard2.0/GoogleMaps.LocationServices.dll": {
+            "assemblyVersion": "1.2.0.5",
+            "fileVersion": "1.2.0.5"
+          }
+        },
+        "compile": {
+          "lib/netstandard2.0/GoogleMaps.LocationServices.dll": {}
+        }
+      },
       "MailKit/3.2.0": {
         "dependencies": {
           "MimeKit": "3.2.0"
@@ -2963,6 +2974,7 @@
           "AutoMapper.Extensions.Microsoft.DependencyInjection": "11.0.0",
           "CityDiscoverTourist.Data": "1.0.0",
           "FirebaseAdmin": "2.3.0",
+          "GoogleMaps.LocationServices": "1.2.0.5",
           "MailKit": "3.2.0",
           "Microsoft.AspNetCore.Mvc.Core": "2.2.5",
           "System.Linq.Dynamic": "1.0.8",
@@ -4771,6 +4783,13 @@
       "sha512": "sha512-9DgGdtyzgrCfHWwc/HiDXDbykNMeKQozbEHYEUEcezRuH+YR3fvq7YGVBDmUM8g6qEL3kDk6h5EU4h0IJwue1w==",
       "path": "google.apis.core/1.49.0",
       "hashPath": "google.apis.core.1.49.0.nupkg.sha512"
+    },
+    "GoogleMaps.LocationServices/1.2.0.5": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-0j3RL5+acxYgQNz72JdXJ1nUKxMGaY+6UvrOIOxZfp0qpJOUmo/ivCAm53atbnuy0z3vrZK+j9mZifh35UBqag==",
+      "path": "googlemaps.locationservices/1.2.0.5",
+      "hashPath": "googlemaps.locationservices.1.2.0.5.nupkg.sha512"
     },
     "MailKit/3.2.0": {
       "type": "package",

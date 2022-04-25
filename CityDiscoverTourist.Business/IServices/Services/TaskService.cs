@@ -4,6 +4,7 @@ using CityDiscoverTourist.Business.Data.ResponseModel;
 using CityDiscoverTourist.Business.Helper;
 using CityDiscoverTourist.Business.Helper.Params;
 using CityDiscoverTourist.Data.IRepositories;
+using GoogleMaps.LocationServices;
 using Task = CityDiscoverTourist.Data.Models.Task;
 
 namespace CityDiscoverTourist.Business.IServices.Services;
@@ -13,24 +14,20 @@ public class TaskService: ITaskService
     private readonly ITaskRepository _taskRepository;
     private readonly IMapper _mapper;
     private readonly ISortHelper<Task> _sortHelper;
-    private readonly IDataShaper<Task> _dataShaper;
 
-    public TaskService(ITaskRepository taskRepository, IMapper mapper, ISortHelper<Task> sortHelper, IDataShaper<Task> dataShaper)
+    public TaskService(ITaskRepository taskRepository, IMapper mapper, ISortHelper<Task> sortHelper)
     {
         _taskRepository = taskRepository;
         _mapper = mapper;
         _sortHelper = sortHelper;
-        _dataShaper = dataShaper;
     }
 
     public PageList<TaskResponseModel> GetAll(TaskParams @params)
     {
         var listAll = _taskRepository.GetAll();
-
         Search(ref listAll, @params);
 
         var sortedQuests = _sortHelper.ApplySort(listAll, @params.OrderBy);
-        //var shapedData = _dataShaper.ShapeData(sortedQuests, @params.Fields);
         var mappedData = _mapper.Map<IEnumerable<TaskResponseModel>>(sortedQuests);
 
         return PageList<TaskResponseModel>.ToPageList(mappedData, @params.PageNume, @params.PageSize);

@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "kza+qmO8hbgvG32xUgNphRM22GIxOZ4OyeZ/huKkaU9bHCXhaUQNhIxj/Re8dNZ2n8krKKwINgD0y5aJTzvtkA==",
+  "dgSpecHash": "z2f28A8fhxDe37L82Y4o0Jbk7EU5AC5wfw9R7s5Nky/NdxXt9y+Qx6YcK2WPOBmIq/dyDQuoiFWD/qy8anmBYg==",
   "success": true,
   "projectFilePath": "D:\\C#\\CityDiscoverTourist\\CityDiscoverTourist.Test\\CityDiscoverTourist.Test.csproj",
   "expectedPackageFiles": [
@@ -15,6 +15,7 @@
     "C:\\Users\\Admin\\.nuget\\packages\\google.apis\\1.49.0\\google.apis.1.49.0.nupkg.sha512",
     "C:\\Users\\Admin\\.nuget\\packages\\google.apis.auth\\1.49.0\\google.apis.auth.1.49.0.nupkg.sha512",
     "C:\\Users\\Admin\\.nuget\\packages\\google.apis.core\\1.49.0\\google.apis.core.1.49.0.nupkg.sha512",
+    "C:\\Users\\Admin\\.nuget\\packages\\googlemaps.locationservices\\1.2.0.5\\googlemaps.locationservices.1.2.0.5.nupkg.sha512",
     "C:\\Users\\Admin\\.nuget\\packages\\mailkit\\3.2.0\\mailkit.3.2.0.nupkg.sha512",
     "C:\\Users\\Admin\\.nuget\\packages\\microsoft.aspnet.webapi.versioning\\4.1.1\\microsoft.aspnet.webapi.versioning.4.1.1.nupkg.sha512",
     "C:\\Users\\Admin\\.nuget\\packages\\microsoft.aspnetcore.authentication\\2.2.0\\microsoft.aspnetcore.authentication.2.2.0.nupkg.sha512",

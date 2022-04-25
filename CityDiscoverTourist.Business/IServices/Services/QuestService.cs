@@ -38,8 +38,6 @@ public class QuestService: IQuestService
     {
         var entity = await _questRepository.Get(id);
 
-        //var shaped = _dataShaper.ShapeData(entity, fields);
-
         return _mapper.Map<QuestResponseModel>(entity);
     }
 
