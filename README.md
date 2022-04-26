@@ -1,5 +1,10 @@
 ﻿# City-Discover-Tourist-Server
- [![ASP.NET](https://github.com/CityDiscoverTourist/CityDiscoverTouristServer/actions/workflows/dotnet.yml/badge.svg)](https://github.com/CityDiscoverTourist/CityDiscoverTouristServer/actions/workflows/dotnet.yml)
+
+
+# Introduction
+## City-Discover-Tourist-Server
+
+[![ASP.NET](https://github.com/CityDiscoverTourist/CityDiscoverTouristServer/actions/workflows/dotnet.yml/badge.svg)](https://github.com/CityDiscoverTourist/CityDiscoverTouristServer/actions/workflows/dotnet.yml)
  [![CI-CD](https://github.com/CityDiscoverTourist/CityDiscoverTouristServer/actions/workflows/build.yml/badge.svg)](https://github.com/CityDiscoverTourist/CityDiscoverTouristServer/actions/workflows/build.yml)
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=CityDiscoverTourist_CityDiscoverTouristServer&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=CityDiscoverTourist_CityDiscoverTouristServer)
 [![Lines of Code](https://sonarcloud.io/api/project_badges/measure?project=CityDiscoverTourist_CityDiscoverTouristServer&metric=ncloc)](https://sonarcloud.io/summary/new_code?id=CityDiscoverTourist_CityDiscoverTouristServer)
@@ -8,86 +13,148 @@
 
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](https://makeapullrequest.com)
 [![Hits](https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fgithub.com%2FCityDiscoverTourist%2FCityDiscoverTouristServer&count_bg=%2379C83D&title_bg=%23555555&icon=&icon_color=%23E7E7E7&title=hits&edge_flat=false)](https://hits.seeyoufarm.com)
+## :ledger: Index
 
-# City-Discover-Tourist-Server
+- [About](#beginner-about)
+- [Usage](#zap-usage)
+  - [Installation](#electric_plug-installation)
+  - [Commands](#package-commands)
+- [Development](#wrench-development)
+  - [Pre-Requisites](#notebook-pre-requisites)
+  - [Developmen Environment](#nut_and_bolt-development-environment)
+  - [File Structure](#file_folder-file-structure)
+  - [Build](#hammer-build)  
+  - [Deployment](#rocket-deployment)  
+- [Community](#cherry_blossom-community)
+  - [Contribution](#fire-contribution)
+  - [Branches](#cactus-branches)
+  - [Guideline](#exclamation-guideline)  
+- [FAQ](#question-faq)
+- [Resources](#page_facing_up-resources)
+- [Gallery](#camera-gallery)
+- [Credit/Acknowledgment](#star2-creditacknowledgment)
+- [License](#lock-license)
 
-An API server for a platform that allows tourists to buy Quests designed by experienced people. Quests are self-guided tours combined with interesting puzzle games on the trip.
+##  :beginner: About
+- An API server for a platform that allows tourists to buy Quests designed by experienced people. Quests are self-guided tours combined with interesting puzzle games on the trip.
+## :zap: Usage
 
-## Getting Started
+###  :electric_plug: Installation
+#### :electric_plug: Prerequisites
 
-These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See deployment for notes on how to deploy the project on a live system.
-
-### Prerequisites
-
-What things you need to install the software and how to install them
-
+###  :package: Commands
+- Commands to start the project.
 ```
-MSSQL
-.NET 6
-.NET runtime
-```
-
-### Installing
-
-A step by step series of examples that tell you how to get a development env running
-
-Say what the step will be
-
-```
-Give the example
-```
-
-And repeat
-
-```
-until finished
-```
-
-End with an example of getting some data out of the system or using it for a little demo
-
-## Running the tests
-
-Explain how to run the automated tests for this system
-
-### Break down into end to end tests
-
-Explain what these tests test and why
-
-```
-Give an example
+gitclone https://github.com/CityDiscoverTourist/CityDiscoverTouristServer.git
+dotnet restore
+dotnet build -c Release
+dotnet dotnet test -c Release --no-build --verbosity normal
+dotnet run
 ```
 
+##  :wrench: Development
+If you want other people to contribute to this project, this is the section, make sure you always add this.
 
-## Deployment
+### :notebook: Pre-Requisites
+List all the pre-requisites the system needs to develop this project.
+- MSSQL
+- Dotnet runtime
 
-Add additional notes about how to deploy this on a live system
+###  :nut_and_bolt: Development Environment
+Write about setting up the working environment for your project.
+- How to download the project...
+- How to install dependencies...
 
-## Built With
 
-* [DotNet](https://dotnet.microsoft.com/en-us/) - The web framework used
-* [Nuget](https://www.nuget.org/) - Package Management
-* [MSSQL](https://www.microsoft.com/en-us/sql-server/sql-server-downloads) - SQL
+###  :file_folder: File Structure
+Add a file structure here with the basic details about files, below is an example.
 
-## Contributing
+```
+.
+├── assets
+│   ├── css
+│   │   ├── index-ui.css
+│   │   └── rate-ui.css
+│   ├── images
+│   │   ├── icons
+│   │   │   ├── shrink-button.png
+│   │   │   └── umbrella.png
+│   │   ├── logo_144.png
+│   │   └── Untitled-1.psd
+│   └── javascript
+│       ├── index.js
+│       └── rate.js
+├── CNAME
+├── index.html
+├── rate.html
+└── README.md
+```
 
-Please read [CONTRIBUTING.md](https://gist.github.com/PurpleBooth/b24679402957c63ec426) for details on our code of conduct, and the process for submitting pull requests to us.
+###  :hammer: Build
+dotnet build -c Release
 
-## Versioning
+### :rocket: Deployment
+Write the deployment instruction here.
 
-We use [SemVer](http://semver.org/) for versioning. For the versions available, see the [tags on this repository](https://github.com/your/project/tags). 
+## :cherry_blossom: Community
 
-## Authors
+If it's open-source, talk about the community here, ask social media links and other links.
 
-* **Billie Thompson** - *Initial work* - [PurpleBooth](https://github.com/PurpleBooth)
+ ###  :fire: Contribution
 
-See also the list of [contributors](https://github.com/your/project/contributors) who participated in this project.
+ Your contributions are always welcome and appreciated. Following are the things you can do to contribute to this project.
 
-## License
+ 1. **Report a bug** <br>
+ If you think you have encountered a bug, and I should know about it, feel free to report it [here]() and I will take care of it.
 
-This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
+ 2. **Request a feature** <br>
+ You can also request for a feature [here](), and if it will viable, it will be picked for development.  
 
-## Acknowledgments
+ 3. **Create a pull request** <br>
+ It can't get better then this, your pull request will be appreciated by the community. You can get started by picking up any open issues from [here]() and make a pull request.
 
-* Hat tip to anyone whose code was used
-* Inspiration
-* etc
+ > If you are new to open-source, make sure to check read more about it [here](https://www.digitalocean.com/community/tutorial_series/an-introduction-to-open-source) and learn more about creating a pull request [here](https://www.digitalocean.com/community/tutorials/how-to-create-a-pull-request-on-github).
+
+
+ ### :cactus: Branches
+
+ I use an agile continuous integration methodology, so the version is frequently updated and development is really fast.
+
+1. **`stage`** is the development branch.
+
+2. **`master`** is the production branch.
+
+3. No other permanent branches should be created in the main repository, you can create feature branches but they should get merged with the master.
+
+**Steps to work with feature branch**
+
+1. To start working on a new feature, create a new branch prefixed with `feat` and followed by feature name. (ie. `feat-FEATURE-NAME`)
+2. Once you are done with your changes, you can raise PR.
+
+**Steps to create a pull request**
+
+1. Make a PR to `stage` branch.
+2. Comply with the best practices and guidelines e.g. where the PR concerns visual elements it should have an image showing the effect.
+3. It must pass all continuous integration checks and get positive reviews.
+
+After this, changes will be merged.
+
+
+### :exclamation: Guideline
+coding guidelines or other things you want people to follow should follow.
+
+
+## :question: FAQ
+You can optionally add a FAQ section about the project.
+
+##  :page_facing_up: Resources
+Add important resources here
+
+##  :camera: Gallery
+Pictures of your project.
+
+## :star2: Credit/Acknowledgment
+Credit the authors here.
+
+##  :lock: License
+Add a license here, or a link to it.
