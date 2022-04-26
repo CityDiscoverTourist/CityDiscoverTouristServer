@@ -126,8 +126,9 @@ Add a file structure here with the basic details about files, below is an exampl
 ```
 
 ###  :hammer: Build
+```
 dotnet build -c Release
-
+```
 ### :rocket: Deployment
 Write the deployment instruction here.
 
@@ -140,7 +141,7 @@ Add important resources here
 
 
 ## :star2: Credit/Acknowledgment
-Contributors
+### Contributors
 -
 
 ##  :lock: License
