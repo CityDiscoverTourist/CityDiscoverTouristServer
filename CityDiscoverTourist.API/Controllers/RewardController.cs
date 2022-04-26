@@ -24,7 +24,7 @@ public class RewardController : ControllerBase
 
     [HttpGet]
     //[Cached(600)]
-    public ApiResponse<PageList<RewardResponseModel>> GetTutorReTask([FromQuery] RewardParams param)
+    public ApiResponse<PageList<RewardResponseModel>> GetAll([FromQuery] RewardParams param)
     {
         var entity = _rewardService.GetAll(param);
 

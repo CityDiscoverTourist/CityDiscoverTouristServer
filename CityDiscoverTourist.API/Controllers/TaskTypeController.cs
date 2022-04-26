@@ -24,7 +24,7 @@ public class TaskTypeController : ControllerBase
 
     [HttpGet]
     //[Cached(600)]
-    public ApiResponse<PageList<TaskTypeResponseModel>> GetTutorReTask([FromQuery] TaskTypeParams param)
+    public ApiResponse<PageList<TaskTypeResponseModel>> GetAll([FromQuery] TaskTypeParams param)
     {
         var entity = _taskTypeService.GetAll(param);
 
