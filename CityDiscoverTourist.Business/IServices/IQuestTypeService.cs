@@ -7,8 +7,8 @@ namespace CityDiscoverTourist.Business.IServices;
 
 public interface IQuestTypeService
 {
-    public PageList<Entity> GetAll(QuestTypeParams @params);
-    public Task<QuestTypeResponseModel> Get(int id, string? fields);
+    public PageList<QuestTypeResponseModel> GetAll(QuestTypeParams @params);
+    public Task<QuestTypeResponseModel> Get(int id);
     public Task<QuestTypeResponseModel> CreateAsync(QuestTypeRequestModel request);
     public Task<QuestTypeResponseModel> UpdateAsync(QuestTypeRequestModel request);
     public Task<QuestTypeResponseModel> DeleteAsync(int id);

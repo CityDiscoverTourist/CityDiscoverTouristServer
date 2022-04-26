@@ -13,33 +13,29 @@ public class RewardService : IRewardService
     private readonly IRewardRepository  _rewardRepository;
     private readonly IMapper _mapper;
     private readonly ISortHelper<Reward> _sortHelper;
-    private readonly IDataShaper<Reward> _dataShaper;
 
-    public RewardService(IRewardRepository rewardRepository, IMapper mapper, ISortHelper<Reward> sortHelper, IDataShaper<Reward> dataShaper)
+    public RewardService(IRewardRepository rewardRepository, IMapper mapper, ISortHelper<Reward> sortHelper)
     {
         _rewardRepository = rewardRepository;
         _mapper = mapper;
         _sortHelper = sortHelper;
-        _dataShaper = dataShaper;
     }
 
-    public PageList<Entity> GetAll(RewardParams @params)
+    public PageList<RewardResponseModel> GetAll(RewardParams @params)
     {
         var listAll = _rewardRepository.GetAll();
 
         Search(ref listAll, @params);
 
         var sortedQuests = _sortHelper.ApplySort(listAll, @params.OrderBy);
-        var shapedData = _dataShaper.ShapeData(sortedQuests, @params.Fields);
+        var mappedData = _mapper.Map<IEnumerable<RewardResponseModel>>(sortedQuests);
 
-        return PageList<Entity>.ToPageList(shapedData, @params.PageNume, @params.PageSize);
+        return PageList<RewardResponseModel>.ToPageList(mappedData, @params.PageNume, @params.PageSize);
     }
 
     public async Task<RewardResponseModel> Get(int id)
     {
         var entity = await _rewardRepository.Get(id);
-
-        //var shaped = _dataShaper.ShapeData(entity, fields);
 
         return _mapper.Map<RewardResponseModel>(entity);
     }

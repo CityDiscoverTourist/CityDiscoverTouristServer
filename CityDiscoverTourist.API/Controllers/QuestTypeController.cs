@@ -24,7 +24,7 @@ public class QuestTypeController : ControllerBase
 
     [HttpGet]
     //[Cached(600)]
-    public ApiResponse<PageList<Entity>> GetTutorRequest([FromQuery] QuestTypeParams param)
+    public ApiResponse<PageList<QuestTypeResponseModel>> GetTutorRequest([FromQuery] QuestTypeParams param)
     {
         var entity = _questTypeService.GetAll(param);
 
@@ -39,15 +39,15 @@ public class QuestTypeController : ControllerBase
         };
         Response.Headers.Add("X-Pagination", JsonConvert.SerializeObject(metadata));
 
-        return ApiResponse<List<Entity>>.Ok2(entity, metadata);
+        return ApiResponse<List<QuestTypeResponseModel>>.Ok2(entity, metadata);
     }
 
     [HttpGet("{id:int}")]
     //[Cached(600)]
 
-    public async Task<ApiResponse<QuestTypeResponseModel>> Get(int id, string? fields)
+    public async Task<ApiResponse<QuestTypeResponseModel>> Get(int id)
     {
-        var entity = await _questTypeService.Get(id, fields);
+        var entity = await _questTypeService.Get(id);
 
         return ApiResponse<QuestType>.Ok(entity);
     }

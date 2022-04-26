@@ -24,7 +24,7 @@ public class RewardController : ControllerBase
 
     [HttpGet]
     //[Cached(600)]
-    public ApiResponse<PageList<Entity>> GetTutorReTask([FromQuery] RewardParams param)
+    public ApiResponse<PageList<RewardResponseModel>> GetTutorReTask([FromQuery] RewardParams param)
     {
         var entity = _rewardService.GetAll(param);
 
@@ -39,7 +39,7 @@ public class RewardController : ControllerBase
         };
         Response.Headers.Add("X-Pagination", JsonConvert.SerializeObject(metadata));
 
-        return ApiResponse<List<Entity>>.Ok2(entity, metadata);
+        return ApiResponse<List<RewardResponseModel>>.Ok2(entity, metadata);
     }
 
     [HttpGet("{id:int}")]

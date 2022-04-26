@@ -7,7 +7,7 @@ namespace CityDiscoverTourist.Business.IServices;
 
 public interface ITaskTypeService
 {
-    public PageList<Entity> GetAll(TaskTypeParams @params);
+    public PageList<TaskTypeResponseModel> GetAll(TaskTypeParams @params);
 
     public Task<TaskTypeResponseModel> Get(int id, string? fields);
     public Task<TaskTypeResponseModel> CreateAsync(TaskTypeRequestModel request);

@@ -40,15 +40,10 @@ public static class ConfigController
     public static void SetupHelper(this IServiceCollection services)
     {
         services.AddScoped<ISortHelper<Quest>, SortHelper<Quest>>();
-        services.AddScoped<IDataShaper<Quest>, DataShaper<Quest>>();
         services.AddScoped<ISortHelper<QuestType>, SortHelper<QuestType>>();
-        services.AddScoped<IDataShaper<QuestType>, DataShaper<QuestType>>();
         services.AddScoped<ISortHelper<TaskType>, SortHelper<TaskType>>();
-        services.AddScoped<IDataShaper<TaskType>, DataShaper<TaskType>>();
         services.AddScoped<ISortHelper<Task>, SortHelper<Task>>();
-        services.AddScoped<IDataShaper<Task>, DataShaper<Task>>();
         services.AddScoped<ISortHelper<Reward>, SortHelper<Reward>>();
-        services.AddScoped<IDataShaper<Reward>, DataShaper<Reward>>();
     }
 
     public static void SetupRepositories(this IServiceCollection services)
