@@ -7,7 +7,7 @@ namespace CityDiscoverTourist.Business.IServices;
 
 public interface IRewardService
 {
-    public PageList<Entity> GetAll(RewardParams @params);
+    public PageList<RewardResponseModel> GetAll(RewardParams @params);
     public Task<RewardResponseModel> Get(int id);
     public Task<RewardResponseModel> CreateAsync(RewardRequestModel request);
     public Task<RewardResponseModel> UpdateAsync(RewardRequestModel request);

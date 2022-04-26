@@ -25,7 +25,7 @@ public class QuestController : ControllerBase
 
     [HttpGet]
     //[Cached(600)]
-    public ApiResponse<PageList<QuestResponseModel>> GetTutorRequest([FromQuery] QuestParams param)
+    public ApiResponse<PageList<QuestResponseModel>> GetAll([FromQuery] QuestParams param)
     {
         var entity = _questService.GetAll(param);
 

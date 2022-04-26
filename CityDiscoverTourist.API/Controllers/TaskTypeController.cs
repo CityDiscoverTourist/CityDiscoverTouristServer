@@ -24,7 +24,7 @@ public class TaskTypeController : ControllerBase
 
     [HttpGet]
     //[Cached(600)]
-    public ApiResponse<PageList<Entity>> GetTutorReTask([FromQuery] TaskTypeParams param)
+    public ApiResponse<PageList<TaskTypeResponseModel>> GetAll([FromQuery] TaskTypeParams param)
     {
         var entity = _taskTypeService.GetAll(param);
 
@@ -39,7 +39,7 @@ public class TaskTypeController : ControllerBase
         };
         Response.Headers.Add("X-Pagination", JsonConvert.SerializeObject(metadata));
 
-        return ApiResponse<List<Entity>>.Ok2(entity, metadata);
+        return ApiResponse<List<TaskTypeResponseModel>>.Ok2(entity, metadata);
     }
 
     [HttpGet("{id:int}")]

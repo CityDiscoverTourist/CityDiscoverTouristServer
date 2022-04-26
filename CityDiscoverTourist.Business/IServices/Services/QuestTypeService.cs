@@ -13,33 +13,29 @@ public class QuestTypeService : IQuestTypeService
     private readonly IQuestTypeRepository _questTypeRepository;
     private readonly IMapper _mapper;
     private readonly ISortHelper<QuestType> _sortHelper;
-    private readonly IDataShaper<QuestType> _dataShaper;
 
-    public QuestTypeService(IMapper mapper, ISortHelper<QuestType> sortHelper, IDataShaper<QuestType> dataShaper, IQuestTypeRepository questTypeRepository)
+    public QuestTypeService(IMapper mapper, ISortHelper<QuestType> sortHelper, IQuestTypeRepository questTypeRepository)
     {
         _mapper = mapper;
         _sortHelper = sortHelper;
-        _dataShaper = dataShaper;
         _questTypeRepository = questTypeRepository;
     }
 
-    public PageList<Entity> GetAll(QuestTypeParams @params)
+    public PageList<QuestTypeResponseModel> GetAll(QuestTypeParams @params)
     {
         var listAll = _questTypeRepository.GetAll();
 
         Search(ref listAll, @params);
 
         var sortedQuests = _sortHelper.ApplySort(listAll, @params.OrderBy);
-        var shapedData = _dataShaper.ShapeData(sortedQuests, @params.Fields);
+        var mappedData = _mapper.Map<IEnumerable<QuestTypeResponseModel>>(sortedQuests);
 
-        return PageList<Entity>.ToPageList(shapedData, @params.PageNume, @params.PageSize);
+        return PageList<QuestTypeResponseModel>.ToPageList(mappedData, @params.PageNume, @params.PageSize);
     }
 
-    public async Task<QuestTypeResponseModel> Get(int id, string? fields)
+    public async Task<QuestTypeResponseModel> Get(int id)
     {
         var entity = await _questTypeRepository.Get(id);
-
-        //var shaped = _dataShaper.ShapeData(entity, fields);
 
         return _mapper.Map<QuestTypeResponseModel>(entity);
     }

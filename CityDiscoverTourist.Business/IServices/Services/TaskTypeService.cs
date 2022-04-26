@@ -13,33 +13,28 @@ public class TaskTypeService : ITaskTypeService
     private readonly ITaskTypeRepository _taskTypeRepository;
     private readonly IMapper _mapper;
     private readonly ISortHelper<TaskType> _sortHelper;
-    private readonly IDataShaper<TaskType> _dataShaper;
 
-    public TaskTypeService(ITaskTypeRepository taskTypeRepository, IMapper mapper, ISortHelper<TaskType> sortHelper, IDataShaper<TaskType> dataShaper)
+    public TaskTypeService(ITaskTypeRepository taskTypeRepository, IMapper mapper, ISortHelper<TaskType> sortHelper)
     {
         _taskTypeRepository = taskTypeRepository;
         _mapper = mapper;
         _sortHelper = sortHelper;
-        _dataShaper = dataShaper;
     }
 
-    public PageList<Entity> GetAll(TaskTypeParams @params)
+    public PageList<TaskTypeResponseModel> GetAll(TaskTypeParams @params)
     {
         var listAll = _taskTypeRepository.GetAll();
 
         Search(ref listAll, @params);
 
         var sortedQuests = _sortHelper.ApplySort(listAll, @params.OrderBy);
-        var shapedData = _dataShaper.ShapeData(sortedQuests, @params.Fields);
-
-        return PageList<Entity>.ToPageList(shapedData, @params.PageNume, @params.PageSize);
+        var mappedData = _mapper.Map<IEnumerable<TaskTypeResponseModel>>(sortedQuests);
+        return PageList<TaskTypeResponseModel>.ToPageList(mappedData, @params.PageNume, @params.PageSize);
     }
 
     public async Task<TaskTypeResponseModel> Get(int id, string? fields)
     {
         var entity = await _taskTypeRepository.Get(id);
-
-        //var shaped = _dataShaper.ShapeData(entity, fields);
 
         return _mapper.Map<TaskTypeResponseModel>(entity);
     }
