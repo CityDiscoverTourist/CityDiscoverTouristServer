@@ -4,3 +4,4 @@
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=CityDiscoverTourist_CityDiscoverTouristServer&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=CityDiscoverTourist_CityDiscoverTouristServer)
 [![Lines of Code](https://sonarcloud.io/api/project_badges/measure?project=CityDiscoverTourist_CityDiscoverTouristServer&metric=ncloc)](https://sonarcloud.io/summary/new_code?id=CityDiscoverTourist_CityDiscoverTouristServer)
 [![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=CityDiscoverTourist_CityDiscoverTouristServer&metric=sqale_rating)](https://sonarcloud.io/summary/new_code?id=CityDiscoverTourist_CityDiscoverTouristServer)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
