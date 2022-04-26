@@ -41,7 +41,7 @@
 ###  :package: Commands
 - Commands to start the project.
 ```
-gitclone https://github.com/CityDiscoverTourist/CityDiscoverTouristServer.git
+git clone https://github.com/CityDiscoverTourist/CityDiscoverTouristServer.git
 dotnet restore
 dotnet build -c Release
 dotnet dotnet test -c Release --no-build --verbosity normal
