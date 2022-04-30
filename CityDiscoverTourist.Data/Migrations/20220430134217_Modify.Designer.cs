@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CityDiscoverTourist.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20220420051559_a")]
-    partial class a
+    [Migration("20220430134217_Modify")]
+    partial class Modify
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -58,31 +58,6 @@ namespace CityDiscoverTourist.Data.Migrations
                     b.HasIndex("CustomerId");
 
                     b.ToTable("ActivityLogs");
-                });
-
-            modelBuilder.Entity("CityDiscoverTourist.Data.Models.Answer", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<string>("RightAnswer")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Status")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("TaskId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("TaskId")
-                        .IsUnique();
-
-                    b.ToTable("Answers");
                 });
 
             modelBuilder.Entity("CityDiscoverTourist.Data.Models.ApplicationUser", b =>
@@ -150,6 +125,54 @@ namespace CityDiscoverTourist.Data.Migrations
                     b.ToTable("AspNetUsers", (string)null);
                 });
 
+            modelBuilder.Entity("CityDiscoverTourist.Data.Models.Area", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<int>("CityId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("QuestId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CityId");
+
+                    b.HasIndex("QuestId");
+
+                    b.ToTable("Areas");
+                });
+
+            modelBuilder.Entity("CityDiscoverTourist.Data.Models.City", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Cities");
+                });
+
             modelBuilder.Entity("CityDiscoverTourist.Data.Models.Commission", b =>
                 {
                     b.Property<int>("Id")
@@ -158,18 +181,50 @@ namespace CityDiscoverTourist.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<string>("Percent")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("MaxAmount")
+                        .HasColumnType("int");
 
-                    b.Property<Guid>("QuestId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<int>("MaxCount")
+                        .HasColumnType("int");
+
+                    b.Property<int>("MinAmount")
+                        .HasColumnType("int");
+
+                    b.Property<int>("MinCount")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Percentage")
+                        .HasColumnType("int");
+
+                    b.Property<int>("QuestTypeId")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("QuestId")
-                        .IsUnique();
+                    b.HasIndex("QuestTypeId");
 
                     b.ToTable("Commissions");
+                });
+
+            modelBuilder.Entity("CityDiscoverTourist.Data.Models.Competition", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("CompetitionCode")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("QuestId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("QuestId");
+
+                    b.ToTable("Competitions");
                 });
 
             modelBuilder.Entity("CityDiscoverTourist.Data.Models.Contact", b =>
@@ -208,18 +263,20 @@ namespace CityDiscoverTourist.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<string>("Answer")
+                    b.Property<string>("AnswerImageUrl")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("CustomerTaskId")
                         .HasColumnType("int");
 
-                    b.Property<string>("Status")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("QuestItemId")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
                     b.HasIndex("CustomerTaskId");
+
+                    b.HasIndex("QuestItemId");
 
                     b.ToTable("CustomerAnswers");
                 });
@@ -235,20 +292,29 @@ namespace CityDiscoverTourist.Data.Migrations
                     b.Property<string>("BeginPoint")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("CompetitionId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("CreatedDate")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("CustomerId")
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("EndPoint")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid>("QuestId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<string>("FeedBack")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Rating")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CustomerId");
+                    b.HasIndex("CompetitionId");
 
-                    b.HasIndex("QuestId");
+                    b.HasIndex("CustomerId");
 
                     b.ToTable("CustomerQuests");
                 });
@@ -267,77 +333,22 @@ namespace CityDiscoverTourist.Data.Migrations
                     b.Property<float>("CurrentPoint")
                         .HasColumnType("real");
 
-                    b.Property<string>("CustomerId")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("CustomerQuestId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("QuestItemId")
+                        .HasColumnType("int");
 
                     b.Property<string>("Status")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("TaskId")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
 
-                    b.HasIndex("CustomerId");
+                    b.HasIndex("CustomerQuestId");
 
-                    b.HasIndex("TaskId");
+                    b.HasIndex("QuestItemId");
 
                     b.ToTable("CustomerTasks");
-                });
-
-            modelBuilder.Entity("CityDiscoverTourist.Data.Models.Experience", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<string>("CustomerId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("Status")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("TotalScore")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CustomerId")
-                        .IsUnique()
-                        .HasFilter("[CustomerId] IS NOT NULL");
-
-                    b.ToTable("Experiences");
-                });
-
-            modelBuilder.Entity("CityDiscoverTourist.Data.Models.FeedBack", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<string>("Content")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("CustomerId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<Guid?>("QuestId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<int>("Rating")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CustomerId");
-
-                    b.HasIndex("QuestId");
-
-                    b.ToTable("FeedBacks");
                 });
 
             modelBuilder.Entity("CityDiscoverTourist.Data.Models.Location", b =>
@@ -351,11 +362,17 @@ namespace CityDiscoverTourist.Data.Migrations
                     b.Property<string>("Address")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("AreaId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Latitude")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("LocationTypeId")
+                        .HasColumnType("int");
 
                     b.Property<string>("Longitude")
                         .HasColumnType("nvarchar(max)");
@@ -368,7 +385,30 @@ namespace CityDiscoverTourist.Data.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("AreaId");
+
+                    b.HasIndex("LocationTypeId");
+
                     b.ToTable("Locations");
+                });
+
+            modelBuilder.Entity("CityDiscoverTourist.Data.Models.LocationType", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("LocationTypes");
                 });
 
             modelBuilder.Entity("CityDiscoverTourist.Data.Models.Note", b =>
@@ -385,11 +425,82 @@ namespace CityDiscoverTourist.Data.Migrations
                     b.Property<int>("CustomerTaskId")
                         .HasColumnType("int");
 
+                    b.Property<string>("Image")
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("Id");
 
                     b.HasIndex("CustomerTaskId");
 
                     b.ToTable("Notes");
+                });
+
+            modelBuilder.Entity("CityDiscoverTourist.Data.Models.OwnerPayment", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<float>("Commission")
+                        .HasColumnType("real");
+
+                    b.Property<int>("OwnerId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("OwnerPaymentPeriodId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("PaymentPeriodId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("QuestId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
+
+                    b.Property<float>("TotalAmount")
+                        .HasColumnType("real");
+
+                    b.Property<int>("TotalCount")
+                        .HasColumnType("int");
+
+                    b.Property<int>("TransactionId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("OwnerId");
+
+                    b.HasIndex("OwnerPaymentPeriodId");
+
+                    b.HasIndex("QuestId");
+
+                    b.HasIndex("TransactionId")
+                        .IsUnique();
+
+                    b.ToTable("OwnerPayments");
+                });
+
+            modelBuilder.Entity("CityDiscoverTourist.Data.Models.OwnerPaymentPeriod", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<DateTime?>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("EndDate")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("OwnerPaymentPeriods");
                 });
 
             modelBuilder.Entity("CityDiscoverTourist.Data.Models.Payment", b =>
@@ -419,18 +530,17 @@ namespace CityDiscoverTourist.Data.Migrations
 
             modelBuilder.Entity("CityDiscoverTourist.Data.Models.Quest", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<DateTime?>("AvailableTime")
                         .HasColumnType("datetime2");
 
                     b.Property<DateTime?>("CreatedDate")
                         .HasColumnType("datetime2");
-
-                    b.Property<string>("CustomerId")
-                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
@@ -443,6 +553,9 @@ namespace CityDiscoverTourist.Data.Migrations
 
                     b.Property<float>("Price")
                         .HasColumnType("real");
+
+                    b.Property<int>("QuestOwnerId")
+                        .HasColumnType("int");
 
                     b.Property<int>("QuestTypeId")
                         .HasColumnType("int");
@@ -458,14 +571,14 @@ namespace CityDiscoverTourist.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CustomerId");
+                    b.HasIndex("QuestOwnerId");
 
                     b.HasIndex("QuestTypeId");
 
                     b.ToTable("Quests");
                 });
 
-            modelBuilder.Entity("CityDiscoverTourist.Data.Models.QuestNote", b =>
+            modelBuilder.Entity("CityDiscoverTourist.Data.Models.QuestItem", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -473,20 +586,104 @@ namespace CityDiscoverTourist.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
+                    b.Property<string>("AnswerImageUrl")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Content")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<DateTime?>("CreatedDate")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid>("QuestId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<int>("Duration")
+                        .HasColumnType("int");
+
+                    b.Property<int>("LocationId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("QrCode")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("QuestId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("QuestItemTypeId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("RightAnswer")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("TriggerMode")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("UpdatedDate")
+                        .HasColumnType("datetime2");
 
                     b.HasKey("Id");
 
+                    b.HasIndex("LocationId");
+
                     b.HasIndex("QuestId");
 
-                    b.ToTable("QuestNotes");
+                    b.HasIndex("QuestItemTypeId");
+
+                    b.ToTable("QuestItems");
+                });
+
+            modelBuilder.Entity("CityDiscoverTourist.Data.Models.QuestItemType", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("QuestItemTypes");
+                });
+
+            modelBuilder.Entity("CityDiscoverTourist.Data.Models.QuestOwner", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("Address")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Email")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Password")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PhoneNumber")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Username")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("WalletId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("WalletId")
+                        .IsUnique();
+
+                    b.ToTable("QuestOwners");
                 });
 
             modelBuilder.Entity("CityDiscoverTourist.Data.Models.QuestType", b =>
@@ -496,6 +693,12 @@ namespace CityDiscoverTourist.Data.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("DistanceMode")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("DurationMode")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
@@ -517,7 +720,6 @@ namespace CityDiscoverTourist.Data.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<string>("CustomerId")
-                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<DateTime?>("ExpiredDate")
@@ -525,6 +727,9 @@ namespace CityDiscoverTourist.Data.Migrations
 
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("QuestId")
+                        .HasColumnType("int");
 
                     b.Property<DateTime?>("ReceivedDate")
                         .HasColumnType("datetime2");
@@ -535,6 +740,8 @@ namespace CityDiscoverTourist.Data.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("CustomerId");
+
+                    b.HasIndex("QuestId");
 
                     b.ToTable("Rewards");
                 });
@@ -550,64 +757,50 @@ namespace CityDiscoverTourist.Data.Migrations
                     b.Property<string>("Content")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("QuestItemId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Status")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("TaskId")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
 
-                    b.HasIndex("TaskId");
+                    b.HasIndex("QuestItemId");
 
                     b.ToTable("Suggestions");
                 });
 
-            modelBuilder.Entity("CityDiscoverTourist.Data.Models.Task", b =>
+            modelBuilder.Entity("CityDiscoverTourist.Data.Models.Transaction", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<string>("Address")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Content")
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime?>("CreatedDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("Description")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("Duration")
-                        .HasColumnType("int");
-
-                    b.Property<Guid>("QuestId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<string>("Status")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("TaskTypeId")
-                        .HasColumnType("int");
+                    b.Property<float>("Total")
+                        .HasColumnType("real");
 
-                    b.Property<DateTime?>("UpdatedDate")
-                        .HasColumnType("datetime2");
+                    b.Property<string>("TypeTransaction")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("WalletId")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("QuestId");
+                    b.HasIndex("WalletId");
 
-                    b.HasIndex("TaskTypeId");
-
-                    b.ToTable("Tasks");
+                    b.ToTable("Transactions");
                 });
 
-            modelBuilder.Entity("CityDiscoverTourist.Data.Models.TaskType", b =>
+            modelBuilder.Entity("CityDiscoverTourist.Data.Models.Wallet", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -615,30 +808,15 @@ namespace CityDiscoverTourist.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<string>("Name")
+                    b.Property<string>("CurrencyUnit")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Status")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<float>("Total")
+                        .HasColumnType("real");
 
                     b.HasKey("Id");
 
-                    b.ToTable("TaskTypes");
-                });
-
-            modelBuilder.Entity("LocationQuest", b =>
-                {
-                    b.Property<int>("LocationsId")
-                        .HasColumnType("int");
-
-                    b.Property<Guid>("QuestsId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("LocationsId", "QuestsId");
-
-                    b.HasIndex("QuestsId");
-
-                    b.ToTable("LocationQuest");
+                    b.ToTable("Wallets");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -783,22 +961,41 @@ namespace CityDiscoverTourist.Data.Migrations
                     b.Navigation("Customer");
                 });
 
-            modelBuilder.Entity("CityDiscoverTourist.Data.Models.Answer", b =>
+            modelBuilder.Entity("CityDiscoverTourist.Data.Models.Area", b =>
                 {
-                    b.HasOne("CityDiscoverTourist.Data.Models.Task", "Task")
-                        .WithOne("Answer")
-                        .HasForeignKey("CityDiscoverTourist.Data.Models.Answer", "TaskId")
+                    b.HasOne("CityDiscoverTourist.Data.Models.City", "City")
+                        .WithMany("Areas")
+                        .HasForeignKey("CityId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Task");
+                    b.HasOne("CityDiscoverTourist.Data.Models.Quest", "Quest")
+                        .WithMany("Areas")
+                        .HasForeignKey("QuestId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("City");
+
+                    b.Navigation("Quest");
                 });
 
             modelBuilder.Entity("CityDiscoverTourist.Data.Models.Commission", b =>
                 {
+                    b.HasOne("CityDiscoverTourist.Data.Models.QuestType", "QuestType")
+                        .WithMany("Commissions")
+                        .HasForeignKey("QuestTypeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("QuestType");
+                });
+
+            modelBuilder.Entity("CityDiscoverTourist.Data.Models.Competition", b =>
+                {
                     b.HasOne("CityDiscoverTourist.Data.Models.Quest", "Quest")
-                        .WithOne("Commission")
-                        .HasForeignKey("CityDiscoverTourist.Data.Models.Commission", "QuestId")
+                        .WithMany("Competitions")
+                        .HasForeignKey("QuestId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -813,65 +1010,70 @@ namespace CityDiscoverTourist.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("CityDiscoverTourist.Data.Models.QuestItem", "QuestItem")
+                        .WithMany("CustomerAnswers")
+                        .HasForeignKey("QuestItemId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("CustomerTask");
+
+                    b.Navigation("QuestItem");
                 });
 
             modelBuilder.Entity("CityDiscoverTourist.Data.Models.CustomerQuest", b =>
                 {
+                    b.HasOne("CityDiscoverTourist.Data.Models.Competition", "Competition")
+                        .WithMany("CustomerQuests")
+                        .HasForeignKey("CompetitionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("CityDiscoverTourist.Data.Models.ApplicationUser", "Customer")
                         .WithMany("CustomerQuests")
                         .HasForeignKey("CustomerId");
 
-                    b.HasOne("CityDiscoverTourist.Data.Models.Quest", "Quest")
-                        .WithMany("CustomerQuests")
-                        .HasForeignKey("QuestId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.Navigation("Competition");
 
                     b.Navigation("Customer");
-
-                    b.Navigation("Quest");
                 });
 
             modelBuilder.Entity("CityDiscoverTourist.Data.Models.CustomerTask", b =>
                 {
-                    b.HasOne("CityDiscoverTourist.Data.Models.ApplicationUser", "Customer")
+                    b.HasOne("CityDiscoverTourist.Data.Models.CustomerQuest", "CustomerQuest")
                         .WithMany("CustomerTasks")
-                        .HasForeignKey("CustomerId");
-
-                    b.HasOne("CityDiscoverTourist.Data.Models.Task", "Task")
-                        .WithMany("CustomerTasks")
-                        .HasForeignKey("TaskId")
+                        .HasForeignKey("CustomerQuestId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Customer");
+                    b.HasOne("CityDiscoverTourist.Data.Models.QuestItem", "QuestItem")
+                        .WithMany()
+                        .HasForeignKey("QuestItemId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-                    b.Navigation("Task");
+                    b.Navigation("CustomerQuest");
+
+                    b.Navigation("QuestItem");
                 });
 
-            modelBuilder.Entity("CityDiscoverTourist.Data.Models.Experience", b =>
+            modelBuilder.Entity("CityDiscoverTourist.Data.Models.Location", b =>
                 {
-                    b.HasOne("CityDiscoverTourist.Data.Models.ApplicationUser", "Customer")
-                        .WithOne("Experience")
-                        .HasForeignKey("CityDiscoverTourist.Data.Models.Experience", "CustomerId");
+                    b.HasOne("CityDiscoverTourist.Data.Models.Area", "Area")
+                        .WithMany("Locations")
+                        .HasForeignKey("AreaId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-                    b.Navigation("Customer");
-                });
+                    b.HasOne("CityDiscoverTourist.Data.Models.LocationType", "LocationType")
+                        .WithMany("Locations")
+                        .HasForeignKey("LocationTypeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-            modelBuilder.Entity("CityDiscoverTourist.Data.Models.FeedBack", b =>
-                {
-                    b.HasOne("CityDiscoverTourist.Data.Models.ApplicationUser", "Customer")
-                        .WithMany("FeedBacks")
-                        .HasForeignKey("CustomerId");
+                    b.Navigation("Area");
 
-                    b.HasOne("CityDiscoverTourist.Data.Models.Quest", "Quest")
-                        .WithMany("FeedBack")
-                        .HasForeignKey("QuestId");
-
-                    b.Navigation("Customer");
-
-                    b.Navigation("Quest");
+                    b.Navigation("LocationType");
                 });
 
             modelBuilder.Entity("CityDiscoverTourist.Data.Models.Note", b =>
@@ -883,6 +1085,39 @@ namespace CityDiscoverTourist.Data.Migrations
                         .IsRequired();
 
                     b.Navigation("CustomerTask");
+                });
+
+            modelBuilder.Entity("CityDiscoverTourist.Data.Models.OwnerPayment", b =>
+                {
+                    b.HasOne("CityDiscoverTourist.Data.Models.QuestOwner", "Owner")
+                        .WithMany("OwnerPayments")
+                        .HasForeignKey("OwnerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("CityDiscoverTourist.Data.Models.OwnerPaymentPeriod", "OwnerPaymentPeriod")
+                        .WithMany("OwnerPayments")
+                        .HasForeignKey("OwnerPaymentPeriodId");
+
+                    b.HasOne("CityDiscoverTourist.Data.Models.Quest", "Quest")
+                        .WithMany("OwnerPayments")
+                        .HasForeignKey("QuestId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("CityDiscoverTourist.Data.Models.Transaction", "Transaction")
+                        .WithOne("OwnerPayments")
+                        .HasForeignKey("CityDiscoverTourist.Data.Models.OwnerPayment", "TransactionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Owner");
+
+                    b.Navigation("OwnerPaymentPeriod");
+
+                    b.Navigation("Quest");
+
+                    b.Navigation("Transaction");
                 });
 
             modelBuilder.Entity("CityDiscoverTourist.Data.Models.Payment", b =>
@@ -898,9 +1133,11 @@ namespace CityDiscoverTourist.Data.Migrations
 
             modelBuilder.Entity("CityDiscoverTourist.Data.Models.Quest", b =>
                 {
-                    b.HasOne("CityDiscoverTourist.Data.Models.ApplicationUser", "Customer")
-                        .WithMany("Quests")
-                        .HasForeignKey("CustomerId");
+                    b.HasOne("CityDiscoverTourist.Data.Models.QuestOwner", "QuestOwner")
+                        .WithMany()
+                        .HasForeignKey("QuestOwnerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("CityDiscoverTourist.Data.Models.QuestType", "QuestType")
                         .WithMany("Quests")
@@ -908,76 +1145,86 @@ namespace CityDiscoverTourist.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Customer");
+                    b.Navigation("QuestOwner");
 
                     b.Navigation("QuestType");
                 });
 
-            modelBuilder.Entity("CityDiscoverTourist.Data.Models.QuestNote", b =>
+            modelBuilder.Entity("CityDiscoverTourist.Data.Models.QuestItem", b =>
                 {
+                    b.HasOne("CityDiscoverTourist.Data.Models.Location", "Location")
+                        .WithMany("QuestItems")
+                        .HasForeignKey("LocationId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("CityDiscoverTourist.Data.Models.Quest", "Quest")
-                        .WithMany("QuestNotes")
+                        .WithMany("QuestItems")
                         .HasForeignKey("QuestId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("CityDiscoverTourist.Data.Models.QuestItemType", "QuestTypeItem")
+                        .WithMany("QuestItems")
+                        .HasForeignKey("QuestItemTypeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Location");
+
                     b.Navigation("Quest");
+
+                    b.Navigation("QuestTypeItem");
+                });
+
+            modelBuilder.Entity("CityDiscoverTourist.Data.Models.QuestOwner", b =>
+                {
+                    b.HasOne("CityDiscoverTourist.Data.Models.Wallet", "Wallet")
+                        .WithOne("QuestOwner")
+                        .HasForeignKey("CityDiscoverTourist.Data.Models.QuestOwner", "WalletId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Wallet");
                 });
 
             modelBuilder.Entity("CityDiscoverTourist.Data.Models.Reward", b =>
                 {
                     b.HasOne("CityDiscoverTourist.Data.Models.ApplicationUser", "Customer")
                         .WithMany("Rewards")
-                        .HasForeignKey("CustomerId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("CustomerId");
 
-                    b.Navigation("Customer");
-                });
-
-            modelBuilder.Entity("CityDiscoverTourist.Data.Models.Suggestion", b =>
-                {
-                    b.HasOne("CityDiscoverTourist.Data.Models.Task", "Task")
-                        .WithMany("Suggestions")
-                        .HasForeignKey("TaskId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Task");
-                });
-
-            modelBuilder.Entity("CityDiscoverTourist.Data.Models.Task", b =>
-                {
                     b.HasOne("CityDiscoverTourist.Data.Models.Quest", "Quest")
-                        .WithMany("Tasks")
+                        .WithMany("Rewards")
                         .HasForeignKey("QuestId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("CityDiscoverTourist.Data.Models.TaskType", "TaskType")
-                        .WithMany("Tasks")
-                        .HasForeignKey("TaskTypeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.Navigation("Customer");
 
                     b.Navigation("Quest");
-
-                    b.Navigation("TaskType");
                 });
 
-            modelBuilder.Entity("LocationQuest", b =>
+            modelBuilder.Entity("CityDiscoverTourist.Data.Models.Suggestion", b =>
                 {
-                    b.HasOne("CityDiscoverTourist.Data.Models.Location", null)
-                        .WithMany()
-                        .HasForeignKey("LocationsId")
+                    b.HasOne("CityDiscoverTourist.Data.Models.QuestItem", "QuestItem")
+                        .WithMany("Suggestions")
+                        .HasForeignKey("QuestItemId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("CityDiscoverTourist.Data.Models.Quest", null)
-                        .WithMany()
-                        .HasForeignKey("QuestsId")
+                    b.Navigation("QuestItem");
+                });
+
+            modelBuilder.Entity("CityDiscoverTourist.Data.Models.Transaction", b =>
+                {
+                    b.HasOne("CityDiscoverTourist.Data.Models.Wallet", "Wallet")
+                        .WithMany("Transactions")
+                        .HasForeignKey("WalletId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Wallet");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -1037,19 +1284,28 @@ namespace CityDiscoverTourist.Data.Migrations
 
                     b.Navigation("CustomerQuests");
 
-                    b.Navigation("CustomerTasks");
-
-                    b.Navigation("Experience");
-
-                    b.Navigation("FeedBacks");
-
-                    b.Navigation("Quests");
-
                     b.Navigation("Rewards");
+                });
+
+            modelBuilder.Entity("CityDiscoverTourist.Data.Models.Area", b =>
+                {
+                    b.Navigation("Locations");
+                });
+
+            modelBuilder.Entity("CityDiscoverTourist.Data.Models.City", b =>
+                {
+                    b.Navigation("Areas");
+                });
+
+            modelBuilder.Entity("CityDiscoverTourist.Data.Models.Competition", b =>
+                {
+                    b.Navigation("CustomerQuests");
                 });
 
             modelBuilder.Entity("CityDiscoverTourist.Data.Models.CustomerQuest", b =>
                 {
+                    b.Navigation("CustomerTasks");
+
                     b.Navigation("PaymentMethod");
                 });
 
@@ -1060,36 +1316,68 @@ namespace CityDiscoverTourist.Data.Migrations
                     b.Navigation("Notes");
                 });
 
+            modelBuilder.Entity("CityDiscoverTourist.Data.Models.Location", b =>
+                {
+                    b.Navigation("QuestItems");
+                });
+
+            modelBuilder.Entity("CityDiscoverTourist.Data.Models.LocationType", b =>
+                {
+                    b.Navigation("Locations");
+                });
+
+            modelBuilder.Entity("CityDiscoverTourist.Data.Models.OwnerPaymentPeriod", b =>
+                {
+                    b.Navigation("OwnerPayments");
+                });
+
             modelBuilder.Entity("CityDiscoverTourist.Data.Models.Quest", b =>
                 {
-                    b.Navigation("Commission");
+                    b.Navigation("Areas");
 
-                    b.Navigation("CustomerQuests");
+                    b.Navigation("Competitions");
 
-                    b.Navigation("FeedBack");
+                    b.Navigation("OwnerPayments");
 
-                    b.Navigation("QuestNotes");
+                    b.Navigation("QuestItems");
 
-                    b.Navigation("Tasks");
+                    b.Navigation("Rewards");
                 });
 
-            modelBuilder.Entity("CityDiscoverTourist.Data.Models.QuestType", b =>
+            modelBuilder.Entity("CityDiscoverTourist.Data.Models.QuestItem", b =>
                 {
-                    b.Navigation("Quests");
-                });
-
-            modelBuilder.Entity("CityDiscoverTourist.Data.Models.Task", b =>
-                {
-                    b.Navigation("Answer");
-
-                    b.Navigation("CustomerTasks");
+                    b.Navigation("CustomerAnswers");
 
                     b.Navigation("Suggestions");
                 });
 
-            modelBuilder.Entity("CityDiscoverTourist.Data.Models.TaskType", b =>
+            modelBuilder.Entity("CityDiscoverTourist.Data.Models.QuestItemType", b =>
                 {
-                    b.Navigation("Tasks");
+                    b.Navigation("QuestItems");
+                });
+
+            modelBuilder.Entity("CityDiscoverTourist.Data.Models.QuestOwner", b =>
+                {
+                    b.Navigation("OwnerPayments");
+                });
+
+            modelBuilder.Entity("CityDiscoverTourist.Data.Models.QuestType", b =>
+                {
+                    b.Navigation("Commissions");
+
+                    b.Navigation("Quests");
+                });
+
+            modelBuilder.Entity("CityDiscoverTourist.Data.Models.Transaction", b =>
+                {
+                    b.Navigation("OwnerPayments");
+                });
+
+            modelBuilder.Entity("CityDiscoverTourist.Data.Models.Wallet", b =>
+                {
+                    b.Navigation("QuestOwner");
+
+                    b.Navigation("Transactions");
                 });
 #pragma warning restore 612, 618
         }
