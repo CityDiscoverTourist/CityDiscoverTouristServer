@@ -7,7 +7,6 @@ using CityDiscoverTourist.Business.IServices.Services;
 using CityDiscoverTourist.Data.Models;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
-using Answer = CityDiscoverTourist.Data.Models.Answer;
 
 namespace CityDiscoverTourist.API.Controllers;
 

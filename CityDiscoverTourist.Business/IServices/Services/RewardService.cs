@@ -64,6 +64,6 @@ public class RewardService : IRewardService
     {
         if (!entities.Any() || string.IsNullOrWhiteSpace(param.Name) && !param.ExpiredDate.HasValue) return;
 
-        entities = entities.Where(x => x.Name!.Contains(param.Name!) || x.ExpiredDate.Equals(param.ExpiredDate));
+        //entities = entities.Where(x => x.Name!.Contains(param.Name!) || x.ExpiredDate.Equals(param.ExpiredDate));
     }
 }

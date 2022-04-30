@@ -9,23 +9,34 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
     }
 
-    public DbSet<Quest> Quests { get; set; }
-    public DbSet<Task> Tasks { get; set; }
-    public DbSet<QuestType> QuestTypes { get; set; }
-    public DbSet<TaskType> TaskTypes { get; set; }
-    public DbSet<FeedBack> FeedBacks { get; set; }
-    public DbSet<Suggestion> Suggestions { get; set; }
-    public DbSet<Answer> Answers { get; set; }
-    public DbSet<ActivityLog> ActivityLogs { get; set; }
-    public DbSet<Reward> Rewards { get; set; }
-    public DbSet<Experience> Experiences { get; set; }
-    public DbSet<Location> Locations { get; set; }
-    public DbSet<Contact> Contacts { get; set; }
-    public DbSet<CustomerAnswer> CustomerAnswers { get; set; }
-    public DbSet<CustomerTask> CustomerTasks { get; set; }
-    public DbSet<CustomerQuest> CustomerQuests { get; set; }
-    public DbSet<Note> Notes { get; set; }
-    public DbSet<Payment> Payments { get; set; }
-    public DbSet<Commission> Commissions { get; set; }
-    public DbSet<QuestNote> QuestNotes { get; set; }
+    public DbSet<Quest> Quests { get; set; }//
+    //public DbSet<Task> Tasks { get; set; }
+    public DbSet<QuestType> QuestTypes { get; set; }//
+    //public DbSet<TaskType> TaskTypes { get; set; }
+    //public DbSet<FeedBack> FeedBacks { get; set; }
+    public DbSet<Suggestion> Suggestions { get; set; }//
+    //public DbSet<Answer> Answers { get; set; }
+    public DbSet<ActivityLog> ActivityLogs { get; set; }//
+    public DbSet<Reward> Rewards { get; set; }//
+    //public DbSet<Experience> Experiences { get; set; }
+    public DbSet<Location> Locations { get; set; }//
+    public DbSet<Contact> Contacts { get; set; }//
+    public DbSet<CustomerAnswer> CustomerAnswers { get; set; }//
+    public DbSet<CustomerTask> CustomerTasks { get; set; }//
+    public DbSet<CustomerQuest> CustomerQuests { get; set; }//
+    public DbSet<Note> Notes { get; set; }//
+    public DbSet<Payment> Payments { get; set; }//
+    public DbSet<Commission> Commissions { get; set; }//
+    //public DbSet<QuestNote> QuestNotes { get; set; }
+    public DbSet<Area> Areas { get; set; }//
+    public DbSet<City> Cities { get; set; }//
+    public DbSet<Competition> Competitions { get; set; }//
+    public DbSet<LocationType> LocationTypes { get; set; }//
+    public DbSet<OwnerPayment> OwnerPayments { get; set; }//
+    public DbSet<OwnerPaymentPeriod> OwnerPaymentPeriods { get; set; }//
+    public DbSet<QuestItem> QuestItems { get; set; }//
+    public DbSet<QuestItemType> QuestItemTypes { get; set; }//
+    public DbSet<QuestOwner> QuestOwners { get; set; }//
+    public DbSet<Transaction> Transactions { get; set; }//
+    public DbSet<Wallet> Wallets { get; set; }//
 }

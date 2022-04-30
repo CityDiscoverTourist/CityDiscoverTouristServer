@@ -6,9 +6,8 @@ namespace CityDiscoverTourist.Data.Models;
 public class Suggestion: BaseEntity
 {
     public string? Content { get; set; }
-
-    public Task? Task { get; set; }
-    public int TaskId { get; set; }
-
     public string? Status { get; set; }
+
+    public QuestItem? QuestItem { get; set; }
+    public int QuestItemId { get; set; }
 }

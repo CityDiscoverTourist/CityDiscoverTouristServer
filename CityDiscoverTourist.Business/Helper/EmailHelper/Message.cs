@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Http;
 using MimeKit;
 
-namespace TutorHelper_v2.Business.Helper.EmailHelper;
+namespace CityDiscoverTourist.Business.Helper.EmailHelper;
 
 public abstract class Message
 {
