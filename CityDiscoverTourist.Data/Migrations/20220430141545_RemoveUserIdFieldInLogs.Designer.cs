@@ -4,6 +4,7 @@ using CityDiscoverTourist.Data.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CityDiscoverTourist.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220430141545_RemoveUserIdFieldInLogs")]
+    partial class RemoveUserIdFieldInLogs
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -549,7 +551,7 @@ namespace CityDiscoverTourist.Data.Migrations
                     b.Property<float>("Price")
                         .HasColumnType("real");
 
-                    b.Property<int?>("QuestOwnerId")
+                    b.Property<int>("QuestOwnerId")
                         .HasColumnType("int");
 
                     b.Property<int>("QuestTypeId")
@@ -1138,7 +1140,9 @@ namespace CityDiscoverTourist.Data.Migrations
                 {
                     b.HasOne("CityDiscoverTourist.Data.Models.QuestOwner", "QuestOwner")
                         .WithMany()
-                        .HasForeignKey("QuestOwnerId");
+                        .HasForeignKey("QuestOwnerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("CityDiscoverTourist.Data.Models.QuestType", "QuestType")
                         .WithMany("Quests")

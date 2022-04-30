@@ -6,8 +6,6 @@ namespace CityDiscoverTourist.Data.Models;
 
 public class Quest: BaseEntity
 {
-    /*[Key]
-    public Guid Id { get; set; }*/
     public string? Title { get; set; }
     public string? Description { get; set; }
     public float Price { get; set; }
@@ -23,7 +21,7 @@ public class Quest: BaseEntity
     public int QuestTypeId { get; set; }
 
     public QuestOwner? QuestOwner { get; set; }
-    public int QuestOwnerId { get; set; }
+    public int? QuestOwnerId { get; set; }
 
     public List<QuestItem>? QuestItems { get; set; }
 
