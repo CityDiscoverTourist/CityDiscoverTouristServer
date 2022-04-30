@@ -21,6 +21,9 @@ public class QuestItem: BaseEntity
     public string? RightAnswer { get; set; }
     public string? AnswerImageUrl { get; set; }
 
+    public QuestItem? Item { get; set; }
+    public int QuestItemId { get; set; }
+
     public List<Suggestion>? Suggestions { get; set; }
     public List<CustomerAnswer>? CustomerAnswers { get; set; }
 }
