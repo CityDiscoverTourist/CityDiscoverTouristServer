@@ -1,6 +1,4 @@
-﻿using TutorHelper_v2.Business.Helper.EmailHelper;
-
-namespace CityDiscoverTourist.Business.Helper.EmailHelper;
+﻿namespace CityDiscoverTourist.Business.Helper.EmailHelper;
 
 public interface IEmailSender
 {

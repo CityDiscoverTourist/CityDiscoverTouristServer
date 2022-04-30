@@ -4,14 +4,14 @@ public class CustomerTask: BaseEntity
 {
     public float CurrentPoint { get; set; }
     public string? Status { get; set; }
-    public DateTime? CreatedDate { get; set; } = null;
+    public DateTime? CreatedDate { get; set; }
+
+    public QuestItem? QuestItem { get; set; }
+    public int QuestItemId { get; set; }
+
+    public CustomerQuest? CustomerQuest { get; set; }
+    public int CustomerQuestId { get; set; }
+
     public List<CustomerAnswer>? CustomerAnswers { get; set; }
     public List<Note>? Notes { get; set; }
-
-    public Task? Task { get; set; }
-    public int TaskId { get; set; }
-
-    public ApplicationUser? Customer { get; set; }
-    public string? CustomerId { get; set; }
-
 }

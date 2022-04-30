@@ -9,7 +9,6 @@ using CityDiscoverTourist.Data.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Mvc.ApplicationModels;
 using Microsoft.OpenApi.Models;
-using Task = CityDiscoverTourist.Data.Models.Task;
 
 namespace CityDiscoverTourist.API.Config;
 
@@ -23,9 +22,8 @@ public static class ConfigController
         services.AddScoped<IAuthService, AuthService>();
         services.AddScoped<IQuestService, QuestService>();
         services.AddScoped<IQuestTypeService, QuestTypeService>();
-        services.AddScoped<ITaskTypeService, TaskTypeService>();
-        services.AddScoped<ITaskService, TaskService>();
-        services.AddScoped<IExperienceService, ExperienceService>();
+        services.AddScoped<IQuestItemTypeService, QuestItemTypeService>();
+        services.AddScoped<IQuestItemService, QuestItemService>();
         services.AddScoped<IRewardService, RewardService>();
         services.AddScoped<IFacebookService, FacebookService>();
         services.AddScoped<IContactService, ContactService>();
@@ -41,8 +39,8 @@ public static class ConfigController
     {
         services.AddScoped<ISortHelper<Quest>, SortHelper<Quest>>();
         services.AddScoped<ISortHelper<QuestType>, SortHelper<QuestType>>();
-        services.AddScoped<ISortHelper<TaskType>, SortHelper<TaskType>>();
-        services.AddScoped<ISortHelper<Task>, SortHelper<Task>>();
+        services.AddScoped<ISortHelper<QuestItemType>, SortHelper<QuestItemType>>();
+        services.AddScoped<ISortHelper<QuestItem>, SortHelper<QuestItem>>();
         services.AddScoped<ISortHelper<Reward>, SortHelper<Reward>>();
     }
 
@@ -50,15 +48,13 @@ public static class ConfigController
     {
         services.AddScoped<IQuestRepository, QuestRepository>();
         services.AddScoped<IQuestTypeRepository, QuestTypeRepository>();
-        services.AddScoped<ITaskRepository, TaskRepository>();
-        services.AddScoped<ITaskTypeRepository, TaskTypeRepository>();
+        services.AddScoped<IQuestItemRepository, QuestItemRepository>();
+        services.AddScoped<IQuestItemTypeRepository, QuestItemTypeRepository>();
         services.AddScoped<ISuggestionRepository, SuggestionRepository>();
         services.AddScoped<IRewardRepository, RewardRepository>();
         services.AddScoped<ILocationRepository, LocationRepository>();
-        services.AddScoped<IFeedbackRepository, FeedbackRepository>();
-        services.AddScoped<IExperienceRepository, ExperienceRepository>();
         services.AddScoped<IContactRepository, ContactRepository>();
-        services.AddScoped<IAnswerRepository, AnswerRepository>();
+        //services.AddScoped<IAnswerRepository, AnswerRepository>();
         services.AddScoped<ICustomerAnswerRepository, CustomerAnswerRepository>();
         services.AddScoped<ICustomerTaskRepository, CustomerTaskRepository>();
         services.AddScoped<ICustomerQuestRepository, CustomerQuestRepository>();

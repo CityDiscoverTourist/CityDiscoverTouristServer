@@ -6,7 +6,6 @@ using CityDiscoverTourist.Business.Helper.Params;
 using CityDiscoverTourist.Business.IServices;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
-using Task = CityDiscoverTourist.Data.Models.Task;
 
 namespace CityDiscoverTourist.API.Controllers;
 

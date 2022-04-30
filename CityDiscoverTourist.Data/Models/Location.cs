@@ -12,5 +12,11 @@ public class Location: BaseEntity
     public string? Address { get; set; }
     public string? Status { get; set; }
 
-    public List<Quest>? Quests { get; set; }
+    public int AreaId { get; set; }
+    public Area? Area { get; set; }
+
+    public LocationType? LocationType { get; set; }
+    public int LocationTypeId { get; set; }
+
+    public List<QuestItem>? QuestItems { get; set; }
 }

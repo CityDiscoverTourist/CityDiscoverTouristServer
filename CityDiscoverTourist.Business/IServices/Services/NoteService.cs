@@ -5,7 +5,6 @@ using CityDiscoverTourist.Business.Helper;
 using CityDiscoverTourist.Business.Helper.Params;
 using CityDiscoverTourist.Data.IRepositories;
 using CityDiscoverTourist.Data.Models;
-using Task = CityDiscoverTourist.Data.Models.Task;
 
 namespace CityDiscoverTourist.Business.IServices.Services;
 

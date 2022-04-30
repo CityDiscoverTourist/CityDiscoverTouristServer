@@ -8,7 +8,6 @@ using CityDiscoverTourist.Business.IServices.Services;
 using CityDiscoverTourist.Data.Models;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
-using Task = CityDiscoverTourist.Data.Models.Task;
 
 namespace CityDiscoverTourist.API.Controllers;
 

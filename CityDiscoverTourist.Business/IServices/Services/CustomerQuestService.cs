@@ -12,11 +12,11 @@ namespace CityDiscoverTourist.Business.IServices.Services;
 public class CustomerQuestService: ICustomerQuestService
 {
     private readonly ICustomerQuestRepository _customerQuestRepository;
-    private readonly ITaskRepository _taskRepository;
+    private readonly IQuestItemRepository _taskRepository;
     private readonly IMapper _mapper;
     private const int BaseMultiplier = 150;
 
-    public CustomerQuestService(ICustomerQuestRepository customerQuestRepository, IMapper mapper, ITaskRepository taskRepository)
+    public CustomerQuestService(ICustomerQuestRepository customerQuestRepository, IMapper mapper, IQuestItemRepository taskRepository)
     {
         _customerQuestRepository = customerQuestRepository;
         _mapper = mapper;
@@ -30,7 +30,12 @@ public class CustomerQuestService: ICustomerQuestService
         return _mapper.Map<CustomerQuestResponseModel>(entity);
     }
 
-    public async Task<CustomerQuestResponseModel> CreateAsync(CustomerQuestRequestModel request)
+    public Task<CustomerQuestResponseModel> CreateAsync(CustomerQuestRequestModel request)
+    {
+        throw new NotImplementedException();
+    }
+
+    /*public async Task<CustomerQuestResponseModel> CreateAsync(CustomerQuestRequestModel request)
     {
         var numberOfTask = CountTaskInQuest(request.QuestId);
         var entity = _mapper.Map<CustomerQuest>(request);
@@ -39,7 +44,7 @@ public class CustomerQuestService: ICustomerQuestService
         entity.BeginPoint = beginPoint.ToString();
         entity = await _customerQuestRepository.Add(entity);
         return _mapper.Map<CustomerQuestResponseModel>(entity);
-    }
+    }*/
 
     public async Task<CustomerQuestResponseModel> UpdateAsync(CustomerQuestRequestModel request)
     {
@@ -54,10 +59,10 @@ public class CustomerQuestService: ICustomerQuestService
         return _mapper.Map<CustomerQuestResponseModel>(entity);
     }
 
-    private int CountTaskInQuest(Guid questId)
+    /*private int CountTaskInQuest(Guid questId)
     {
         var listAll = _taskRepository.GetAll();
         var count = listAll.Count(r => r.QuestId.Equals(questId));
         return count;
-    }
+    }*/
 }

@@ -4,10 +4,10 @@ using System.Runtime.Serialization;
 
 namespace CityDiscoverTourist.Data.Models;
 
-public class Quest
+public class Quest: BaseEntity
 {
-    [Key]
-    public Guid Id { get; set; }
+    /*[Key]
+    public Guid Id { get; set; }*/
     public string? Title { get; set; }
     public string? Description { get; set; }
     public float Price { get; set; }
@@ -22,15 +22,17 @@ public class Quest
     public QuestType? QuestType { get; set; }
     public int QuestTypeId { get; set; }
 
-    public List<Task>? Tasks { get; set; }
+    public QuestOwner? QuestOwner { get; set; }
+    public int QuestOwnerId { get; set; }
 
-    public List<FeedBack>? FeedBack { get; set; }
-    public List<CustomerQuest>? CustomerQuests { get; set; }
-    public List<Location>? Locations { get; set; }
-    public List<QuestNote>? QuestNotes { get; set; }
+    public List<QuestItem>? QuestItems { get; set; }
 
-    public ApplicationUser? Customer { get; set; }
-    public string? CustomerId { get; set; }
+    public List<Area>? Areas { get; set; }
 
-    public Commission? Commission { get; set; }
+    public List<Competition>? Competitions { get; set; }
+
+    public List<OwnerPayment>? OwnerPayments { get; set; }
+
+    public List<Reward>? Rewards { get; set; }
+
 }
