@@ -43,10 +43,10 @@ public class QuestController : ControllerBase
         return ApiResponse<List<QuestResponseModel>>.Ok2(entity, metadata);
     }
 
-    [HttpGet("{id:guid}")]
+    [HttpGet("{id:int}")]
     //[Cached(600)]
 
-    public async Task<ApiResponse<QuestResponseModel>> Get(Guid id)
+    public async Task<ApiResponse<QuestResponseModel>> Get(int id)
     {
         var entity = await _questService.Get(id);
 
@@ -67,8 +67,8 @@ public class QuestController : ControllerBase
         return ApiResponse<Quest>.Created(entity);
     }
 
-    [HttpDelete("{id:guid}")]
-    public async Task<ActionResult<ApiResponse<QuestResponseModel>>> Delete(Guid id)
+    [HttpDelete("{id:int}")]
+    public async Task<ActionResult<ApiResponse<QuestResponseModel>>> Delete(int id)
     {
         var entity = await _questService.DeleteAsync(id);
         return ApiResponse<Quest>.Ok(entity);
