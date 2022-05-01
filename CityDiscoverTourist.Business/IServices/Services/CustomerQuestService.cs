@@ -14,13 +14,27 @@ public class CustomerQuestService: ICustomerQuestService
     private readonly ICustomerQuestRepository _customerQuestRepository;
     private readonly IQuestItemRepository _taskRepository;
     private readonly IMapper _mapper;
+    private readonly ISortHelper<CustomerQuest> _sortHelper;
     private const int BaseMultiplier = 150;
 
-    public CustomerQuestService(ICustomerQuestRepository customerQuestRepository, IMapper mapper, IQuestItemRepository taskRepository)
+    public CustomerQuestService(ICustomerQuestRepository customerQuestRepository, IMapper mapper, IQuestItemRepository taskRepository, ISortHelper<CustomerQuest> sortHelper)
     {
         _customerQuestRepository = customerQuestRepository;
         _mapper = mapper;
         _taskRepository = taskRepository;
+        _sortHelper = sortHelper;
+    }
+
+    public PageList<CustomerQuestResponseModel> GetAll(CustomerQuestParams @params)
+    {
+        var listAll = _customerQuestRepository.GetAll();
+
+        //Search(ref listAll, param);
+
+        var sortedQuests = _sortHelper.ApplySort(listAll, @params.OrderBy);
+        //var shapedData = _dataShaper.ShapeData(sortedQuests, param.Fields);
+        var mappedData = _mapper.Map<IEnumerable<CustomerQuestResponseModel>>(sortedQuests);
+        return PageList<CustomerQuestResponseModel>.ToPageList(mappedData, @params.PageNume, @params.PageSize);
     }
 
     public async Task<CustomerQuestResponseModel> Get(int id)

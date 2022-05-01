@@ -12,11 +12,25 @@ public class NoteService: INoteService
 {
     private readonly INoteRepository _noteRepository;
     private readonly IMapper _mapper;
+    private readonly ISortHelper<Note> _sortHelper;
 
-    public NoteService(INoteRepository noteRepository, IMapper mapper)
+    public NoteService(INoteRepository noteRepository, IMapper mapper, ISortHelper<Note> sortHelper)
     {
         _noteRepository = noteRepository;
         _mapper = mapper;
+        _sortHelper = sortHelper;
+    }
+
+    public PageList<Note> GetAll(NoteParams @params)
+    {
+        var listAll = _noteRepository.GetAll();
+
+        //Search(ref listAll, param);
+
+        var sortedQuests = _sortHelper.ApplySort(listAll, @params.OrderBy);
+        //var shapedData = _dataShaper.ShapeData(sortedQuests, param.Fields);
+        var mappedData = _mapper.Map<IEnumerable<Note>>(sortedQuests);
+        return PageList<Note>.ToPageList(mappedData, @params.PageNume, @params.PageSize);
     }
 
     public async Task<Note> Get(int id)

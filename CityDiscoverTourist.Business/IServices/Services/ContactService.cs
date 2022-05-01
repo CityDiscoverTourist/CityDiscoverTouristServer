@@ -17,6 +17,12 @@ public class ContactService: IContactService
         _contactRepository = experienceRepository;
     }
 
+    public IQueryable<Contact> GetContactAsync()
+    {
+        var contact = _contactRepository.GetAll();
+        return contact;
+    }
+
     public async Task<Contact> Get(int id)
     {
         var entity = await _contactRepository.Get(id);

@@ -12,36 +12,30 @@ public class CommissionService: ICommissionService
 {
     private readonly ICommissionRepository _commissionService;
     private readonly IMapper _mapper;
+    private readonly ISortHelper<Commission> _sortHelper;
 
-    public CommissionService(ICommissionRepository questRepository, IMapper mapper)
+    public CommissionService(ICommissionRepository questRepository, IMapper mapper, ISortHelper<Commission> sortHelper)
     {
         _commissionService = questRepository;
         _mapper = mapper;
+        _sortHelper = sortHelper;
     }
 
-
-    /*public PageList<Commission> GetAll(Commission param)
+    public PageList<Commission> GetAll(CommissionParams @params)
     {
         var listAll = _commissionService.GetAll();
 
         //Search(ref listAll, param);
 
-        var sortedQuests = _sortHelper.ApplySort(listAll, param.OrderBy);
+        var sortedQuests = _sortHelper.ApplySort(listAll, @params.OrderBy);
         //var shapedData = _dataShaper.ShapeData(sortedQuests, param.Fields);
         var mappedData = _mapper.Map<IEnumerable<Commission>>(sortedQuests);
-        return PageList<Commission>.ToPageList(mappedData, param.PageNume, param.PageSize);
-    }*/
-
-    public PageList<Commission> GetAll(Commission @params)
-    {
-        throw new NotImplementedException();
+        return PageList<Commission>.ToPageList(mappedData, @params.PageNume, @params.PageSize);
     }
 
     public async Task<Commission> Get(int id)
     {
         var entity = await _commissionService.Get(id);
-
-        //var shaped = _dataShaper.ShapeData(entity, fields);
 
         return _mapper.Map<Commission>(entity);
     }
@@ -66,15 +60,6 @@ public class CommissionService: ICommissionService
         return _mapper.Map<Commission>(entity);
     }
 
-
-    /*private static void Search(ref IQueryable<Quest> entities, QuestParams param)
-    {
-        if (!entities.Any() || string.IsNullOrWhiteSpace(param.Name) && string.IsNullOrWhiteSpace(param.Status)) return;
-
-        entities = entities.Where(r => r.Status!.Contains(param.Status!));
-
-
-    }*/
     /*private static void Search(ref IQueryable<Commission> entities, QuestParams param)
     {
         if (!entities.Any()) return;

@@ -8,6 +8,7 @@ public class RewardResponseModel
     public DateTime ReceivedDate { get; set; }
 
     public string? CustomerId { get; set; }
+    public int QuestId { get; set; }
 
     public string? Status { get; set; }
 }

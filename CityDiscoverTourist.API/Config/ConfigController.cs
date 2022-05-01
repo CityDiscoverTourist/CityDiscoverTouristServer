@@ -32,6 +32,13 @@ public static class ConfigController
         services.AddScoped<ICustomerAnswerService, CustomerAnswerService>();
         services.AddScoped<ICustomerQuestService, CustomerQuestService>();
         services.AddScoped<ICustomerTaskService, CustomerTaskService>();
+        services.AddScoped<ICommissionService, CommissionService>();
+        services.AddScoped<ICityService, CityService>();
+        services.AddScoped<IAreaService, AreaService>();
+        services.AddScoped<ILocationService, LocationService>();
+        services.AddScoped<ILocationService, LocationService>();
+        services.AddScoped<ILocationTypeService, LocationTypeService>();
+        services.AddScoped<ICompetitionService, CompetitionService>();
 
     }
 
@@ -42,6 +49,14 @@ public static class ConfigController
         services.AddScoped<ISortHelper<QuestItemType>, SortHelper<QuestItemType>>();
         services.AddScoped<ISortHelper<QuestItem>, SortHelper<QuestItem>>();
         services.AddScoped<ISortHelper<Reward>, SortHelper<Reward>>();
+        services.AddScoped<ISortHelper<Commission>, SortHelper<Commission>>();
+        services.AddScoped<ISortHelper<City>, SortHelper<City>>();
+        services.AddScoped<ISortHelper<Area>, SortHelper<Area>>();
+        services.AddScoped<ISortHelper<Location>, SortHelper<Location>>();
+        services.AddScoped<ISortHelper<LocationType>, SortHelper<LocationType>>();
+        services.AddScoped<ISortHelper<Note>, SortHelper<Note>>();
+        services.AddScoped<ISortHelper<CustomerQuest>, SortHelper<CustomerQuest>>();
+        services.AddScoped<ISortHelper<Competition>, SortHelper<Competition>>();
     }
 
     public static void SetupRepositories(this IServiceCollection services)
@@ -54,13 +69,17 @@ public static class ConfigController
         services.AddScoped<IRewardRepository, RewardRepository>();
         services.AddScoped<ILocationRepository, LocationRepository>();
         services.AddScoped<IContactRepository, ContactRepository>();
-        //services.AddScoped<IAnswerRepository, AnswerRepository>();
+        services.AddScoped<IAreaRepository, AreaRepository>();
         services.AddScoped<ICustomerAnswerRepository, CustomerAnswerRepository>();
         services.AddScoped<ICustomerTaskRepository, CustomerTaskRepository>();
         services.AddScoped<ICustomerQuestRepository, CustomerQuestRepository>();
         services.AddScoped<ICommissionRepository, CommissionRepository>();
         services.AddScoped<INoteRepository, NoteRepository>();
         services.AddScoped<IPaymentRepository, PaymentRepository>();
+        services.AddScoped<ICityRepository, CityRepository>();
+        services.AddScoped<ILocationRepository, LocationRepository>();
+        services.AddScoped<ILocationTypeRepository, LocationTypeRepository>();
+        services.AddScoped<ICompetitionRepository, CompetitionRepository>();
     }
 
     public static void SetupSwagger(this IServiceCollection services, IConfiguration configuration)

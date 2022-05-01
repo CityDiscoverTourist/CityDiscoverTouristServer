@@ -26,7 +26,7 @@ public class QuestService: IQuestService
     {
         var listAll = _questRepository.GetAll();
 
-        //Search(ref listAll, param);
+        Search(ref listAll, param);
 
         var sortedQuests = _sortHelper.ApplySort(listAll, param.OrderBy);
         //var shapedData = _dataShaper.ShapeData(sortedQuests, param.Fields);
@@ -34,7 +34,7 @@ public class QuestService: IQuestService
         return PageList<QuestResponseModel>.ToPageList(mappedData, param.PageNume, param.PageSize);
     }
 
-    public async Task<QuestResponseModel> Get(Guid id)
+    public async Task<QuestResponseModel> Get(int id)
     {
         var entity = await _questRepository.Get(id);
 
@@ -55,22 +55,13 @@ public class QuestService: IQuestService
         return _mapper.Map<QuestResponseModel>(entity);
     }
 
-    public async Task<QuestResponseModel> DeleteAsync(Guid questId)
+    public async Task<QuestResponseModel> DeleteAsync(int questId)
     {
         var entity = await _questRepository.Delete(questId);
         return _mapper.Map<QuestResponseModel>(entity);
     }
 
-
-    /*private static void Search(ref IQueryable<Quest> entities, QuestParams param)
-    {
-        if (!entities.Any() || string.IsNullOrWhiteSpace(param.Name) && string.IsNullOrWhiteSpace(param.Status)) return;
-
-        entities = entities.Where(r => r.Status!.Contains(param.Status!));
-
-
-    }*/
-    /*private static void Search(ref IQueryable<Quest> entities, QuestParams param)
+    private static void Search(ref IQueryable<Quest> entities, QuestParams param)
     {
         if (!entities.Any()) return;
 
@@ -86,5 +77,5 @@ public class QuestService: IQuestService
         {
             entities = entities.Where(r => r.Status!.Contains(param.Status));
         }
-    }*/
+    }
 }
