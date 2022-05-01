@@ -24,6 +24,27 @@ public class CustomerQuestController : ControllerBase
         _customerQuestService = customerQuestService;
     }
 
+    [HttpGet]
+    //[Cached(600)]
+    public ApiResponse<PageList<CustomerQuestResponseModel>> GetAll([FromQuery] CustomerQuestParams param)
+    {
+        var entity = _customerQuestService.GetAll(param);
+
+        var metadata = new
+        {
+            entity.TotalCount,
+            entity.TotalPages,
+            entity.PageSize,
+            entity.CurrentPage,
+            entity.HasNext,
+            entity.HasPrevious,
+        };
+        Response.Headers.Add("X-Pagination", JsonConvert.SerializeObject(metadata));
+
+        return ApiResponse<List<CustomerQuestResponseModel>>.Ok2(entity, metadata);
+    }
+
+
     [HttpGet("{id:int}")]
     //[Cached(600)]
     public async Task<ApiResponse<CustomerQuestResponseModel>> Get(int id)

@@ -1,6 +1,6 @@
-namespace CityDiscoverTourist.Business.Data.RequestModel;
+namespace CityDiscoverTourist.Business.Data.ResponseModel;
 
-public class TaskTypeRequestModel
+public class QuestItemTypeResponseModel
 {
     public int Id { get; set; }
 

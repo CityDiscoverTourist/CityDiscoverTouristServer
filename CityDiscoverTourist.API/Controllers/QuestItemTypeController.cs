@@ -24,7 +24,7 @@ public class QuestItemTypeController : ControllerBase
 
     [HttpGet]
     //[Cached(600)]
-    public ApiResponse<PageList<TaskTypeResponseModel>> GetAll([FromQuery] TaskTypeParams param)
+    public ApiResponse<PageList<QuestItemTypeResponseModel>> GetAll([FromQuery] TaskTypeParams param)
     {
         var entity = _taskTypeService.GetAll(param);
 
@@ -39,13 +39,13 @@ public class QuestItemTypeController : ControllerBase
         };
         Response.Headers.Add("X-Pagination", JsonConvert.SerializeObject(metadata));
 
-        return ApiResponse<List<TaskTypeResponseModel>>.Ok2(entity, metadata);
+        return ApiResponse<List<QuestItemTypeResponseModel>>.Ok2(entity, metadata);
     }
 
     [HttpGet("{id:int}")]
     //[Cached(600)]
 
-    public async Task<ApiResponse<TaskTypeResponseModel>> Get(int id, string? fields)
+    public async Task<ApiResponse<QuestItemTypeResponseModel>> Get(int id, string? fields)
     {
         var entity = await _taskTypeService.Get(id, fields);
 
@@ -53,21 +53,21 @@ public class QuestItemTypeController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<ApiResponse<TaskTypeResponseModel>> Post(TaskTypeRequestModel data)
+    public async Task<ApiResponse<QuestItemTypeResponseModel>> Post(QuestItemTypeRequestModel data)
     {
         var entity = await _taskTypeService.CreateAsync(data);
         return ApiResponse<QuestItemType>.Created(entity);
     }
 
     [HttpPut]
-    public async Task<ApiResponse<TaskTypeResponseModel>> Put(TaskTypeRequestModel data)
+    public async Task<ApiResponse<QuestItemTypeResponseModel>> Put(QuestItemTypeRequestModel data)
     {
         var entity = await _taskTypeService.UpdateAsync(data);
         return ApiResponse<QuestItemType>.Created(entity);
     }
 
     [HttpDelete("{id:int}")]
-    public async Task<ActionResult<ApiResponse<TaskTypeResponseModel>>> Delete(int id)
+    public async Task<ActionResult<ApiResponse<QuestItemTypeResponseModel>>> Delete(int id)
     {
         var entity = await _taskTypeService.DeleteAsync(id);
         return ApiResponse<QuestItemType>.Ok(entity);

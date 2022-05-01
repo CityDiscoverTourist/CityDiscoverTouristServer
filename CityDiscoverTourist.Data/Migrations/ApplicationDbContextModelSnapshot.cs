@@ -608,7 +608,7 @@ namespace CityDiscoverTourist.Data.Migrations
                     b.Property<int>("QuestId")
                         .HasColumnType("int");
 
-                    b.Property<int>("QuestItemId")
+                    b.Property<int?>("QuestItemId")
                         .HasColumnType("int");
 
                     b.Property<int>("QuestItemTypeId")

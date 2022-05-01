@@ -7,10 +7,10 @@ namespace CityDiscoverTourist.Business.IServices;
 
 public interface IQuestItemTypeService
 {
-    public PageList<TaskTypeResponseModel> GetAll(TaskTypeParams @params);
+    public PageList<QuestItemTypeResponseModel> GetAll(TaskTypeParams @params);
 
-    public Task<TaskTypeResponseModel> Get(int id, string? fields);
-    public Task<TaskTypeResponseModel> CreateAsync(TaskTypeRequestModel request);
-    public Task<TaskTypeResponseModel> UpdateAsync(TaskTypeRequestModel request);
-    public Task<TaskTypeResponseModel> DeleteAsync(int id);
+    public Task<QuestItemTypeResponseModel> Get(int id, string? fields);
+    public Task<QuestItemTypeResponseModel> CreateAsync(QuestItemTypeRequestModel request);
+    public Task<QuestItemTypeResponseModel> UpdateAsync(QuestItemTypeRequestModel request);
+    public Task<QuestItemTypeResponseModel> DeleteAsync(int id);
 }

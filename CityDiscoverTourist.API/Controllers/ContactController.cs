@@ -17,6 +17,13 @@ public class ContactController : ControllerBase
         _contactService = contactService;
     }
 
+    [HttpGet]
+    public  Task<ApiResponse<IQueryable<Contact>>> GetAll()
+    {
+        var contacts = _contactService.GetContactAsync();
+        return Task.FromResult(ApiResponse<Contact>.Ok(contacts));
+    }
+
     [HttpGet("{id:int}")]
     //[Cached(600)]
     public async Task<ApiResponse<Contact>> Get(int id)

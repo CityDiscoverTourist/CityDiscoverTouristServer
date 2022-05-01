@@ -19,7 +19,7 @@ public class QuestControllerTest
         questService.Setup(x => x.CreateAsync(It.IsAny<QuestRequestModel>()))
             .ReturnsAsync((QuestRequestModel request) => new QuestResponseModel()
             {
-                Id = Guid.Empty,
+                Id = 1,
                 Title = request.Title,
                 Description = request.Description,
                 Price = request.Price,
@@ -53,7 +53,7 @@ public class QuestControllerTest
         questService.Setup(x => x.Get(It.IsAny<int>()))
             .ReturnsAsync(new QuestResponseModel()
             {
-                Id = Guid.Empty,
+                Id = 1,
                 Title = "Test",
                 Description = "TestDescription",
                 Price = 100,
