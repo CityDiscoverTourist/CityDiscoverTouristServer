@@ -39,6 +39,12 @@ public static class ConfigController
         services.AddScoped<ILocationService, LocationService>();
         services.AddScoped<ILocationTypeService, LocationTypeService>();
         services.AddScoped<ICompetitionService, CompetitionService>();
+        services.AddScoped<IOwnerPaymentPeriodService, OwnerPaymentPeriodService>();
+        services.AddScoped<IQuestOwnerService, QuestOwnerService>();
+        services.AddScoped<IWalletService, WalletService>();
+        services.AddScoped<ITransactionService, TransactionService>();
+        services.AddScoped<IPaymentService, PaymentService>();
+        services.AddScoped<IOwnerPaymentService, OwnerPaymentService>();
 
     }
 
@@ -57,6 +63,12 @@ public static class ConfigController
         services.AddScoped<ISortHelper<Note>, SortHelper<Note>>();
         services.AddScoped<ISortHelper<CustomerQuest>, SortHelper<CustomerQuest>>();
         services.AddScoped<ISortHelper<Competition>, SortHelper<Competition>>();
+        services.AddScoped<ISortHelper<OwnerPaymentPeriod>, SortHelper<OwnerPaymentPeriod>>();
+        services.AddScoped<ISortHelper<QuestOwner>, SortHelper<QuestOwner>>();
+        services.AddScoped<ISortHelper<Wallet>, SortHelper<Wallet>>();
+        services.AddScoped<ISortHelper<Transaction>, SortHelper<Transaction>>();
+        services.AddScoped<ISortHelper<Payment>, SortHelper<Payment>>();
+        services.AddScoped<ISortHelper<OwnerPayment>, SortHelper<OwnerPayment>>();
     }
 
     public static void SetupRepositories(this IServiceCollection services)
@@ -80,6 +92,11 @@ public static class ConfigController
         services.AddScoped<ILocationRepository, LocationRepository>();
         services.AddScoped<ILocationTypeRepository, LocationTypeRepository>();
         services.AddScoped<ICompetitionRepository, CompetitionRepository>();
+        services.AddScoped<IOwnerPaymentPeriodRepository, OwnerPaymentPeriodRepository>();
+        services.AddScoped<IQuestOwnerRepository, QuestOwnerRepository>();
+        services.AddScoped<IWalletRepository, WalletRepository>();
+        services.AddScoped<ITransactionRepository, TransactionRepository>();
+        services.AddScoped<IOwnerPaymentRepository, OwnerPaymentRepository>();
     }
 
     public static void SetupSwagger(this IServiceCollection services, IConfiguration configuration)
