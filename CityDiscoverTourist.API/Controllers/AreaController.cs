@@ -1,4 +1,5 @@
 using CityDiscoverTourist.API.Response;
+using CityDiscoverTourist.Business.Data.RequestModel;
 using CityDiscoverTourist.Business.Helper;
 using CityDiscoverTourist.Business.Helper.Params;
 using CityDiscoverTourist.Business.IServices;
@@ -51,14 +52,14 @@ public class AreaController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<ApiResponse<Area>> Post(Area data)
+    public async Task<ApiResponse<Area>> Post(AreaRequestModel data)
     {
         var entity = await _areaService.CreateAsync(data);
         return ApiResponse<Quest>.Created(entity);
     }
 
     [HttpPut]
-    public async Task<ApiResponse<Area>> Put([FromBody] Area data)
+    public async Task<ApiResponse<Area>> Put([FromBody] AreaRequestModel data)
     {
         var entity = await _areaService.UpdateAsync(data);
         return ApiResponse<Quest>.Created(entity);

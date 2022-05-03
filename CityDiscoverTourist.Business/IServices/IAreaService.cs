@@ -10,7 +10,7 @@ public interface IAreaService
 {
     public PageList<Area> GetAll(AreaParams @params);
     public Task<Area> Get(int id);
-    public Task<Area> CreateAsync(Area request);
-    public Task<Area> UpdateAsync(Area request);
+    public Task<Area> CreateAsync(AreaRequestModel request);
+    public Task<Area> UpdateAsync(AreaRequestModel request);
     public Task<Area> DeleteAsync(int id);
 }

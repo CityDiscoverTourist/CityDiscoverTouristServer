@@ -15,18 +15,18 @@ namespace CityDiscoverTourist.API.Controllers;
 [ApiController]
 public class QuestItemTypeController : ControllerBase
 {
-    private readonly IQuestItemTypeService _taskTypeService;
+    private readonly IQuestItemTypeService _questItemTypeService;
 
-    public QuestItemTypeController(IQuestItemTypeService taskTypeService)
+    public QuestItemTypeController(IQuestItemTypeService questItemTypeService)
     {
-        _taskTypeService = taskTypeService;
+        _questItemTypeService = questItemTypeService;
     }
 
     [HttpGet]
     //[Cached(600)]
     public ApiResponse<PageList<QuestItemTypeResponseModel>> GetAll([FromQuery] TaskTypeParams param)
     {
-        var entity = _taskTypeService.GetAll(param);
+        var entity = _questItemTypeService.GetAll(param);
 
         var metadata = new
         {
@@ -47,7 +47,7 @@ public class QuestItemTypeController : ControllerBase
 
     public async Task<ApiResponse<QuestItemTypeResponseModel>> Get(int id, string? fields)
     {
-        var entity = await _taskTypeService.Get(id, fields);
+        var entity = await _questItemTypeService.Get(id, fields);
 
         return ApiResponse<QuestItemType>.Ok(entity);
     }
@@ -55,21 +55,21 @@ public class QuestItemTypeController : ControllerBase
     [HttpPost]
     public async Task<ApiResponse<QuestItemTypeResponseModel>> Post(QuestItemTypeRequestModel data)
     {
-        var entity = await _taskTypeService.CreateAsync(data);
+        var entity = await _questItemTypeService.CreateAsync(data);
         return ApiResponse<QuestItemType>.Created(entity);
     }
 
     [HttpPut]
     public async Task<ApiResponse<QuestItemTypeResponseModel>> Put(QuestItemTypeRequestModel data)
     {
-        var entity = await _taskTypeService.UpdateAsync(data);
+        var entity = await _questItemTypeService.UpdateAsync(data);
         return ApiResponse<QuestItemType>.Created(entity);
     }
 
     [HttpDelete("{id:int}")]
     public async Task<ActionResult<ApiResponse<QuestItemTypeResponseModel>>> Delete(int id)
     {
-        var entity = await _taskTypeService.DeleteAsync(id);
+        var entity = await _questItemTypeService.DeleteAsync(id);
         return ApiResponse<QuestItemType>.Ok(entity);
     }
 

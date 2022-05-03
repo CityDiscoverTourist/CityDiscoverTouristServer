@@ -1,4 +1,5 @@
 using AutoMapper;
+using CityDiscoverTourist.Business.Data.RequestModel;
 using CityDiscoverTourist.Business.Helper;
 using CityDiscoverTourist.Business.Helper.Params;
 using CityDiscoverTourist.Data.IRepositories;
@@ -38,14 +39,14 @@ public class AreaService: IAreaService
         return _mapper.Map<Area>(entity);
     }
 
-    public async Task<Area> CreateAsync(Area request)
+    public async Task<Area> CreateAsync(AreaRequestModel request)
     {
         var entity = _mapper.Map<Area>(request);
         entity = await _areaRepository.Add(entity);
         return _mapper.Map<Area>(entity);
     }
 
-    public async Task<Area> UpdateAsync(Area request)
+    public async Task<Area> UpdateAsync(AreaRequestModel request)
     {
         var entity = _mapper.Map<Area>(request);
         entity = await _areaRepository.Update(entity);

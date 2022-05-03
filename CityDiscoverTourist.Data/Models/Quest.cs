@@ -20,12 +20,13 @@ public class Quest: BaseEntity
     public QuestType? QuestType { get; set; }
     public int QuestTypeId { get; set; }
 
+    public Area? Area { get; set; }
+    public int AreaId { get; set; }
+
     public QuestOwner? QuestOwner { get; set; }
     public int? QuestOwnerId { get; set; }
 
     public List<QuestItem>? QuestItems { get; set; }
-
-    public List<Area>? Areas { get; set; }
 
     public List<Competition>? Competitions { get; set; }
 
