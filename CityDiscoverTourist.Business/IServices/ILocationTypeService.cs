@@ -10,7 +10,7 @@ public interface ILocationTypeService
 {
     public PageList<LocationType> GetAll(LocationTypeParams @params);
     public Task<LocationType> Get(int id);
-    public Task<LocationType> CreateAsync(LocationType request);
-    public Task<LocationType> UpdateAsync(LocationType request);
+    public Task<LocationType> CreateAsync(LocationTypeRequestModel request);
+    public Task<LocationType> UpdateAsync(LocationTypeRequestModel request);
     public Task<LocationType> DeleteAsync(int id);
 }

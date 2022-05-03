@@ -10,20 +10,20 @@ namespace CityDiscoverTourist.Business.IServices.Services;
 
 public class QuestItemTypeService : IQuestItemTypeService
 {
-    private readonly IQuestItemTypeRepository _taskTypeRepository;
+    private readonly IQuestItemTypeRepository _questItemTypeRepository;
     private readonly IMapper _mapper;
     private readonly ISortHelper<QuestItemType> _sortHelper;
 
-    public QuestItemTypeService(IQuestItemTypeRepository taskTypeRepository, IMapper mapper, ISortHelper<QuestItemType> sortHelper)
+    public QuestItemTypeService(IQuestItemTypeRepository questItemTypeRepository, IMapper mapper, ISortHelper<QuestItemType> sortHelper)
     {
-        _taskTypeRepository = taskTypeRepository;
+        _questItemTypeRepository = questItemTypeRepository;
         _mapper = mapper;
         _sortHelper = sortHelper;
     }
 
     public PageList<QuestItemTypeResponseModel> GetAll(TaskTypeParams @params)
     {
-        var listAll = _taskTypeRepository.GetAll();
+        var listAll = _questItemTypeRepository.GetAll();
 
         Search(ref listAll, @params);
 
@@ -34,7 +34,7 @@ public class QuestItemTypeService : IQuestItemTypeService
 
     public async Task<QuestItemTypeResponseModel> Get(int id, string? fields)
     {
-        var entity = await _taskTypeRepository.Get(id);
+        var entity = await _questItemTypeRepository.Get(id);
 
         return _mapper.Map<QuestItemTypeResponseModel>(entity);
     }
@@ -42,20 +42,20 @@ public class QuestItemTypeService : IQuestItemTypeService
     public async Task<QuestItemTypeResponseModel> CreateAsync(QuestItemTypeRequestModel request)
     {
         var entity = _mapper.Map<QuestItemType>(request);
-        entity = await _taskTypeRepository.Add(entity);
+        entity = await _questItemTypeRepository.Add(entity);
         return _mapper.Map<QuestItemTypeResponseModel>(entity);
     }
 
     public async Task<QuestItemTypeResponseModel> UpdateAsync(QuestItemTypeRequestModel request)
     {
         var entity = _mapper.Map<QuestItemType>(request);
-        entity = await _taskTypeRepository.Update(entity);
+        entity = await _questItemTypeRepository.Update(entity);
         return _mapper.Map<QuestItemTypeResponseModel>(entity);
     }
 
     public async Task<QuestItemTypeResponseModel> DeleteAsync(int id)
     {
-        var entity = await _taskTypeRepository.Delete(id);
+        var entity = await _questItemTypeRepository.Delete(id);
         return _mapper.Map<QuestItemTypeResponseModel>(entity);
     }
 

@@ -1,4 +1,5 @@
 using CityDiscoverTourist.API.Response;
+using CityDiscoverTourist.Business.Data.RequestModel;
 using CityDiscoverTourist.Business.Helper;
 using CityDiscoverTourist.Business.Helper.Params;
 using CityDiscoverTourist.Business.IServices;
@@ -51,14 +52,14 @@ public class LocationController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<ApiResponse<Location>> Post(Location data)
+    public async Task<ApiResponse<Location>> Post(LocationRequestModel data)
     {
         var entity = await _locationService.CreateAsync(data);
         return ApiResponse<Quest>.Created(entity);
     }
 
     [HttpPut]
-    public async Task<ApiResponse<Location>> Put([FromBody] Location data)
+    public async Task<ApiResponse<Location>> Put([FromBody] LocationRequestModel data)
     {
         var entity = await _locationService.UpdateAsync(data);
         return ApiResponse<Quest>.Created(entity);

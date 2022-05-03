@@ -1,4 +1,5 @@
 using AutoMapper;
+using CityDiscoverTourist.Business.Data.RequestModel;
 using CityDiscoverTourist.Business.Helper;
 using CityDiscoverTourist.Business.Helper.Params;
 using CityDiscoverTourist.Data.IRepositories;
@@ -38,14 +39,14 @@ public class LocationTypeService: ILocationTypeService
         return _mapper.Map<LocationType>(entity);
     }
 
-    public async Task<LocationType> CreateAsync(LocationType request)
+    public async Task<LocationType> CreateAsync(LocationTypeRequestModel request)
     {
         var entity = _mapper.Map<LocationType>(request);
         entity = await _locationTypeRepository.Add(entity);
         return _mapper.Map<LocationType>(entity);
     }
 
-    public async Task<LocationType> UpdateAsync(LocationType request)
+    public async Task<LocationType> UpdateAsync(LocationTypeRequestModel request)
     {
         var entity = _mapper.Map<LocationType>(request);
         entity = await _locationTypeRepository.Update(entity);

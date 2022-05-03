@@ -16,4 +16,5 @@ public class QuestResponseModel
     public string? Status { get; set; }
     public int QuestTypeId { get; set; }
     public int? QuestOwnerId { get; set; }
+    public int AreaId { get; set; }
 }

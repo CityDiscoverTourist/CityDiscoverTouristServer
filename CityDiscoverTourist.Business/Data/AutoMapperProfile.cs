@@ -19,8 +19,6 @@ public class AutoMapperProfile : Profile
         CreateMap<QuestItemTypeRequestModel, QuestItemType>().ReverseMap();
         CreateMap<QuestItemTypeResponseModel, QuestItemType>().ReverseMap();
 
-        CreateMap<TaskRequestModel, Task>().ReverseMap();
-        CreateMap<TaskResponseModel, Task>().ReverseMap();
 
         CreateMap<RewardRequestModel, Reward>().ReverseMap();
         CreateMap<RewardResponseModel, Reward>().ReverseMap();
