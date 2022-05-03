@@ -20,6 +20,7 @@ public class QuestItem: BaseEntity
     public int TriggerMode { get; set; }
     public string? RightAnswer { get; set; }
     public string? AnswerImageUrl { get; set; }
+    public string? Status { get; set; }
 
     public QuestItem? Item { get; set; }
     public int? QuestItemId { get; set; }

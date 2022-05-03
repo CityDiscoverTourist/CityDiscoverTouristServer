@@ -4,6 +4,7 @@ using CityDiscoverTourist.Data.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CityDiscoverTourist.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220503124527_ModifyEntiy")]
+    partial class ModifyEntiy
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -134,8 +136,8 @@ namespace CityDiscoverTourist.Data.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Status")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
@@ -155,8 +157,8 @@ namespace CityDiscoverTourist.Data.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Status")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
@@ -396,8 +398,8 @@ namespace CityDiscoverTourist.Data.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Status")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
@@ -451,8 +453,8 @@ namespace CityDiscoverTourist.Data.Migrations
                     b.Property<int>("QuestId")
                         .HasColumnType("int");
 
-                    b.Property<string>("Status")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
 
                     b.Property<float>("TotalAmount")
                         .HasColumnType("real");
@@ -529,9 +531,6 @@ namespace CityDiscoverTourist.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<int>("AreaId")
-                        .HasColumnType("int");
-
                     b.Property<DateTime?>("AvailableTime")
                         .HasColumnType("datetime2");
 
@@ -566,8 +565,6 @@ namespace CityDiscoverTourist.Data.Migrations
                         .HasColumnType("datetime2");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("AreaId");
 
                     b.HasIndex("QuestOwnerId");
 
@@ -1131,12 +1128,6 @@ namespace CityDiscoverTourist.Data.Migrations
 
             modelBuilder.Entity("CityDiscoverTourist.Data.Models.Quest", b =>
                 {
-                    b.HasOne("CityDiscoverTourist.Data.Models.Area", "Area")
-                        .WithMany("Quests")
-                        .HasForeignKey("AreaId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("CityDiscoverTourist.Data.Models.QuestOwner", "QuestOwner")
                         .WithMany()
                         .HasForeignKey("QuestOwnerId");
@@ -1146,8 +1137,6 @@ namespace CityDiscoverTourist.Data.Migrations
                         .HasForeignKey("QuestTypeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Area");
 
                     b.Navigation("QuestOwner");
 
@@ -1300,8 +1289,6 @@ namespace CityDiscoverTourist.Data.Migrations
             modelBuilder.Entity("CityDiscoverTourist.Data.Models.Area", b =>
                 {
                     b.Navigation("Locations");
-
-                    b.Navigation("Quests");
                 });
 
             modelBuilder.Entity("CityDiscoverTourist.Data.Models.City", b =>

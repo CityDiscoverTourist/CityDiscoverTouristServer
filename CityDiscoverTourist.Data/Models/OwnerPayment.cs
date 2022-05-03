@@ -5,7 +5,7 @@ public class OwnerPayment: BaseEntity
     public float TotalAmount { get; set; }
     public int TotalCount { get; set; }
     public float Commission { get; set; }
-    public int Status { get; set; }
+    public string? Status { get; set; }
 
     public OwnerPaymentPeriod? OwnerPaymentPeriod { get; set; }
     public int PaymentPeriodId { get; set; }
