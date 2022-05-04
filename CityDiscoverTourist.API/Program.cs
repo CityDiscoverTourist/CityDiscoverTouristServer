@@ -21,6 +21,7 @@ builder.Services.SetupFirebaseAuth(builder.Configuration);
 builder.Services.SetupRepositories();
 builder.Services.SetupHelper();
 builder.Services.SetupServices();
+builder.Services.SetupThirdParty(builder.Configuration);
 builder.Services.SetupSwagger(builder.Configuration);
 
 
