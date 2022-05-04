@@ -3,9 +3,9 @@ using MimeKit;
 
 namespace CityDiscoverTourist.Business.Helper.EmailHelper;
 
-public abstract class Message
+public class Message
 {
-    protected Message(IEnumerable<string> to, string subject, string context, IFormFileCollection attachments)
+    public Message(IEnumerable<string> to, string subject, string context, IFormFileCollection attachments)
     {
         To = new List<MailboxAddress>();
 

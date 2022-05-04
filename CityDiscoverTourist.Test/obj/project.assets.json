@@ -27,6 +27,27 @@
           "lib/netstandard2.1/AutoMapper.Extensions.Microsoft.DependencyInjection.dll": {}
         }
       },
+      "AWSSDK.Core/3.3.107.23": {
+        "type": "package",
+        "compile": {
+          "lib/netstandard2.0/AWSSDK.Core.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard2.0/AWSSDK.Core.dll": {}
+        }
+      },
+      "AWSSDK.SecretsManager/3.3.103": {
+        "type": "package",
+        "dependencies": {
+          "AWSSDK.Core": "[3.3.107.23, 3.4.0)"
+        },
+        "compile": {
+          "lib/netstandard2.0/AWSSDK.SecretsManager.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard2.0/AWSSDK.SecretsManager.dll": {}
+        }
+      },
       "Castle.Core/4.4.1": {
         "type": "package",
         "dependencies": {
@@ -147,6 +168,20 @@
         },
         "runtime": {
           "lib/netstandard2.0/GoogleMaps.LocationServices.dll": {}
+        }
+      },
+      "Kralizek.Extensions.Configuration.AWSSecretsManager/1.6.3": {
+        "type": "package",
+        "dependencies": {
+          "AWSSDK.SecretsManager": "3.3.103",
+          "Microsoft.Extensions.Configuration": "2.0.1",
+          "Newtonsoft.Json": "10.0.3"
+        },
+        "compile": {
+          "lib/netstandard2.0/Kralizek.Extensions.Configuration.AWSSecretsManager.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard2.0/Kralizek.Extensions.Configuration.AWSSecretsManager.dll": {}
         }
       },
       "MailKit/3.2.0": {
@@ -1039,6 +1074,18 @@
         },
         "runtime": {
           "lib/netstandard2.0/Microsoft.Extensions.Caching.Memory.dll": {}
+        }
+      },
+      "Microsoft.Extensions.Configuration/2.0.1": {
+        "type": "package",
+        "dependencies": {
+          "Microsoft.Extensions.Configuration.Abstractions": "2.0.1"
+        },
+        "compile": {
+          "lib/netstandard2.0/Microsoft.Extensions.Configuration.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard2.0/Microsoft.Extensions.Configuration.dll": {}
         }
       },
       "Microsoft.Extensions.Configuration.Abstractions/6.0.0": {
@@ -3552,6 +3599,7 @@
         "dependencies": {
           "CityDiscoverTourist.Business": "1.0.0",
           "FirebaseAdmin": "2.3.0",
+          "Kralizek.Extensions.Configuration.AWSSecretsManager": "1.6.3",
           "Microsoft.AspNet.WebApi.Versioning": "4.1.1",
           "Microsoft.AspNetCore.Authentication.Facebook": "6.0.4",
           "Microsoft.AspNetCore.Authentication.JwtBearer": "6.0.3",
@@ -3640,6 +3688,95 @@
         "automapper.extensions.microsoft.dependencyinjection.nuspec",
         "icon.png",
         "lib/netstandard2.1/AutoMapper.Extensions.Microsoft.DependencyInjection.dll"
+      ]
+    },
+    "AWSSDK.Core/3.3.107.23": {
+      "sha512": "QjmjRIBIovFixNesOfkluGEP6R3wCOrF6VJ5/qZLZQMuTzgm4+tCeulLsvBEM9czH0kw4gsXXN7+mPEfMA9VDA==",
+      "type": "package",
+      "path": "awssdk.core/3.3.107.23",
+      "hasTools": true,
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "awssdk.core.3.3.107.23.nupkg.sha512",
+        "awssdk.core.nuspec",
+        "lib/MonoAndroid10/AWSSDK.Core.XML",
+        "lib/MonoAndroid10/AWSSDK.Core.dll",
+        "lib/MonoAndroid10/AWSSDK.Core.pdb",
+        "lib/MonoTouch10/AWSSDK.Core.XML",
+        "lib/MonoTouch10/AWSSDK.Core.dll",
+        "lib/Xamarin.Mac20/AWSSDK.Core.XML",
+        "lib/Xamarin.Mac20/AWSSDK.Core.dll",
+        "lib/Xamarin.iOS10/AWSSDK.Core.XML",
+        "lib/Xamarin.iOS10/AWSSDK.Core.dll",
+        "lib/net35/AWSSDK.Core.dll",
+        "lib/net35/AWSSDK.Core.pdb",
+        "lib/net35/AWSSDK.Core.xml",
+        "lib/net45/AWSSDK.Core.dll",
+        "lib/net45/AWSSDK.Core.pdb",
+        "lib/net45/AWSSDK.Core.xml",
+        "lib/netstandard1.3/AWSSDK.Core.dll",
+        "lib/netstandard1.3/AWSSDK.Core.pdb",
+        "lib/netstandard1.3/AWSSDK.Core.xml",
+        "lib/netstandard2.0/AWSSDK.Core.dll",
+        "lib/netstandard2.0/AWSSDK.Core.pdb",
+        "lib/netstandard2.0/AWSSDK.Core.xml",
+        "lib/portable-net45+win8+wpa81+wp8/AWSSDK.Core.XML",
+        "lib/portable-net45+win8+wpa81+wp8/AWSSDK.Core.dll",
+        "lib/portable-net45+win8+wpa81+wp8/AWSSDK.Core.pdb",
+        "lib/uap/AWSSDK.Core.XML",
+        "lib/uap/AWSSDK.Core.dll",
+        "lib/uap/AWSSDK.Core.pdb",
+        "lib/win8/AWSSDK.Core.XML",
+        "lib/win8/AWSSDK.Core.dll",
+        "lib/win8/AWSSDK.Core.pdb",
+        "lib/wp8/AWSSDK.Core.XML",
+        "lib/wp8/AWSSDK.Core.dll",
+        "lib/wp8/AWSSDK.Core.pdb",
+        "lib/wpa81/AWSSDK.Core.XML",
+        "lib/wpa81/AWSSDK.Core.dll",
+        "lib/wpa81/AWSSDK.Core.pdb",
+        "tools/account-management.ps1"
+      ]
+    },
+    "AWSSDK.SecretsManager/3.3.103": {
+      "sha512": "C1QLLawbAJuOBTiDhTDteJ4ox7zAg/n2UmKBj2+I83Zy/k/9CxFUeRplML/FqUXQPqIsN7om9VCWbFd/A3sLVw==",
+      "type": "package",
+      "path": "awssdk.secretsmanager/3.3.103",
+      "hasTools": true,
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "analyzers/dotnet/cs/AWSSDK.SecretsManager.CodeAnalysis.dll",
+        "awssdk.secretsmanager.3.3.103.nupkg.sha512",
+        "awssdk.secretsmanager.nuspec",
+        "lib/MonoAndroid10/AWSSDK.SecretsManager.XML",
+        "lib/MonoAndroid10/AWSSDK.SecretsManager.dll",
+        "lib/MonoTouch10/AWSSDK.SecretsManager.XML",
+        "lib/MonoTouch10/AWSSDK.SecretsManager.dll",
+        "lib/MonoTouch10/AWSSDK.SecretsManager.pdb",
+        "lib/Xamarin.iOS10/AWSSDK.SecretsManager.XML",
+        "lib/Xamarin.iOS10/AWSSDK.SecretsManager.dll",
+        "lib/net35/AWSSDK.SecretsManager.dll",
+        "lib/net35/AWSSDK.SecretsManager.pdb",
+        "lib/net35/AWSSDK.SecretsManager.xml",
+        "lib/net45/AWSSDK.SecretsManager.dll",
+        "lib/net45/AWSSDK.SecretsManager.pdb",
+        "lib/net45/AWSSDK.SecretsManager.xml",
+        "lib/netstandard1.3/AWSSDK.SecretsManager.dll",
+        "lib/netstandard1.3/AWSSDK.SecretsManager.pdb",
+        "lib/netstandard1.3/AWSSDK.SecretsManager.xml",
+        "lib/netstandard2.0/AWSSDK.SecretsManager.dll",
+        "lib/netstandard2.0/AWSSDK.SecretsManager.pdb",
+        "lib/netstandard2.0/AWSSDK.SecretsManager.xml",
+        "lib/portable-net45+win8+wpa81+wp8/AWSSDK.SecretsManager.XML",
+        "lib/portable-net45+win8+wpa81+wp8/AWSSDK.SecretsManager.dll",
+        "lib/portable-net45+win8+wpa81+wp8/AWSSDK.SecretsManager.pdb",
+        "lib/uap/AWSSDK.SecretsManager.XML",
+        "lib/uap/AWSSDK.SecretsManager.dll",
+        "lib/uap/AWSSDK.SecretsManager.pdb",
+        "tools/install.ps1",
+        "tools/uninstall.ps1"
       ]
     },
     "Castle.Core/4.4.1": {
@@ -3909,6 +4046,19 @@
         "googlemaps.locationservices.1.2.0.5.nupkg.sha512",
         "googlemaps.locationservices.nuspec",
         "lib/netstandard2.0/GoogleMaps.LocationServices.dll"
+      ]
+    },
+    "Kralizek.Extensions.Configuration.AWSSecretsManager/1.6.3": {
+      "sha512": "BG9CVCCmiIFkuiovYd+iFF2+6ImhnahuN7ek8EK8zb0fL6wZLu2WJdyIitFC5HyH0TZ6mPN5WOJwQ0ouYwAMKw==",
+      "type": "package",
+      "path": "kralizek.extensions.configuration.awssecretsmanager/1.6.3",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "kralizek.extensions.configuration.awssecretsmanager.1.6.3.nupkg.sha512",
+        "kralizek.extensions.configuration.awssecretsmanager.nuspec",
+        "lib/netstandard2.0/Kralizek.Extensions.Configuration.AWSSecretsManager.dll",
+        "lib/netstandard2.0/Kralizek.Extensions.Configuration.AWSSecretsManager.pdb"
       ]
     },
     "MailKit/3.2.0": {
@@ -5133,6 +5283,19 @@
         "microsoft.extensions.caching.memory.6.0.1.nupkg.sha512",
         "microsoft.extensions.caching.memory.nuspec",
         "useSharedDesignerContext.txt"
+      ]
+    },
+    "Microsoft.Extensions.Configuration/2.0.1": {
+      "sha512": "d9fFoEYRaBccu/Z2B2BZCil/lEnmoVQ8YiY1dGViERh0qWjixgR9y/M7EGaoTrAunnmvAmfwxuij/gCq6WvL1w==",
+      "type": "package",
+      "path": "microsoft.extensions.configuration/2.0.1",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "lib/netstandard2.0/Microsoft.Extensions.Configuration.dll",
+        "lib/netstandard2.0/Microsoft.Extensions.Configuration.xml",
+        "microsoft.extensions.configuration.2.0.1.nupkg.sha512",
+        "microsoft.extensions.configuration.nuspec"
       ]
     },
     "Microsoft.Extensions.Configuration.Abstractions/6.0.0": {

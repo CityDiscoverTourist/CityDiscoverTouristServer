@@ -1,6 +1,7 @@
 using System.Globalization;
 using System.Text.RegularExpressions;
 using CityDiscoverTourist.Business.Helper;
+using CityDiscoverTourist.Business.Helper.EmailHelper;
 using CityDiscoverTourist.Business.IServices;
 using CityDiscoverTourist.Business.IServices.Services;
 using CityDiscoverTourist.Data.IRepositories;
@@ -47,6 +48,7 @@ public static class ConfigController
         services.AddScoped<IOwnerPaymentService, OwnerPaymentService>();
         services.AddScoped<ISuggestionService, SuggestionService>();
 
+        services.AddScoped<IEmailSender, EmailSender>();
     }
 
     public static void SetupHelper(this IServiceCollection services)

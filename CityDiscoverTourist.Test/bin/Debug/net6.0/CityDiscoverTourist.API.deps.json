@@ -36,6 +36,7 @@
         "dependencies": {
           "CityDiscoverTourist.Business": "1.0.0",
           "FirebaseAdmin": "2.3.0",
+          "Kralizek.Extensions.Configuration.AWSSecretsManager": "1.6.3",
           "Microsoft.AspNet.WebApi.Versioning": "4.1.1",
           "Microsoft.AspNetCore.Authentication.Facebook": "6.0.4",
           "Microsoft.AspNetCore.Authentication.JwtBearer": "6.0.3",
@@ -131,7 +132,7 @@
           "Microsoft.Extensions.Configuration.Abstractions.Reference": "6.0.0.0",
           "Microsoft.Extensions.Configuration.Binder": "6.0.0.0",
           "Microsoft.Extensions.Configuration.CommandLine": "6.0.0.0",
-          "Microsoft.Extensions.Configuration": "6.0.0.0",
+          "Microsoft.Extensions.Configuration.Reference": "6.0.0.0",
           "Microsoft.Extensions.Configuration.EnvironmentVariables": "6.0.0.0",
           "Microsoft.Extensions.Configuration.FileExtensions": "6.0.0.0",
           "Microsoft.Extensions.Configuration.Ini": "6.0.0.0",
@@ -368,6 +369,31 @@
           "lib/netstandard2.1/AutoMapper.Extensions.Microsoft.DependencyInjection.dll": {}
         }
       },
+      "AWSSDK.Core/3.3.107.23": {
+        "runtime": {
+          "lib/netstandard2.0/AWSSDK.Core.dll": {
+            "assemblyVersion": "3.3.0.0",
+            "fileVersion": "3.3.107.23"
+          }
+        },
+        "compile": {
+          "lib/netstandard2.0/AWSSDK.Core.dll": {}
+        }
+      },
+      "AWSSDK.SecretsManager/3.3.103": {
+        "dependencies": {
+          "AWSSDK.Core": "3.3.107.23"
+        },
+        "runtime": {
+          "lib/netstandard2.0/AWSSDK.SecretsManager.dll": {
+            "assemblyVersion": "3.3.0.0",
+            "fileVersion": "3.3.103.0"
+          }
+        },
+        "compile": {
+          "lib/netstandard2.0/AWSSDK.SecretsManager.dll": {}
+        }
+      },
       "FirebaseAdmin/2.3.0": {
         "dependencies": {
           "Google.Api.Gax.Rest": "3.2.0",
@@ -479,6 +505,22 @@
             "assemblyVersion": "2.8.0.0",
             "fileVersion": "2.8.26.1919"
           }
+        }
+      },
+      "Kralizek.Extensions.Configuration.AWSSecretsManager/1.6.3": {
+        "dependencies": {
+          "AWSSDK.SecretsManager": "3.3.103",
+          "Microsoft.Extensions.Configuration": "2.0.1",
+          "Newtonsoft.Json": "13.0.1"
+        },
+        "runtime": {
+          "lib/netstandard2.0/Kralizek.Extensions.Configuration.AWSSecretsManager.dll": {
+            "assemblyVersion": "1.6.3.0",
+            "fileVersion": "1.6.3.0"
+          }
+        },
+        "compile": {
+          "lib/netstandard2.0/Kralizek.Extensions.Configuration.AWSSecretsManager.dll": {}
         }
       },
       "MailKit/3.2.0": {
@@ -1240,6 +1282,11 @@
         },
         "compile": {
           "lib/netstandard2.0/Microsoft.Extensions.Caching.Memory.dll": {}
+        }
+      },
+      "Microsoft.Extensions.Configuration/2.0.1": {
+        "dependencies": {
+          "Microsoft.Extensions.Configuration.Abstractions": "6.0.0"
         }
       },
       "Microsoft.Extensions.Configuration.Abstractions/6.0.0": {
@@ -3008,7 +3055,7 @@
         },
         "compileOnly": true
       },
-      "Microsoft.Extensions.Configuration/6.0.0.0": {
+      "Microsoft.Extensions.Configuration.Reference/6.0.0.0": {
         "compile": {
           "Microsoft.Extensions.Configuration.dll": {}
         },
@@ -4230,6 +4277,20 @@
       "path": "automapper.extensions.microsoft.dependencyinjection/11.0.0",
       "hashPath": "automapper.extensions.microsoft.dependencyinjection.11.0.0.nupkg.sha512"
     },
+    "AWSSDK.Core/3.3.107.23": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-QjmjRIBIovFixNesOfkluGEP6R3wCOrF6VJ5/qZLZQMuTzgm4+tCeulLsvBEM9czH0kw4gsXXN7+mPEfMA9VDA==",
+      "path": "awssdk.core/3.3.107.23",
+      "hashPath": "awssdk.core.3.3.107.23.nupkg.sha512"
+    },
+    "AWSSDK.SecretsManager/3.3.103": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-C1QLLawbAJuOBTiDhTDteJ4ox7zAg/n2UmKBj2+I83Zy/k/9CxFUeRplML/FqUXQPqIsN7om9VCWbFd/A3sLVw==",
+      "path": "awssdk.secretsmanager/3.3.103",
+      "hashPath": "awssdk.secretsmanager.3.3.103.nupkg.sha512"
+    },
     "FirebaseAdmin/2.3.0": {
       "type": "package",
       "serviceable": true,
@@ -4285,6 +4346,13 @@
       "sha512": "sha512-OiKusGL20vby4uDEswj2IgkdchC1yQ6rwbIkZDVBPIR6al2b7n3pC91elBul9q33KaBgRKhbZH3+2Ur4fnWx2A==",
       "path": "humanizer.core/2.8.26",
       "hashPath": "humanizer.core.2.8.26.nupkg.sha512"
+    },
+    "Kralizek.Extensions.Configuration.AWSSecretsManager/1.6.3": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-BG9CVCCmiIFkuiovYd+iFF2+6ImhnahuN7ek8EK8zb0fL6wZLu2WJdyIitFC5HyH0TZ6mPN5WOJwQ0ouYwAMKw==",
+      "path": "kralizek.extensions.configuration.awssecretsmanager/1.6.3",
+      "hashPath": "kralizek.extensions.configuration.awssecretsmanager.1.6.3.nupkg.sha512"
     },
     "MailKit/3.2.0": {
       "type": "package",
@@ -4698,6 +4766,13 @@
       "sha512": "sha512-B4y+Cev05eMcjf1na0v9gza6GUtahXbtY1JCypIgx3B4Ea/KAgsWyXEmW4q6zMbmTMtKzmPVk09rvFJirvMwTg==",
       "path": "microsoft.extensions.caching.memory/6.0.1",
       "hashPath": "microsoft.extensions.caching.memory.6.0.1.nupkg.sha512"
+    },
+    "Microsoft.Extensions.Configuration/2.0.1": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-d9fFoEYRaBccu/Z2B2BZCil/lEnmoVQ8YiY1dGViERh0qWjixgR9y/M7EGaoTrAunnmvAmfwxuij/gCq6WvL1w==",
+      "path": "microsoft.extensions.configuration/2.0.1",
+      "hashPath": "microsoft.extensions.configuration.2.0.1.nupkg.sha512"
     },
     "Microsoft.Extensions.Configuration.Abstractions/6.0.0": {
       "type": "package",
@@ -6055,7 +6130,7 @@
       "serviceable": false,
       "sha512": ""
     },
-    "Microsoft.Extensions.Configuration/6.0.0.0": {
+    "Microsoft.Extensions.Configuration.Reference/6.0.0.0": {
       "type": "referenceassembly",
       "serviceable": false,
       "sha512": ""
