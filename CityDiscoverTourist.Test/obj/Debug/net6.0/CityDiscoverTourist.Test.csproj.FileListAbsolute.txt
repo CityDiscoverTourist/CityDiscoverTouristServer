@@ -505,3 +505,6 @@ D:\C#\CityDiscoverTourist\CityDiscoverTourist.Test\obj\Debug\net6.0\ref\CityDisc
 D:\C#\CityDiscoverTourist\CityDiscoverTourist.Test\obj\Debug\net6.0\CityDiscoverTourist.Test.pdb
 D:\C#\CityDiscoverTourist\CityDiscoverTourist.Test\obj\Debug\net6.0\CityDiscoverTourist.Test.genruntimeconfig.cache
 D:\C#\CityDiscoverTourist\CityDiscoverTourist.Test\bin\Debug\net6.0\GoogleMaps.LocationServices.dll
+D:\C#\CityDiscoverTourist\CityDiscoverTourist.Test\bin\Debug\net6.0\AWSSDK.Core.dll
+D:\C#\CityDiscoverTourist\CityDiscoverTourist.Test\bin\Debug\net6.0\AWSSDK.SecretsManager.dll
+D:\C#\CityDiscoverTourist\CityDiscoverTourist.Test\bin\Debug\net6.0\Kralizek.Extensions.Configuration.AWSSecretsManager.dll

@@ -48,6 +48,10 @@
               "target": "Package",
               "version": "[2.3.0, )"
             },
+            "Kralizek.Extensions.Configuration.AWSSecretsManager": {
+              "target": "Package",
+              "version": "[1.6.3, )"
+            },
             "Microsoft.AspNet.WebApi.Versioning": {
               "target": "Package",
               "version": "[4.1.1, )"

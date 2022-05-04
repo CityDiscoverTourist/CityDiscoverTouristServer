@@ -9,19 +9,17 @@ namespace CityDiscoverTourist.Business.Helper.EmailHelper;
 
 public class EmailSender : IEmailSender
 {
-    private readonly EmailConfiguration _emailConfig;
     private static string errorInfo, Errormsg, ErrorLocation, extype, exurl = null, Frommail, ToMail, Sub, HostAdd, EmailHead, EmailSing;
 
-    public EmailSender(EmailConfiguration emailConfig)
+    public EmailSender()
     {
-        _emailConfig = emailConfig;
     }
 
     public void SendEmail(Message message)
     {
         var emailMessage = CreateEmailMessage(message);
 
-        Send(emailMessage);
+        //Send(emailMessage);
     }
 
     public async Task SendEmailAsync(Message message)
@@ -57,6 +55,7 @@ public class EmailSender : IEmailSender
         }
     }
 
+    /*
     public void SendMailException(System.Exception ex)
     {
        try
@@ -153,6 +152,7 @@ public class EmailSender : IEmailSender
            em.ToString();
        }
     }
+    */
 
     private MimeMessage CreateEmailMessage(Message message)
     {
@@ -164,7 +164,7 @@ public class EmailSender : IEmailSender
         var bodyBuilder = new BodyBuilder
             { HtmlBody = string.Format("<h2 style='color:red;'>{0}</h2>", message.Content) };
 
-        if (message.Attachments.Any())
+        /*if (message.Attachments.Any())
         {
             byte[] fileBytes;
             foreach (var attachment in message.Attachments)
@@ -177,13 +177,13 @@ public class EmailSender : IEmailSender
 
                 bodyBuilder.Attachments.Add(attachment.FileName, fileBytes, ContentType.Parse(attachment.ContentType));
             }
-        }
+        }*/
 
         emailMessage.Body = bodyBuilder.ToMessageBody();
         return emailMessage;
     }
 
-    private void Send(MimeMessage mailMessage)
+    /*private void Send(MimeMessage mailMessage)
     {
         using (var client = new SmtpClient())
         {
@@ -201,7 +201,7 @@ public class EmailSender : IEmailSender
                 client.Dispose();
             }
         }
-    }
+    }*/
 
     private async Task SendAsync(MimeMessage mailMessage)
     {
@@ -209,9 +209,9 @@ public class EmailSender : IEmailSender
         {
             try
             {
-                await client.ConnectAsync(_emailConfig.SmtpServer, _emailConfig.Port, true);
+                await client.ConnectAsync("smtp.gmail.com", 465, true);
                 client.AuthenticationMechanisms.Remove("XOAUTH2");
-                await client.AuthenticateAsync(_emailConfig.UserName, _emailConfig.Password);
+                await client.AuthenticateAsync("dathaha2000@gmail.com", "fjnmrkytxqxmbefa");
 
                 await client.SendAsync(mailMessage);
             }

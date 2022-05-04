@@ -1,5 +1,6 @@
 using CityDiscoverTourist.Data.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 
 namespace CityDiscoverTourist.API.Config;
 
