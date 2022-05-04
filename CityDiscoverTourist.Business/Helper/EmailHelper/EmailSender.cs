@@ -9,17 +9,11 @@ namespace CityDiscoverTourist.Business.Helper.EmailHelper;
 
 public class EmailSender : IEmailSender
 {
-    private static string errorInfo, Errormsg, ErrorLocation, extype, exurl = null, Frommail, ToMail, Sub, HostAdd, EmailHead, EmailSing;
+    private readonly EmailConfiguration _emailConfig;
 
-    public EmailSender()
+    public EmailSender(EmailConfiguration emailConfig)
     {
-    }
-
-    public void SendEmail(Message message)
-    {
-        var emailMessage = CreateEmailMessage(message);
-
-        //Send(emailMessage);
+        _emailConfig = emailConfig;
     }
 
     public async Task SendEmailAsync(Message message)
@@ -209,9 +203,9 @@ public class EmailSender : IEmailSender
         {
             try
             {
-                await client.ConnectAsync("smtp.gmail.com", 465, true);
+                await client.ConnectAsync(_emailConfig.SmtpServer, _emailConfig.Port, true);
                 client.AuthenticationMechanisms.Remove("XOAUTH2");
-                await client.AuthenticateAsync("dathaha2000@gmail.com", "fjnmrkytxqxmbefa");
+                await client.AuthenticateAsync(_emailConfig.From, _emailConfig.Password);
 
                 await client.SendAsync(mailMessage);
             }

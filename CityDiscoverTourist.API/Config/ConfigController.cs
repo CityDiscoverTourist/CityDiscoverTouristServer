@@ -47,8 +47,6 @@ public static class ConfigController
         services.AddScoped<IPaymentService, PaymentService>();
         services.AddScoped<IOwnerPaymentService, OwnerPaymentService>();
         services.AddScoped<ISuggestionService, SuggestionService>();
-
-        services.AddScoped<IEmailSender, EmailSender>();
     }
 
     public static void SetupHelper(this IServiceCollection services)
