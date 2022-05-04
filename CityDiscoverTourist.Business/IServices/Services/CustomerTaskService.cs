@@ -12,13 +12,26 @@ public class CustomerTaskService: ICustomerTaskService
 {
     private readonly ICustomerTaskRepository _customerTaskService;
     private readonly IMapper _mapper;
+    private readonly ISortHelper<CustomerTask> _sortHelper;
 
-    public CustomerTaskService(ICustomerTaskRepository noteRepository, IMapper mapper)
+
+    public CustomerTaskService(ICustomerTaskRepository noteRepository, IMapper mapper, ISortHelper<CustomerTask> sortHelper)
     {
         _customerTaskService = noteRepository;
         _mapper = mapper;
+        _sortHelper = sortHelper;
     }
 
+    public PageList<CustomerTaskResponseModel> GetAll(CustomerTaskParams @params)
+    {
+        var listAll = _customerTaskService.GetAll();
+
+        //Search(ref listAll, @params);
+
+        var sortedQuests = _sortHelper.ApplySort(listAll, @params.OrderBy);
+        var mappedData = _mapper.Map<IEnumerable<CustomerTaskResponseModel>>(sortedQuests);
+        return PageList<CustomerTaskResponseModel>.ToPageList(mappedData, @params.PageNume, @params.PageSize);
+    }
     public async Task<CustomerTaskResponseModel> Get(int id)
     {
         var entity = await _customerTaskService.Get(id);

@@ -55,21 +55,21 @@ public class AreaController : ControllerBase
     public async Task<ApiResponse<Area>> Post(AreaRequestModel data)
     {
         var entity = await _areaService.CreateAsync(data);
-        return ApiResponse<Quest>.Created(entity);
+        return ApiResponse<Area>.Created(entity);
     }
 
     [HttpPut]
     public async Task<ApiResponse<Area>> Put([FromBody] AreaRequestModel data)
     {
         var entity = await _areaService.UpdateAsync(data);
-        return ApiResponse<Quest>.Created(entity);
+        return ApiResponse<Area>.Created(entity);
     }
 
     [HttpDelete("{id:int}")]
     public async Task<ActionResult<ApiResponse<Area>>> Delete(int id)
     {
         var entity = await _areaService.DeleteAsync(id);
-        return ApiResponse<Quest>.Ok(entity);
+        return ApiResponse<Area>.Ok(entity);
     }
 
 }

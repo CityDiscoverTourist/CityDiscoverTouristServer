@@ -23,7 +23,7 @@ public class OwnerPaymentPeriodService: IOwnerPaymentPeriodService
     {
         var listAll = _ownerPaymentPeriod.GetAll();
 
-        //Search(ref listAll, param);
+        Search(ref listAll, @params);
 
         var sortedQuests = _sortHelper.ApplySort(listAll, @params.OrderBy);
         //var shapedData = _dataShaper.ShapeData(sortedQuests, param.Fields);
@@ -58,21 +58,17 @@ public class OwnerPaymentPeriodService: IOwnerPaymentPeriodService
         return _mapper.Map<OwnerPaymentPeriod>(entity);
     }
 
-    /*private static void Search(ref IQueryable<OwnerPaymentPeriod> entities, QuestParams param)
+    private static void Search(ref IQueryable<OwnerPaymentPeriod> entities, OwnerPaymentPeriodParams param)
     {
         if (!entities.Any()) return;
 
-        if(param.Name != null)
+        if(param.StartDate != null)
         {
-            entities = entities.Where(r => r.Title!.Contains(param.Name));
+            entities = entities.Where(x => x.CreatedDate >= param.StartDate);
         }
-        if (param.Description != null)
+        if (param.EndDate != null)
         {
-            entities = entities.Where(r => r.Description!.Contains(param.Description));
+            entities = entities.Where(x => x.CreatedDate <= param.EndDate);
         }
-        if (param.Status != null)
-        {
-            entities = entities.Where(r => r.Status!.Contains(param.Status));
-        }
-    }*/
+    }
 }

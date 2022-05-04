@@ -25,10 +25,9 @@ public class CommissionService: ICommissionService
     {
         var listAll = _commissionService.GetAll();
 
-        //Search(ref listAll, param);
+        Search(ref listAll, @params);
 
         var sortedQuests = _sortHelper.ApplySort(listAll, @params.OrderBy);
-        //var shapedData = _dataShaper.ShapeData(sortedQuests, param.Fields);
         var mappedData = _mapper.Map<IEnumerable<Commission>>(sortedQuests);
         return PageList<Commission>.ToPageList(mappedData, @params.PageNume, @params.PageSize);
     }
@@ -60,21 +59,36 @@ public class CommissionService: ICommissionService
         return _mapper.Map<Commission>(entity);
     }
 
-    /*private static void Search(ref IQueryable<Commission> entities, QuestParams param)
+    private static void Search(ref IQueryable<Commission> entities, CommissionParams param)
     {
         if (!entities.Any()) return;
 
-        if(param.Name != null)
+        if (param.Percentage != 0)
         {
-            entities = entities.Where(r => r.Title!.Contains(param.Name));
+            entities = entities.Where(x => x.Percentage == param.Percentage);
         }
-        if (param.Description != null)
+        if (param.MaxAmount != 0)
         {
-            entities = entities.Where(r => r.Description!.Contains(param.Description));
+            entities = entities.Where(x => x.MaxAmount == param.MaxAmount);
         }
-        if (param.Status != null)
+
+        if (param.MinAmount != 0)
         {
-            entities = entities.Where(r => r.Status!.Contains(param.Status));
+            entities = entities.Where(x => x.MinAmount == param.MinAmount);
         }
-    }*/
+
+        if (param.MaxAmount != 0 && param.MinAmount != 0)
+        {
+            entities = entities.Where(x => x.MaxAmount == param.MaxAmount && x.MinAmount == param.MinAmount);
+        }
+
+        /*if (!entities.Any()) return;
+
+        if (param.Search != null)
+        {
+            entities = entities.Where(x => x.Percentage.ToString().Contains(param.Search) ||
+                                           x.MaxAmount.ToString().Contains(param.Search) ||
+                                           x.MinAmount.ToString().Contains(param.Search));
+        }*/
+    }
 }

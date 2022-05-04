@@ -1,16 +1,12 @@
-using System.ComponentModel;
+namespace CityDiscoverTourist.Business.Data.ResponseModel;
 
-namespace CityDiscoverTourist.Data.Models;
-
-public class QuestItem: BaseEntity
+public class QuestItemResponseModel
 {
-    public QuestItemType? QuestTypeItem { get; set; }
+    public int Id { get; set; }
     public int QuestItemTypeId { get; set; }
 
-    public Location? Location { get; set; }
     public int LocationId { get; set; }
 
-    public Quest? Quest { get; set; }
     public int QuestId { get; set; }
 
     public string? Content { get; set; }
@@ -22,12 +18,7 @@ public class QuestItem: BaseEntity
     public int TriggerMode { get; set; }
     public string? RightAnswer { get; set; }
     public string? AnswerImageUrl { get; set; }
-
-    [DefaultValue(null)] public QuestItem? Item { get; set; } = null;
-    public int? ItemId { get; set; }
-
     public string? Status { get; set; }
 
-    public List<Suggestion>? Suggestions { get; set; }
-    public List<CustomerAnswer>? CustomerAnswers { get; set; }
+    public int ItemId { get; set; }
 }

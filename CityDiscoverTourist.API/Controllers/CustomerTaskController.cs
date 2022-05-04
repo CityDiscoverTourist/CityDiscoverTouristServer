@@ -23,6 +23,26 @@ public class CustomerTaskController : ControllerBase
         _customerTaskService = taskService;
     }
 
+    [HttpGet]
+    //[Cached(600)]
+    public ApiResponse<PageList<CustomerTaskResponseModel>> GetAll([FromQuery] CustomerTaskParams param)
+    {
+        var entity = _customerTaskService.GetAll(param);
+
+        var metadata = new
+        {
+            entity.TotalCount,
+            entity.TotalPages,
+            entity.PageSize,
+            entity.CurrentPage,
+            entity.HasNext,
+            entity.HasPrevious,
+        };
+        Response.Headers.Add("X-Pagination", JsonConvert.SerializeObject(metadata));
+
+        return ApiResponse<List<CustomerTask>>.Ok2(entity, metadata);
+    }
+
     [HttpGet("{id:int}")]
     //[Cached(600)]
     public async Task<ApiResponse<CustomerTaskResponseModel>> Get(int id)

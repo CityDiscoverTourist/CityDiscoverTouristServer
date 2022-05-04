@@ -23,10 +23,9 @@ public class CompetitionService: ICompetitionService
     {
         var listAll = _competitionRepository.GetAll();
 
-        //Search(ref listAll, param);
+        Search(ref listAll, @params);
 
         var sortedQuests = _sortHelper.ApplySort(listAll, @params.OrderBy);
-        //var shapedData = _dataShaper.ShapeData(sortedQuests, param.Fields);
         var mappedData = _mapper.Map<IEnumerable<Competition>>(sortedQuests);
         return PageList<Competition>.ToPageList(mappedData, @params.PageNume, @params.PageSize);
     }
@@ -58,21 +57,17 @@ public class CompetitionService: ICompetitionService
         return _mapper.Map<Competition>(entity);
     }
 
-    /*private static void Search(ref IQueryable<Competition> entities, QuestParams param)
+    private static void Search(ref IQueryable<Competition> entities, CompetitionParams param)
     {
         if (!entities.Any()) return;
 
-        if(param.Name != null)
+        if(param.CompetitionCode != null)
         {
-            entities = entities.Where(r => r.Title!.Contains(param.Name));
+            entities = entities.Where(r => r.CompetitionCode!.Equals(param.CompetitionCode));
         }
-        if (param.Description != null)
+        if (param.QuestId != 0)
         {
-            entities = entities.Where(r => r.Description!.Contains(param.Description));
+            entities = entities.Where(r => r.QuestId == param.QuestId);
         }
-        if (param.Status != null)
-        {
-            entities = entities.Where(r => r.Status!.Contains(param.Status));
-        }
-    }*/
+    }
 }

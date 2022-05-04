@@ -20,5 +20,6 @@
         }
 
         public string? OrderBy { get; set; }
+        //public string? Search { get; set; }
     }
 }
