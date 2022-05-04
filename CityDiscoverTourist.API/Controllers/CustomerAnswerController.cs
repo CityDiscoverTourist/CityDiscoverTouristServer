@@ -1,4 +1,5 @@
 using CityDiscoverTourist.API.Response;
+using CityDiscoverTourist.Business.Data.RequestModel;
 using CityDiscoverTourist.Business.Data.ResponseModel;
 using CityDiscoverTourist.Business.Helper;
 using CityDiscoverTourist.Business.Helper.Params;
@@ -22,6 +23,25 @@ public class CustomerAnswerController : ControllerBase
         _customerAnswerService = customerAnswerService;
     }
 
+    [HttpGet]
+    //[Cached(600)]
+    public ApiResponse<PageList<CustomerAnswer>> GetAll([FromQuery] CustomerAnswerParams param)
+    {
+        var entity = _customerAnswerService.GetAll(param);
+
+        var metadata = new
+        {
+            entity.TotalCount,
+            entity.TotalPages,
+            entity.PageSize,
+            entity.CurrentPage,
+            entity.HasNext,
+            entity.HasPrevious,
+        };
+        Response.Headers.Add("X-Pagination", JsonConvert.SerializeObject(metadata));
+
+        return ApiResponse<List<CustomerAnswer>>.Ok2(entity, metadata);
+    }
     [HttpGet("{id:int}")]
     //[Cached(600)]
     public async Task<ApiResponse<CustomerAnswer>> Get(int id)
@@ -32,14 +52,14 @@ public class CustomerAnswerController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<ApiResponse<CustomerAnswer>> Post(CustomerAnswer data)
+    public async Task<ApiResponse<CustomerAnswer>> Post(CustomerAnswerRequetModel data)
     {
         var entity = await _customerAnswerService.CreateAsync(data);
         return ApiResponse<CustomerAnswer>.Created(entity);
     }
 
     [HttpPut]
-    public async Task<ApiResponse<CustomerAnswer>> Put(CustomerAnswer data)
+    public async Task<ApiResponse<CustomerAnswer>> Put(CustomerAnswerRequetModel data)
     {
         var entity = await _customerAnswerService.UpdateAsync(data);
         return ApiResponse<CustomerAnswer>.Created(entity);

@@ -22,42 +22,45 @@ public class QuestItemService: IQuestItemService
         _sortHelper = sortHelper;
     }
 
-    public PageList<TaskResponseModel> GetAll(TaskParams @params)
+    public PageList<QuestItemResponseModel> GetAll(TaskParams @params)
     {
         var listAll = _taskRepository.GetAll();
         //Search(ref listAll, @params);
 
         var sortedQuests = _sortHelper.ApplySort(listAll, @params.OrderBy);
-        var mappedData = _mapper.Map<IEnumerable<TaskResponseModel>>(sortedQuests);
+        var mappedData = _mapper.Map<IEnumerable<QuestItemResponseModel>>(sortedQuests);
 
-        return PageList<TaskResponseModel>.ToPageList(mappedData, @params.PageNume, @params.PageSize);
+        return PageList<QuestItemResponseModel>.ToPageList(mappedData, @params.PageNume, @params.PageSize);
     }
 
-    public async Task<TaskResponseModel> Get(int id)
+    public async Task<QuestItemResponseModel> Get(int id)
     {
         var entity = await _taskRepository.Get(id);
 
-        return _mapper.Map<TaskResponseModel>(entity);
+        return _mapper.Map<QuestItemResponseModel>(entity);
     }
 
-    public async Task<TaskResponseModel> CreateAsync(TaskRequestModel request)
+    public async Task<QuestItemResponseModel> CreateAsync(QuestItemRequestModel request)
     {
+        request.ItemId ??= null;
         var entity = _mapper.Map<QuestItem>(request);
+
         entity = await _taskRepository.Add(entity);
-        return _mapper.Map<TaskResponseModel>(entity);
+        return _mapper.Map<QuestItemResponseModel>(entity);
     }
 
-    public async Task<TaskResponseModel> UpdateAsync(TaskRequestModel request)
+    public async Task<QuestItemResponseModel> UpdateAsync(QuestItemRequestModel request)
     {
+        request.ItemId ??= null;
         var entity = _mapper.Map<QuestItem>(request);
         entity = await _taskRepository.Update(entity);
-        return _mapper.Map<TaskResponseModel>(entity);
+        return _mapper.Map<QuestItemResponseModel>(entity);
     }
 
-    public async Task<TaskResponseModel> DeleteAsync(int id)
+    public async Task<QuestItemResponseModel> DeleteAsync(int id)
     {
         var entity = await _taskRepository.Delete(id);
-        return _mapper.Map<TaskResponseModel>(entity);
+        return _mapper.Map<QuestItemResponseModel>(entity);
     }
 
     public int CountTaskInQuest(Guid questId)

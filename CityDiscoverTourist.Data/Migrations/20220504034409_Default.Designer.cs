@@ -4,6 +4,7 @@ using CityDiscoverTourist.Data.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CityDiscoverTourist.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220504034409_Default")]
+    partial class Default
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -599,9 +601,6 @@ namespace CityDiscoverTourist.Data.Migrations
                     b.Property<int>("Duration")
                         .HasColumnType("int");
 
-                    b.Property<int?>("ItemId")
-                        .HasColumnType("int").HasDefaultValue(null);
-
                     b.Property<int>("LocationId")
                         .HasColumnType("int");
 
@@ -627,8 +626,6 @@ namespace CityDiscoverTourist.Data.Migrations
                         .HasColumnType("datetime2");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("ItemId");
 
                     b.HasIndex("LocationId");
 
@@ -1159,10 +1156,6 @@ namespace CityDiscoverTourist.Data.Migrations
 
             modelBuilder.Entity("CityDiscoverTourist.Data.Models.QuestItem", b =>
                 {
-                    b.HasOne("CityDiscoverTourist.Data.Models.QuestItem", "Item")
-                        .WithMany()
-                        .HasForeignKey("ItemId");
-
                     b.HasOne("CityDiscoverTourist.Data.Models.Location", "Location")
                         .WithMany("QuestItems")
                         .HasForeignKey("LocationId")
@@ -1180,8 +1173,6 @@ namespace CityDiscoverTourist.Data.Migrations
                         .HasForeignKey("QuestItemTypeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Item");
 
                     b.Navigation("Location");
 

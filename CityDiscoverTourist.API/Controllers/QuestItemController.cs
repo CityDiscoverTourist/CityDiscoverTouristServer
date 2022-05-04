@@ -24,7 +24,7 @@ public class QuestItemController : ControllerBase
 
     [HttpGet]
     //[Cached(600)]
-    public ApiResponse<PageList<TaskResponseModel>> GetAll([FromQuery] TaskParams param)
+    public ApiResponse<PageList<QuestItemResponseModel>> GetAll([FromQuery] TaskParams param)
     {
         var entity = _taskService.GetAll(param);
 
@@ -39,13 +39,13 @@ public class QuestItemController : ControllerBase
         };
         Response.Headers.Add("X-Pagination", JsonConvert.SerializeObject(metadata));
 
-        return ApiResponse<List<TaskResponseModel>>.Ok2(entity, metadata);
+        return ApiResponse<List<QuestItemResponseModel>>.Ok2(entity, metadata);
     }
 
     [HttpGet("{id:int}")]
     //[Cached(600)]
 
-    public async Task<ApiResponse<TaskResponseModel>> Get(int id)
+    public async Task<ApiResponse<QuestItemResponseModel>> Get(int id)
     {
         var entity = await _taskService.Get(id);
 
@@ -53,21 +53,21 @@ public class QuestItemController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<ApiResponse<TaskResponseModel>> Post(TaskRequestModel data)
+    public async Task<ApiResponse<QuestItemResponseModel>> Post(QuestItemRequestModel data)
     {
         var entity = await _taskService.CreateAsync(data);
         return ApiResponse<QuestItem>.Created(entity);
     }
 
     [HttpPut]
-    public async Task<ApiResponse<TaskResponseModel>> Put(TaskRequestModel data)
+    public async Task<ApiResponse<QuestItemResponseModel>> Put(QuestItemRequestModel data)
     {
         var entity = await _taskService.UpdateAsync(data);
         return ApiResponse<QuestItem>.Created(entity);
     }
 
     [HttpDelete("{id:int}")]
-    public async Task<ActionResult<ApiResponse<TaskResponseModel>>> Delete(int id)
+    public async Task<ActionResult<ApiResponse<QuestItemResponseModel>>> Delete(int id)
     {
         var entity = await _taskService.DeleteAsync(id);
         return ApiResponse<QuestItem>.Ok(entity);

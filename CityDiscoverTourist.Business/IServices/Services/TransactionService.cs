@@ -23,7 +23,7 @@ public class TransactionService: ITransactionService
     {
         var listAll = _transRepository.GetAll();
 
-        //Search(ref listAll, param);
+        Search(ref listAll, @params);
 
         var sortedQuests = _sortHelper.ApplySort(listAll, @params.OrderBy);
         //var shapedData = _dataShaper.ShapeData(sortedQuests, param.Fields);
@@ -58,21 +58,21 @@ public class TransactionService: ITransactionService
         return _mapper.Map<Transaction>(entity);
     }
 
-    /*private static void Search(ref IQueryable<Transaction> entities, QuestParams param)
+    private static void Search(ref IQueryable<Transaction> entities, TransactionParams param)
     {
         if (!entities.Any()) return;
 
-        if(param.Name != null)
+        if(param.Type != null)
         {
-            entities = entities.Where(r => r.Title!.Contains(param.Name));
+            entities = entities.Where(r => r.TypeTransaction!.Equals(param.Type));
         }
-        if (param.Description != null)
+        if (param.Total != 0)
         {
-            entities = entities.Where(r => r.Description!.Contains(param.Description));
+            entities = entities.Where(r => r.Total == param.Total);
         }
-        if (param.Status != null)
+        if (param.WalletId != 0)
         {
-            entities = entities.Where(r => r.Status!.Contains(param.Status));
+            entities = entities.Where(r => r.WalletId == param.WalletId);
         }
-    }*/
+    }
 }

@@ -25,10 +25,9 @@ public class CityService: ICityService
     {
         var listAll = _cityRepository.GetAll();
 
-        //Search(ref listAll, param);
+        Search(ref listAll, @params);
 
         var sortedQuests = _sortHelper.ApplySort(listAll, @params.OrderBy);
-        //var shapedData = _dataShaper.ShapeData(sortedQuests, param.Fields);
         var mappedData = _mapper.Map<IEnumerable<City>>(sortedQuests);
         return PageList<City>.ToPageList(mappedData, @params.PageNume, @params.PageSize);
     }
@@ -60,21 +59,13 @@ public class CityService: ICityService
         return _mapper.Map<City>(entity);
     }
 
-    /*private static void Search(ref IQueryable<City> entities, QuestParams param)
+    private static void Search(ref IQueryable<City> entities, CityParams param)
     {
         if (!entities.Any()) return;
 
         if(param.Name != null)
         {
-            entities = entities.Where(r => r.Title!.Contains(param.Name));
+            entities = entities.Where(r => r.Name!.Equals((param.Name)));
         }
-        if (param.Description != null)
-        {
-            entities = entities.Where(r => r.Description!.Contains(param.Description));
-        }
-        if (param.Status != null)
-        {
-            entities = entities.Where(r => r.Status!.Contains(param.Status));
-        }
-    }*/
+    }
 }

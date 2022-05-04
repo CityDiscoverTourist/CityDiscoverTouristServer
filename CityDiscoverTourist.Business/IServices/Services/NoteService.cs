@@ -25,7 +25,7 @@ public class NoteService: INoteService
     {
         var listAll = _noteRepository.GetAll();
 
-        //Search(ref listAll, param);
+        Search(ref listAll, @params);
 
         var sortedQuests = _sortHelper.ApplySort(listAll, @params.OrderBy);
         //var shapedData = _dataShaper.ShapeData(sortedQuests, param.Fields);
@@ -58,5 +58,19 @@ public class NoteService: INoteService
     {
         var entity = await _noteRepository.Delete(id);
         return _mapper.Map<Note>(entity);
+    }
+
+    private static void Search(ref IQueryable<Note> entities, NoteParams param)
+    {
+        if (!entities.Any()) return;
+
+        if(param.Content != null)
+        {
+            entities = entities.Where(r => r.Content!.Equals(param.Content));
+        }
+        if (param.CustomerTaskId != 0)
+        {
+            entities = entities.Where(r => r.CustomerTaskId == param.CustomerTaskId);
+        }
     }
 }

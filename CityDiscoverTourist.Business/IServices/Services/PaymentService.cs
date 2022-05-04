@@ -23,7 +23,7 @@ public class PaymentService: IPaymentService
     {
         var listAll = _paymentRepository.GetAll();
 
-        //Search(ref listAll, param);
+        Search(ref listAll, @params);
 
         var sortedQuests = _sortHelper.ApplySort(listAll, @params.OrderBy);
         //var shapedData = _dataShaper.ShapeData(sortedQuests, param.Fields);
@@ -58,21 +58,17 @@ public class PaymentService: IPaymentService
         return _mapper.Map<Payment>(entity);
     }
 
-    /*private static void Search(ref IQueryable<Payment> entities, QuestParams param)
+    private static void Search(ref IQueryable<Payment> entities, PaymentParams param)
     {
         if (!entities.Any()) return;
 
-        if(param.Name != null)
+        if(param.PaymentMethod != null)
         {
-            entities = entities.Where(r => r.Title!.Contains(param.Name));
+            entities = entities.Where(r => r.PaymentMethod!.Equals(param.PaymentMethod));
         }
-        if (param.Description != null)
+        if (param.CustomerQuestId != 0)
         {
-            entities = entities.Where(r => r.Description!.Contains(param.Description));
+            entities = entities.Where(r => r.CustomerQuestId == param.CustomerQuestId);
         }
-        if (param.Status != null)
-        {
-            entities = entities.Where(r => r.Status!.Contains(param.Status));
-        }
-    }*/
+    }
 }
