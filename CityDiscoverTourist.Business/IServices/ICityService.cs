@@ -10,7 +10,7 @@ public interface ICityService
 {
     public PageList<City> GetAll(CityParams @params);
     public Task<City> Get(int id);
-    public Task<City> CreateAsync(City request);
-    public Task<City> UpdateAsync(City request);
+    public Task<City> CreateAsync(CityRequestModel request);
+    public Task<City> UpdateAsync(CityRequestModel request);
     public Task<City> DeleteAsync(int id);
 }

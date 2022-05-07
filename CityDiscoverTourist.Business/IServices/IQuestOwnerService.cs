@@ -10,7 +10,7 @@ public interface IQuestOwnerService
 {
     public PageList<QuestOwner> GetAll(QuestOwnerParams @params);
     public Task<QuestOwner> Get(int id);
-    public Task<QuestOwner> CreateAsync(QuestOwner request);
-    public Task<QuestOwner> UpdateAsync(QuestOwner request);
+    public Task<QuestOwner> CreateAsync(QuestOwnerRequestModel request);
+    public Task<QuestOwner> UpdateAsync(QuestOwnerRequestModel request);
     public Task<QuestOwner> DeleteAsync(int id);
 }

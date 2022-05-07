@@ -10,7 +10,7 @@ public interface ICommissionService
 {
     public PageList<Commission> GetAll(CommissionParams @params);
     public Task<Commission> Get(int id);
-    public Task<Commission> CreateAsync(Commission request);
-    public Task<Commission> UpdateAsync(Commission request);
+    public Task<Commission> CreateAsync(CommissionRequestModel request);
+    public Task<Commission> UpdateAsync(CommissionRequestModel request);
     public Task<Commission> DeleteAsync(int id);
 }

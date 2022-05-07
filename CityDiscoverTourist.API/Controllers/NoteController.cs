@@ -1,4 +1,5 @@
 using CityDiscoverTourist.API.Response;
+using CityDiscoverTourist.Business.Data.RequestModel;
 using CityDiscoverTourist.Business.Helper;
 using CityDiscoverTourist.Business.Helper.Params;
 using CityDiscoverTourist.Business.IServices;
@@ -51,14 +52,14 @@ public class NoteController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<ApiResponse<Note>> Post(Note data)
+    public async Task<ApiResponse<Note>> Post(NoteRequestModel data)
     {
         var entity = await _noteService.CreateAsync(data);
         return ApiResponse<Quest>.Created(entity);
     }
 
     [HttpPut]
-    public async Task<ApiResponse<Note>> Put([FromBody] Note data)
+    public async Task<ApiResponse<Note>> Put([FromBody] NoteRequestModel data)
     {
         var entity = await _noteService.UpdateAsync(data);
         return ApiResponse<Quest>.Created(entity);

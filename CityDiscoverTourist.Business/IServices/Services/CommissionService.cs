@@ -39,14 +39,14 @@ public class CommissionService: ICommissionService
         return _mapper.Map<Commission>(entity);
     }
 
-    public async Task<Commission> CreateAsync(Commission request)
+    public async Task<Commission> CreateAsync(CommissionRequestModel request)
     {
         var entity = _mapper.Map<Commission>(request);
         entity = await _commissionService.Add(entity);
         return _mapper.Map<Commission>(entity);
     }
 
-    public async Task<Commission> UpdateAsync(Commission request)
+    public async Task<Commission> UpdateAsync(CommissionRequestModel request)
     {
         var entity = _mapper.Map<Commission>(request);
         entity = await _commissionService.Update(entity);

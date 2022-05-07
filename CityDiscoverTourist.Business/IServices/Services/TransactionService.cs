@@ -1,4 +1,5 @@
 using AutoMapper;
+using CityDiscoverTourist.Business.Data.RequestModel;
 using CityDiscoverTourist.Business.Helper;
 using CityDiscoverTourist.Business.Helper.Params;
 using CityDiscoverTourist.Data.IRepositories;
@@ -38,14 +39,14 @@ public class TransactionService: ITransactionService
         return _mapper.Map<Transaction>(entity);
     }
 
-    public async Task<Transaction> CreateAsync(Transaction request)
+    public async Task<Transaction> CreateAsync(TransactionRequestModel request)
     {
         var entity = _mapper.Map<Transaction>(request);
         entity = await _transRepository.Add(entity);
         return _mapper.Map<Transaction>(entity);
     }
 
-    public async Task<Transaction> UpdateAsync(Transaction request)
+    public async Task<Transaction> UpdateAsync(TransactionRequestModel request)
     {
         var entity = _mapper.Map<Transaction>(request);
         entity = await _transRepository.Update(entity);

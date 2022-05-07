@@ -10,7 +10,7 @@ public interface IPaymentService
 {
     public PageList<Payment> GetAll(PaymentParams @params);
     public Task<Payment> Get(int id);
-    public Task<Payment> CreateAsync(Payment request);
-    public Task<Payment> UpdateAsync(Payment request);
+    public Task<Payment> CreateAsync(PaymentRequestModel request);
+    public Task<Payment> UpdateAsync(PaymentRequestModel request);
     public Task<Payment> DeleteAsync(int id);
 }

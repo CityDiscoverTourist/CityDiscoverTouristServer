@@ -1,4 +1,5 @@
 using CityDiscoverTourist.API.Response;
+using CityDiscoverTourist.Business.Data.RequestModel;
 using CityDiscoverTourist.Business.Helper;
 using CityDiscoverTourist.Business.Helper.Params;
 using CityDiscoverTourist.Business.IServices;
@@ -51,14 +52,14 @@ public class OwnerPaymentPeriodController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<ApiResponse<OwnerPaymentPeriod>> Post(OwnerPaymentPeriod data)
+    public async Task<ApiResponse<OwnerPaymentPeriod>> Post(OwnerPaymentPeriodRm data)
     {
         var entity = await _paymentPeriodService.CreateAsync(data);
         return ApiResponse<Quest>.Created(entity);
     }
 
     [HttpPut]
-    public async Task<ApiResponse<OwnerPaymentPeriod>> Put([FromBody] OwnerPaymentPeriod data)
+    public async Task<ApiResponse<OwnerPaymentPeriod>> Put([FromBody] OwnerPaymentPeriodRm data)
     {
         var entity = await _paymentPeriodService.UpdateAsync(data);
         return ApiResponse<Quest>.Created(entity);

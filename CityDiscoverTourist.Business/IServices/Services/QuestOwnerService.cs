@@ -1,4 +1,5 @@
 using AutoMapper;
+using CityDiscoverTourist.Business.Data.RequestModel;
 using CityDiscoverTourist.Business.Helper;
 using CityDiscoverTourist.Business.Helper.Params;
 using CityDiscoverTourist.Data.IRepositories;
@@ -38,14 +39,14 @@ public class QuestOwnerService: IQuestOwnerService
         return _mapper.Map<QuestOwner>(entity);
     }
 
-    public async Task<QuestOwner> CreateAsync(QuestOwner request)
+    public async Task<QuestOwner> CreateAsync(QuestOwnerRequestModel request)
     {
         var entity = _mapper.Map<QuestOwner>(request);
         entity = await _ownerRepository.Add(entity);
         return _mapper.Map<QuestOwner>(entity);
     }
 
-    public async Task<QuestOwner> UpdateAsync(QuestOwner request)
+    public async Task<QuestOwner> UpdateAsync(QuestOwnerRequestModel request)
     {
         var entity = _mapper.Map<QuestOwner>(request);
         entity = await _ownerRepository.Update(entity);

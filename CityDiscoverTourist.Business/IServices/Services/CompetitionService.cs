@@ -1,4 +1,5 @@
 using AutoMapper;
+using CityDiscoverTourist.Business.Data.RequestModel;
 using CityDiscoverTourist.Business.Helper;
 using CityDiscoverTourist.Business.Helper.Params;
 using CityDiscoverTourist.Data.IRepositories;
@@ -37,14 +38,14 @@ public class CompetitionService: ICompetitionService
         return _mapper.Map<Competition>(entity);
     }
 
-    public async Task<Competition> CreateAsync(Competition request)
+    public async Task<Competition> CreateAsync(CompetitionRequestModel request)
     {
         var entity = _mapper.Map<Competition>(request);
         entity = await _competitionRepository.Add(entity);
         return _mapper.Map<Competition>(entity);
     }
 
-    public async Task<Competition> UpdateAsync(Competition request)
+    public async Task<Competition> UpdateAsync(CompetitionRequestModel request)
     {
         var entity = _mapper.Map<Competition>(request);
         entity = await _competitionRepository.Update(entity);

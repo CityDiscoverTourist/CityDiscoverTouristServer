@@ -54,14 +54,14 @@ public class CityController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<ApiResponse<City>> Post(City data)
+    public async Task<ApiResponse<City>> Post(CityRequestModel data)
     {
         var entity = await _cityService.CreateAsync(data);
         return ApiResponse<Quest>.Created(entity);
     }
 
     [HttpPut]
-    public async Task<ApiResponse<City>> Put([FromBody] City data)
+    public async Task<ApiResponse<City>> Put([FromBody] CityRequestModel data)
     {
         var entity = await _cityService.UpdateAsync(data);
         return ApiResponse<Quest>.Created(entity);

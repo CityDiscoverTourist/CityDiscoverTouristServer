@@ -1,4 +1,5 @@
 using CityDiscoverTourist.API.Response;
+using CityDiscoverTourist.Business.Data.RequestModel;
 using CityDiscoverTourist.Business.Helper;
 using CityDiscoverTourist.Business.Helper.Params;
 using CityDiscoverTourist.Business.IServices;
@@ -51,24 +52,24 @@ public class TransactionController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<ApiResponse<Transaction>> Post(Transaction data)
+    public async Task<ApiResponse<Transaction>> Post(TransactionRequestModel data)
     {
         var entity = await _transService.CreateAsync(data);
-        return ApiResponse<Quest>.Created(entity);
+        return ApiResponse<Transaction>.Created(entity);
     }
 
     [HttpPut]
-    public async Task<ApiResponse<Transaction>> Put([FromBody] Transaction data)
+    public async Task<ApiResponse<Transaction>> Put([FromBody] TransactionRequestModel data)
     {
         var entity = await _transService.UpdateAsync(data);
-        return ApiResponse<Quest>.Created(entity);
+        return ApiResponse<Transaction>.Created(entity);
     }
 
     [HttpDelete("{id:int}")]
     public async Task<ActionResult<ApiResponse<Transaction>>> Delete(int id)
     {
         var entity = await _transService.DeleteAsync(id);
-        return ApiResponse<Quest>.Ok(entity);
+        return ApiResponse<Transaction>.Ok(entity);
     }
 
 }

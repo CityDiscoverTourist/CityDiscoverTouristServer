@@ -1,4 +1,5 @@
 using AutoMapper;
+using CityDiscoverTourist.Business.Data.RequestModel;
 using CityDiscoverTourist.Business.Helper;
 using CityDiscoverTourist.Business.Helper.Params;
 using CityDiscoverTourist.Data.IRepositories;
@@ -38,14 +39,14 @@ public class PaymentService: IPaymentService
         return _mapper.Map<Payment>(entity);
     }
 
-    public async Task<Payment> CreateAsync(Payment request)
+    public async Task<Payment> CreateAsync(PaymentRequestModel request)
     {
         var entity = _mapper.Map<Payment>(request);
         entity = await _paymentRepository.Add(entity);
         return _mapper.Map<Payment>(entity);
     }
 
-    public async Task<Payment> UpdateAsync(Payment request)
+    public async Task<Payment> UpdateAsync(PaymentRequestModel request)
     {
         var entity = _mapper.Map<Payment>(request);
         entity = await _paymentRepository.Update(entity);

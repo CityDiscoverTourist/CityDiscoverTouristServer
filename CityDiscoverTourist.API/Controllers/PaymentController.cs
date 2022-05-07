@@ -1,4 +1,5 @@
 using CityDiscoverTourist.API.Response;
+using CityDiscoverTourist.Business.Data.RequestModel;
 using CityDiscoverTourist.Business.Helper;
 using CityDiscoverTourist.Business.Helper.Params;
 using CityDiscoverTourist.Business.IServices;
@@ -51,14 +52,14 @@ public class PaymentController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<ApiResponse<Payment>> Post(Payment data)
+    public async Task<ApiResponse<Payment>> Post(PaymentRequestModel data)
     {
         var entity = await _paymentService.CreateAsync(data);
         return ApiResponse<Quest>.Created(entity);
     }
 
     [HttpPut]
-    public async Task<ApiResponse<Payment>> Put([FromBody] Payment data)
+    public async Task<ApiResponse<Payment>> Put([FromBody] PaymentRequestModel data)
     {
         var entity = await _paymentService.UpdateAsync(data);
         return ApiResponse<Quest>.Created(entity);

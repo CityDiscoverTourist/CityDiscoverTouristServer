@@ -39,14 +39,14 @@ public class CityService: ICityService
         return _mapper.Map<City>(entity);
     }
 
-    public async Task<City> CreateAsync(City request)
+    public async Task<City> CreateAsync(CityRequestModel request)
     {
         var entity = _mapper.Map<City>(request);
         entity = await _cityRepository.Add(entity);
         return _mapper.Map<City>(entity);
     }
 
-    public async Task<City> UpdateAsync(City request)
+    public async Task<City> UpdateAsync(CityRequestModel request)
     {
         var entity = _mapper.Map<City>(request);
         entity = await _cityRepository.Update(entity);

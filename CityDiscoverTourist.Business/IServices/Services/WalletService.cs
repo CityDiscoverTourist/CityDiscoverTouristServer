@@ -1,4 +1,5 @@
 using AutoMapper;
+using CityDiscoverTourist.Business.Data.RequestModel;
 using CityDiscoverTourist.Business.Helper;
 using CityDiscoverTourist.Business.Helper.Params;
 using CityDiscoverTourist.Data.IRepositories;
@@ -38,14 +39,14 @@ public class WalletService: IWalletService
         return _mapper.Map<Wallet>(entity);
     }
 
-    public async Task<Wallet> CreateAsync(Wallet request)
+    public async Task<Wallet> CreateAsync(WalletRequestModel request)
     {
         var entity = _mapper.Map<Wallet>(request);
         entity = await _walletRepository.Add(entity);
         return _mapper.Map<Wallet>(entity);
     }
 
-    public async Task<Wallet> UpdateAsync(Wallet request)
+    public async Task<Wallet> UpdateAsync(WalletRequestModel request)
     {
         var entity = _mapper.Map<Wallet>(request);
         entity = await _walletRepository.Update(entity);
