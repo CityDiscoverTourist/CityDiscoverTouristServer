@@ -14,7 +14,8 @@ builder.Configuration.AddSecretsManager(region: RegionEndpoint.APSoutheast1, con
     options.KeyGenerator = (secret, name) => name.Replace("__", ":");
 });*/
 
-
+const string managedNetworkingAppContextSwitch = "Switch.Microsoft.Data.SqlClient.UseManagedNetworkingOnWindows";
+AppContext.SetSwitch(managedNetworkingAppContextSwitch, true);
 // Add services to the container.
 builder.Services.SetupDatabase(builder.Configuration);
 builder.Services.SetupFirebaseAuth(builder.Configuration);
@@ -38,10 +39,11 @@ if (app.Environment.IsDevelopment())
 else
 {
     app.UseSwagger();
-    app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "CityDiscoverTourist API"));
+    app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "CityDiscoverTourist API Production"));
 }
 
 app.UseHttpsRedirection();
+app.UseHsts();
 
 app.UseAuthorization();
 
