@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "XNnetsfT/CzPKiNxU5CFMkdHS0ORb3vpVPjulS2mPgyGZkeaQIAHT4tAnPJOcZJxvsdZJVhnH2TSPJqynlFQyA==",
+  "dgSpecHash": "KGf11h7x616biV17KTxL5J8dlidx0iydKp0DBxwj6/CzeZectOteN91C97ppZQWOrgl99jXFp5SsXXccGOlqCg==",
   "success": true,
   "projectFilePath": "D:\\C#\\CityDiscoverTourist\\CityDiscoverTourist.Test\\CityDiscoverTourist.Test.csproj",
   "expectedPackageFiles": [
@@ -115,7 +115,7 @@
     "C:\\Users\\Admin\\.nuget\\packages\\mimekit\\3.2.0\\mimekit.3.2.0.nupkg.sha512",
     "C:\\Users\\Admin\\.nuget\\packages\\moq\\4.17.2\\moq.4.17.2.nupkg.sha512",
     "C:\\Users\\Admin\\.nuget\\packages\\netstandard.library\\1.6.1\\netstandard.library.1.6.1.nupkg.sha512",
-    "C:\\Users\\Admin\\.nuget\\packages\\newtonsoft.json\\12.0.3\\newtonsoft.json.12.0.3.nupkg.sha512",
+    "C:\\Users\\Admin\\.nuget\\packages\\newtonsoft.json\\13.0.1\\newtonsoft.json.13.0.1.nupkg.sha512",
     "C:\\Users\\Admin\\.nuget\\packages\\nuget.frameworks\\5.0.0\\nuget.frameworks.5.0.0.nupkg.sha512",
     "C:\\Users\\Admin\\.nuget\\packages\\opencover\\4.7.922\\opencover.4.7.922.nupkg.sha512",
     "C:\\Users\\Admin\\.nuget\\packages\\portable.bouncycastle\\1.9.0\\portable.bouncycastle.1.9.0.nupkg.sha512",

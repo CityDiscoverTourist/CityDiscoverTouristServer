@@ -316,8 +316,6 @@ D:\C#\CityDiscoverTourist\CityDiscoverTourist.Test\bin\Debug\net6.0\Microsoft.As
 D:\C#\CityDiscoverTourist\CityDiscoverTourist.Test\bin\Debug\net6.0\Microsoft.AspNetCore.Cryptography.Internal.dll
 D:\C#\CityDiscoverTourist\CityDiscoverTourist.Test\bin\Debug\net6.0\Microsoft.AspNetCore.Cryptography.KeyDerivation.dll
 D:\C#\CityDiscoverTourist\CityDiscoverTourist.Test\bin\Debug\net6.0\Microsoft.AspNetCore.Identity.EntityFrameworkCore.dll
-D:\C#\CityDiscoverTourist\CityDiscoverTourist.Test\bin\Debug\net6.0\Microsoft.AspNetCore.JsonPatch.dll
-D:\C#\CityDiscoverTourist\CityDiscoverTourist.Test\bin\Debug\net6.0\Microsoft.AspNetCore.Mvc.NewtonsoftJson.dll
 D:\C#\CityDiscoverTourist\CityDiscoverTourist.Test\bin\Debug\net6.0\Microsoft.AspNetCore.Mvc.Razor.Extensions.dll
 D:\C#\CityDiscoverTourist\CityDiscoverTourist.Test\bin\Debug\net6.0\Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation.dll
 D:\C#\CityDiscoverTourist\CityDiscoverTourist.Test\bin\Debug\net6.0\Microsoft.AspNetCore.Mvc.Versioning.dll
@@ -366,7 +364,6 @@ D:\C#\CityDiscoverTourist\CityDiscoverTourist.Test\bin\Debug\net6.0\Microsoft.Wi
 D:\C#\CityDiscoverTourist\CityDiscoverTourist.Test\bin\Debug\net6.0\MimeKit.dll
 D:\C#\CityDiscoverTourist\CityDiscoverTourist.Test\bin\Debug\net6.0\Moq.dll
 D:\C#\CityDiscoverTourist\CityDiscoverTourist.Test\bin\Debug\net6.0\Newtonsoft.Json.dll
-D:\C#\CityDiscoverTourist\CityDiscoverTourist.Test\bin\Debug\net6.0\Newtonsoft.Json.Bson.dll
 D:\C#\CityDiscoverTourist\CityDiscoverTourist.Test\bin\Debug\net6.0\NuGet.Frameworks.dll
 D:\C#\CityDiscoverTourist\CityDiscoverTourist.Test\bin\Debug\net6.0\BouncyCastle.Crypto.dll
 D:\C#\CityDiscoverTourist\CityDiscoverTourist.Test\bin\Debug\net6.0\Swashbuckle.AspNetCore.Swagger.dll
