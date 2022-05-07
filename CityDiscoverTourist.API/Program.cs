@@ -25,7 +25,6 @@ builder.Services.SetupServices();
 builder.Services.SetupThirdParty(builder.Configuration);
 builder.Services.SetupSwagger(builder.Configuration);
 
-
 builder.Services.AddAutoMapper(typeof(AutoMapperProfile).Assembly);
 
 var app = builder.Build();
