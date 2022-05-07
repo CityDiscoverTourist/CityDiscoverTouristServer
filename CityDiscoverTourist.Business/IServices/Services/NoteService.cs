@@ -40,14 +40,14 @@ public class NoteService: INoteService
         return _mapper.Map<Note>(entity);
     }
 
-    public async Task<Note> CreateAsync(Note request)
+    public async Task<Note> CreateAsync(NoteRequestModel request)
     {
         var entity = _mapper.Map<Note>(request);
         entity = await _noteRepository.Add(entity);
         return _mapper.Map<Note>(entity);
     }
 
-    public async Task<Note> UpdateAsync(Note request)
+    public async Task<Note> UpdateAsync(NoteRequestModel request)
     {
         var entity = _mapper.Map<Note>(request);
         entity = await _noteRepository.Update(entity);

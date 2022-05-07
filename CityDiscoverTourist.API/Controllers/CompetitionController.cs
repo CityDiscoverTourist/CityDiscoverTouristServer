@@ -1,4 +1,5 @@
 using CityDiscoverTourist.API.Response;
+using CityDiscoverTourist.Business.Data.RequestModel;
 using CityDiscoverTourist.Business.Helper;
 using CityDiscoverTourist.Business.Helper.Params;
 using CityDiscoverTourist.Business.IServices;
@@ -51,14 +52,14 @@ public class CompetitionController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<ApiResponse<Competition>> Post(Competition data)
+    public async Task<ApiResponse<Competition>> Post(CompetitionRequestModel data)
     {
         var entity = await _competitionService.CreateAsync(data);
         return ApiResponse<Quest>.Created(entity);
     }
 
     [HttpPut]
-    public async Task<ApiResponse<Competition>> Put([FromBody] Competition data)
+    public async Task<ApiResponse<Competition>> Put([FromBody] CompetitionRequestModel data)
     {
         var entity = await _competitionService.UpdateAsync(data);
         return ApiResponse<Quest>.Created(entity);

@@ -1,4 +1,5 @@
 using CityDiscoverTourist.API.Response;
+using CityDiscoverTourist.Business.Data.RequestModel;
 using CityDiscoverTourist.Business.Helper;
 using CityDiscoverTourist.Business.Helper.Params;
 using CityDiscoverTourist.Business.IServices;
@@ -51,14 +52,14 @@ public class QuestOwnerController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<ApiResponse<QuestOwner>> Post(QuestOwner data)
+    public async Task<ApiResponse<QuestOwner>> Post(QuestOwnerRequestModel data)
     {
         var entity = await _questOwnerService.CreateAsync(data);
         return ApiResponse<QuestOwner>.Created(entity);
     }
 
     [HttpPut]
-    public async Task<ApiResponse<QuestOwner>> Put([FromBody] QuestOwner data)
+    public async Task<ApiResponse<QuestOwner>> Put([FromBody] QuestOwnerRequestModel data)
     {
         var entity = await _questOwnerService.UpdateAsync(data);
         return ApiResponse<QuestOwner>.Created(entity);

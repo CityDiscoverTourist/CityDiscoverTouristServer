@@ -44,21 +44,16 @@ public class CustomerQuestService: ICustomerQuestService
         return _mapper.Map<CustomerQuestResponseModel>(entity);
     }
 
-    public Task<CustomerQuestResponseModel> CreateAsync(CustomerQuestRequestModel request)
+    public async Task<CustomerQuestResponseModel> CreateAsync(CustomerQuestRequestModel request)
     {
-        throw new NotImplementedException();
-    }
-
-    /*public async Task<CustomerQuestResponseModel> CreateAsync(CustomerQuestRequestModel request)
-    {
-        var numberOfTask = CountTaskInQuest(request.QuestId);
+        //var numberOfTask = CountTaskInQuest(request.);
         var entity = _mapper.Map<CustomerQuest>(request);
-        var beginPoint = numberOfTask * BaseMultiplier;
+        //var beginPoint = numberOfTask * BaseMultiplier;
 
-        entity.BeginPoint = beginPoint.ToString();
+        //entity.BeginPoint = beginPoint.ToString();
         entity = await _customerQuestRepository.Add(entity);
         return _mapper.Map<CustomerQuestResponseModel>(entity);
-    }*/
+    }
 
     public async Task<CustomerQuestResponseModel> UpdateAsync(CustomerQuestRequestModel request)
     {
@@ -73,10 +68,10 @@ public class CustomerQuestService: ICustomerQuestService
         return _mapper.Map<CustomerQuestResponseModel>(entity);
     }
 
-    /*private int CountTaskInQuest(Guid questId)
+    private int CountTaskInQuest(int questId)
     {
         var listAll = _taskRepository.GetAll();
         var count = listAll.Count(r => r.QuestId.Equals(questId));
         return count;
-    }*/
+    }
 }

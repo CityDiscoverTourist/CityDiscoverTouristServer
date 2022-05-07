@@ -54,14 +54,14 @@ public class CommissionController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<ApiResponse<Commission>> Post(Commission data)
+    public async Task<ApiResponse<Commission>> Post(CommissionRequestModel data)
     {
         var entity = await _commissionService.CreateAsync(data);
         return ApiResponse<Quest>.Created(entity);
     }
 
     [HttpPut]
-    public async Task<ApiResponse<Commission>> Put([FromBody] Commission data)
+    public async Task<ApiResponse<Commission>> Put([FromBody] CommissionRequestModel data)
     {
         var entity = await _commissionService.UpdateAsync(data);
         return ApiResponse<Quest>.Created(entity);

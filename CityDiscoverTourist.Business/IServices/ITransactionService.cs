@@ -10,7 +10,7 @@ public interface ITransactionService
 {
     public PageList<Transaction> GetAll(TransactionParams @params);
     public Task<Transaction> Get(int id);
-    public Task<Transaction> CreateAsync(Transaction request);
-    public Task<Transaction> UpdateAsync(Transaction request);
+    public Task<Transaction> CreateAsync(TransactionRequestModel request);
+    public Task<Transaction> UpdateAsync(TransactionRequestModel request);
     public Task<Transaction> DeleteAsync(int id);
 }

@@ -1,4 +1,5 @@
 using AutoMapper;
+using CityDiscoverTourist.Business.Data.RequestModel;
 using CityDiscoverTourist.Business.Helper;
 using CityDiscoverTourist.Business.Helper.Params;
 using CityDiscoverTourist.Data.IRepositories;
@@ -38,14 +39,14 @@ public class OwnerPaymentPeriodService: IOwnerPaymentPeriodService
         return _mapper.Map<OwnerPaymentPeriod>(entity);
     }
 
-    public async Task<OwnerPaymentPeriod> CreateAsync(OwnerPaymentPeriod request)
+    public async Task<OwnerPaymentPeriod> CreateAsync(OwnerPaymentPeriodRm request)
     {
         var entity = _mapper.Map<OwnerPaymentPeriod>(request);
         entity = await _ownerPaymentPeriod.Add(entity);
         return _mapper.Map<OwnerPaymentPeriod>(entity);
     }
 
-    public async Task<OwnerPaymentPeriod> UpdateAsync(OwnerPaymentPeriod request)
+    public async Task<OwnerPaymentPeriod> UpdateAsync(OwnerPaymentPeriodRm request)
     {
         var entity = _mapper.Map<OwnerPaymentPeriod>(request);
         entity = await _ownerPaymentPeriod.Update(entity);

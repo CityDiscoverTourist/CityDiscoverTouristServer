@@ -8,7 +8,7 @@ namespace CityDiscoverTourist.Business.IServices;
 
 public interface ICustomerQuestService
 {
-    public PageList<CustomerQuestResponseModel> GetAll(CustomerQuestParams requestModel);
+    public PageList<CustomerQuestResponseModel> GetAll(CustomerQuestParams @params);
     public Task<CustomerQuestResponseModel> Get(int id);
     public Task<CustomerQuestResponseModel> CreateAsync(CustomerQuestRequestModel request);
     public Task<CustomerQuestResponseModel> UpdateAsync(CustomerQuestRequestModel request);

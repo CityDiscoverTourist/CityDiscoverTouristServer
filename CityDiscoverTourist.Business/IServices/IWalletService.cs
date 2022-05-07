@@ -10,7 +10,7 @@ public interface IWalletService
 {
     public PageList<Wallet> GetAll(WalletParams @params);
     public Task<Wallet> Get(int id);
-    public Task<Wallet> CreateAsync(Wallet request);
-    public Task<Wallet> UpdateAsync(Wallet request);
+    public Task<Wallet> CreateAsync(WalletRequestModel request);
+    public Task<Wallet> UpdateAsync(WalletRequestModel request);
     public Task<Wallet> DeleteAsync(int id);
 }

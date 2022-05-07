@@ -10,7 +10,7 @@ public interface INoteService
 {
     public PageList<Note> GetAll(NoteParams @params);
     public Task<Note> Get(int id);
-    public Task<Note> CreateAsync(Note request);
-    public Task<Note> UpdateAsync(Note request);
+    public Task<Note> CreateAsync(NoteRequestModel request);
+    public Task<Note> UpdateAsync(NoteRequestModel request);
     public Task<Note> DeleteAsync(int id);
 }

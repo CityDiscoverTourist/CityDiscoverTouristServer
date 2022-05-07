@@ -1,4 +1,5 @@
 using CityDiscoverTourist.API.Response;
+using CityDiscoverTourist.Business.Data.RequestModel;
 using CityDiscoverTourist.Business.Helper;
 using CityDiscoverTourist.Business.Helper.Params;
 using CityDiscoverTourist.Business.IServices;
@@ -51,14 +52,14 @@ public class WalletController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<ApiResponse<Wallet>> Post(Wallet data)
+    public async Task<ApiResponse<Wallet>> Post(WalletRequestModel data)
     {
         var entity = await _walletService.CreateAsync(data);
         return ApiResponse<Quest>.Created(entity);
     }
 
     [HttpPut]
-    public async Task<ApiResponse<Wallet>> Put([FromBody] Wallet data)
+    public async Task<ApiResponse<Wallet>> Put([FromBody] WalletRequestModel data)
     {
         var entity = await _walletService.UpdateAsync(data);
         return ApiResponse<Quest>.Created(entity);

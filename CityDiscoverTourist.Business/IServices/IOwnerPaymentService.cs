@@ -10,7 +10,7 @@ public interface IOwnerPaymentService
 {
     public PageList<OwnerPayment> GetAll(OwnerPaymentParams @params);
     public Task<OwnerPayment> Get(int id);
-    public Task<OwnerPayment> CreateAsync(OwnerPayment request);
-    public Task<OwnerPayment> UpdateAsync(OwnerPayment request);
+    public Task<OwnerPayment> CreateAsync(OwnerPaymentRequestModel request);
+    public Task<OwnerPayment> UpdateAsync(OwnerPaymentRequestModel request);
     public Task<OwnerPayment> DeleteAsync(int id);
 }

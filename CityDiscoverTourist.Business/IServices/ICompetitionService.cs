@@ -10,7 +10,7 @@ public interface ICompetitionService
 {
     public PageList<Competition> GetAll(CompetitionParams @params);
     public Task<Competition> Get(int id);
-    public Task<Competition> CreateAsync(Competition request);
-    public Task<Competition> UpdateAsync(Competition request);
+    public Task<Competition> CreateAsync(CompetitionRequestModel request);
+    public Task<Competition> UpdateAsync(CompetitionRequestModel request);
     public Task<Competition> DeleteAsync(int id);
 }

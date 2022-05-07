@@ -4,6 +4,7 @@ namespace CityDiscoverTourist.Business.Data.RequestModel;
 
 public class CustomerQuestRequestModel
 {
+    public int Id { get; set; }
     public string? BeginPoint { get; set; }
     public string? EndPoint { get; set; }
     public int Rating { get; set; }
@@ -13,5 +14,5 @@ public class CustomerQuestRequestModel
 
     public int CompetitionId { get; set; }
 
-    public Payment? PaymentMethod { get; set; }
+    //public Payment? PaymentMethod { get; set; }
 }
