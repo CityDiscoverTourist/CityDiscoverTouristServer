@@ -156,12 +156,7 @@ public static class ConfigController
         services.AddControllers(options =>
         {
             options.Conventions.Add(new RouteTokenTransformerConvention(new LowercaseDashedParameterTransformer()));
-        }).AddNewtonsoftJson(options =>
-            {
-                options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
-                options.SerializerSettings.NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore;
-            }
-        );
+        });
     }
 
     internal class LowercaseDashedParameterTransformer : IOutboundParameterTransformer
