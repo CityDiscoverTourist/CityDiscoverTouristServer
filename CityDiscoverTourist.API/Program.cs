@@ -1,6 +1,7 @@
 using Amazon;
 using CityDiscoverTourist.API.Config;
 using CityDiscoverTourist.Business.Data;
+using Microsoft.AspNetCore.HttpOverrides;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -27,9 +28,16 @@ builder.Services.SetupSwagger(builder.Configuration);
 
 builder.Services.AddAutoMapper(typeof(AutoMapperProfile).Assembly);
 
+builder.Services.Configure<ForwardedHeadersOptions>(options =>
+{
+    options.ForwardedHeaders =
+        ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto;
+});
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
+app.UseForwardedHeaders();
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
