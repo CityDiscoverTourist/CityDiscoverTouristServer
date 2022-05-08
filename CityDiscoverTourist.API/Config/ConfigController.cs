@@ -10,6 +10,7 @@ using CityDiscoverTourist.Data.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Mvc.ApplicationModels;
 using Microsoft.OpenApi.Models;
+using Newtonsoft.Json;
 
 namespace CityDiscoverTourist.API.Config;
 
@@ -156,6 +157,10 @@ public static class ConfigController
         services.AddControllers(options =>
         {
             options.Conventions.Add(new RouteTokenTransformerConvention(new LowercaseDashedParameterTransformer()));
+        }).AddNewtonsoftJson(options =>
+        {
+            options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
+            options.SerializerSettings.NullValueHandling = NullValueHandling.Ignore;
         });
     }
 
