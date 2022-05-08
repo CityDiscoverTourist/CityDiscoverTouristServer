@@ -48,5 +48,6 @@ public class AutoMapperProfile : Profile
         CreateMap<TransactionRequestModel, Transaction>().ReverseMap();
         CreateMap<WalletRequestModel, Wallet>().ReverseMap();
         CreateMap<AreaRequestModel, Area>().ReverseMap();
+        CreateMap<LocationRequestModel, Location>().ReverseMap();
     }
 }
