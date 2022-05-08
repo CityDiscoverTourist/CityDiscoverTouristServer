@@ -36,4 +36,10 @@
       <Folder Include="AWS" />
       <Folder Include="Cache" />
     </ItemGroup>
+
+    <ItemGroup>
+      <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed">
+        <HintPath>..\..\..\Download\Newtonsoft.Json.dll</HintPath>
+      </Reference>
+    </ItemGroup>
 </Project>

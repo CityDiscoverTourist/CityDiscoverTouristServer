@@ -24,4 +24,10 @@
       <PackageReference Include="System.Linq.Dynamic" Version="1.0.8" />
       <PackageReference Include="System.Linq.Dynamic.Core" Version="1.2.18" />
     </ItemGroup>
+
+    <ItemGroup>
+      <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed">
+        <HintPath>..\..\..\Download\Newtonsoft.Json.dll</HintPath>
+      </Reference>
+    </ItemGroup>
 </Project>
