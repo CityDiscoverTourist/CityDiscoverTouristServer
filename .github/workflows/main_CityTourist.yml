@@ -25,8 +25,8 @@ jobs:
         image: donephit/city-discover-tourist-server
         tags: v1, latest
         registry: docker.io
-        username: ${{ secrets.DOCKER_USERNAME }}
-        password: ${{ secrets.DOCKER_PASSWORD }}
+        username: ${{ secrets.AZUREAPPSERVICE_CONTAINERUSERNAME_64B0F06CCAB445B5ABCDCCDDF3417901 }}
+        password: ${{ secrets.AZUREAPPSERVICE_CONTAINERPASSWORD_A9B732BD0BE6406C850A1775F2893616 }}
 
   deploy:
     runs-on: ubuntu-latest
@@ -43,4 +43,4 @@ jobs:
         app-name: 'CityTourist'
         slot-name: 'production'
         publish-profile: ${{ secrets.AzureAppService_PublishProfile_1da2c6398e614032a066a380f8596a92 }}
-        images: 'index.docker.io/${{ secrets.AzureAppService_ContainerUsername_64b0f06ccab445b5abcdccddf3417901 }}/donephit/city-discover-tourist-server:${{ github.sha }}'
+        images: donephit/city-discover-tourist-server
