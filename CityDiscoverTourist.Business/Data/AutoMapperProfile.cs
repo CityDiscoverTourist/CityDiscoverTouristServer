@@ -47,5 +47,6 @@ public class AutoMapperProfile : Profile
         CreateMap<QuestOwnerRequestModel, QuestOwner>().ReverseMap();
         CreateMap<TransactionRequestModel, Transaction>().ReverseMap();
         CreateMap<WalletRequestModel, Wallet>().ReverseMap();
+        CreateMap<AreaRequestModel, Area>().ReverseMap();
     }
 }
