@@ -1,9 +1,12 @@
+using System.Globalization;
 using AutoMapper;
 using CityDiscoverTourist.Business.Data.RequestModel;
 using CityDiscoverTourist.Business.Helper;
 using CityDiscoverTourist.Business.Helper.Params;
+using CityDiscoverTourist.Business.Settings;
 using CityDiscoverTourist.Data.IRepositories;
 using CityDiscoverTourist.Data.Models;
+using Newtonsoft.Json.Linq;
 
 namespace CityDiscoverTourist.Business.IServices.Services;
 
@@ -12,12 +15,14 @@ public class LocationService: ILocationService
     private readonly ILocationRepository _locationRepository;
     private readonly IMapper _mapper;
     private readonly ISortHelper<Location> _sortHelper;
+    private static  GoogleApiSetting _googleApiSetting;
 
-    public LocationService(ILocationRepository locationRepository, IMapper mapper, ISortHelper<Location> sortHelper)
+    public LocationService(ILocationRepository locationRepository, IMapper mapper, ISortHelper<Location> sortHelper, GoogleApiSetting googleApiSetting)
     {
         _locationRepository = locationRepository;
         _mapper = mapper;
         _sortHelper = sortHelper;
+        _googleApiSetting = googleApiSetting;
     }
 
     public PageList<Location> GetAll(LocationParams @params)
@@ -25,7 +30,6 @@ public class LocationService: ILocationService
         var listAll = _locationRepository.GetAll();
 
         //Search(ref listAll, param);
-
         var sortedQuests = _sortHelper.ApplySort(listAll, @params.OrderBy);
         //var shapedData = _dataShaper.ShapeData(sortedQuests, param.Fields);
         var mappedData = _mapper.Map<IEnumerable<Location>>(sortedQuests);
@@ -42,6 +46,12 @@ public class LocationService: ILocationService
     public async Task<Location> CreateAsync(LocationRequestModel request)
     {
         var entity = _mapper.Map<Location>(request);
+
+        var longLat = GetLatLongFromAddress(entity.Address ?? throw new InvalidOperationException());
+
+        entity.Latitude = longLat[0].ToString(CultureInfo.InvariantCulture);
+        entity.Longitude = longLat[1].ToString(CultureInfo.InvariantCulture);
+
         entity = await _locationRepository.Add(entity);
         return _mapper.Map<Location>(entity);
     }
@@ -57,6 +67,21 @@ public class LocationService: ILocationService
     {
         var entity = await _locationRepository.Delete(id);
         return _mapper.Map<Location>(entity);
+    }
+
+    private static float[] GetLatLongFromAddress(string address)
+    {
+        var baseUrl = $"https://maps.googleapis.com/maps/api/geocode/json?address={address}&key={_googleApiSetting.ApiKey}";
+
+        var client = new HttpClient();
+        var response = client.GetAsync(baseUrl).Result;
+
+        var jsonResult = JObject.Parse(response.Content.ReadAsStringAsync().Result);
+
+        var longitude = jsonResult["results"][0]["geometry"]["location"]["lat"].ToString();
+        var latitude = jsonResult["results"][0]["geometry"]["location"]["lng"].ToString();
+
+        return new float[] { float.Parse(latitude), float.Parse(longitude) };
     }
 
     /*private static void Search(ref IQueryable<Location> entities, QuestParams param)
