@@ -3610,7 +3610,7 @@
           "Microsoft.Azure.KeyVault": "3.0.5",
           "Microsoft.Build": "17.1.0",
           "Microsoft.Owin.Security.OAuth": "4.2.1",
-          "Newtonsoft.Json": "10.0.1",
+          "Newtonsoft.Json": "13.0.1",
           "Swashbuckle.AspNetCore": "6.2.3"
         },
         "compile": {

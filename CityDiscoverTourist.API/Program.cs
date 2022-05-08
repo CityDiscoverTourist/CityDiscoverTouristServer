@@ -18,7 +18,7 @@ const string managedNetworkingAppContextSwitch = "Switch.Microsoft.Data.SqlClien
 AppContext.SetSwitch(managedNetworkingAppContextSwitch, true);
 // Add services to the container.
 builder.Services.SetupDatabase(builder.Configuration);
-//builder.Services.SetupFirebaseAuth(builder.Configuration);
+builder.Services.SetupFirebaseAuth(builder.Configuration);
 builder.Services.SetupRepositories();
 builder.Services.SetupHelper();
 builder.Services.SetupServices();
