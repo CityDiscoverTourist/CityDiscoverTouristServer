@@ -161,15 +161,6 @@
           "lib/netstandard2.0/Google.Apis.Core.dll": {}
         }
       },
-      "GoogleMaps.LocationServices/1.2.0.5": {
-        "type": "package",
-        "compile": {
-          "lib/netstandard2.0/GoogleMaps.LocationServices.dll": {}
-        },
-        "runtime": {
-          "lib/netstandard2.0/GoogleMaps.LocationServices.dll": {}
-        }
-      },
       "Kralizek.Extensions.Configuration.AWSSecretsManager/1.6.3": {
         "type": "package",
         "dependencies": {
@@ -3603,14 +3594,12 @@
           "Microsoft.AspNet.WebApi.Versioning": "4.1.1",
           "Microsoft.AspNetCore.Authentication.Facebook": "6.0.4",
           "Microsoft.AspNetCore.Authentication.JwtBearer": "6.0.3",
-          "Microsoft.AspNetCore.Mvc.NewtonsoftJson": "6.0.4",
           "Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation": "6.0.3",
           "Microsoft.AspNetCore.Mvc.Versioning": "5.0.0",
           "Microsoft.AspNetCore.Mvc.Versioning.ApiExplorer": "5.0.0",
           "Microsoft.AspNetCore.OData.Versioning": "5.0.0",
           "Microsoft.Azure.KeyVault": "3.0.5",
           "Microsoft.Build": "17.1.0",
-          "Newtonsoft.Json": "13.0.1",
           "Swashbuckle.AspNetCore": "6.2.3"
         },
         "compile": {
@@ -3630,10 +3619,8 @@
           "AutoMapper.Extensions.Microsoft.DependencyInjection": "11.0.0",
           "CityDiscoverTourist.Data": "1.0.0",
           "FirebaseAdmin": "2.3.0",
-          "GoogleMaps.LocationServices": "1.2.0.5",
           "MailKit": "3.2.0",
           "Microsoft.AspNetCore.Mvc.Core": "2.2.5",
-          "Microsoft.AspNetCore.Mvc.NewtonsoftJson": "6.0.4",
           "System.Linq.Dynamic": "1.0.8",
           "System.Linq.Dynamic.Core": "1.2.18"
         },
@@ -3642,10 +3629,7 @@
         },
         "runtime": {
           "bin/placeholder/CityDiscoverTourist.Business.dll": {}
-        },
-        "frameworkReferences": [
-          "Microsoft.AspNetCore.App"
-        ]
+        }
       },
       "CityDiscoverTourist.Data/1.0.0": {
         "type": "project",
@@ -3653,7 +3637,6 @@
         "dependencies": {
           "Microsoft.AspNetCore.Identity": "2.2.0",
           "Microsoft.AspNetCore.Identity.EntityFrameworkCore": "6.0.3",
-          "Microsoft.AspNetCore.Mvc.NewtonsoftJson": "6.0.4",
           "Microsoft.EntityFrameworkCore.SqlServer": "6.0.3"
         },
         "compile": {
@@ -3661,10 +3644,7 @@
         },
         "runtime": {
           "bin/placeholder/CityDiscoverTourist.Data.dll": {}
-        },
-        "frameworkReferences": [
-          "Microsoft.AspNetCore.App"
-        ]
+        }
       }
     }
   },
@@ -4042,18 +4022,6 @@
         "lib/netstandard2.0/Google.Apis.Core.dll",
         "lib/netstandard2.0/Google.Apis.Core.pdb",
         "lib/netstandard2.0/Google.Apis.Core.xml"
-      ]
-    },
-    "GoogleMaps.LocationServices/1.2.0.5": {
-      "sha512": "0j3RL5+acxYgQNz72JdXJ1nUKxMGaY+6UvrOIOxZfp0qpJOUmo/ivCAm53atbnuy0z3vrZK+j9mZifh35UBqag==",
-      "type": "package",
-      "path": "googlemaps.locationservices/1.2.0.5",
-      "files": [
-        ".nupkg.metadata",
-        ".signature.p7s",
-        "googlemaps.locationservices.1.2.0.5.nupkg.sha512",
-        "googlemaps.locationservices.nuspec",
-        "lib/netstandard2.0/GoogleMaps.LocationServices.dll"
       ]
     },
     "Kralizek.Extensions.Configuration.AWSSecretsManager/1.6.3": {

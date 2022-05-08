@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "48sAk6H2holdZmvCjBf7yrd8/xHJERomGjh3XcEHIBjAFncpn9fXYPtbbYEGVbiHA+bT3/PV9p3k1U8j/U+YhQ==",
+  "dgSpecHash": "jK+v5GeZGFQ5xz0mU1TWIhK5DCweAXQqZKx5PEEgH7AXYneD0paoMGpb2azJMD6yAc8yRDylXlt1syZbP0VqWg==",
   "success": true,
   "projectFilePath": "D:\\C#\\CityDiscoverTourist\\CityDiscoverTourist.Test\\CityDiscoverTourist.Test.csproj",
   "expectedPackageFiles": [
@@ -17,7 +17,6 @@
     "C:\\Users\\Admin\\.nuget\\packages\\google.apis\\1.49.0\\google.apis.1.49.0.nupkg.sha512",
     "C:\\Users\\Admin\\.nuget\\packages\\google.apis.auth\\1.49.0\\google.apis.auth.1.49.0.nupkg.sha512",
     "C:\\Users\\Admin\\.nuget\\packages\\google.apis.core\\1.49.0\\google.apis.core.1.49.0.nupkg.sha512",
-    "C:\\Users\\Admin\\.nuget\\packages\\googlemaps.locationservices\\1.2.0.5\\googlemaps.locationservices.1.2.0.5.nupkg.sha512",
     "C:\\Users\\Admin\\.nuget\\packages\\kralizek.extensions.configuration.awssecretsmanager\\1.6.3\\kralizek.extensions.configuration.awssecretsmanager.1.6.3.nupkg.sha512",
     "C:\\Users\\Admin\\.nuget\\packages\\mailkit\\3.2.0\\mailkit.3.2.0.nupkg.sha512",
     "C:\\Users\\Admin\\.nuget\\packages\\microsoft.aspnet.webapi.versioning\\4.1.1\\microsoft.aspnet.webapi.versioning.4.1.1.nupkg.sha512",
