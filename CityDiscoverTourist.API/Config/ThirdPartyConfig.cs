@@ -11,7 +11,7 @@ public static class ThirdPartyConfig
         services.AddSingleton(emailConfig);
         services.AddScoped<IEmailSender, EmailSender>();
 
-        var googleConfig = configuration.GetSection("Googleapis").Get<GoogleApiSetting>();
+        var googleConfig = configuration.GetSection("Googleapis").Get<GoogleApiSetting>() ?? new GoogleApiSetting();
         services.AddSingleton(googleConfig);
     }
 }
