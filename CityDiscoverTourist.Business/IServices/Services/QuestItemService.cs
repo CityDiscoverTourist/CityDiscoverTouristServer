@@ -5,7 +5,6 @@ using CityDiscoverTourist.Business.Helper;
 using CityDiscoverTourist.Business.Helper.Params;
 using CityDiscoverTourist.Data.IRepositories;
 using CityDiscoverTourist.Data.Models;
-using GoogleMaps.LocationServices;
 
 namespace CityDiscoverTourist.Business.IServices.Services;
 
