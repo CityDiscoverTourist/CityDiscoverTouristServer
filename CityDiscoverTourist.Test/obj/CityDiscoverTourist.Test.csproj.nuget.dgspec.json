@@ -106,6 +106,10 @@
               "target": "Package",
               "version": "[13.0.1, )"
             },
+            "Redi.StackExchangeRedis.Cache.Extension": {
+              "target": "Package",
+              "version": "[1.5.3, )"
+            },
             "Swashbuckle.AspNetCore": {
               "target": "Package",
               "version": "[6.2.3, )"
