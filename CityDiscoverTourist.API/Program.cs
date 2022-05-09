@@ -53,6 +53,7 @@ else
 }
 
 app.UseMiddleware<ErrorHandlerMiddleware>();
+app.HandlerExceptionProduction(app.Environment.IsDevelopment());
 app.UseHttpsRedirection();
 app.UseHsts();
 
