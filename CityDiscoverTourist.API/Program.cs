@@ -6,14 +6,16 @@ using Microsoft.AspNetCore.HttpOverrides;
 
 var builder = WebApplication.CreateBuilder(args);
 
-/*var env = builder.Environment.EnvironmentName;
+var env = builder.Environment.EnvironmentName;
 var appName = builder.Environment.ApplicationName;
 
 builder.Configuration.AddSecretsManager(region: RegionEndpoint.APSoutheast1, configurator: options =>
 {
-    //options.SecretFilter = entry => entry.Name.StartsWith($"{env}_{appName}_");
-    options.KeyGenerator = (secret, name) => name.Replace("__", ":");
-});*/
+    //arn:aws:secretsmanager:ap-southeast-1:958841795550:secret:Production_CityDiscoverTourist.API_ConnectionStrings__DefaultConnection-65jWxM
+    options.SecretFilter = entry => entry.Name.StartsWith($"{env}_{appName}_");
+    options.KeyGenerator = (entry, s) => s.Replace($"{env}_{appName}_", string.Empty)
+        .Replace("__", ":");
+});
 
 const string managedNetworkingAppContextSwitch = "Switch.Microsoft.Data.SqlClient.UseManagedNetworkingOnWindows";
 AppContext.SetSwitch(managedNetworkingAppContextSwitch, true);
