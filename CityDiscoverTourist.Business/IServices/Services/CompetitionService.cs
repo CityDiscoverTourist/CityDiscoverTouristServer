@@ -7,7 +7,7 @@ using CityDiscoverTourist.Data.Models;
 
 namespace CityDiscoverTourist.Business.IServices.Services;
 
-public class CompetitionService: ICompetitionService
+public class CompetitionService: BaseService, ICompetitionService
 {
     private readonly ICompetitionRepository _competitionRepository;
     private readonly IMapper _mapper;
@@ -34,7 +34,7 @@ public class CompetitionService: ICompetitionService
     public async Task<Competition> Get(int id)
     {
         var entity = await _competitionRepository.Get(id);
-
+        CheckDataNotNull("Competition", entity);
         return _mapper.Map<Competition>(entity);
     }
 

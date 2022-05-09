@@ -7,7 +7,7 @@ using CityDiscoverTourist.Data.Models;
 
 namespace CityDiscoverTourist.Business.IServices.Services;
 
-public class WalletService: IWalletService
+public class WalletService: BaseService, IWalletService
 {
     private readonly IWalletRepository _walletRepository;
     private readonly IMapper _mapper;
@@ -35,7 +35,7 @@ public class WalletService: IWalletService
     public async Task<Wallet> Get(int id)
     {
         var entity = await _walletRepository.Get(id);
-
+        CheckDataNotNull("Wallet", entity);
         return _mapper.Map<Wallet>(entity);
     }
 

@@ -9,7 +9,7 @@ using Quest = CityDiscoverTourist.Data.Models.Quest;
 
 namespace CityDiscoverTourist.Business.IServices.Services;
 
-public class CustomerQuestService: ICustomerQuestService
+public class CustomerQuestService: BaseService, ICustomerQuestService
 {
     private readonly ICustomerQuestRepository _customerQuestRepository;
     private readonly IQuestItemRepository _taskRepository;
@@ -40,7 +40,7 @@ public class CustomerQuestService: ICustomerQuestService
     public async Task<CustomerQuestResponseModel> Get(int id)
     {
         var entity = await _customerQuestRepository.Get(id);
-
+        CheckDataNotNull("CustomerQuest", entity);
         return _mapper.Map<CustomerQuestResponseModel>(entity);
     }
 

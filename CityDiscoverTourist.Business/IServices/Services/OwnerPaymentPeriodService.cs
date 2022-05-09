@@ -7,7 +7,7 @@ using CityDiscoverTourist.Data.Models;
 
 namespace CityDiscoverTourist.Business.IServices.Services;
 
-public class OwnerPaymentPeriodService: IOwnerPaymentPeriodService
+public class OwnerPaymentPeriodService: BaseService, IOwnerPaymentPeriodService
 {
     private readonly IOwnerPaymentPeriodRepository _ownerPaymentPeriod;
     private readonly IMapper _mapper;
@@ -35,7 +35,7 @@ public class OwnerPaymentPeriodService: IOwnerPaymentPeriodService
     public async Task<OwnerPaymentPeriod> Get(int id)
     {
         var entity = await _ownerPaymentPeriod.Get(id);
-
+        CheckDataNotNull("OwnerPaymentPeriod", entity);
         return _mapper.Map<OwnerPaymentPeriod>(entity);
     }
 

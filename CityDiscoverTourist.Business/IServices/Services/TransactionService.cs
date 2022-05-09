@@ -7,7 +7,7 @@ using CityDiscoverTourist.Data.Models;
 
 namespace CityDiscoverTourist.Business.IServices.Services;
 
-public class TransactionService: ITransactionService
+public class TransactionService: BaseService, ITransactionService
 {
     private readonly ITransactionRepository _transRepository;
     private readonly IMapper _mapper;
@@ -35,7 +35,7 @@ public class TransactionService: ITransactionService
     public async Task<Transaction> Get(int id)
     {
         var entity = await _transRepository.Get(id);
-
+        CheckDataNotNull("Transaction", entity);
         return _mapper.Map<Transaction>(entity);
     }
 

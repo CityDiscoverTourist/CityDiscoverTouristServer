@@ -8,7 +8,7 @@ using CityDiscoverTourist.Data.Models;
 
 namespace CityDiscoverTourist.Business.IServices.Services;
 
-public class ContactService: IContactService
+public class ContactService: BaseService, IContactService
 {
     private readonly IContactRepository _contactRepository;
 
@@ -26,7 +26,6 @@ public class ContactService: IContactService
     public async Task<Contact> Get(int id)
     {
         var entity = await _contactRepository.Get(id);
-
         return entity;
     }
 

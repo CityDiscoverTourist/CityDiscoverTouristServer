@@ -10,7 +10,7 @@ using Newtonsoft.Json.Linq;
 
 namespace CityDiscoverTourist.Business.IServices.Services;
 
-public class LocationService: ILocationService
+public class LocationService: BaseService, ILocationService
 {
     private readonly ILocationRepository _locationRepository;
     private readonly IMapper _mapper;
@@ -39,7 +39,7 @@ public class LocationService: ILocationService
     public async Task<Location> Get(int id)
     {
         var entity = await _locationRepository.Get(id);
-
+        CheckDataNotNull("Location", entity);
         return _mapper.Map<Location>(entity);
     }
 

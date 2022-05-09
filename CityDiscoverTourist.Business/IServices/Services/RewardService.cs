@@ -8,7 +8,7 @@ using CityDiscoverTourist.Data.Models;
 
 namespace CityDiscoverTourist.Business.IServices.Services;
 
-public class RewardService : IRewardService
+public class RewardService : BaseService, IRewardService
 {
     private readonly IRewardRepository  _rewardRepository;
     private readonly IMapper _mapper;
@@ -36,7 +36,7 @@ public class RewardService : IRewardService
     public async Task<RewardResponseModel> Get(int id)
     {
         var entity = await _rewardRepository.Get(id);
-
+        CheckDataNotNull("Reward", entity);
         return _mapper.Map<RewardResponseModel>(entity);
     }
 

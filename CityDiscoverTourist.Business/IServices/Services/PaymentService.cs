@@ -7,7 +7,7 @@ using CityDiscoverTourist.Data.Models;
 
 namespace CityDiscoverTourist.Business.IServices.Services;
 
-public class PaymentService: IPaymentService
+public class PaymentService: BaseService, IPaymentService
 {
     private readonly IPaymentRepository _paymentRepository;
     private readonly IMapper _mapper;
@@ -35,7 +35,7 @@ public class PaymentService: IPaymentService
     public async Task<Payment> Get(int id)
     {
         var entity = await _paymentRepository.Get(id);
-
+        CheckDataNotNull("Payment", entity);
         return _mapper.Map<Payment>(entity);
     }
 

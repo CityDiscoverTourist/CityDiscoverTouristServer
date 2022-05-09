@@ -1,6 +1,7 @@
 using Amazon;
 using CityDiscoverTourist.API.Config;
 using CityDiscoverTourist.Business.Data;
+using CityDiscoverTourist.Business.Exceptions;
 using Microsoft.AspNetCore.HttpOverrides;
 
 
@@ -51,6 +52,7 @@ else
     app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "CityDiscoverTourist API Production"));
 }
 
+app.UseMiddleware<ErrorHandlerMiddleware>();
 app.UseHttpsRedirection();
 app.UseHsts();
 

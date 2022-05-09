@@ -8,7 +8,7 @@ using CityDiscoverTourist.Data.Models;
 
 namespace CityDiscoverTourist.Business.IServices.Services;
 
-public class CommissionService: ICommissionService
+public class CommissionService: BaseService, ICommissionService
 {
     private readonly ICommissionRepository _commissionService;
     private readonly IMapper _mapper;
@@ -35,7 +35,7 @@ public class CommissionService: ICommissionService
     public async Task<Commission> Get(int id)
     {
         var entity = await _commissionService.Get(id);
-
+        CheckDataNotNull("Commission", entity);
         return _mapper.Map<Commission>(entity);
     }
 
