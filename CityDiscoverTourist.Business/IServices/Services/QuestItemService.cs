@@ -62,10 +62,10 @@ public class QuestItemService: BaseService, IQuestItemService
         return _mapper.Map<QuestItemResponseModel>(entity);
     }
 
-    public int CountTaskInQuest(Guid questId)
+    /*public int CountTaskInQuest(Guid questId)
     {
         throw new NotImplementedException();
-    }
+    }*/
 
     /*private static void Search(ref IQueryable<QuestItem> entities, TaskParams param)
     {

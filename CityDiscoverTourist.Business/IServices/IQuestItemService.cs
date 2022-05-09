@@ -12,5 +12,5 @@ public interface IQuestItemService
     public Task<QuestItemResponseModel> CreateAsync(QuestItemRequestModel request);
     public Task<QuestItemResponseModel> UpdateAsync(QuestItemRequestModel request);
     public Task<QuestItemResponseModel> DeleteAsync(int id);
-    public int CountTaskInQuest(Guid questId);
+    //public int CountTaskInQuest(Guid questId);
 }

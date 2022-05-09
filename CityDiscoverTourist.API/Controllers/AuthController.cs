@@ -36,11 +36,6 @@ public class AuthController : ControllerBase
         return Ok(new { token = newToken.EncodedPayload, newRefreshToken });
     }*/
 
-    [HttpPost("confirm-phone")]
-    public async Task<IActionResult> ConfirmPhone(string username, int code)
-    {
-        return Ok(await _authService.VerifyPhoneNumberByDigitCode(username, code));
-    }
 
     [HttpPost("login-facebook")]
     public async Task<IActionResult> FacebookLoginAsync([FromQuery] string resource)

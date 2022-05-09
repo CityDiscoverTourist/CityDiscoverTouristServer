@@ -72,10 +72,4 @@ public class QuestItemController : ControllerBase
         var entity = await _taskService.DeleteAsync(id);
         return ApiResponse<QuestItem>.Ok(entity);
     }
-
-    [HttpGet("count-tasks")]
-    public int Count([FromQuery] Guid questId)
-    {
-        return _taskService.CountTaskInQuest(questId);
-    }
 }
