@@ -11,6 +11,8 @@ public class BaseService
             //throw new RequestException(ErrorCodes.DataIsEmpty, $"{name} must be not null");
             case null:
                 throw new KeyNotFoundException($"{name} not found");
+            default:
+                throw new Exception("Exception occured");
         }
     }
 }
