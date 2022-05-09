@@ -1,3 +1,4 @@
+using CityDiscoverTourist.API.Cache;
 using CityDiscoverTourist.API.Response;
 using CityDiscoverTourist.Business.Data.RequestModel;
 using CityDiscoverTourist.Business.Helper;
@@ -22,7 +23,7 @@ public class AreaController : ControllerBase
     }
 
     [HttpGet]
-    //[Cached(600)]
+    [Cached(600)]
     public ApiResponse<PageList<Area>> GetAll([FromQuery] AreaParams param)
     {
         var entity = _areaService.GetAll(param);

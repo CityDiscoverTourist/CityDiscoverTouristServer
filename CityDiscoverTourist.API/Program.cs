@@ -28,6 +28,7 @@ builder.Services.SetupHelper();
 builder.Services.SetupServices();
 builder.Services.SetupThirdParty(builder.Configuration);
 builder.Services.SetupSwagger(builder.Configuration);
+builder.Services.SetUpCache(builder.Configuration);
 
 builder.Services.AddAutoMapper(typeof(AutoMapperProfile).Assembly);
 
