@@ -8,7 +8,7 @@ using CityDiscoverTourist.Data.Models;
 
 namespace CityDiscoverTourist.Business.IServices.Services;
 
-public class QuestItemTypeService : IQuestItemTypeService
+public class QuestItemTypeService : BaseService, IQuestItemTypeService
 {
     private readonly IQuestItemTypeRepository _questItemTypeRepository;
     private readonly IMapper _mapper;
@@ -35,7 +35,7 @@ public class QuestItemTypeService : IQuestItemTypeService
     public async Task<QuestItemTypeResponseModel> Get(int id, string? fields)
     {
         var entity = await _questItemTypeRepository.Get(id);
-
+        CheckDataNotNull("QuestItemType", entity);
         return _mapper.Map<QuestItemTypeResponseModel>(entity);
     }
 

@@ -7,7 +7,7 @@ using CityDiscoverTourist.Data.Models;
 
 namespace CityDiscoverTourist.Business.IServices.Services;
 
-public class LocationTypeService: ILocationTypeService
+public class LocationTypeService: BaseService, ILocationTypeService
 {
     private readonly ILocationTypeRepository _locationTypeRepository;
     private readonly IMapper _mapper;
@@ -35,7 +35,7 @@ public class LocationTypeService: ILocationTypeService
     public async Task<LocationType> Get(int id)
     {
         var entity = await _locationTypeRepository.Get(id);
-
+        CheckDataNotNull("LocationType", entity);
         return _mapper.Map<LocationType>(entity);
     }
 

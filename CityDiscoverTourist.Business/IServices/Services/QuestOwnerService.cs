@@ -7,7 +7,7 @@ using CityDiscoverTourist.Data.Models;
 
 namespace CityDiscoverTourist.Business.IServices.Services;
 
-public class QuestOwnerService: IQuestOwnerService
+public class QuestOwnerService: BaseService, IQuestOwnerService
 {
     private readonly IQuestOwnerRepository _ownerRepository;
     private readonly IMapper _mapper;
@@ -35,7 +35,7 @@ public class QuestOwnerService: IQuestOwnerService
     public async Task<QuestOwner> Get(int id)
     {
         var entity = await _ownerRepository.Get(id);
-
+        CheckDataNotNull("QuestOwner", entity);
         return _mapper.Map<QuestOwner>(entity);
     }
 

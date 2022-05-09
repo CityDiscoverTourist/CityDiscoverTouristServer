@@ -8,7 +8,7 @@ using CityDiscoverTourist.Data.Models;
 
 namespace CityDiscoverTourist.Business.IServices.Services;
 
-public class QuestService: IQuestService
+public class QuestService: BaseService, IQuestService
 {
     private readonly IQuestRepository _questRepository;
     private readonly ISortHelper<Quest> _sortHelper;
@@ -37,7 +37,7 @@ public class QuestService: IQuestService
     public async Task<QuestResponseModel> Get(int id)
     {
         var entity = await _questRepository.Get(id);
-
+        CheckDataNotNull("Quest", entity);
         return _mapper.Map<QuestResponseModel>(entity);
     }
 

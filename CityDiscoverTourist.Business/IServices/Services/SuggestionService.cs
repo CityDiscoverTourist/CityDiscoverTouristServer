@@ -7,7 +7,7 @@ using CityDiscoverTourist.Data.Models;
 
 namespace CityDiscoverTourist.Business.IServices.Services;
 
-public class SuggestionService: ISuggestionService
+public class SuggestionService: BaseService, ISuggestionService
 {
     private readonly ISuggestionRepository _suggestionRepository;
     private readonly IMapper _mapper;
@@ -34,7 +34,7 @@ public class SuggestionService: ISuggestionService
     public async Task<Suggestion> Get(int id)
     {
         var entity = await _suggestionRepository.Get(id);
-
+        CheckDataNotNull("Suggestion", entity);
         return _mapper.Map<Suggestion>(entity);
     }
 

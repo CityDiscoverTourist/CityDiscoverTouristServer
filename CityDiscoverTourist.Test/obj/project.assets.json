@@ -3632,6 +3632,7 @@
           "CityDiscoverTourist.Data": "1.0.0",
           "FirebaseAdmin": "2.3.0",
           "MailKit": "3.2.0",
+          "Microsoft.AspNetCore.Http.Abstractions": "2.2.0",
           "Microsoft.AspNetCore.Mvc.Core": "2.2.5",
           "System.Linq.Dynamic": "1.0.8",
           "System.Linq.Dynamic.Core": "1.2.18"

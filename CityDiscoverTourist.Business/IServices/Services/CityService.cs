@@ -8,7 +8,7 @@ using CityDiscoverTourist.Data.Models;
 
 namespace CityDiscoverTourist.Business.IServices.Services;
 
-public class CityService: ICityService
+public class CityService: BaseService, ICityService
 {
     private readonly ICityRepository _cityRepository;
     private readonly IMapper _mapper;
@@ -35,7 +35,7 @@ public class CityService: ICityService
     public async Task<City> Get(int id)
     {
         var entity = await _cityRepository.Get(id);
-
+        CheckDataNotNull("City", entity);
         return _mapper.Map<City>(entity);
     }
 

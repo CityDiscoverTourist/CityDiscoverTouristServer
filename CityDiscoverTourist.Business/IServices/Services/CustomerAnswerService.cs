@@ -8,7 +8,7 @@ using CityDiscoverTourist.Data.Models;
 
 namespace CityDiscoverTourist.Business.IServices.Services;
 
-public class CustomerAnswerService: ICustomerAnswerService
+public class CustomerAnswerService: BaseService, ICustomerAnswerService
 {
     private readonly ICustomerAnswerRepository _answerRepository;
     private readonly IMapper _mapper;
@@ -36,7 +36,7 @@ public class CustomerAnswerService: ICustomerAnswerService
     {
         var entity = await _answerRepository.Get(id);
 
-        //var shaped = _dataShaper.ShapeData(entity, fields);
+        CheckDataNotNull("CustomerAnswer", entity);
 
         return _mapper.Map<CustomerAnswer>(entity);
     }

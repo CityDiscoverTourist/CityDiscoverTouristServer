@@ -8,7 +8,7 @@ using CityDiscoverTourist.Data.Models;
 
 namespace CityDiscoverTourist.Business.IServices.Services;
 
-public class NoteService: INoteService
+public class NoteService: BaseService, INoteService
 {
     private readonly INoteRepository _noteRepository;
     private readonly IMapper _mapper;
@@ -36,7 +36,7 @@ public class NoteService: INoteService
     public async Task<Note> Get(int id)
     {
         var entity = await _noteRepository.Get(id);
-
+        CheckDataNotNull("Note", entity);
         return _mapper.Map<Note>(entity);
     }
 
