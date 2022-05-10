@@ -14,15 +14,17 @@ public class CustomerQuestService: BaseService, ICustomerQuestService
     private readonly ICustomerQuestRepository _customerQuestRepository;
     private readonly IQuestItemRepository _taskRepository;
     private readonly IMapper _mapper;
+    private readonly ICompetitionRepository _competitionRepository;
     private readonly ISortHelper<CustomerQuest> _sortHelper;
     private const int BaseMultiplier = 150;
 
-    public CustomerQuestService(ICustomerQuestRepository customerQuestRepository, IMapper mapper, IQuestItemRepository taskRepository, ISortHelper<CustomerQuest> sortHelper)
+    public CustomerQuestService(ICustomerQuestRepository customerQuestRepository, IMapper mapper, IQuestItemRepository taskRepository, ISortHelper<CustomerQuest> sortHelper, ICompetitionRepository competitionRepository)
     {
         _customerQuestRepository = customerQuestRepository;
         _mapper = mapper;
         _taskRepository = taskRepository;
         _sortHelper = sortHelper;
+        _competitionRepository = competitionRepository;
     }
 
     public PageList<CustomerQuestResponseModel> GetAll(CustomerQuestParams @params)
@@ -46,11 +48,13 @@ public class CustomerQuestService: BaseService, ICustomerQuestService
 
     public async Task<CustomerQuestResponseModel> CreateAsync(CustomerQuestRequestModel request)
     {
-        //var numberOfTask = CountTaskInQuest(request.);
-        var entity = _mapper.Map<CustomerQuest>(request);
-        //var beginPoint = numberOfTask * BaseMultiplier;
+        var s = _competitionRepository.GetAll().FirstOrDefault(x => x.Id == request.CompetitionId);
 
-        //entity.BeginPoint = beginPoint.ToString();
+        var numberOfTask = CountTaskInQuest(s!.QuestId);
+        var entity = _mapper.Map<CustomerQuest>(request);
+        var beginPoint = numberOfTask * BaseMultiplier;
+
+        entity.BeginPoint = beginPoint.ToString();
         entity = await _customerQuestRepository.Add(entity);
         return _mapper.Map<CustomerQuestResponseModel>(entity);
     }
