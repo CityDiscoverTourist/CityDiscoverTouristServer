@@ -1,5 +1,6 @@
 using CityDiscoverTourist.API.Response;
 using CityDiscoverTourist.Business.Data.RequestModel;
+using CityDiscoverTourist.Business.Data.ResponseModel;
 using CityDiscoverTourist.Business.Helper;
 using CityDiscoverTourist.Business.Helper.Params;
 using CityDiscoverTourist.Business.IServices;
@@ -23,7 +24,7 @@ public class LocationController : ControllerBase
 
     [HttpGet]
     //[Cached(600)]
-    public ApiResponse<PageList<Location>> GetAll([FromQuery] LocationParams param)
+    public ApiResponse<PageList<LocationResponseModel>> GetAll([FromQuery] LocationParams param)
     {
         var entity = _locationService.GetAll(param);
 
@@ -44,7 +45,7 @@ public class LocationController : ControllerBase
     [HttpGet("{id:int}")]
     //[Cached(600)]
 
-    public async Task<ApiResponse<Location>> Get(int id)
+    public async Task<ApiResponse<LocationResponseModel>> Get(int id)
     {
         var entity = await _locationService.Get(id);
 
@@ -52,24 +53,24 @@ public class LocationController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<ApiResponse<Location>> Post(LocationRequestModel data)
+    public async Task<ApiResponse<LocationResponseModel>> Post(LocationRequestModel data)
     {
         var entity = await _locationService.CreateAsync(data);
-        return ApiResponse<Quest>.Created(entity);
+        return ApiResponse<Location>.Created(entity);
     }
 
     [HttpPut]
-    public async Task<ApiResponse<Location>> Put([FromBody] LocationRequestModel data)
+    public async Task<ApiResponse<LocationResponseModel>> Put([FromBody] LocationRequestModel data)
     {
         var entity = await _locationService.UpdateAsync(data);
-        return ApiResponse<Quest>.Created(entity);
+        return ApiResponse<Location>.Created(entity);
     }
 
     [HttpDelete("{id:int}")]
-    public async Task<ActionResult<ApiResponse<Location>>> Delete(int id)
+    public async Task<ActionResult<ApiResponse<LocationResponseModel>>> Delete(int id)
     {
         var entity = await _locationService.DeleteAsync(id);
-        return ApiResponse<Quest>.Ok(entity);
+        return ApiResponse<Location>.Ok(entity);
     }
 
 }

@@ -1,4 +1,4 @@
-namespace CityDiscoverTourist.Business.Data.RequestModel;
+namespace CityDiscoverTourist.Business.Data.ResponseModel;
 
 public class LoginResponseModel
 {

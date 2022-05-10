@@ -8,9 +8,9 @@ namespace CityDiscoverTourist.Business.IServices;
 
 public interface ISuggestionService
 {
-    public PageList<Suggestion> GetAll(SuggestionParams @params);
-    public Task<Suggestion> Get(int id);
-    public Task<Suggestion> CreateAsync(SuggestionRequestModel request);
-    public Task<Suggestion> UpdateAsync(SuggestionRequestModel request);
-    public Task<Suggestion> DeleteAsync(int id);
+    public PageList<SuggestionResponseModel> GetAll(SuggestionParams @params);
+    public Task<SuggestionResponseModel> Get(int id);
+    public Task<SuggestionResponseModel> CreateAsync(SuggestionRequestModel request);
+    public Task<SuggestionResponseModel> UpdateAsync(SuggestionRequestModel request);
+    public Task<SuggestionResponseModel> DeleteAsync(int id);
 }

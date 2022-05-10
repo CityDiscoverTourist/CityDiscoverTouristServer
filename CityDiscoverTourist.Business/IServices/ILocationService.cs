@@ -8,9 +8,9 @@ namespace CityDiscoverTourist.Business.IServices;
 
 public interface ILocationService
 {
-    public PageList<Location> GetAll(LocationParams @params);
-    public Task<Location> Get(int id);
-    public Task<Location> CreateAsync(LocationRequestModel request);
-    public Task<Location> UpdateAsync(LocationRequestModel request);
-    public Task<Location> DeleteAsync(int id);
+    public PageList<LocationResponseModel> GetAll(LocationParams @params);
+    public Task<LocationResponseModel> Get(int id);
+    public Task<LocationResponseModel> CreateAsync(LocationRequestModel request);
+    public Task<LocationResponseModel> UpdateAsync(LocationRequestModel request);
+    public Task<LocationResponseModel> DeleteAsync(int id);
 }

@@ -1,5 +1,6 @@
 using CityDiscoverTourist.API.Response;
 using CityDiscoverTourist.Business.Data.RequestModel;
+using CityDiscoverTourist.Business.Data.ResponseModel;
 using CityDiscoverTourist.Business.Helper;
 using CityDiscoverTourist.Business.Helper.Params;
 using CityDiscoverTourist.Business.IServices;
@@ -23,7 +24,7 @@ public class LocationTypeController : ControllerBase
 
     [HttpGet]
     //[Cached(600)]
-    public ApiResponse<PageList<LocationType>> GetAll([FromQuery] LocationTypeParams param)
+    public ApiResponse<PageList<LocationTypeResponseModel>> GetAll([FromQuery] LocationTypeParams param)
     {
         var entity = _locationTypeService.GetAll(param);
 
@@ -44,7 +45,7 @@ public class LocationTypeController : ControllerBase
     [HttpGet("{id:int}")]
     //[Cached(600)]
 
-    public async Task<ApiResponse<LocationType>> Get(int id)
+    public async Task<ApiResponse<LocationTypeResponseModel>> Get(int id)
     {
         var entity = await _locationTypeService.Get(id);
 
@@ -52,21 +53,21 @@ public class LocationTypeController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<ApiResponse<LocationType>> Post(LocationTypeRequestModel data)
+    public async Task<ApiResponse<LocationTypeResponseModel>> Post(LocationTypeRequestModel data)
     {
         var entity = await _locationTypeService.CreateAsync(data);
         return ApiResponse<LocationType>.Created(entity);
     }
 
     [HttpPut]
-    public async Task<ApiResponse<LocationType>> Put([FromBody] LocationTypeRequestModel data)
+    public async Task<ApiResponse<LocationTypeResponseModel>> Put([FromBody] LocationTypeRequestModel data)
     {
         var entity = await _locationTypeService.UpdateAsync(data);
-        return ApiResponse<Quest>.Created(entity);
+        return ApiResponse<LocationType>.Created(entity);
     }
 
     [HttpDelete("{id:int}")]
-    public async Task<ActionResult<ApiResponse<LocationType>>> Delete(int id)
+    public async Task<ActionResult<ApiResponse<LocationTypeResponseModel>>> Delete(int id)
     {
         var entity = await _locationTypeService.DeleteAsync(id);
         return ApiResponse<LocationType>.Ok(entity);

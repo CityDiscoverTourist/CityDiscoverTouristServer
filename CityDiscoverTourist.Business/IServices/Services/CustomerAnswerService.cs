@@ -22,42 +22,42 @@ public class CustomerAnswerService: BaseService, ICustomerAnswerService
         _sortHelper = sortHelper;
     }
 
-    public PageList<CustomerAnswer> GetAll(CustomerAnswerParams @params)
+    public PageList<CustomerAnswerResponseModel> GetAll(CustomerAnswerParams @params)
     {
         var listAll = _answerRepository.GetAll();
 
         //Search(ref listAll, @params);
 
         var sortedQuests = _sortHelper.ApplySort(listAll, @params.OrderBy);
-        var mappedData = _mapper.Map<IEnumerable<CustomerAnswer>>(sortedQuests);
-        return PageList<CustomerAnswer>.ToPageList(mappedData, @params.PageNume, @params.PageSize);
+        var mappedData = _mapper.Map<IEnumerable<CustomerAnswerResponseModel>>(sortedQuests);
+        return PageList<CustomerAnswerResponseModel>.ToPageList(mappedData, @params.PageNume, @params.PageSize);
     }
-    public async Task<CustomerAnswer> Get(int id)
+    public async Task<CustomerAnswerResponseModel> Get(int id)
     {
         var entity = await _answerRepository.Get(id);
 
         CheckDataNotNull("CustomerAnswer", entity);
 
-        return _mapper.Map<CustomerAnswer>(entity);
+        return _mapper.Map<CustomerAnswerResponseModel>(entity);
     }
 
-    public async Task<CustomerAnswer> CreateAsync(CustomerAnswerRequetModel request)
+    public async Task<CustomerAnswerResponseModel> CreateAsync(CustomerAnswerRequestModel request)
     {
         var entity = _mapper.Map<CustomerAnswer>(request);
         entity = await _answerRepository.Add(entity);
-        return _mapper.Map<CustomerAnswer>(entity);
+        return _mapper.Map<CustomerAnswerResponseModel>(entity);
     }
 
-    public async Task<CustomerAnswer> UpdateAsync(CustomerAnswerRequetModel request)
+    public async Task<CustomerAnswerResponseModel> UpdateAsync(CustomerAnswerRequestModel request)
     {
         var entity = _mapper.Map<CustomerAnswer>(request);
         entity = await _answerRepository.Update(entity);
-        return _mapper.Map<CustomerAnswer>(entity);
+        return _mapper.Map<CustomerAnswerResponseModel>(entity);
     }
 
-    public async Task<CustomerAnswer> DeleteAsync(int id)
+    public async Task<CustomerAnswerResponseModel> DeleteAsync(int id)
     {
         var entity = await _answerRepository.Delete(id);
-        return _mapper.Map<CustomerAnswer>(entity);
+        return _mapper.Map<CustomerAnswerResponseModel>(entity);
     }
 }

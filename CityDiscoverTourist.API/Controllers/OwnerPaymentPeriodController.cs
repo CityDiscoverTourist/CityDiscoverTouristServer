@@ -1,5 +1,6 @@
 using CityDiscoverTourist.API.Response;
 using CityDiscoverTourist.Business.Data.RequestModel;
+using CityDiscoverTourist.Business.Data.ResponseModel;
 using CityDiscoverTourist.Business.Helper;
 using CityDiscoverTourist.Business.Helper.Params;
 using CityDiscoverTourist.Business.IServices;
@@ -23,7 +24,7 @@ public class OwnerPaymentPeriodController : ControllerBase
 
     [HttpGet]
     //[Cached(600)]
-    public ApiResponse<PageList<OwnerPaymentPeriod>> GetAll([FromQuery] OwnerPaymentPeriodParams param)
+    public ApiResponse<PageList<OwnerPaymentPeriodResponseModel>> GetAll([FromQuery] OwnerPaymentPeriodParams param)
     {
         var entity = _paymentPeriodService.GetAll(param);
 
@@ -44,7 +45,7 @@ public class OwnerPaymentPeriodController : ControllerBase
     [HttpGet("{id:int}")]
     //[Cached(600)]
 
-    public async Task<ApiResponse<OwnerPaymentPeriod>> Get(int id)
+    public async Task<ApiResponse<OwnerPaymentPeriodResponseModel>> Get(int id)
     {
         var entity = await _paymentPeriodService.Get(id);
 
@@ -52,24 +53,24 @@ public class OwnerPaymentPeriodController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<ApiResponse<OwnerPaymentPeriod>> Post(OwnerPaymentPeriodRm data)
+    public async Task<ApiResponse<OwnerPaymentPeriodResponseModel>> Post(OwnerPaymentPeriodRm data)
     {
         var entity = await _paymentPeriodService.CreateAsync(data);
-        return ApiResponse<Quest>.Created(entity);
+        return ApiResponse<OwnerPaymentPeriod>.Created(entity);
     }
 
     [HttpPut]
-    public async Task<ApiResponse<OwnerPaymentPeriod>> Put([FromBody] OwnerPaymentPeriodRm data)
+    public async Task<ApiResponse<OwnerPaymentPeriodResponseModel>> Put([FromBody] OwnerPaymentPeriodRm data)
     {
         var entity = await _paymentPeriodService.UpdateAsync(data);
-        return ApiResponse<Quest>.Created(entity);
+        return ApiResponse<OwnerPaymentPeriod>.Created(entity);
     }
 
     [HttpDelete("{id:int}")]
-    public async Task<ActionResult<ApiResponse<OwnerPaymentPeriod>>> Delete(int id)
+    public async Task<ActionResult<ApiResponse<OwnerPaymentPeriodResponseModel>>> Delete(int id)
     {
         var entity = await _paymentPeriodService.DeleteAsync(id);
-        return ApiResponse<Quest>.Ok(entity);
+        return ApiResponse<OwnerPaymentPeriod>.Ok(entity);
     }
 
 }

@@ -30,8 +30,7 @@ public static class ConfigFirebase
         });
         FirebaseApp.Create(new AppOptions
         {
-            Credential = GoogleCredential.FromServiceAccountCredential(new ServiceAccountCredential(
-                new ServiceAccountCredential.Initializer("citytourist-cea6c")))
+            Credential = GoogleCredential.FromFile("citytourist.json")
         });
         services.AddAuthentication(opt =>
         {

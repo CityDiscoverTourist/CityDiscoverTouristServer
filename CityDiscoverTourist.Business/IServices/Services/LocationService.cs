@@ -1,6 +1,7 @@
 using System.Globalization;
 using AutoMapper;
 using CityDiscoverTourist.Business.Data.RequestModel;
+using CityDiscoverTourist.Business.Data.ResponseModel;
 using CityDiscoverTourist.Business.Helper;
 using CityDiscoverTourist.Business.Helper.Params;
 using CityDiscoverTourist.Business.Settings;
@@ -25,25 +26,25 @@ public class LocationService: BaseService, ILocationService
         _googleApiSetting = googleApiSetting;
     }
 
-    public PageList<Location> GetAll(LocationParams @params)
+    public PageList<LocationResponseModel> GetAll(LocationParams @params)
     {
         var listAll = _locationRepository.GetAll();
 
         //Search(ref listAll, param);
         var sortedQuests = _sortHelper.ApplySort(listAll, @params.OrderBy);
         //var shapedData = _dataShaper.ShapeData(sortedQuests, param.Fields);
-        var mappedData = _mapper.Map<IEnumerable<Location>>(sortedQuests);
-        return PageList<Location>.ToPageList(mappedData, @params.PageNume, @params.PageSize);
+        var mappedData = _mapper.Map<IEnumerable<LocationResponseModel>>(sortedQuests);
+        return PageList<LocationResponseModel>.ToPageList(mappedData, @params.PageNume, @params.PageSize);
     }
 
-    public async Task<Location> Get(int id)
+    public async Task<LocationResponseModel> Get(int id)
     {
         var entity = await _locationRepository.Get(id);
         CheckDataNotNull("Location", entity);
-        return _mapper.Map<Location>(entity);
+        return _mapper.Map<LocationResponseModel>(entity);
     }
 
-    public async Task<Location> CreateAsync(LocationRequestModel request)
+    public async Task<LocationResponseModel> CreateAsync(LocationRequestModel request)
     {
         var entity = _mapper.Map<Location>(request);
 
@@ -53,20 +54,20 @@ public class LocationService: BaseService, ILocationService
         entity.Longitude = longLat[1].ToString(CultureInfo.InvariantCulture);
 
         entity = await _locationRepository.Add(entity);
-        return _mapper.Map<Location>(entity);
+        return _mapper.Map<LocationResponseModel>(entity);
     }
 
-    public async Task<Location> UpdateAsync(LocationRequestModel request)
+    public async Task<LocationResponseModel> UpdateAsync(LocationRequestModel request)
     {
         var entity = _mapper.Map<Location>(request);
         entity = await _locationRepository.Update(entity);
-        return _mapper.Map<Location>(entity);
+        return _mapper.Map<LocationResponseModel>(entity);
     }
 
-    public async Task<Location> DeleteAsync(int id)
+    public async Task<LocationResponseModel> DeleteAsync(int id)
     {
         var entity = await _locationRepository.Delete(id);
-        return _mapper.Map<Location>(entity);
+        return _mapper.Map<LocationResponseModel>(entity);
     }
 
     private static float[] GetLatLongFromAddress(string address)

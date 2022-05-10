@@ -21,7 +21,7 @@ public class NoteService: BaseService, INoteService
         _sortHelper = sortHelper;
     }
 
-    public PageList<Note> GetAll(NoteParams @params)
+    public PageList<NoteResponseModel> GetAll(NoteParams @params)
     {
         var listAll = _noteRepository.GetAll();
 
@@ -29,35 +29,35 @@ public class NoteService: BaseService, INoteService
 
         var sortedQuests = _sortHelper.ApplySort(listAll, @params.OrderBy);
         //var shapedData = _dataShaper.ShapeData(sortedQuests, param.Fields);
-        var mappedData = _mapper.Map<IEnumerable<Note>>(sortedQuests);
-        return PageList<Note>.ToPageList(mappedData, @params.PageNume, @params.PageSize);
+        var mappedData = _mapper.Map<IEnumerable<NoteResponseModel>>(sortedQuests);
+        return PageList<NoteResponseModel>.ToPageList(mappedData, @params.PageNume, @params.PageSize);
     }
 
-    public async Task<Note> Get(int id)
+    public async Task<NoteResponseModel> Get(int id)
     {
         var entity = await _noteRepository.Get(id);
         CheckDataNotNull("Note", entity);
-        return _mapper.Map<Note>(entity);
+        return _mapper.Map<NoteResponseModel>(entity);
     }
 
-    public async Task<Note> CreateAsync(NoteRequestModel request)
+    public async Task<NoteResponseModel> CreateAsync(NoteRequestModel request)
     {
         var entity = _mapper.Map<Note>(request);
         entity = await _noteRepository.Add(entity);
-        return _mapper.Map<Note>(entity);
+        return _mapper.Map<NoteResponseModel>(entity);
     }
 
-    public async Task<Note> UpdateAsync(NoteRequestModel request)
+    public async Task<NoteResponseModel> UpdateAsync(NoteRequestModel request)
     {
         var entity = _mapper.Map<Note>(request);
         entity = await _noteRepository.Update(entity);
-        return _mapper.Map<Note>(entity);
+        return _mapper.Map<NoteResponseModel>(entity);
     }
 
-    public async Task<Note> DeleteAsync(int id)
+    public async Task<NoteResponseModel> DeleteAsync(int id)
     {
         var entity = await _noteRepository.Delete(id);
-        return _mapper.Map<Note>(entity);
+        return _mapper.Map<NoteResponseModel>(entity);
     }
 
     private static void Search(ref IQueryable<Note> entities, NoteParams param)

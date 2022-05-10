@@ -20,7 +20,7 @@ public class PaymentService: BaseService, IPaymentService
         _sortHelper = sortHelper;
     }
 
-    public PageList<Payment> GetAll(PaymentParams @params)
+    public PageList<PaymentRequestModel> GetAll(PaymentParams @params)
     {
         var listAll = _paymentRepository.GetAll();
 
@@ -28,35 +28,35 @@ public class PaymentService: BaseService, IPaymentService
 
         var sortedQuests = _sortHelper.ApplySort(listAll, @params.OrderBy);
         //var shapedData = _dataShaper.ShapeData(sortedQuests, param.Fields);
-        var mappedData = _mapper.Map<IEnumerable<Payment>>(sortedQuests);
-        return PageList<Payment>.ToPageList(mappedData, @params.PageNume, @params.PageSize);
+        var mappedData = _mapper.Map<IEnumerable<PaymentRequestModel>>(sortedQuests);
+        return PageList<PaymentRequestModel>.ToPageList(mappedData, @params.PageNume, @params.PageSize);
     }
 
-    public async Task<Payment> Get(int id)
+    public async Task<PaymentRequestModel> Get(int id)
     {
         var entity = await _paymentRepository.Get(id);
         CheckDataNotNull("Payment", entity);
-        return _mapper.Map<Payment>(entity);
+        return _mapper.Map<PaymentRequestModel>(entity);
     }
 
-    public async Task<Payment> CreateAsync(PaymentRequestModel request)
+    public async Task<PaymentRequestModel> CreateAsync(PaymentRequestModel request)
     {
         var entity = _mapper.Map<Payment>(request);
         entity = await _paymentRepository.Add(entity);
-        return _mapper.Map<Payment>(entity);
+        return _mapper.Map<PaymentRequestModel>(entity);
     }
 
-    public async Task<Payment> UpdateAsync(PaymentRequestModel request)
+    public async Task<PaymentRequestModel> UpdateAsync(PaymentRequestModel request)
     {
         var entity = _mapper.Map<Payment>(request);
         entity = await _paymentRepository.Update(entity);
-        return _mapper.Map<Payment>(entity);
+        return _mapper.Map<PaymentRequestModel>(entity);
     }
 
-    public async Task<Payment> DeleteAsync(int id)
+    public async Task<PaymentRequestModel> DeleteAsync(int id)
     {
         var entity = await _paymentRepository.Delete(id);
-        return _mapper.Map<Payment>(entity);
+        return _mapper.Map<PaymentRequestModel>(entity);
     }
 
     private static void Search(ref IQueryable<Payment> entities, PaymentParams param)

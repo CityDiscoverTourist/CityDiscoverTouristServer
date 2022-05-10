@@ -1,5 +1,6 @@
 using CityDiscoverTourist.API.Response;
 using CityDiscoverTourist.Business.Data.RequestModel;
+using CityDiscoverTourist.Business.Data.ResponseModel;
 using CityDiscoverTourist.Business.Helper;
 using CityDiscoverTourist.Business.Helper.Params;
 using CityDiscoverTourist.Business.IServices;
@@ -23,7 +24,7 @@ public class QuestOwnerController : ControllerBase
 
     [HttpGet]
     //[Cached(600)]
-    public ApiResponse<PageList<QuestOwner>> GetAll([FromQuery] QuestOwnerParams param)
+    public ApiResponse<PageList<QuestOwnerResponseModel>> GetAll([FromQuery] QuestOwnerParams param)
     {
         var entity = _questOwnerService.GetAll(param);
 
@@ -44,7 +45,7 @@ public class QuestOwnerController : ControllerBase
     [HttpGet("{id:int}")]
     //[Cached(600)]
 
-    public async Task<ApiResponse<QuestOwner>> Get(int id)
+    public async Task<ApiResponse<QuestOwnerResponseModel>> Get(int id)
     {
         var entity = await _questOwnerService.Get(id);
 
@@ -52,21 +53,21 @@ public class QuestOwnerController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<ApiResponse<QuestOwner>> Post(QuestOwnerRequestModel data)
+    public async Task<ApiResponse<QuestOwnerResponseModel>> Post(QuestOwnerRequestModel data)
     {
         var entity = await _questOwnerService.CreateAsync(data);
         return ApiResponse<QuestOwner>.Created(entity);
     }
 
     [HttpPut]
-    public async Task<ApiResponse<QuestOwner>> Put([FromBody] QuestOwnerRequestModel data)
+    public async Task<ApiResponse<QuestOwnerResponseModel>> Put([FromBody] QuestOwnerRequestModel data)
     {
         var entity = await _questOwnerService.UpdateAsync(data);
         return ApiResponse<QuestOwner>.Created(entity);
     }
 
     [HttpDelete("{id:int}")]
-    public async Task<ActionResult<ApiResponse<QuestOwner>>> Delete(int id)
+    public async Task<ActionResult<ApiResponse<QuestOwnerResponseModel>>> Delete(int id)
     {
         var entity = await _questOwnerService.DeleteAsync(id);
         return ApiResponse<QuestOwner>.Ok(entity);

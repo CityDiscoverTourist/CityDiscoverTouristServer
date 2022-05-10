@@ -1,5 +1,6 @@
 using AutoMapper;
 using CityDiscoverTourist.Business.Data.RequestModel;
+using CityDiscoverTourist.Business.Data.ResponseModel;
 using CityDiscoverTourist.Business.Helper;
 using CityDiscoverTourist.Business.Helper.Params;
 using CityDiscoverTourist.Data.IRepositories;
@@ -20,7 +21,7 @@ public class LocationTypeService: BaseService, ILocationTypeService
         _sortHelper = sortHelper;
     }
 
-    public PageList<LocationType> GetAll(LocationTypeParams @params)
+    public PageList<LocationTypeResponseModel> GetAll(LocationTypeParams @params)
     {
         var listAll = _locationTypeRepository.GetAll();
 
@@ -28,35 +29,35 @@ public class LocationTypeService: BaseService, ILocationTypeService
 
         var sortedQuests = _sortHelper.ApplySort(listAll, @params.OrderBy);
         //var shapedData = _dataShaper.ShapeData(sortedQuests, param.Fields);
-        var mappedData = _mapper.Map<IEnumerable<LocationType>>(sortedQuests);
-        return PageList<LocationType>.ToPageList(mappedData, @params.PageNume, @params.PageSize);
+        var mappedData = _mapper.Map<IEnumerable<LocationTypeResponseModel>>(sortedQuests);
+        return PageList<LocationTypeResponseModel>.ToPageList(mappedData, @params.PageNume, @params.PageSize);
     }
 
-    public async Task<LocationType> Get(int id)
+    public async Task<LocationTypeResponseModel> Get(int id)
     {
         var entity = await _locationTypeRepository.Get(id);
         CheckDataNotNull("LocationType", entity);
-        return _mapper.Map<LocationType>(entity);
+        return _mapper.Map<LocationTypeResponseModel>(entity);
     }
 
-    public async Task<LocationType> CreateAsync(LocationTypeRequestModel request)
+    public async Task<LocationTypeResponseModel> CreateAsync(LocationTypeRequestModel request)
     {
         var entity = _mapper.Map<LocationType>(request);
         entity = await _locationTypeRepository.Add(entity);
-        return _mapper.Map<LocationType>(entity);
+        return _mapper.Map<LocationTypeResponseModel>(entity);
     }
 
-    public async Task<LocationType> UpdateAsync(LocationTypeRequestModel request)
+    public async Task<LocationTypeResponseModel> UpdateAsync(LocationTypeRequestModel request)
     {
         var entity = _mapper.Map<LocationType>(request);
         entity = await _locationTypeRepository.Update(entity);
-        return _mapper.Map<LocationType>(entity);
+        return _mapper.Map<LocationTypeResponseModel>(entity);
     }
 
-    public async Task<LocationType> DeleteAsync(int id)
+    public async Task<LocationTypeResponseModel> DeleteAsync(int id)
     {
         var entity = await _locationTypeRepository.Delete(id);
-        return _mapper.Map<LocationType>(entity);
+        return _mapper.Map<LocationTypeResponseModel>(entity);
     }
 
     /*private static void Search(ref IQueryable<LocationType> entities, QuestParams param)

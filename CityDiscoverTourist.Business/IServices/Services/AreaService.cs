@@ -1,5 +1,6 @@
 using AutoMapper;
 using CityDiscoverTourist.Business.Data.RequestModel;
+using CityDiscoverTourist.Business.Data.ResponseModel;
 using CityDiscoverTourist.Business.Helper;
 using CityDiscoverTourist.Business.Helper.Params;
 using CityDiscoverTourist.Data.IRepositories;
@@ -20,42 +21,42 @@ public class AreaService: BaseService, IAreaService
         _sortHelper = sortHelper;
     }
 
-    public PageList<Area> GetAll(AreaParams @params)
+    public PageList<AreaResponseModel> GetAll(AreaParams @params)
     {
         var listAll = _areaRepository.GetAll();
 
         Search(ref listAll, @params);
 
         var sortedQuests = _sortHelper.ApplySort(listAll, @params.OrderBy);
-        var mappedData = _mapper.Map<IEnumerable<Area>>(sortedQuests);
-        return PageList<Area>.ToPageList(mappedData, @params.PageNume, @params.PageSize);
+        var mappedData = _mapper.Map<IEnumerable<AreaResponseModel>>(sortedQuests);
+        return PageList<AreaResponseModel>.ToPageList(mappedData, @params.PageNume, @params.PageSize);
     }
 
-    public async Task<Area> Get(int id)
+    public async Task<AreaResponseModel> Get(int id)
     {
         var entity = await _areaRepository.Get(id);
         CheckDataNotNull("Area", entity);
-        return _mapper.Map<Area>(entity);
+        return _mapper.Map<AreaResponseModel>(entity);
     }
 
-    public async Task<Area> CreateAsync(AreaRequestModel request)
+    public async Task<AreaResponseModel> CreateAsync(AreaRequestModel request)
     {
         var entity = _mapper.Map<Area>(request);
         entity = await _areaRepository.Add(entity);
-        return _mapper.Map<Area>(entity);
+        return _mapper.Map<AreaResponseModel>(entity);
     }
 
-    public async Task<Area> UpdateAsync(AreaRequestModel request)
+    public async Task<AreaResponseModel> UpdateAsync(AreaRequestModel request)
     {
         var entity = _mapper.Map<Area>(request);
         entity = await _areaRepository.Update(entity);
-        return _mapper.Map<Area>(entity);
+        return _mapper.Map<AreaResponseModel>(entity);
     }
 
-    public async Task<Area> DeleteAsync(int id)
+    public async Task<AreaResponseModel> DeleteAsync(int id)
     {
         var entity = await _areaRepository.Delete(id);
-        return _mapper.Map<Area>(entity);
+        return _mapper.Map<AreaResponseModel>(entity);
     }
 
     private static void Search(ref IQueryable<Area> entities, AreaParams param)

@@ -23,7 +23,7 @@ public class PaymentController : ControllerBase
 
     [HttpGet]
     //[Cached(600)]
-    public ApiResponse<PageList<Payment>> GetAll([FromQuery] PaymentParams param)
+    public ApiResponse<PageList<PaymentRequestModel>> GetAll([FromQuery] PaymentParams param)
     {
         var entity = _paymentService.GetAll(param);
 
@@ -44,7 +44,7 @@ public class PaymentController : ControllerBase
     [HttpGet("{id:int}")]
     //[Cached(600)]
 
-    public async Task<ApiResponse<Payment>> Get(int id)
+    public async Task<ApiResponse<PaymentRequestModel>> Get(int id)
     {
         var entity = await _paymentService.Get(id);
 
@@ -52,24 +52,24 @@ public class PaymentController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<ApiResponse<Payment>> Post(PaymentRequestModel data)
+    public async Task<ApiResponse<PaymentRequestModel>> Post(PaymentRequestModel data)
     {
         var entity = await _paymentService.CreateAsync(data);
-        return ApiResponse<Quest>.Created(entity);
+        return ApiResponse<Payment>.Created(entity);
     }
 
     [HttpPut]
-    public async Task<ApiResponse<Payment>> Put([FromBody] PaymentRequestModel data)
+    public async Task<ApiResponse<PaymentRequestModel>> Put([FromBody] PaymentRequestModel data)
     {
         var entity = await _paymentService.UpdateAsync(data);
-        return ApiResponse<Quest>.Created(entity);
+        return ApiResponse<Payment>.Created(entity);
     }
 
     [HttpDelete("{id:int}")]
-    public async Task<ActionResult<ApiResponse<Payment>>> Delete(int id)
+    public async Task<ActionResult<ApiResponse<PaymentRequestModel>>> Delete(int id)
     {
         var entity = await _paymentService.DeleteAsync(id);
-        return ApiResponse<Quest>.Ok(entity);
+        return ApiResponse<Payment>.Ok(entity);
     }
 
 }

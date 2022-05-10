@@ -8,9 +8,9 @@ namespace CityDiscoverTourist.Business.IServices;
 
 public interface ICompetitionService
 {
-    public PageList<Competition> GetAll(CompetitionParams @params);
-    public Task<Competition> Get(int id);
-    public Task<Competition> CreateAsync(CompetitionRequestModel request);
-    public Task<Competition> UpdateAsync(CompetitionRequestModel request);
-    public Task<Competition> DeleteAsync(int id);
+    public PageList<CompetitionResponseModel> GetAll(CompetitionParams @params);
+    public Task<CompetitionResponseModel> Get(int id);
+    public Task<CompetitionResponseModel> CreateAsync(CompetitionRequestModel request);
+    public Task<CompetitionResponseModel> UpdateAsync(CompetitionRequestModel request);
+    public Task<CompetitionResponseModel> DeleteAsync(int id);
 }

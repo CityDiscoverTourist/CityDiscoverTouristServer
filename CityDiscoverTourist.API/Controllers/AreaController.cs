@@ -1,6 +1,7 @@
 using CityDiscoverTourist.API.Cache;
 using CityDiscoverTourist.API.Response;
 using CityDiscoverTourist.Business.Data.RequestModel;
+using CityDiscoverTourist.Business.Data.ResponseModel;
 using CityDiscoverTourist.Business.Helper;
 using CityDiscoverTourist.Business.Helper.Params;
 using CityDiscoverTourist.Business.IServices;
@@ -23,8 +24,8 @@ public class AreaController : ControllerBase
     }
 
     [HttpGet]
-    [Cached(600)]
-    public ApiResponse<PageList<Area>> GetAll([FromQuery] AreaParams param)
+    //[Cached(600)]
+    public ApiResponse<PageList<AreaResponseModel>> GetAll([FromQuery] AreaParams param)
     {
         var entity = _areaService.GetAll(param);
 
@@ -39,13 +40,13 @@ public class AreaController : ControllerBase
         };
         Response.Headers.Add("X-Pagination", JsonConvert.SerializeObject(metadata));
 
-        return ApiResponse<List<Area>>.Ok2(entity, metadata);
+        return ApiResponse<List<AreaResponseModel>>.Ok2(entity, metadata);
     }
 
     [HttpGet("{id:int}")]
     //[Cached(600)]
 
-    public async Task<ApiResponse<Area>> Get(int id)
+    public async Task<ApiResponse<AreaResponseModel>> Get(int id)
     {
         var entity = await _areaService.Get(id);
 
@@ -53,21 +54,21 @@ public class AreaController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<ApiResponse<Area>> Post(AreaRequestModel data)
+    public async Task<ApiResponse<AreaResponseModel>> Post(AreaRequestModel data)
     {
         var entity = await _areaService.CreateAsync(data);
         return ApiResponse<Area>.Created(entity);
     }
 
     [HttpPut]
-    public async Task<ApiResponse<Area>> Put([FromBody] AreaRequestModel data)
+    public async Task<ApiResponse<AreaResponseModel>> Put([FromBody] AreaRequestModel data)
     {
         var entity = await _areaService.UpdateAsync(data);
         return ApiResponse<Area>.Created(entity);
     }
 
     [HttpDelete("{id:int}")]
-    public async Task<ActionResult<ApiResponse<Area>>> Delete(int id)
+    public async Task<ActionResult<ApiResponse<AreaResponseModel>>> Delete(int id)
     {
         var entity = await _areaService.DeleteAsync(id);
         return ApiResponse<Area>.Ok(entity);

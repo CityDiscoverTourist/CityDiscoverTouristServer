@@ -8,9 +8,9 @@ namespace CityDiscoverTourist.Business.IServices;
 
 public interface ICustomerAnswerService
 {
-    public PageList<CustomerAnswer> GetAll(CustomerAnswerParams @params);
-    public Task<CustomerAnswer> Get(int id);
-    public Task<CustomerAnswer> CreateAsync(CustomerAnswerRequetModel request);
-    public Task<CustomerAnswer> UpdateAsync(CustomerAnswerRequetModel request);
-    public Task<CustomerAnswer> DeleteAsync(int id);
+    public PageList<CustomerAnswerResponseModel> GetAll(CustomerAnswerParams @params);
+    public Task<CustomerAnswerResponseModel> Get(int id);
+    public Task<CustomerAnswerResponseModel> CreateAsync(CustomerAnswerRequestModel request);
+    public Task<CustomerAnswerResponseModel> UpdateAsync(CustomerAnswerRequestModel request);
+    public Task<CustomerAnswerResponseModel> DeleteAsync(int id);
 }
