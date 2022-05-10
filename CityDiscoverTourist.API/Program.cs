@@ -15,7 +15,7 @@ builder.Configuration.AddSecretsManager(region: RegionEndpoint.APSoutheast1, con
 {
     //arn:aws:secretsmanager:ap-southeast-1:958841795550:secret:Production_CityDiscoverTourist.API_ConnectionStrings__DefaultConnection-65jWxM
     options.SecretFilter = entry => entry.Name.StartsWith($"{env}_{appName}_");
-    options.KeyGenerator = (entry, s) => s.Replace($"{env}_{appName}_", string.Empty)
+    options.KeyGenerator = (_, s) => s.Replace($"{env}_{appName}_", string.Empty)
         .Replace("__", ":");
 });
 
