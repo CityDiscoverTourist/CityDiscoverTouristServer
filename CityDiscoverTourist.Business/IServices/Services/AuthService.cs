@@ -5,6 +5,7 @@ using System.Security.Cryptography;
 using System.Text;
 using CityDiscoverTourist.Business.Data;
 using CityDiscoverTourist.Business.Data.RequestModel;
+using CityDiscoverTourist.Business.Data.ResponseModel;
 using CityDiscoverTourist.Data.Models;
 using FirebaseAdmin.Auth;
 using Microsoft.AspNetCore.Identity;

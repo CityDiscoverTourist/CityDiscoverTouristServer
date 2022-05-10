@@ -1,5 +1,6 @@
 using AutoMapper;
 using CityDiscoverTourist.Business.Data.RequestModel;
+using CityDiscoverTourist.Business.Data.ResponseModel;
 using CityDiscoverTourist.Business.Helper;
 using CityDiscoverTourist.Business.Helper.Params;
 using CityDiscoverTourist.Data.IRepositories;
@@ -20,7 +21,7 @@ public class TransactionService: BaseService, ITransactionService
         _sortHelper = sortHelper;
     }
 
-    public PageList<Transaction> GetAll(TransactionParams @params)
+    public PageList<TransactionResponseModel> GetAll(TransactionParams @params)
     {
         var listAll = _transRepository.GetAll();
 
@@ -28,35 +29,35 @@ public class TransactionService: BaseService, ITransactionService
 
         var sortedQuests = _sortHelper.ApplySort(listAll, @params.OrderBy);
         //var shapedData = _dataShaper.ShapeData(sortedQuests, param.Fields);
-        var mappedData = _mapper.Map<IEnumerable<Transaction>>(sortedQuests);
-        return PageList<Transaction>.ToPageList(mappedData, @params.PageNume, @params.PageSize);
+        var mappedData = _mapper.Map<IEnumerable<TransactionResponseModel>>(sortedQuests);
+        return PageList<TransactionResponseModel>.ToPageList(mappedData, @params.PageNume, @params.PageSize);
     }
 
-    public async Task<Transaction> Get(int id)
+    public async Task<TransactionResponseModel> Get(int id)
     {
         var entity = await _transRepository.Get(id);
         CheckDataNotNull("Transaction", entity);
-        return _mapper.Map<Transaction>(entity);
+        return _mapper.Map<TransactionResponseModel>(entity);
     }
 
-    public async Task<Transaction> CreateAsync(TransactionRequestModel request)
+    public async Task<TransactionResponseModel> CreateAsync(TransactionRequestModel request)
     {
         var entity = _mapper.Map<Transaction>(request);
         entity = await _transRepository.Add(entity);
-        return _mapper.Map<Transaction>(entity);
+        return _mapper.Map<TransactionResponseModel>(entity);
     }
 
-    public async Task<Transaction> UpdateAsync(TransactionRequestModel request)
+    public async Task<TransactionResponseModel> UpdateAsync(TransactionRequestModel request)
     {
         var entity = _mapper.Map<Transaction>(request);
         entity = await _transRepository.Update(entity);
-        return _mapper.Map<Transaction>(entity);
+        return _mapper.Map<TransactionResponseModel>(entity);
     }
 
-    public async Task<Transaction> DeleteAsync(int id)
+    public async Task<TransactionResponseModel> DeleteAsync(int id)
     {
         var entity = await _transRepository.Delete(id);
-        return _mapper.Map<Transaction>(entity);
+        return _mapper.Map<TransactionResponseModel>(entity);
     }
 
     private static void Search(ref IQueryable<Transaction> entities, TransactionParams param)

@@ -1,5 +1,6 @@
 using AutoMapper;
 using CityDiscoverTourist.Business.Data.RequestModel;
+using CityDiscoverTourist.Business.Data.ResponseModel;
 using CityDiscoverTourist.Business.Helper;
 using CityDiscoverTourist.Business.Helper.Params;
 using CityDiscoverTourist.Data.IRepositories;
@@ -20,7 +21,7 @@ public class OwnerPaymentPeriodService: BaseService, IOwnerPaymentPeriodService
         _sortHelper = sortHelper;
     }
 
-    public PageList<OwnerPaymentPeriod> GetAll(OwnerPaymentPeriodParams @params)
+    public PageList<OwnerPaymentPeriodResponseModel> GetAll(OwnerPaymentPeriodParams @params)
     {
         var listAll = _ownerPaymentPeriod.GetAll();
 
@@ -28,35 +29,35 @@ public class OwnerPaymentPeriodService: BaseService, IOwnerPaymentPeriodService
 
         var sortedQuests = _sortHelper.ApplySort(listAll, @params.OrderBy);
         //var shapedData = _dataShaper.ShapeData(sortedQuests, param.Fields);
-        var mappedData = _mapper.Map<IEnumerable<OwnerPaymentPeriod>>(sortedQuests);
-        return PageList<OwnerPaymentPeriod>.ToPageList(mappedData, @params.PageNume, @params.PageSize);
+        var mappedData = _mapper.Map<IEnumerable<OwnerPaymentPeriodResponseModel>>(sortedQuests);
+        return PageList<OwnerPaymentPeriodResponseModel>.ToPageList(mappedData, @params.PageNume, @params.PageSize);
     }
 
-    public async Task<OwnerPaymentPeriod> Get(int id)
+    public async Task<OwnerPaymentPeriodResponseModel> Get(int id)
     {
         var entity = await _ownerPaymentPeriod.Get(id);
         CheckDataNotNull("OwnerPaymentPeriod", entity);
-        return _mapper.Map<OwnerPaymentPeriod>(entity);
+        return _mapper.Map<OwnerPaymentPeriodResponseModel>(entity);
     }
 
-    public async Task<OwnerPaymentPeriod> CreateAsync(OwnerPaymentPeriodRm request)
+    public async Task<OwnerPaymentPeriodResponseModel> CreateAsync(OwnerPaymentPeriodRm request)
     {
         var entity = _mapper.Map<OwnerPaymentPeriod>(request);
         entity = await _ownerPaymentPeriod.Add(entity);
-        return _mapper.Map<OwnerPaymentPeriod>(entity);
+        return _mapper.Map<OwnerPaymentPeriodResponseModel>(entity);
     }
 
-    public async Task<OwnerPaymentPeriod> UpdateAsync(OwnerPaymentPeriodRm request)
+    public async Task<OwnerPaymentPeriodResponseModel> UpdateAsync(OwnerPaymentPeriodRm request)
     {
         var entity = _mapper.Map<OwnerPaymentPeriod>(request);
         entity = await _ownerPaymentPeriod.Update(entity);
-        return _mapper.Map<OwnerPaymentPeriod>(entity);
+        return _mapper.Map<OwnerPaymentPeriodResponseModel>(entity);
     }
 
-    public async Task<OwnerPaymentPeriod> DeleteAsync(int id)
+    public async Task<OwnerPaymentPeriodResponseModel> DeleteAsync(int id)
     {
         var entity = await _ownerPaymentPeriod.Delete(id);
-        return _mapper.Map<OwnerPaymentPeriod>(entity);
+        return _mapper.Map<OwnerPaymentPeriodResponseModel>(entity);
     }
 
     private static void Search(ref IQueryable<OwnerPaymentPeriod> entities, OwnerPaymentPeriodParams param)

@@ -1,5 +1,6 @@
 using AutoMapper;
 using CityDiscoverTourist.Business.Data.RequestModel;
+using CityDiscoverTourist.Business.Data.ResponseModel;
 using CityDiscoverTourist.Business.Helper;
 using CityDiscoverTourist.Business.Helper.Params;
 using CityDiscoverTourist.Data.IRepositories;
@@ -20,7 +21,7 @@ public class OwnerPaymentService: BaseService, IOwnerPaymentService
         _sortHelper = sortHelper;
     }
 
-    public PageList<OwnerPayment> GetAll(OwnerPaymentParams @params)
+    public PageList<OwnerPaymentResponseModel> GetAll(OwnerPaymentParams @params)
     {
         var listAll = _ownerPaymentRepository.GetAll();
 
@@ -28,35 +29,35 @@ public class OwnerPaymentService: BaseService, IOwnerPaymentService
 
         var sortedQuests = _sortHelper.ApplySort(listAll, @params.OrderBy);
         //var shapedData = _dataShaper.ShapeData(sortedQuests, param.Fields);
-        var mappedData = _mapper.Map<IEnumerable<OwnerPayment>>(sortedQuests);
-        return PageList<OwnerPayment>.ToPageList(mappedData, @params.PageNume, @params.PageSize);
+        var mappedData = _mapper.Map<IEnumerable<OwnerPaymentResponseModel>>(sortedQuests);
+        return PageList<OwnerPaymentResponseModel>.ToPageList(mappedData, @params.PageNume, @params.PageSize);
     }
 
-    public async Task<OwnerPayment> Get(int id)
+    public async Task<OwnerPaymentResponseModel> Get(int id)
     {
         var entity = await _ownerPaymentRepository.Get(id);
         CheckDataNotNull("OwnerPayment", entity);
-        return _mapper.Map<OwnerPayment>(entity);
+        return _mapper.Map<OwnerPaymentResponseModel>(entity);
     }
 
-    public async Task<OwnerPayment> CreateAsync(OwnerPaymentRequestModel request)
+    public async Task<OwnerPaymentResponseModel> CreateAsync(OwnerPaymentRequestModel request)
     {
         var entity = _mapper.Map<OwnerPayment>(request);
         entity = await _ownerPaymentRepository.Add(entity);
-        return _mapper.Map<OwnerPayment>(entity);
+        return _mapper.Map<OwnerPaymentResponseModel>(entity);
     }
 
-    public async Task<OwnerPayment> UpdateAsync(OwnerPaymentRequestModel request)
+    public async Task<OwnerPaymentResponseModel> UpdateAsync(OwnerPaymentRequestModel request)
     {
         var entity = _mapper.Map<OwnerPayment>(request);
         entity = await _ownerPaymentRepository.Update(entity);
-        return _mapper.Map<OwnerPayment>(entity);
+        return _mapper.Map<OwnerPaymentResponseModel>(entity);
     }
 
-    public async Task<OwnerPayment> DeleteAsync(int id)
+    public async Task<OwnerPaymentResponseModel> DeleteAsync(int id)
     {
         var entity = await _ownerPaymentRepository.Delete(id);
-        return _mapper.Map<OwnerPayment>(entity);
+        return _mapper.Map<OwnerPaymentResponseModel>(entity);
     }
 
     /*private static void Search(ref IQueryable<OwnerPayment> entities, QuestParams param)

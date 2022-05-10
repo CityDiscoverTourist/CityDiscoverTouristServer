@@ -8,9 +8,9 @@ namespace CityDiscoverTourist.Business.IServices;
 
 public interface ICommissionService
 {
-    public PageList<Commission> GetAll(CommissionParams @params);
-    public Task<Commission> Get(int id);
-    public Task<Commission> CreateAsync(CommissionRequestModel request);
-    public Task<Commission> UpdateAsync(CommissionRequestModel request);
-    public Task<Commission> DeleteAsync(int id);
+    public PageList<CommissionResponseModel> GetAll(CommissionParams @params);
+    public Task<CommissionResponseModel> Get(int id);
+    public Task<CommissionResponseModel> CreateAsync(CommissionRequestModel request);
+    public Task<CommissionResponseModel> UpdateAsync(CommissionRequestModel request);
+    public Task<CommissionResponseModel> DeleteAsync(int id);
 }

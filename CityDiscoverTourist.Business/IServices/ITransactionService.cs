@@ -8,9 +8,9 @@ namespace CityDiscoverTourist.Business.IServices;
 
 public interface ITransactionService
 {
-    public PageList<Transaction> GetAll(TransactionParams @params);
-    public Task<Transaction> Get(int id);
-    public Task<Transaction> CreateAsync(TransactionRequestModel request);
-    public Task<Transaction> UpdateAsync(TransactionRequestModel request);
-    public Task<Transaction> DeleteAsync(int id);
+    public PageList<TransactionResponseModel> GetAll(TransactionParams @params);
+    public Task<TransactionResponseModel> Get(int id);
+    public Task<TransactionResponseModel> CreateAsync(TransactionRequestModel request);
+    public Task<TransactionResponseModel> UpdateAsync(TransactionRequestModel request);
+    public Task<TransactionResponseModel> DeleteAsync(int id);
 }

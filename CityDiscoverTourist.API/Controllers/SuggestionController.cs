@@ -1,5 +1,6 @@
 using CityDiscoverTourist.API.Response;
 using CityDiscoverTourist.Business.Data.RequestModel;
+using CityDiscoverTourist.Business.Data.ResponseModel;
 using CityDiscoverTourist.Business.Helper;
 using CityDiscoverTourist.Business.Helper.Params;
 using CityDiscoverTourist.Business.IServices;
@@ -23,7 +24,7 @@ public class SuggestionController : ControllerBase
 
     [HttpGet]
     //[Cached(600)]
-    public ApiResponse<PageList<Suggestion>> GetAll([FromQuery] SuggestionParams param)
+    public ApiResponse<PageList<SuggestionResponseModel>> GetAll([FromQuery] SuggestionParams param)
     {
         var entity = _suggestionService.GetAll(param);
 
@@ -44,7 +45,7 @@ public class SuggestionController : ControllerBase
     [HttpGet("{id:int}")]
     //[Cached(600)]
 
-    public async Task<ApiResponse<Suggestion>> Get(int id)
+    public async Task<ApiResponse<SuggestionResponseModel>> Get(int id)
     {
         var entity = await _suggestionService.Get(id);
 
@@ -52,21 +53,21 @@ public class SuggestionController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<ApiResponse<Suggestion>> Post(SuggestionRequestModel data)
+    public async Task<ApiResponse<SuggestionResponseModel>> Post(SuggestionRequestModel data)
     {
         var entity = await _suggestionService.CreateAsync(data);
         return ApiResponse<Suggestion>.Created(entity);
     }
 
     [HttpPut]
-    public async Task<ApiResponse<Suggestion>> Put([FromBody] SuggestionRequestModel data)
+    public async Task<ApiResponse<SuggestionResponseModel>> Put([FromBody] SuggestionRequestModel data)
     {
         var entity = await _suggestionService.UpdateAsync(data);
         return ApiResponse<Suggestion>.Created(entity);
     }
 
     [HttpDelete("{id:int}")]
-    public async Task<ActionResult<ApiResponse<Suggestion>>> Delete(int id)
+    public async Task<ActionResult<ApiResponse<SuggestionResponseModel>>> Delete(int id)
     {
         var entity = await _suggestionService.DeleteAsync(id);
         return ApiResponse<Suggestion>.Ok(entity);

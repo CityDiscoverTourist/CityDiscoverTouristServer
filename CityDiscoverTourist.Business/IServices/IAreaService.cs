@@ -8,9 +8,9 @@ namespace CityDiscoverTourist.Business.IServices;
 
 public interface IAreaService
 {
-    public PageList<Area> GetAll(AreaParams @params);
-    public Task<Area> Get(int id);
-    public Task<Area> CreateAsync(AreaRequestModel request);
-    public Task<Area> UpdateAsync(AreaRequestModel request);
-    public Task<Area> DeleteAsync(int id);
+    public PageList<AreaResponseModel> GetAll(AreaParams @params);
+    public Task<AreaResponseModel> Get(int id);
+    public Task<AreaResponseModel> CreateAsync(AreaRequestModel request);
+    public Task<AreaResponseModel> UpdateAsync(AreaRequestModel request);
+    public Task<AreaResponseModel> DeleteAsync(int id);
 }

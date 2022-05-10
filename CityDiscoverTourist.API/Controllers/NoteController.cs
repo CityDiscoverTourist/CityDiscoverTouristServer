@@ -1,5 +1,6 @@
 using CityDiscoverTourist.API.Response;
 using CityDiscoverTourist.Business.Data.RequestModel;
+using CityDiscoverTourist.Business.Data.ResponseModel;
 using CityDiscoverTourist.Business.Helper;
 using CityDiscoverTourist.Business.Helper.Params;
 using CityDiscoverTourist.Business.IServices;
@@ -23,7 +24,7 @@ public class NoteController : ControllerBase
 
     [HttpGet]
     //[Cached(600)]
-    public ApiResponse<PageList<Note>> GetAll([FromQuery] NoteParams param)
+    public ApiResponse<PageList<NoteResponseModel>> GetAll([FromQuery] NoteParams param)
     {
         var entity = _noteService.GetAll(param);
 
@@ -44,7 +45,7 @@ public class NoteController : ControllerBase
     [HttpGet("{id:int}")]
     //[Cached(600)]
 
-    public async Task<ApiResponse<Note>> Get(int id)
+    public async Task<ApiResponse<NoteResponseModel>> Get(int id)
     {
         var entity = await _noteService.Get(id);
 
@@ -52,24 +53,24 @@ public class NoteController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<ApiResponse<Note>> Post(NoteRequestModel data)
+    public async Task<ApiResponse<NoteResponseModel>> Post(NoteRequestModel data)
     {
         var entity = await _noteService.CreateAsync(data);
-        return ApiResponse<Quest>.Created(entity);
+        return ApiResponse<Note>.Created(entity);
     }
 
     [HttpPut]
-    public async Task<ApiResponse<Note>> Put([FromBody] NoteRequestModel data)
+    public async Task<ApiResponse<NoteResponseModel>> Put([FromBody] NoteRequestModel data)
     {
         var entity = await _noteService.UpdateAsync(data);
-        return ApiResponse<Quest>.Created(entity);
+        return ApiResponse<Note>.Created(entity);
     }
 
     [HttpDelete("{id:int}")]
-    public async Task<ActionResult<ApiResponse<Note>>> Delete(int id)
+    public async Task<ActionResult<ApiResponse<NoteResponseModel>>> Delete(int id)
     {
         var entity = await _noteService.DeleteAsync(id);
-        return ApiResponse<Quest>.Ok(entity);
+        return ApiResponse<Note>.Ok(entity);
     }
 
 }

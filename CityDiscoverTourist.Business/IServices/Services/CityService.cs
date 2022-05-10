@@ -21,42 +21,42 @@ public class CityService: BaseService, ICityService
         _sortHelper = sortHelper;
     }
 
-    public PageList<City> GetAll(CityParams @params)
+    public PageList<CityResponseModel> GetAll(CityParams @params)
     {
         var listAll = _cityRepository.GetAll();
 
         Search(ref listAll, @params);
 
         var sortedQuests = _sortHelper.ApplySort(listAll, @params.OrderBy);
-        var mappedData = _mapper.Map<IEnumerable<City>>(sortedQuests);
-        return PageList<City>.ToPageList(mappedData, @params.PageNume, @params.PageSize);
+        var mappedData = _mapper.Map<IEnumerable<CityResponseModel>>(sortedQuests);
+        return PageList<CityResponseModel>.ToPageList(mappedData, @params.PageNume, @params.PageSize);
     }
 
-    public async Task<City> Get(int id)
+    public async Task<CityResponseModel> Get(int id)
     {
         var entity = await _cityRepository.Get(id);
         CheckDataNotNull("City", entity);
-        return _mapper.Map<City>(entity);
+        return _mapper.Map<CityResponseModel>(entity);
     }
 
-    public async Task<City> CreateAsync(CityRequestModel request)
+    public async Task<CityResponseModel> CreateAsync(CityRequestModel request)
     {
         var entity = _mapper.Map<City>(request);
         entity = await _cityRepository.Add(entity);
-        return _mapper.Map<City>(entity);
+        return _mapper.Map<CityResponseModel>(entity);
     }
 
-    public async Task<City> UpdateAsync(CityRequestModel request)
+    public async Task<CityResponseModel> UpdateAsync(CityRequestModel request)
     {
         var entity = _mapper.Map<City>(request);
         entity = await _cityRepository.Update(entity);
-        return _mapper.Map<City>(entity);
+        return _mapper.Map<CityResponseModel>(entity);
     }
 
-    public async Task<City> DeleteAsync(int id)
+    public async Task<CityResponseModel> DeleteAsync(int id)
     {
         var entity = await _cityRepository.Delete(id);
-        return _mapper.Map<City>(entity);
+        return _mapper.Map<CityResponseModel>(entity);
     }
 
     private static void Search(ref IQueryable<City> entities, CityParams param)

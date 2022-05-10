@@ -1,5 +1,6 @@
 using CityDiscoverTourist.API.Response;
 using CityDiscoverTourist.Business.Data.RequestModel;
+using CityDiscoverTourist.Business.Data.ResponseModel;
 using CityDiscoverTourist.Business.Helper;
 using CityDiscoverTourist.Business.Helper.Params;
 using CityDiscoverTourist.Business.IServices;
@@ -23,7 +24,7 @@ public class OwnerPaymentController : ControllerBase
 
     [HttpGet]
     //[Cached(600)]
-    public ApiResponse<PageList<OwnerPayment>> GetAll([FromQuery] OwnerPaymentParams param)
+    public ApiResponse<PageList<OwnerPaymentResponseModel>> GetAll([FromQuery] OwnerPaymentParams param)
     {
         var entity = _ownerPaymentService.GetAll(param);
 
@@ -44,7 +45,7 @@ public class OwnerPaymentController : ControllerBase
     [HttpGet("{id:int}")]
     //[Cached(600)]
 
-    public async Task<ApiResponse<OwnerPayment>> Get(int id)
+    public async Task<ApiResponse<OwnerPaymentResponseModel>> Get(int id)
     {
         var entity = await _ownerPaymentService.Get(id);
 
@@ -52,24 +53,24 @@ public class OwnerPaymentController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<ApiResponse<OwnerPayment>> Post(OwnerPaymentRequestModel data)
+    public async Task<ApiResponse<OwnerPaymentResponseModel>> Post(OwnerPaymentRequestModel data)
     {
         var entity = await _ownerPaymentService.CreateAsync(data);
-        return ApiResponse<Quest>.Created(entity);
+        return ApiResponse<OwnerPayment>.Created(entity);
     }
 
     [HttpPut]
-    public async Task<ApiResponse<OwnerPayment>> Put([FromBody] OwnerPaymentRequestModel data)
+    public async Task<ApiResponse<OwnerPaymentResponseModel>> Put([FromBody] OwnerPaymentRequestModel data)
     {
         var entity = await _ownerPaymentService.UpdateAsync(data);
-        return ApiResponse<Quest>.Created(entity);
+        return ApiResponse<OwnerPayment>.Created(entity);
     }
 
     [HttpDelete("{id:int}")]
-    public async Task<ActionResult<ApiResponse<OwnerPayment>>> Delete(int id)
+    public async Task<ActionResult<ApiResponse<OwnerPaymentResponseModel>>> Delete(int id)
     {
         var entity = await _ownerPaymentService.DeleteAsync(id);
-        return ApiResponse<Quest>.Ok(entity);
+        return ApiResponse<OwnerPayment>.Ok(entity);
     }
 
 }

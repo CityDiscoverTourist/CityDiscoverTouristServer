@@ -32,22 +32,48 @@ public class AutoMapperProfile : Profile
         CreateMap<CustomerTaskResponseModel, CustomerTask>().ReverseMap();
 
         CreateMap<CompetitionRequestModel, Competition>().ReverseMap();
+        CreateMap<CompetitionResponseModel, Competition>().ReverseMap();
 
         CreateMap<NoteRequestModel, Note>().ReverseMap();
+        CreateMap<NoteResponseModel, Note>().ReverseMap();
 
         CreateMap<PaymentRequestModel, Payment>().ReverseMap();
+        CreateMap<PaymentResponseModel, Payment>().ReverseMap();
 
         CreateMap<OwnerPaymentRequestModel, OwnerPayment>().ReverseMap();
+        CreateMap<OwnerPaymentResponseModel, OwnerPayment>().ReverseMap();
 
         CreateMap<CityRequestModel, City>().ReverseMap();
+        CreateMap<CityResponseModel, City>().ReverseMap();
 
         CreateMap<CommissionRequestModel, Commission>().ReverseMap();
+        CreateMap<CommissionResponseModel, Commission>().ReverseMap();
+
+        CreateMap<CustomerAnswerRequestModel, CustomerAnswer>().ReverseMap();
+        CreateMap<CustomerAnswerResponseModel, CustomerAnswer>().ReverseMap();
 
         CreateMap<OwnerPaymentPeriodRm, OwnerPaymentPeriod>().ReverseMap();
+        CreateMap<OwnerPaymentPeriodResponseModel, OwnerPaymentPeriod>().ReverseMap();
+
         CreateMap<QuestOwnerRequestModel, QuestOwner>().ReverseMap();
+        CreateMap<QuestOwnerResponseModel, QuestOwner>().ReverseMap();
+
         CreateMap<TransactionRequestModel, Transaction>().ReverseMap();
+        CreateMap<TransactionResponseModel, Transaction>().ReverseMap();
+
         CreateMap<WalletRequestModel, Wallet>().ReverseMap();
+        CreateMap<WalletResponseModel, Wallet>().ReverseMap();
+
         CreateMap<AreaRequestModel, Area>().ReverseMap();
+        CreateMap<AreaResponseModel, Area>().ReverseMap();
+
         CreateMap<LocationRequestModel, Location>().ReverseMap();
+        CreateMap<LocationResponseModel, Location>().ReverseMap();
+
+        CreateMap<LocationTypeRequestModel, LocationType>().ReverseMap();
+        CreateMap<LocationTypeResponseModel, LocationType>().ReverseMap();
+
+        CreateMap<SuggestionRequestModel, Suggestion>().ReverseMap();
+        CreateMap<SuggestionResponseModel, Suggestion>().ReverseMap();
     }
 }

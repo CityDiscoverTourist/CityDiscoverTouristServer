@@ -1,5 +1,6 @@
 using AutoMapper;
 using CityDiscoverTourist.Business.Data.RequestModel;
+using CityDiscoverTourist.Business.Data.ResponseModel;
 using CityDiscoverTourist.Business.Helper;
 using CityDiscoverTourist.Business.Helper.Params;
 using CityDiscoverTourist.Data.IRepositories;
@@ -20,7 +21,7 @@ public class QuestOwnerService: BaseService, IQuestOwnerService
         _sortHelper = sortHelper;
     }
 
-    public PageList<QuestOwner> GetAll(QuestOwnerParams @params)
+    public PageList<QuestOwnerResponseModel> GetAll(QuestOwnerParams @params)
     {
         var listAll = _ownerRepository.GetAll();
 
@@ -28,35 +29,35 @@ public class QuestOwnerService: BaseService, IQuestOwnerService
 
         var sortedQuests = _sortHelper.ApplySort(listAll, @params.OrderBy);
         //var shapedData = _dataShaper.ShapeData(sortedQuests, param.Fields);
-        var mappedData = _mapper.Map<IEnumerable<QuestOwner>>(sortedQuests);
-        return PageList<QuestOwner>.ToPageList(mappedData, @params.PageNume, @params.PageSize);
+        var mappedData = _mapper.Map<IEnumerable<QuestOwnerResponseModel>>(sortedQuests);
+        return PageList<QuestOwnerResponseModel>.ToPageList(mappedData, @params.PageNume, @params.PageSize);
     }
 
-    public async Task<QuestOwner> Get(int id)
+    public async Task<QuestOwnerResponseModel> Get(int id)
     {
         var entity = await _ownerRepository.Get(id);
         CheckDataNotNull("QuestOwner", entity);
-        return _mapper.Map<QuestOwner>(entity);
+        return _mapper.Map<QuestOwnerResponseModel>(entity);
     }
 
-    public async Task<QuestOwner> CreateAsync(QuestOwnerRequestModel request)
+    public async Task<QuestOwnerResponseModel> CreateAsync(QuestOwnerRequestModel request)
     {
         var entity = _mapper.Map<QuestOwner>(request);
         entity = await _ownerRepository.Add(entity);
-        return _mapper.Map<QuestOwner>(entity);
+        return _mapper.Map<QuestOwnerResponseModel>(entity);
     }
 
-    public async Task<QuestOwner> UpdateAsync(QuestOwnerRequestModel request)
+    public async Task<QuestOwnerResponseModel> UpdateAsync(QuestOwnerRequestModel request)
     {
         var entity = _mapper.Map<QuestOwner>(request);
         entity = await _ownerRepository.Update(entity);
-        return _mapper.Map<QuestOwner>(entity);
+        return _mapper.Map<QuestOwnerResponseModel>(entity);
     }
 
-    public async Task<QuestOwner> DeleteAsync(int id)
+    public async Task<QuestOwnerResponseModel> DeleteAsync(int id)
     {
         var entity = await _ownerRepository.Delete(id);
-        return _mapper.Map<QuestOwner>(entity);
+        return _mapper.Map<QuestOwnerResponseModel>(entity);
     }
 
     /*private static void Search(ref IQueryable<QuestOwner> entities, QuestParams param)

@@ -1,5 +1,6 @@
 using AutoMapper;
 using CityDiscoverTourist.Business.Data.RequestModel;
+using CityDiscoverTourist.Business.Data.ResponseModel;
 using CityDiscoverTourist.Business.Helper;
 using CityDiscoverTourist.Business.Helper.Params;
 using CityDiscoverTourist.Data.IRepositories;
@@ -20,42 +21,42 @@ public class CompetitionService: BaseService, ICompetitionService
         _sortHelper = sortHelper;
     }
 
-    public PageList<Competition> GetAll(CompetitionParams @params)
+    public PageList<CompetitionResponseModel> GetAll(CompetitionParams @params)
     {
         var listAll = _competitionRepository.GetAll();
 
         Search(ref listAll, @params);
 
         var sortedQuests = _sortHelper.ApplySort(listAll, @params.OrderBy);
-        var mappedData = _mapper.Map<IEnumerable<Competition>>(sortedQuests);
-        return PageList<Competition>.ToPageList(mappedData, @params.PageNume, @params.PageSize);
+        var mappedData = _mapper.Map<IEnumerable<CompetitionResponseModel>>(sortedQuests);
+        return PageList<CompetitionResponseModel>.ToPageList(mappedData, @params.PageNume, @params.PageSize);
     }
 
-    public async Task<Competition> Get(int id)
+    public async Task<CompetitionResponseModel> Get(int id)
     {
         var entity = await _competitionRepository.Get(id);
         CheckDataNotNull("Competition", entity);
-        return _mapper.Map<Competition>(entity);
+        return _mapper.Map<CompetitionResponseModel>(entity);
     }
 
-    public async Task<Competition> CreateAsync(CompetitionRequestModel request)
+    public async Task<CompetitionResponseModel> CreateAsync(CompetitionRequestModel request)
     {
         var entity = _mapper.Map<Competition>(request);
         entity = await _competitionRepository.Add(entity);
-        return _mapper.Map<Competition>(entity);
+        return _mapper.Map<CompetitionResponseModel>(entity);
     }
 
-    public async Task<Competition> UpdateAsync(CompetitionRequestModel request)
+    public async Task<CompetitionResponseModel> UpdateAsync(CompetitionRequestModel request)
     {
         var entity = _mapper.Map<Competition>(request);
         entity = await _competitionRepository.Update(entity);
-        return _mapper.Map<Competition>(entity);
+        return _mapper.Map<CompetitionResponseModel>(entity);
     }
 
-    public async Task<Competition> DeleteAsync(int id)
+    public async Task<CompetitionResponseModel> DeleteAsync(int id)
     {
         var entity = await _competitionRepository.Delete(id);
-        return _mapper.Map<Competition>(entity);
+        return _mapper.Map<CompetitionResponseModel>(entity);
     }
 
     private static void Search(ref IQueryable<Competition> entities, CompetitionParams param)

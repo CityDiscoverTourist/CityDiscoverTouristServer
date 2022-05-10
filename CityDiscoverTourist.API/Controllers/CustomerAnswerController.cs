@@ -25,7 +25,7 @@ public class CustomerAnswerController : ControllerBase
 
     [HttpGet]
     //[Cached(600)]
-    public ApiResponse<PageList<CustomerAnswer>> GetAll([FromQuery] CustomerAnswerParams param)
+    public ApiResponse<PageList<CustomerAnswerResponseModel>> GetAll([FromQuery] CustomerAnswerParams param)
     {
         var entity = _customerAnswerService.GetAll(param);
 
@@ -44,7 +44,7 @@ public class CustomerAnswerController : ControllerBase
     }
     [HttpGet("{id:int}")]
     //[Cached(600)]
-    public async Task<ApiResponse<CustomerAnswer>> Get(int id)
+    public async Task<ApiResponse<CustomerAnswerResponseModel>> Get(int id)
     {
         var entity = await _customerAnswerService.Get(id);
 
@@ -52,21 +52,21 @@ public class CustomerAnswerController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<ApiResponse<CustomerAnswer>> Post(CustomerAnswerRequetModel data)
+    public async Task<ApiResponse<CustomerAnswerResponseModel>> Post(CustomerAnswerRequestModel data)
     {
         var entity = await _customerAnswerService.CreateAsync(data);
         return ApiResponse<CustomerAnswer>.Created(entity);
     }
 
     [HttpPut]
-    public async Task<ApiResponse<CustomerAnswer>> Put(CustomerAnswerRequetModel data)
+    public async Task<ApiResponse<CustomerAnswerResponseModel>> Put(CustomerAnswerRequestModel data)
     {
         var entity = await _customerAnswerService.UpdateAsync(data);
         return ApiResponse<CustomerAnswer>.Created(entity);
     }
 
     [HttpDelete("{id:int}")]
-    public async Task<ActionResult<ApiResponse<CustomerAnswer>>> Delete(int id)
+    public async Task<ActionResult<ApiResponse<CustomerAnswerResponseModel>>> Delete(int id)
     {
         var entity = await _customerAnswerService.DeleteAsync(id);
         return ApiResponse<CustomerAnswer>.Ok(entity);

@@ -8,9 +8,9 @@ namespace CityDiscoverTourist.Business.IServices;
 
 public interface IPaymentService
 {
-    public PageList<Payment> GetAll(PaymentParams @params);
-    public Task<Payment> Get(int id);
-    public Task<Payment> CreateAsync(PaymentRequestModel request);
-    public Task<Payment> UpdateAsync(PaymentRequestModel request);
-    public Task<Payment> DeleteAsync(int id);
+    public PageList<PaymentRequestModel> GetAll(PaymentParams @params);
+    public Task<PaymentRequestModel> Get(int id);
+    public Task<PaymentRequestModel> CreateAsync(PaymentRequestModel request);
+    public Task<PaymentRequestModel> UpdateAsync(PaymentRequestModel request);
+    public Task<PaymentRequestModel> DeleteAsync(int id);
 }

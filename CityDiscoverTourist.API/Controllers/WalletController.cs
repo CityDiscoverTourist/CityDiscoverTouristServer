@@ -1,5 +1,6 @@
 using CityDiscoverTourist.API.Response;
 using CityDiscoverTourist.Business.Data.RequestModel;
+using CityDiscoverTourist.Business.Data.ResponseModel;
 using CityDiscoverTourist.Business.Helper;
 using CityDiscoverTourist.Business.Helper.Params;
 using CityDiscoverTourist.Business.IServices;
@@ -23,7 +24,7 @@ public class WalletController : ControllerBase
 
     [HttpGet]
     //[Cached(600)]
-    public ApiResponse<PageList<Wallet>> GetAll([FromQuery] WalletParams param)
+    public ApiResponse<PageList<WalletResponseModel>> GetAll([FromQuery] WalletParams param)
     {
         var entity = _walletService.GetAll(param);
 
@@ -44,7 +45,7 @@ public class WalletController : ControllerBase
     [HttpGet("{id:int}")]
     //[Cached(600)]
 
-    public async Task<ApiResponse<Wallet>> Get(int id)
+    public async Task<ApiResponse<WalletResponseModel>> Get(int id)
     {
         var entity = await _walletService.Get(id);
 
@@ -52,24 +53,24 @@ public class WalletController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<ApiResponse<Wallet>> Post(WalletRequestModel data)
+    public async Task<ApiResponse<WalletResponseModel>> Post(WalletRequestModel data)
     {
         var entity = await _walletService.CreateAsync(data);
-        return ApiResponse<Quest>.Created(entity);
+        return ApiResponse<Wallet>.Created(entity);
     }
 
     [HttpPut]
-    public async Task<ApiResponse<Wallet>> Put([FromBody] WalletRequestModel data)
+    public async Task<ApiResponse<WalletResponseModel>> Put([FromBody] WalletRequestModel data)
     {
         var entity = await _walletService.UpdateAsync(data);
-        return ApiResponse<Quest>.Created(entity);
+        return ApiResponse<Wallet>.Created(entity);
     }
 
     [HttpDelete("{id:int}")]
-    public async Task<ActionResult<ApiResponse<Wallet>>> Delete(int id)
+    public async Task<ActionResult<ApiResponse<WalletResponseModel>>> Delete(int id)
     {
         var entity = await _walletService.DeleteAsync(id);
-        return ApiResponse<Quest>.Ok(entity);
+        return ApiResponse<Wallet>.Ok(entity);
     }
 
 }

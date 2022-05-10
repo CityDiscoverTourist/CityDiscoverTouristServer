@@ -8,9 +8,9 @@ namespace CityDiscoverTourist.Business.IServices;
 
 public interface IOwnerPaymentPeriodService
 {
-    public PageList<OwnerPaymentPeriod> GetAll(OwnerPaymentPeriodParams @params);
-    public Task<OwnerPaymentPeriod> Get(int id);
-    public Task<OwnerPaymentPeriod> CreateAsync(OwnerPaymentPeriodRm request);
-    public Task<OwnerPaymentPeriod> UpdateAsync(OwnerPaymentPeriodRm request);
-    public Task<OwnerPaymentPeriod> DeleteAsync(int id);
+    public PageList<OwnerPaymentPeriodResponseModel> GetAll(OwnerPaymentPeriodParams @params);
+    public Task<OwnerPaymentPeriodResponseModel> Get(int id);
+    public Task<OwnerPaymentPeriodResponseModel> CreateAsync(OwnerPaymentPeriodRm request);
+    public Task<OwnerPaymentPeriodResponseModel> UpdateAsync(OwnerPaymentPeriodRm request);
+    public Task<OwnerPaymentPeriodResponseModel> DeleteAsync(int id);
 }

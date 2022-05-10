@@ -8,9 +8,9 @@ namespace CityDiscoverTourist.Business.IServices;
 
 public interface IWalletService
 {
-    public PageList<Wallet> GetAll(WalletParams @params);
-    public Task<Wallet> Get(int id);
-    public Task<Wallet> CreateAsync(WalletRequestModel request);
-    public Task<Wallet> UpdateAsync(WalletRequestModel request);
-    public Task<Wallet> DeleteAsync(int id);
+    public PageList<WalletResponseModel> GetAll(WalletParams @params);
+    public Task<WalletResponseModel> Get(int id);
+    public Task<WalletResponseModel> CreateAsync(WalletRequestModel request);
+    public Task<WalletResponseModel> UpdateAsync(WalletRequestModel request);
+    public Task<WalletResponseModel> DeleteAsync(int id);
 }

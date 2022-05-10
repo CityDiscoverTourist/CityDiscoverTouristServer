@@ -21,42 +21,42 @@ public class CommissionService: BaseService, ICommissionService
         _sortHelper = sortHelper;
     }
 
-    public PageList<Commission> GetAll(CommissionParams @params)
+    public PageList<CommissionResponseModel> GetAll(CommissionParams @params)
     {
         var listAll = _commissionService.GetAll();
 
         Search(ref listAll, @params);
 
         var sortedQuests = _sortHelper.ApplySort(listAll, @params.OrderBy);
-        var mappedData = _mapper.Map<IEnumerable<Commission>>(sortedQuests);
-        return PageList<Commission>.ToPageList(mappedData, @params.PageNume, @params.PageSize);
+        var mappedData = _mapper.Map<IEnumerable<CommissionResponseModel>>(sortedQuests);
+        return PageList<CommissionResponseModel>.ToPageList(mappedData, @params.PageNume, @params.PageSize);
     }
 
-    public async Task<Commission> Get(int id)
+    public async Task<CommissionResponseModel> Get(int id)
     {
         var entity = await _commissionService.Get(id);
         CheckDataNotNull("Commission", entity);
-        return _mapper.Map<Commission>(entity);
+        return _mapper.Map<CommissionResponseModel>(entity);
     }
 
-    public async Task<Commission> CreateAsync(CommissionRequestModel request)
+    public async Task<CommissionResponseModel> CreateAsync(CommissionRequestModel request)
     {
         var entity = _mapper.Map<Commission>(request);
         entity = await _commissionService.Add(entity);
-        return _mapper.Map<Commission>(entity);
+        return _mapper.Map<CommissionResponseModel>(entity);
     }
 
-    public async Task<Commission> UpdateAsync(CommissionRequestModel request)
+    public async Task<CommissionResponseModel> UpdateAsync(CommissionRequestModel request)
     {
         var entity = _mapper.Map<Commission>(request);
         entity = await _commissionService.Update(entity);
-        return _mapper.Map<Commission>(entity);
+        return _mapper.Map<CommissionResponseModel>(entity);
     }
 
-    public async Task<Commission> DeleteAsync(int id)
+    public async Task<CommissionResponseModel> DeleteAsync(int id)
     {
         var entity = await _commissionService.Delete(id);
-        return _mapper.Map<Commission>(entity);
+        return _mapper.Map<CommissionResponseModel>(entity);
     }
 
     private static void Search(ref IQueryable<Commission> entities, CommissionParams param)

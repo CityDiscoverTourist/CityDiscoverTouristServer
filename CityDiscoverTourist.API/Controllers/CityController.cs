@@ -25,7 +25,7 @@ public class CityController : ControllerBase
 
     [HttpGet]
     //[Cached(600)]
-    public ApiResponse<PageList<City>> GetAll([FromQuery] CityParams param)
+    public ApiResponse<PageList<CityResponseModel>> GetAll([FromQuery] CityParams param)
     {
         var entity = _cityService.GetAll(param);
 
@@ -46,7 +46,7 @@ public class CityController : ControllerBase
     [HttpGet("{id:int}")]
     //[Cached(600)]
 
-    public async Task<ApiResponse<City>> Get(int id)
+    public async Task<ApiResponse<CityResponseModel>> Get(int id)
     {
         var entity = await _cityService.Get(id);
 
@@ -54,24 +54,24 @@ public class CityController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<ApiResponse<City>> Post(CityRequestModel data)
+    public async Task<ApiResponse<CityResponseModel>> Post(CityRequestModel data)
     {
         var entity = await _cityService.CreateAsync(data);
-        return ApiResponse<Quest>.Created(entity);
+        return ApiResponse<City>.Created(entity);
     }
 
     [HttpPut]
-    public async Task<ApiResponse<City>> Put([FromBody] CityRequestModel data)
+    public async Task<ApiResponse<CityResponseModel>> Put([FromBody] CityRequestModel data)
     {
         var entity = await _cityService.UpdateAsync(data);
-        return ApiResponse<Quest>.Created(entity);
+        return ApiResponse<City>.Created(entity);
     }
 
     [HttpDelete("{id:int}")]
-    public async Task<ActionResult<ApiResponse<City>>> Delete(int id)
+    public async Task<ActionResult<ApiResponse<CityResponseModel>>> Delete(int id)
     {
         var entity = await _cityService.DeleteAsync(id);
-        return ApiResponse<Quest>.Ok(entity);
+        return ApiResponse<City>.Ok(entity);
     }
 
 }

@@ -25,7 +25,7 @@ public class CommissionController : ControllerBase
 
     [HttpGet]
     //[Cached(600)]
-    public ApiResponse<PageList<Commission>> GetAll([FromQuery] CommissionParams param)
+    public ApiResponse<PageList<CommissionResponseModel>> GetAll([FromQuery] CommissionParams param)
     {
         var entity = _commissionService.GetAll(param);
 
@@ -46,7 +46,7 @@ public class CommissionController : ControllerBase
     [HttpGet("{id:int}")]
     //[Cached(600)]
 
-    public async Task<ApiResponse<Commission>> Get(int id)
+    public async Task<ApiResponse<CommissionResponseModel>> Get(int id)
     {
         var entity = await _commissionService.Get(id);
 
@@ -54,24 +54,24 @@ public class CommissionController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<ApiResponse<Commission>> Post(CommissionRequestModel data)
+    public async Task<ApiResponse<CommissionResponseModel>> Post(CommissionRequestModel data)
     {
         var entity = await _commissionService.CreateAsync(data);
-        return ApiResponse<Quest>.Created(entity);
+        return ApiResponse<Commission>.Created(entity);
     }
 
     [HttpPut]
-    public async Task<ApiResponse<Commission>> Put([FromBody] CommissionRequestModel data)
+    public async Task<ApiResponse<CommissionResponseModel>> Put([FromBody] CommissionRequestModel data)
     {
         var entity = await _commissionService.UpdateAsync(data);
-        return ApiResponse<Quest>.Created(entity);
+        return ApiResponse<Commission>.Created(entity);
     }
 
     [HttpDelete("{id:int}")]
-    public async Task<ActionResult<ApiResponse<Commission>>> Delete(int id)
+    public async Task<ActionResult<ApiResponse<CommissionResponseModel>>> Delete(int id)
     {
         var entity = await _commissionService.DeleteAsync(id);
-        return ApiResponse<Quest>.Ok(entity);
+        return ApiResponse<Commission>.Ok(entity);
     }
 
 }
