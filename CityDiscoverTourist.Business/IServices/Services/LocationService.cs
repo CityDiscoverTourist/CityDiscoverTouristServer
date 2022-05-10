@@ -16,9 +16,9 @@ public class LocationService: BaseService, ILocationService
     private readonly ILocationRepository _locationRepository;
     private readonly IMapper _mapper;
     private readonly ISortHelper<Location> _sortHelper;
-    private static  GoogleApiSetting _googleApiSetting;
+    private static  GoogleApiSetting? _googleApiSetting;
 
-    public LocationService(ILocationRepository locationRepository, IMapper mapper, ISortHelper<Location> sortHelper, GoogleApiSetting googleApiSetting)
+    public LocationService(ILocationRepository locationRepository, IMapper mapper, ISortHelper<Location> sortHelper, GoogleApiSetting? googleApiSetting)
     {
         _locationRepository = locationRepository;
         _mapper = mapper;
@@ -48,7 +48,7 @@ public class LocationService: BaseService, ILocationService
     {
         var entity = _mapper.Map<Location>(request);
 
-        var longLat = GetLatLongFromAddress(entity.Address ?? throw new InvalidOperationException());
+        var longLat = GetLatLongFromPlaceId(entity.Address ?? throw new InvalidOperationException());
 
         entity.Latitude = longLat[0].ToString(CultureInfo.InvariantCulture);
         entity.Longitude = longLat[1].ToString(CultureInfo.InvariantCulture);
@@ -70,9 +70,10 @@ public class LocationService: BaseService, ILocationService
         return _mapper.Map<LocationResponseModel>(entity);
     }
 
-    private static float[] GetLatLongFromAddress(string address)
+    private static float[] GetLatLongFromPlaceId(string address)
     {
-        var baseUrl = $"https://maps.googleapis.com/maps/api/geocode/json?address={address}&key={_googleApiSetting.ApiKey}";
+        var placeId = GetPlaceIdFromAddress(address);
+        var baseUrl = $"https://maps.googleapis.com/maps/api/geocode/json?address={placeId}&key={_googleApiSetting!.ApiKey}";
 
         var client = new HttpClient();
         var response = client.GetAsync(baseUrl).Result;
@@ -83,6 +84,19 @@ public class LocationService: BaseService, ILocationService
         var latitude = jsonResult["results"][0]["geometry"]["location"]["lng"].ToString();
 
         return new float[] { float.Parse(latitude), float.Parse(longitude) };
+    }
+
+    //get place id from address
+    private static string GetPlaceIdFromAddress(string address)
+    {
+        var baseUrl =
+            $"https://maps.googleapis.com/maps/api/place/findplacefromtext/json?input={address}&inputtype=textquery&fields=name,place_id&key={_googleApiSetting!.ApiKey}";
+
+        var client = new HttpClient();
+        var response = client.GetAsync(baseUrl).Result;
+
+        var jsonResult = JObject.Parse(response.Content.ReadAsStringAsync().Result);
+        return jsonResult["candidates"]![0]!["place_id"]!.ToString();
     }
 
     /*private static void Search(ref IQueryable<Location> entities, QuestParams param)
