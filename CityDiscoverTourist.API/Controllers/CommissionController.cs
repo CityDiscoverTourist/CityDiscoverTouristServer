@@ -40,7 +40,7 @@ public class CommissionController : ControllerBase
         };
         Response.Headers.Add("X-Pagination", JsonConvert.SerializeObject(metadata));
 
-        return ApiResponse<List<Commission>>.Ok2(entity, metadata);
+        return ApiResponse<List<Commission>>.Success(entity, metadata);
     }
 
     [HttpGet("{id:int}")]

@@ -39,7 +39,7 @@ public class QuestOwnerController : ControllerBase
         };
         Response.Headers.Add("X-Pagination", JsonConvert.SerializeObject(metadata));
 
-        return ApiResponse<List<QuestOwner>>.Ok2(entity, metadata);
+        return ApiResponse<List<QuestOwner>>.Success(entity, metadata);
     }
 
     [HttpGet("{id:int}")]

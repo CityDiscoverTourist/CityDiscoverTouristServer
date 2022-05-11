@@ -94,11 +94,6 @@ public class AuthService: IAuthService
         return Convert.ToBase64String(randomNumber);
     }
 
-    /*public Task<bool> VerifyPhoneNumberByDigitCode(string username, int code)
-    {
-        throw new NotImplementedException();
-    }*/
-
     private static async Task<LoginResponseModel> VerifyFirebaseToken(string? token)
     {
         var decodedToken = await FirebaseAuth.DefaultInstance.VerifyIdTokenAsync(token);

@@ -39,7 +39,7 @@ public class CompetitionController : ControllerBase
         };
         Response.Headers.Add("X-Pagination", JsonConvert.SerializeObject(metadata));
 
-        return ApiResponse<List<Competition>>.Ok2(entity, metadata);
+        return ApiResponse<List<Competition>>.Success(entity, metadata);
     }
 
     [HttpGet("{id:int}")]

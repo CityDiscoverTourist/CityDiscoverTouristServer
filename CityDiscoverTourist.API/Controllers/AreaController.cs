@@ -40,7 +40,7 @@ public class AreaController : ControllerBase
         };
         Response.Headers.Add("X-Pagination", JsonConvert.SerializeObject(metadata));
 
-        return ApiResponse<List<AreaResponseModel>>.Ok2(entity, metadata);
+        return ApiResponse<List<AreaResponseModel>>.Success(entity, metadata);
     }
 
     [HttpGet("{id:int}")]

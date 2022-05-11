@@ -1,8 +1,8 @@
 using System.Globalization;
 
 namespace CityDiscoverTourist.Business.Exceptions;
-
-public class AppException: System.Exception
+[Serializable]
+public class AppException: Exception
 {
     public AppException() : base() {}
 

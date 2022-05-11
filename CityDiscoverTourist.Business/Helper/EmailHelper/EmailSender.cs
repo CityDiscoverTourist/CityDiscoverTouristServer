@@ -23,7 +23,7 @@ public class EmailSender : IEmailSender
         await SendAsync(mailMessage);
     }
 
-    public void SendMailWithMailGun(Message message)
+    public static void SendMailWithMailGun(Message message)
     {
         var mailMessage = new MimeMessage();
         mailMessage.From.Add(new MailboxAddress("Admin",
@@ -49,106 +49,7 @@ public class EmailSender : IEmailSender
         }
     }
 
-    /*
-    public void SendMailException(System.Exception ex)
-    {
-       try
-       {
-           const string newline = "<br/>";
-           Debug.Assert(ex.StackTrace != null, "ex.StackTrace != null");
-           errorInfo = ex.StackTrace;
-           Errormsg = ex.GetType().Name;
-           extype = ex.GetType().ToString();
-
-           ErrorLocation = ex.Message;
-           EmailHead = "<b>Dear Team,</b>" + "<br/>" + "An exception occurred in a Application Url" + " " + exurl + " " + "With following Details" + "<br/>" + "<br/>";
-           EmailSing = newline + "Thanks and Regards" + newline + "    " + "     " + "<b>Application Admin </b>" + "</br>";
-           Sub = "Exception occurred" + " " + "in Application" + " " + exurl;
-           var errorContext = EmailHead + "<b>Log Written Date: </b>" + " " + DateTime.Now.ToString(CultureInfo.InvariantCulture) + newline +
-                              "<b>Error Line No :</b>" + " " + errorInfo + "\t\n" + " " + newline +
-                              "<b>Error Message:</b>" + " " + Errormsg + newline +
-                              "<b>Exception Type:</b>" + " " + extype + newline +
-                              "<b>Error Details :</b>" + " " + ErrorLocation + newline +
-                              "<b>Error Page Url:</b>" + " " + exurl + newline + newline + newline + newline + EmailSing;
-           using (var mailMessage = new MimeMessage())
-           {
-               mailMessage.From.Add(new MailboxAddress("Admin",
-                   _emailConfig.From));
-               mailMessage.To.Add(new MailboxAddress("User", _emailConfig.AdminEmail));
-               mailMessage.Subject = Sub;
-               mailMessage.Body = new TextPart(TextFormat.Html)
-               {
-                   Text = errorContext
-               };
-               using (var client = new SmtpClient())
-               {
-                   client.ServerCertificateValidationCallback = (s, c, h, e) => true;
-
-                   client.Connect (_emailConfig.SmtpServer, _emailConfig.Port, false);
-                   client.AuthenticationMechanisms.Remove ("XOAUTH2");
-                   client.Authenticate (_emailConfig.UserName, _emailConfig.Password);
-
-                   client.Send (mailMessage);
-                   client.Disconnect (true);
-               }
-           }
-       }
-       catch (System.Exception em)
-       {
-           em.ToString();
-       }
-    }
-
-    public void SendMailException(ProblemDetails pd)
-    {
-        try
-        {
-           const string newline = "<br/>";
-           errorInfo = (string) pd.Extensions["trace"];
-           Errormsg = pd.Title;
-           extype = pd.Type;
-
-           ErrorLocation = pd.Detail;
-           EmailHead = "<b>Dear Team,</b>" + "<br/>" + "An exception occurred in a Application Url" + " " + exurl + " " + "With following Details" + "<br/>" + "<br/>";
-           EmailSing = newline + "Thanks and Regards" + newline + "    " + "     " + "<b>Application Admin </b>" + "</br>";
-           Sub = "Exception occurred" + " " + "in Application" + " " + exurl;
-           var errorContext = EmailHead + "<b>Log Written Date: </b>" + " " + DateTime.Now.ToString(CultureInfo.InvariantCulture) + newline +
-                              "<b>Error Line No :</b>" + " " + errorInfo + "\t\n" + " " + newline +
-                              "<b>Error Message:</b>" + " " + Errormsg + newline +
-                              "<b>Exception Type:</b>" + " " + extype + newline +
-                              "<b>Error Details :</b>" + " " + ErrorLocation + newline +
-                              "<b>Error Page Url:</b>" + " " + exurl + newline + newline + newline + newline + EmailSing;
-           using (var mailMessage = new MimeMessage())
-           {
-               mailMessage.From.Add(new MailboxAddress("Admin",
-                   _emailConfig.From));
-               mailMessage.To.Add(new MailboxAddress("User", _emailConfig.AdminEmail));
-               mailMessage.Subject = Sub;
-               mailMessage.Body = new TextPart(TextFormat.Html)
-               {
-                   Text = errorContext
-               };
-               using (var client = new SmtpClient())
-               {
-                   client.ServerCertificateValidationCallback = (s, c, h, e) => true;
-
-                   client.Connect (_emailConfig.SmtpServer, _emailConfig.Port, false);
-                   client.AuthenticationMechanisms.Remove ("XOAUTH2");
-                   client.Authenticate (_emailConfig.UserName, _emailConfig.Password);
-
-                   client.Send (mailMessage);
-                   client.Disconnect (true);
-               }
-           }
-       }
-       catch (System.Exception em)
-       {
-           em.ToString();
-       }
-    }
-    */
-
-    private MimeMessage CreateEmailMessage(Message message)
+    private static MimeMessage CreateEmailMessage(Message message)
     {
         var emailMessage = new MimeMessage();
         emailMessage.From.Add(new MailboxAddress("", "dathaha2000@gmail.com"));
@@ -177,25 +78,6 @@ public class EmailSender : IEmailSender
         return emailMessage;
     }
 
-    /*private void Send(MimeMessage mailMessage)
-    {
-        using (var client = new SmtpClient())
-        {
-            try
-            {
-                client.Connect(_emailConfig.SmtpServer, _emailConfig.Port, true);
-                client.AuthenticationMechanisms.Remove("XOAUTH2");
-                client.Authenticate(_emailConfig.UserName, _emailConfig.Password);
-
-                client.Send(mailMessage);
-            }
-            finally
-            {
-                client.Disconnect(true);
-                client.Dispose();
-            }
-        }
-    }*/
 
     private async Task SendAsync(MimeMessage mailMessage)
     {

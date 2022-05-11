@@ -40,7 +40,7 @@ public class CityController : ControllerBase
         };
         Response.Headers.Add("X-Pagination", JsonConvert.SerializeObject(metadata));
 
-        return ApiResponse<List<City>>.Ok2(entity, metadata);
+        return ApiResponse<List<City>>.Success(entity, metadata);
     }
 
     [HttpGet("{id:int}")]

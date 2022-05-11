@@ -38,7 +38,7 @@ public class RewardController : ControllerBase
         };
         Response.Headers.Add("X-Pagination", JsonConvert.SerializeObject(metadata));
 
-        return ApiResponse<List<RewardResponseModel>>.Ok2(entity, metadata);
+        return ApiResponse<List<RewardResponseModel>>.Success(entity, metadata);
     }
 
     [HttpGet("{id:int}")]

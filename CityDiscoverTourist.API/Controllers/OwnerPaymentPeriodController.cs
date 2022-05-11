@@ -39,7 +39,7 @@ public class OwnerPaymentPeriodController : ControllerBase
         };
         Response.Headers.Add("X-Pagination", JsonConvert.SerializeObject(metadata));
 
-        return ApiResponse<List<OwnerPaymentPeriod>>.Ok2(entity, metadata);
+        return ApiResponse<List<OwnerPaymentPeriod>>.Success(entity, metadata);
     }
 
     [HttpGet("{id:int}")]
