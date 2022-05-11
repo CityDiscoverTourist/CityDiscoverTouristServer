@@ -1,4 +1,7 @@
 using System.Text;
+using Amazon;
+using Amazon.SecretsManager;
+using Amazon.SecretsManager.Model;
 using CityDiscoverTourist.Business.Settings;
 using CityDiscoverTourist.Data.Models;
 using FirebaseAdmin;
@@ -13,7 +16,8 @@ namespace CityDiscoverTourist.API.Config;
 
 public static class ConfigFirebase
 {
-    public static void SetupFirebaseAuth(this IServiceCollection services, IConfiguration configuration)
+    public static void SetupFirebaseAuth( this IServiceCollection services, IConfiguration configuration,
+        IWebHostEnvironment webHostEnvironment)
     {
         services.AddIdentity<ApplicationUser, IdentityRole>(opt =>
             {
@@ -31,18 +35,45 @@ public static class ConfigFirebase
             options.AppId = "531990824494705";
             options.AppSecret = "66835ceb1352abc8a9e13a66fbeadaa8";
         });
-        var fireBaseCredential = new FirestoreCredentialInitializer(configuration);
-        var serializerSettings = new JsonSerializerSettings
+        if (webHostEnvironment.IsDevelopment())
         {
-            ContractResolver = new DefaultContractResolver
+            var fireBaseCredential = new FirestoreCredentialInitializer(configuration);
+            var serializerSettings = new JsonSerializerSettings
             {
-                NamingStrategy = new SnakeCaseNamingStrategy()
-            },
-        };
-        FirebaseApp.Create(new AppOptions
+                ContractResolver = new DefaultContractResolver
+                {
+                    NamingStrategy = new SnakeCaseNamingStrategy()
+                },
+            };
+            FirebaseApp.Create(new AppOptions
+            {
+                Credential = GoogleCredential.FromJson(JsonConvert.SerializeObject(fireBaseCredential, serializerSettings)),
+            });
+        }else
         {
-            Credential = GoogleCredential.FromJson(JsonConvert.SerializeObject(fireBaseCredential, serializerSettings)),
-        });
+            var secretName = configuration.GetSection("AWS").Get<AwsSetting>().SecretName;
+            const string region = "ap-southeast-1";
+
+            var memoryStream = new MemoryStream();
+
+            IAmazonSecretsManager client = new AmazonSecretsManagerClient(RegionEndpoint.GetBySystemName(region));
+
+            var request = new GetSecretValueRequest
+            {
+                SecretId = secretName,
+                VersionStage = "AWSCURRENT" // VersionStage defaults to AWSCURRENT if unspecified.
+            };
+
+            GetSecretValueResponse response = null;
+
+            response = client.GetSecretValueAsync(request).Result;
+
+            FirebaseApp.Create(new AppOptions
+            {
+                Credential = GoogleCredential.FromJson(response.SecretString),
+            });
+        }
+
         services.AddAuthentication(opt =>
         {
             opt.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
