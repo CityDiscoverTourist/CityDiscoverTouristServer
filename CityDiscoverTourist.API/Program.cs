@@ -13,7 +13,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 var env = builder.Environment.EnvironmentName;
 var appName = builder.Environment.ApplicationName;
-builder.Configuration.AddSecretsManager(credentials: new BasicAWSCredentials("AKIA56P3MWPPBKEIST66","x6vqRQkrQllefv20tG9ZEFlKz7cojqy6wfTbruWi"), region: RegionEndpoint.APSoutheast1, configurator: options =>
+builder.Configuration.AddSecretsManager(credentials: new BasicAWSCredentials("AKIA56P3MWPPAL5FF6HT","NQORakH5VjrtgQadAcyKGup7hAn+q3w34Kh/Tqj+"), region: RegionEndpoint.APSoutheast1, configurator: options =>
 {
     //arn:aws:secretsmanager:ap-southeast-1:958841795550:secret:Production_CityDiscoverTourist.API_ConnectionStrings__DefaultConnection-65jWxM
     options.SecretFilter = entry => entry.Name.StartsWith($"{env}_{appName}_");
