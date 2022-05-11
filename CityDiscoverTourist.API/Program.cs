@@ -3,7 +3,10 @@ using Amazon.Runtime;
 using CityDiscoverTourist.API.Config;
 using CityDiscoverTourist.Business.Data;
 using CityDiscoverTourist.Business.Exceptions;
+using CityDiscoverTourist.Business.HealthCheck;
+using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.AspNetCore.HttpOverrides;
+using Newtonsoft.Json;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -29,6 +32,7 @@ builder.Services.SetupServices();
 builder.Services.SetupThirdParty(builder.Configuration);
 builder.Services.SetupSwagger(builder.Configuration);
 builder.Services.SetUpCache(builder.Configuration);
+builder.Services.SetUpHealthCheck(builder.Configuration);
 
 builder.Services.AddAutoMapper(typeof(AutoMapperProfile).Assembly);
 
@@ -53,6 +57,26 @@ else
     app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "CityDiscoverTourist API Production"));
 }
 
+app.UseHealthChecks("/api/healthcheck", new HealthCheckOptions
+{
+    ResponseWriter  = async (context, report) =>
+    {
+        context.Response.ContentType = "application/json";
+
+        var response = new HealthCheckResponse
+        {
+            Status = report.Status.ToString(),
+            Checks = report.Entries.Select(x => new HealthCheck
+            {
+                Component = x.Key,
+                Status = x.Value.Status.ToString(),
+                Description = x.Value.Description
+            }),
+            Duration = report.TotalDuration
+        };
+        await context.Response.WriteAsync(JsonConvert.SerializeObject(response));
+    }
+});
 app.UseMiddleware<ErrorHandlerMiddleware>();
 app.HandlerExceptionProduction(app.Environment.IsDevelopment());
 app.UseHttpsRedirection();
