@@ -13,16 +13,16 @@ public class ResponseCacheService : IResponseCacheService
         _distributedCache = distributedCache;
     }
 
-    public async Task CacheResponseAsync(string key, object? response, TimeSpan timeToLive)
+    public async Task CacheResponseAsync(string key, object? value, TimeSpan timeToLive)
     {
-        if (response == null) return;
+        if (value == null) return;
 
         var serializerSettings = new JsonSerializerSettings
         {
             ContractResolver = new CamelCasePropertyNamesContractResolver()
         };
 
-        var serializedResponse = JsonConvert.SerializeObject(response, serializerSettings);
+        var serializedResponse = JsonConvert.SerializeObject(value, serializerSettings);
 
         await _distributedCache.SetStringAsync(key, serializedResponse, new DistributedCacheEntryOptions
         {

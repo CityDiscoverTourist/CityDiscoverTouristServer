@@ -26,18 +26,6 @@ public class AuthController : ControllerBase
         return Ok(await _authService.LoginFirebase(model));
     }
 
-    /*[HttpPost("refresh")]
-    public IActionResult Refresh(string accessToken)
-    {
-        var principal = _authService.GetPrincipalFromExpiredToken(accessToken);
-
-        var newToken = _authService.GetJwtToken(principal.Claims);
-        var newRefreshToken = _authService.GenerateRefreshToken();
-
-        return Ok(new { token = newToken.EncodedPayload, newRefreshToken });
-    }*/
-
-
     [HttpPost("login-facebook")]
     public async Task<IActionResult> FacebookLoginAsync([FromQuery] string resource)
     {

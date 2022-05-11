@@ -39,7 +39,7 @@ public class WalletController : ControllerBase
         };
         Response.Headers.Add("X-Pagination", JsonConvert.SerializeObject(metadata));
 
-        return ApiResponse<List<Wallet>>.Ok2(entity, metadata);
+        return ApiResponse<List<Wallet>>.Success(entity, metadata);
     }
 
     [HttpGet("{id:int}")]

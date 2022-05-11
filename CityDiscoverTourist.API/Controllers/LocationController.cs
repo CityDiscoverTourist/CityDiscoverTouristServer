@@ -39,7 +39,7 @@ public class LocationController : ControllerBase
         };
         Response.Headers.Add("X-Pagination", JsonConvert.SerializeObject(metadata));
 
-        return ApiResponse<List<Location>>.Ok2(entity, metadata);
+        return ApiResponse<List<Location>>.Success(entity, metadata);
     }
 
     [HttpGet("{id:int}")]

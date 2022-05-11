@@ -39,7 +39,7 @@ public class TransactionController : ControllerBase
         };
         Response.Headers.Add("X-Pagination", JsonConvert.SerializeObject(metadata));
 
-        return ApiResponse<List<Transaction>>.Ok2(entity, metadata);
+        return ApiResponse<List<Transaction>>.Success(entity, metadata);
     }
 
     [HttpGet("{id:int}")]

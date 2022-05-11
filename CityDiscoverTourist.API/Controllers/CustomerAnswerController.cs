@@ -40,7 +40,7 @@ public class CustomerAnswerController : ControllerBase
         };
         Response.Headers.Add("X-Pagination", JsonConvert.SerializeObject(metadata));
 
-        return ApiResponse<List<CustomerAnswer>>.Ok2(entity, metadata);
+        return ApiResponse<List<CustomerAnswer>>.Success(entity, metadata);
     }
     [HttpGet("{id:int}")]
     //[Cached(600)]

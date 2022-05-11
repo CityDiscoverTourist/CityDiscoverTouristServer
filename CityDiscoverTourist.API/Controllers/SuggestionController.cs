@@ -39,7 +39,7 @@ public class SuggestionController : ControllerBase
         };
         Response.Headers.Add("X-Pagination", JsonConvert.SerializeObject(metadata));
 
-        return ApiResponse<List<Suggestion>>.Ok2(entity, metadata);
+        return ApiResponse<List<Suggestion>>.Success(entity, metadata);
     }
 
     [HttpGet("{id:int}")]

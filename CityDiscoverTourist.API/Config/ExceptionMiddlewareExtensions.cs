@@ -5,9 +5,6 @@ namespace CityDiscoverTourist.API.Config;
 
 public static class ExceptionMiddlewareExtensions
 {
-/*
-    private static readonly IEmailSender EmailSender;
-*/
     public static void HandlerExceptionProduction(this IApplicationBuilder app, bool isDevelopment)
 {
     if (!isDevelopment)
@@ -32,7 +29,6 @@ public static class ExceptionMiddlewareExtensions
                 };
                 pd.Extensions.Add("RequestId", context.TraceIdentifier);
                 pd.Extensions.Add("UserId", context.User.Identity!.Name ?? "Anonymous");
-                //EmailSender.SendMailException(pd);
                 await context.Response.WriteAsJsonAsync(pd, pd.GetType(), null,
                      "application/problem+json");
             });

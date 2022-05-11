@@ -12,8 +12,5 @@ public class CustomerQuestRequestModel
     public string? FeedBack { get; set; }
 
     public string? CustomerId { get; set; }
-
     public int CompetitionId { get; set; }
-
-    //public Payment? PaymentMethod { get; set; }
 }

@@ -160,7 +160,6 @@ public static class ConfigController
         }).AddNewtonsoftJson(options =>
         {
             options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
-            //options.SerializerSettings.NullValueHandling = NullValueHandling.Ignore;
         });
     }
 

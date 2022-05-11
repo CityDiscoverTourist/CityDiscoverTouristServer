@@ -39,7 +39,7 @@ public class QuestItemController : ControllerBase
         };
         Response.Headers.Add("X-Pagination", JsonConvert.SerializeObject(metadata));
 
-        return ApiResponse<List<QuestItemResponseModel>>.Ok2(entity, metadata);
+        return ApiResponse<List<QuestItemResponseModel>>.Success(entity, metadata);
     }
 
     [HttpGet("{id:int}")]

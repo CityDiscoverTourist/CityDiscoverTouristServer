@@ -27,7 +27,7 @@
             return new ApiResponse<TData>("", data, "success");
         }
 
-        public static ApiResponse<TData> Ok2<TData>(TData data, object paging) where TData : class
+        public static ApiResponse<TData> Success<TData>(TData data, object paging) where TData : class
         {
             return new ApiResponse<TData>("", data, paging, "success");
         }

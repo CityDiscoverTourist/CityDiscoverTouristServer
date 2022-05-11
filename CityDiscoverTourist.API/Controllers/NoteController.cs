@@ -39,7 +39,7 @@ public class NoteController : ControllerBase
         };
         Response.Headers.Add("X-Pagination", JsonConvert.SerializeObject(metadata));
 
-        return ApiResponse<List<Note>>.Ok2(entity, metadata);
+        return ApiResponse<List<Note>>.Success(entity, metadata);
     }
 
     [HttpGet("{id:int}")]

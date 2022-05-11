@@ -38,7 +38,7 @@ public class PaymentController : ControllerBase
         };
         Response.Headers.Add("X-Pagination", JsonConvert.SerializeObject(metadata));
 
-        return ApiResponse<List<Payment>>.Ok2(entity, metadata);
+        return ApiResponse<List<Payment>>.Success(entity, metadata);
     }
 
     [HttpGet("{id:int}")]
