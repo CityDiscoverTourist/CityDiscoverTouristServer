@@ -1,10 +1,13 @@
 using System.Text;
+using CityDiscoverTourist.Business.Settings;
 using CityDiscoverTourist.Data.Models;
 using FirebaseAdmin;
 using Google.Apis.Auth.OAuth2;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 
 namespace CityDiscoverTourist.API.Config;
 
@@ -28,9 +31,17 @@ public static class ConfigFirebase
             options.AppId = "531990824494705";
             options.AppSecret = "66835ceb1352abc8a9e13a66fbeadaa8";
         });
+        var fireBaseCredential = new FirestoreCredentialInitializer(configuration);
+        var serializerSettings = new JsonSerializerSettings
+        {
+            ContractResolver = new DefaultContractResolver
+            {
+                NamingStrategy = new SnakeCaseNamingStrategy()
+            },
+        };
         FirebaseApp.Create(new AppOptions
         {
-            Credential = GoogleCredential.FromFile("citytourist-cea6c-firebase-adminsdk-oucj8-85ae38130b.json")
+            Credential = GoogleCredential.FromJson(JsonConvert.SerializeObject(fireBaseCredential, serializerSettings)),
         });
         services.AddAuthentication(opt =>
         {
