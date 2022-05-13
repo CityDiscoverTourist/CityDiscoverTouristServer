@@ -31,4 +31,11 @@
       <ProjectReference Include="..\CityDiscoverTourist.Business\CityDiscoverTourist.Business.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Content Include="obj\Debug\net6.0\CityDiscoverTourist.Test.csproj.CoreCompileInputs.cache" />
+      <Content Include="obj\Debug\net6.0\CityDiscoverTourist.Test.dll" />
+      <Content Include="obj\Debug\net6.0\CityDiscoverTourist.Test.genruntimeconfig.cache" />
+      <Content Include="obj\Debug\net6.0\CityDiscoverTourist.Test.pdb" />
+    </ItemGroup>
+
 </Project>
