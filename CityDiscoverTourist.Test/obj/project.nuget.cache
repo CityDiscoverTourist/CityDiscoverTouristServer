@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "NbbdfoR5N47ht7zCKsIAaGdTFRjFWf4HmbSqIUxPR6MHhalekLakehTRuSWB0gfUUmwVSKJIZeA5Nd+QcNm6tw==",
+  "dgSpecHash": "jwQpjhXL9TcGIpDy2JmR+x3oPEU50bMC3TPoBtT4vnKJxBvZfT9OJTZsjc9KPJjkyRzkgniiRK5rqbowQGsXeg==",
   "success": true,
   "projectFilePath": "D:\\C#\\CityDiscoverTourist\\CityDiscoverTourist.Test\\CityDiscoverTourist.Test.csproj",
   "expectedPackageFiles": [
@@ -40,10 +40,10 @@
     "C:\\Users\\Admin\\.nuget\\packages\\microsoft.aspnetcore.http.features\\2.2.0\\microsoft.aspnetcore.http.features.2.2.0.nupkg.sha512",
     "C:\\Users\\Admin\\.nuget\\packages\\microsoft.aspnetcore.identity\\2.2.0\\microsoft.aspnetcore.identity.2.2.0.nupkg.sha512",
     "C:\\Users\\Admin\\.nuget\\packages\\microsoft.aspnetcore.identity.entityframeworkcore\\6.0.3\\microsoft.aspnetcore.identity.entityframeworkcore.6.0.3.nupkg.sha512",
-    "C:\\Users\\Admin\\.nuget\\packages\\microsoft.aspnetcore.jsonpatch\\6.0.4\\microsoft.aspnetcore.jsonpatch.6.0.4.nupkg.sha512",
+    "C:\\Users\\Admin\\.nuget\\packages\\microsoft.aspnetcore.jsonpatch\\6.0.5\\microsoft.aspnetcore.jsonpatch.6.0.5.nupkg.sha512",
     "C:\\Users\\Admin\\.nuget\\packages\\microsoft.aspnetcore.mvc.abstractions\\2.2.0\\microsoft.aspnetcore.mvc.abstractions.2.2.0.nupkg.sha512",
     "C:\\Users\\Admin\\.nuget\\packages\\microsoft.aspnetcore.mvc.core\\2.2.5\\microsoft.aspnetcore.mvc.core.2.2.5.nupkg.sha512",
-    "C:\\Users\\Admin\\.nuget\\packages\\microsoft.aspnetcore.mvc.newtonsoftjson\\6.0.4\\microsoft.aspnetcore.mvc.newtonsoftjson.6.0.4.nupkg.sha512",
+    "C:\\Users\\Admin\\.nuget\\packages\\microsoft.aspnetcore.mvc.newtonsoftjson\\6.0.5\\microsoft.aspnetcore.mvc.newtonsoftjson.6.0.5.nupkg.sha512",
     "C:\\Users\\Admin\\.nuget\\packages\\microsoft.aspnetcore.mvc.razor.extensions\\6.0.3\\microsoft.aspnetcore.mvc.razor.extensions.6.0.3.nupkg.sha512",
     "C:\\Users\\Admin\\.nuget\\packages\\microsoft.aspnetcore.mvc.razor.runtimecompilation\\6.0.3\\microsoft.aspnetcore.mvc.razor.runtimecompilation.6.0.3.nupkg.sha512",
     "C:\\Users\\Admin\\.nuget\\packages\\microsoft.aspnetcore.mvc.versioning\\5.0.0\\microsoft.aspnetcore.mvc.versioning.5.0.0.nupkg.sha512",
