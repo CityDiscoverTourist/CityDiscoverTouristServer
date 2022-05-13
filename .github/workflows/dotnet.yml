@@ -29,11 +29,11 @@ jobs:
       - name: Publish
         run: dotnet publish -c Release -o ./out
 
-      - name: Docker build and push
-        uses: mr-smithers-excellent/docker-build-push@v5
-        with:
-          image: donephit/city-discover-tourist-server
-          tags: v1, latest
-          registry: docker.io
-          username: ${{ secrets.DOCKER_USERNAME }}
-          password: ${{ secrets.DOCKER_PASSWORD }}
+#       - name: Docker build and push
+#         uses: mr-smithers-excellent/docker-build-push@v5
+#         with:
+#           image: donephit/city-discover-tourist-server
+#           tags: v1, latest
+#           registry: docker.io
+#           username: ${{ secrets.DOCKER_USERNAME }}
+#           password: ${{ secrets.DOCKER_PASSWORD }}
