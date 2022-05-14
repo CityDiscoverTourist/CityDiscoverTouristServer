@@ -1,0 +1,51 @@
+2022-05-14 09:43:24.062 +07:00 [INF] User profile is available. Using 'C:\Users\Admin\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.
+2022-05-14 09:43:24.258 +07:00 [INF] Unable to bind to https://localhost:7235 on the IPv4 loopback interface: 'An attempt was made to access a socket in a way forbidden by its access permissions.'.
+2022-05-14 09:43:24.261 +07:00 [INF] Unable to bind to https://localhost:7235 on the IPv6 loopback interface: 'An attempt was made to access a socket in a way forbidden by its access permissions.'.
+2022-05-14 09:45:10.298 +07:00 [INF] User profile is available. Using 'C:\Users\Admin\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.
+2022-05-14 09:45:10.519 +07:00 [INF] Unable to bind to https://localhost:7235 on the IPv4 loopback interface: 'An attempt was made to access a socket in a way forbidden by its access permissions.'.
+2022-05-14 09:45:10.522 +07:00 [INF] Unable to bind to https://localhost:7235 on the IPv6 loopback interface: 'An attempt was made to access a socket in a way forbidden by its access permissions.'.
+2022-05-14 09:45:35.752 +07:00 [INF] User profile is available. Using 'C:\Users\Admin\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.
+2022-05-14 09:45:35.872 +07:00 [INF] Unable to bind to https://localhost:7235 on the IPv4 loopback interface: 'An attempt was made to access a socket in a way forbidden by its access permissions.'.
+2022-05-14 09:45:35.876 +07:00 [INF] Unable to bind to https://localhost:7235 on the IPv6 loopback interface: 'An attempt was made to access a socket in a way forbidden by its access permissions.'.
+2022-05-14 09:45:53.856 +07:00 [INF] User profile is available. Using 'C:\Users\Admin\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.
+2022-05-14 09:45:53.984 +07:00 [INF] Unable to bind to https://localhost:7235 on the IPv4 loopback interface: 'An attempt was made to access a socket in a way forbidden by its access permissions.'.
+2022-05-14 09:45:53.988 +07:00 [INF] Unable to bind to https://localhost:7235 on the IPv6 loopback interface: 'An attempt was made to access a socket in a way forbidden by its access permissions.'.
+2022-05-14 09:49:04.178 +07:00 [INF] User profile is available. Using 'C:\Users\Admin\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.
+2022-05-14 09:49:04.434 +07:00 [INF] Now listening on: https://localhost:7235
+2022-05-14 09:49:04.436 +07:00 [INF] Now listening on: http://localhost:5235
+2022-05-14 09:49:04.442 +07:00 [INF] Application started. Press Ctrl+C to shut down.
+2022-05-14 09:49:04.444 +07:00 [INF] Hosting environment: Development
+2022-05-14 09:49:04.445 +07:00 [INF] Content root path: D:\C#\CityDiscoverTourist\CityDiscoverTourist.API\
+2022-05-14 09:49:06.604 +07:00 [INF] Request starting HTTP/2 GET https://localhost:7235/swagger/index.html - -
+2022-05-14 09:49:06.811 +07:00 [INF] HTTP GET /swagger/index.html responded 200 in 145.3518 ms
+2022-05-14 09:49:06.822 +07:00 [INF] Request finished HTTP/2 GET https://localhost:7235/swagger/index.html - - - 200 - text/html;charset=utf-8 224.1112ms
+2022-05-14 09:49:07.148 +07:00 [INF] Request starting HTTP/2 GET https://localhost:7235/swagger/v1/swagger.json - -
+2022-05-14 09:49:07.585 +07:00 [INF] HTTP GET /swagger/v1/swagger.json responded 200 in 434.1784 ms
+2022-05-14 09:49:07.588 +07:00 [INF] Request finished HTTP/2 GET https://localhost:7235/swagger/v1/swagger.json - - - 200 - application/json;charset=utf-8 439.9119ms
+2022-05-14 09:49:11.411 +07:00 [INF] Request starting HTTP/2 GET https://localhost:7235/api/v1/areas - -
+2022-05-14 09:49:11.432 +07:00 [INF] Executing endpoint 'CityDiscoverTourist.API.Controllers.AreaController.GetAll (CityDiscoverTourist.API)'
+2022-05-14 09:49:11.466 +07:00 [INF] Route matched with {action = "GetAll", controller = "Area"}. Executing controller action with signature CityDiscoverTourist.API.Response.ApiResponse`1[CityDiscoverTourist.Business.Helper.PageList`1[CityDiscoverTourist.Business.Data.ResponseModel.AreaResponseModel]] GetAll(CityDiscoverTourist.Business.Helper.Params.AreaParams) on controller CityDiscoverTourist.API.Controllers.AreaController (CityDiscoverTourist.API).
+2022-05-14 09:49:14.153 +07:00 [INF] Entity Framework Core 6.0.5 initialized 'ApplicationDbContext' using provider 'Microsoft.EntityFrameworkCore.SqlServer:6.0.3' with options: None
+2022-05-14 09:49:15.598 +07:00 [INF] Executed DbCommand (66ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT CASE
+    WHEN EXISTS (
+        SELECT 1
+        FROM [Areas] AS [a]) THEN CAST(1 AS bit)
+    ELSE CAST(0 AS bit)
+END
+2022-05-14 09:49:15.820 +07:00 [INF] Executed DbCommand (4ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT CASE
+    WHEN EXISTS (
+        SELECT 1
+        FROM [Areas] AS [a]) THEN CAST(1 AS bit)
+    ELSE CAST(0 AS bit)
+END
+2022-05-14 09:49:15.915 +07:00 [INF] Executed DbCommand (3ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [a].[Id], [a].[CityId], [a].[Name], [a].[Status]
+FROM [Areas] AS [a]
+2022-05-14 09:49:15.956 +07:00 [INF] Executing ObjectResult, writing value of type 'CityDiscoverTourist.API.Response.ApiResponse`1[[CityDiscoverTourist.Business.Helper.PageList`1[[CityDiscoverTourist.Business.Data.ResponseModel.AreaResponseModel, CityDiscoverTourist.Business, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]], CityDiscoverTourist.Business, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]'.
+2022-05-14 09:49:16.021 +07:00 [INF] Executed action CityDiscoverTourist.API.Controllers.AreaController.GetAll (CityDiscoverTourist.API) in 4544.2562ms
+2022-05-14 09:49:16.025 +07:00 [INF] Executed endpoint 'CityDiscoverTourist.API.Controllers.AreaController.GetAll (CityDiscoverTourist.API)'
+2022-05-14 09:49:16.027 +07:00 [INF] HTTP GET /api/v1/areas responded 200 in 4604.6750 ms
+2022-05-14 09:49:16.036 +07:00 [INF] Request finished HTTP/2 GET https://localhost:7235/api/v1/areas - - - 200 245 application/json;+charset=utf-8 4625.0275ms
+2022-05-14 09:49:31.273 +07:00 [INF] Application is shutting down...

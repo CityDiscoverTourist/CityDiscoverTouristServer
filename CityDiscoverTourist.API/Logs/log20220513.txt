@@ -74,3 +74,63 @@ FROM [Areas] AS [a]
 2022-05-13 17:07:50.033 +07:00 [INF] HTTP GET /swagger/v1/swagger.json {UserId} responded 200 in 251.6236ms
 2022-05-13 17:07:50.037 +07:00 [INF] Request finished HTTP/2 GET https://localhost:7235/swagger/v1/swagger.json - - - 200 - application/json;charset=utf-8 258.3047ms
 2022-05-13 17:08:10.804 +07:00 [INF] Application is shutting down...
+2022-05-13 17:13:28.147 +07:00 [INF] User profile is available. Using 'C:\Users\Admin\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.
+2022-05-13 17:13:28.270 +07:00 [INF] Now listening on: https://localhost:7235
+2022-05-13 17:13:28.272 +07:00 [INF] Now listening on: http://localhost:5235
+2022-05-13 17:13:28.276 +07:00 [INF] Application started. Press Ctrl+C to shut down.
+2022-05-13 17:13:28.278 +07:00 [INF] Hosting environment: Development
+2022-05-13 17:13:28.279 +07:00 [INF] Content root path: D:\C#\CityDiscoverTourist\CityDiscoverTourist.API\
+2022-05-13 17:13:28.564 +07:00 [INF] Request starting HTTP/2 GET https://localhost:7235/swagger/index.html - -
+2022-05-13 17:13:28.698 +07:00 [INF] HTTP GET /swagger/index.html responded 200 in 91.9858 ms
+2022-05-13 17:13:28.712 +07:00 [INF] Request finished HTTP/2 GET https://localhost:7235/swagger/index.html - - - 200 - text/html;charset=utf-8 150.0362ms
+2022-05-13 17:13:28.908 +07:00 [INF] Request starting HTTP/2 GET https://localhost:7235/swagger/v1/swagger.json - -
+2022-05-13 17:13:29.133 +07:00 [INF] HTTP GET /swagger/v1/swagger.json responded 200 in 221.7490 ms
+2022-05-13 17:13:29.136 +07:00 [INF] Request finished HTTP/2 GET https://localhost:7235/swagger/v1/swagger.json - - - 200 - application/json;charset=utf-8 227.7618ms
+2022-05-13 17:13:32.008 +07:00 [INF] Request starting HTTP/2 GET https://localhost:7235/api/v1/areas - -
+2022-05-13 17:13:32.028 +07:00 [INF] Executing endpoint 'CityDiscoverTourist.API.Controllers.AreaController.GetAll (CityDiscoverTourist.API)'
+2022-05-13 17:13:32.056 +07:00 [INF] Route matched with {action = "GetAll", controller = "Area"}. Executing controller action with signature CityDiscoverTourist.API.Response.ApiResponse`1[CityDiscoverTourist.Business.Helper.PageList`1[CityDiscoverTourist.Business.Data.ResponseModel.AreaResponseModel]] GetAll(CityDiscoverTourist.Business.Helper.Params.AreaParams) on controller CityDiscoverTourist.API.Controllers.AreaController (CityDiscoverTourist.API).
+2022-05-13 17:13:33.726 +07:00 [INF] Entity Framework Core 6.0.5 initialized 'ApplicationDbContext' using provider 'Microsoft.EntityFrameworkCore.SqlServer:6.0.3' with options: None
+2022-05-13 17:13:35.277 +07:00 [INF] Executed DbCommand (218ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT CASE
+    WHEN EXISTS (
+        SELECT 1
+        FROM [Areas] AS [a]) THEN CAST(1 AS bit)
+    ELSE CAST(0 AS bit)
+END
+2022-05-13 17:13:35.356 +07:00 [INF] Executed DbCommand (4ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT CASE
+    WHEN EXISTS (
+        SELECT 1
+        FROM [Areas] AS [a]) THEN CAST(1 AS bit)
+    ELSE CAST(0 AS bit)
+END
+2022-05-13 17:13:35.458 +07:00 [INF] Executed DbCommand (13ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [a].[Id], [a].[CityId], [a].[Name], [a].[Status]
+FROM [Areas] AS [a]
+2022-05-13 17:13:35.483 +07:00 [INF] Get all areas
+2022-05-13 17:13:35.496 +07:00 [INF] Executing ObjectResult, writing value of type 'CityDiscoverTourist.API.Response.ApiResponse`1[[CityDiscoverTourist.Business.Helper.PageList`1[[CityDiscoverTourist.Business.Data.ResponseModel.AreaResponseModel, CityDiscoverTourist.Business, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]], CityDiscoverTourist.Business, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]'.
+2022-05-13 17:13:35.546 +07:00 [INF] Executed action CityDiscoverTourist.API.Controllers.AreaController.GetAll (CityDiscoverTourist.API) in 3481.0644ms
+2022-05-13 17:13:35.550 +07:00 [INF] Executed endpoint 'CityDiscoverTourist.API.Controllers.AreaController.GetAll (CityDiscoverTourist.API)'
+2022-05-13 17:13:35.551 +07:00 [INF] HTTP GET /api/v1/areas responded 200 in 3535.6480 ms
+2022-05-13 17:13:35.560 +07:00 [INF] Request finished HTTP/2 GET https://localhost:7235/api/v1/areas - - - 200 245 application/json;+charset=utf-8 3551.7519ms
+2022-05-13 17:14:15.560 +07:00 [INF] Application is shutting down...
+2022-05-13 17:14:58.337 +07:00 [INF] User profile is available. Using 'C:\Users\Admin\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.
+2022-05-13 17:14:58.464 +07:00 [INF] Now listening on: https://localhost:7235
+2022-05-13 17:14:58.466 +07:00 [INF] Now listening on: http://localhost:5235
+2022-05-13 17:14:58.471 +07:00 [INF] Application started. Press Ctrl+C to shut down.
+2022-05-13 17:14:58.473 +07:00 [INF] Hosting environment: Development
+2022-05-13 17:14:58.474 +07:00 [INF] Content root path: D:\C#\CityDiscoverTourist\CityDiscoverTourist.API\
+2022-05-13 17:14:58.754 +07:00 [INF] Request starting HTTP/2 GET https://localhost:7235/swagger/index.html - -
+2022-05-13 17:14:58.894 +07:00 [INF] HTTP GET /swagger/index.html responded 200 in 95.6483 ms
+2022-05-13 17:14:58.906 +07:00 [INF] Request finished HTTP/2 GET https://localhost:7235/swagger/index.html - - - 200 - text/html;charset=utf-8 156.1803ms
+2022-05-13 17:14:59.099 +07:00 [INF] Request starting HTTP/2 GET https://localhost:7235/swagger/v1/swagger.json - -
+2022-05-13 17:14:59.338 +07:00 [INF] HTTP GET /swagger/v1/swagger.json responded 200 in 235.4262 ms
+2022-05-13 17:14:59.342 +07:00 [INF] Request finished HTTP/2 GET https://localhost:7235/swagger/v1/swagger.json - - - 200 - application/json;charset=utf-8 242.9193ms
+2022-05-13 17:15:01.083 +07:00 [INF] Request starting HTTP/2 GET https://localhost:7235/api/v1/areas - -
+2022-05-13 17:15:01.099 +07:00 [INF] Executing endpoint 'CityDiscoverTourist.API.Controllers.AreaController.GetAll (CityDiscoverTourist.API)'
+2022-05-13 17:15:01.128 +07:00 [INF] Route matched with {action = "GetAll", controller = "Area"}. Executing controller action with signature CityDiscoverTourist.API.Response.ApiResponse`1[CityDiscoverTourist.Business.Helper.PageList`1[CityDiscoverTourist.Business.Data.ResponseModel.AreaResponseModel]] GetAll(CityDiscoverTourist.Business.Helper.Params.AreaParams) on controller CityDiscoverTourist.API.Controllers.AreaController (CityDiscoverTourist.API).
+2022-05-13 17:15:01.585 +07:00 [INF] Executed action CityDiscoverTourist.API.Controllers.AreaController.GetAll (CityDiscoverTourist.API) in 445.6177ms
+2022-05-13 17:15:01.589 +07:00 [INF] Executed endpoint 'CityDiscoverTourist.API.Controllers.AreaController.GetAll (CityDiscoverTourist.API)'
+2022-05-13 17:15:01.625 +07:00 [ERR] HTTP GET /api/v1/areas responded 500 in 532.8825 ms
+2022-05-13 17:15:01.631 +07:00 [INF] Request finished HTTP/2 GET https://localhost:7235/api/v1/areas - - - 500 - application/json 547.8630ms
+2022-05-13 17:15:08.750 +07:00 [INF] Application is shutting down...
