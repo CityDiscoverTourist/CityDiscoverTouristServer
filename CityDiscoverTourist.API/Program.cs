@@ -30,6 +30,7 @@ try
     var env = builder.Environment.EnvironmentName;
     var appName = builder.Environment.ApplicationName;
     builder.Configuration.AddSecretsManager(
+        credentials: new BasicAWSCredentials("AKIA56P3MWPPNG2QASFK", "RVQWOHq+aD8ayQT1kK4VCqchDC8VSbJujIG2Z4jq"),
         region: RegionEndpoint.APSoutheast1, configurator: options =>
         {
             //arn:aws:secretsmanager:ap-southeast-1:958841795550:secret:Production_CityDiscoverTourist.API_ConnectionStrings__DefaultConnection-65jWxM
