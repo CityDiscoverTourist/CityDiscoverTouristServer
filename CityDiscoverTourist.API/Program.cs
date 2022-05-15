@@ -11,7 +11,7 @@ using Serilog;
 using Serilog.Events;
 
 
-new LoggerConfiguration()
+Log.Logger = new LoggerConfiguration()
     .MinimumLevel.Override("Microsoft", LogEventLevel.Information)
     .Enrich.FromLogContext()
     .WriteTo.Console()
