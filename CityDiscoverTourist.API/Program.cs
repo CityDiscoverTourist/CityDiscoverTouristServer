@@ -29,11 +29,12 @@ try
 
     var env = builder.Environment.EnvironmentName;
     var appName = builder.Environment.ApplicationName;
+    var arn = "arn:aws:iam::958841795550:user/admin";
     builder.Configuration.AddSecretsManager(
-        credentials: new BasicAWSCredentials("AKIA56P3MWPPNG2QASFK", "RVQWOHq+aD8ayQT1kK4VCqchDC8VSbJujIG2Z4jq"),
         region: RegionEndpoint.APSoutheast1, configurator: options =>
         {
             //arn:aws:secretsmanager:ap-southeast-1:958841795550:secret:Production_CityDiscoverTourist.API_ConnectionStrings__DefaultConnection-65jWxM
+            options.SecretFilter = entry => arn.Contains(entry.ARN);
             options.SecretFilter = entry => entry.Name.StartsWith($"{env}_{appName}_");
             options.KeyGenerator = (_, s) => s.Replace($"{env}_{appName}_", string.Empty).Replace("__", ":");
         });
