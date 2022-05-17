@@ -51,7 +51,7 @@ public static class ConfigFirebase
             });
         }else
         {
-            const string secretName = "arn:aws:secretsmanager:ap-southeast-1:958841795550:secret:Production_CityDiscoverTourist.API_Firebase-w0HA5C";
+            var secretName = "arn:aws:secretsmanager:ap-southeast-1:958841795550:secret:Production_CityDiscoverTourist.API_AWS__SecretName-LxMoWa";
             const string region = "ap-southeast-1";
 
             var memoryStream = new MemoryStream();
