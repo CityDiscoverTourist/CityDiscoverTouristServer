@@ -29,7 +29,10 @@ try
 
     var env = builder.Environment.EnvironmentName;
     var appName = builder.Environment.ApplicationName;
+    var credentials = new StoredProfileAWSCredentials("production");
+
     builder.Configuration.AddSecretsManager(
+        credentials: credentials,
         region: RegionEndpoint.APSoutheast1, configurator: options =>
         {
             //arn:aws:secretsmanager:ap-southeast-1:958841795550:secret:Production_CityDiscoverTourist.API_ConnectionStrings__DefaultConnection-65jWxM
