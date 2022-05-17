@@ -19,11 +19,13 @@
         <PackageReference Include="Microsoft.AspNetCore.Mvc.Versioning.ApiExplorer" Version="5.0.0" />
         <PackageReference Include="Microsoft.AspNetCore.OData.Versioning" Version="5.0.0" />
         <PackageReference Include="Microsoft.Azure.KeyVault" Version="3.0.5" />
+        <PackageReference Include="Microsoft.Azure.KeyVault.Core" Version="3.0.5" />
         <PackageReference Include="Microsoft.Build" Version="17.1.0" />
         <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="6.0.3">
           <PrivateAssets>all</PrivateAssets>
           <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
+        <PackageReference Include="Microsoft.Extensions.Configuration.AzureKeyVault" Version="3.1.24" />
         <PackageReference Include="Microsoft.Extensions.Diagnostics.HealthChecks.EntityFrameworkCore" Version="6.0.5" />
         <PackageReference Include="Microsoft.Owin.Security.OAuth" Version="4.2.1" />
         <PackageReference Include="Redi.StackExchangeRedis.Cache.Extension" Version="1.5.3" />
@@ -34,9 +36,5 @@
 
     <ItemGroup>
       <ProjectReference Include="..\CityDiscoverTourist.Business\CityDiscoverTourist.Business.csproj" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <Folder Include="AWS" />
     </ItemGroup>
 </Project>

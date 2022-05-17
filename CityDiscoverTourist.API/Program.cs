@@ -1,5 +1,7 @@
+using System.Security.Cryptography.X509Certificates;
 using Amazon;
 using Amazon.Runtime;
+using CityDiscoverTourist.API.AWS;
 using CityDiscoverTourist.API.Config;
 using CityDiscoverTourist.Business.Data;
 using CityDiscoverTourist.Business.Exceptions;
@@ -30,7 +32,7 @@ try
     var env = builder.Environment.EnvironmentName;
     var appName = builder.Environment.ApplicationName;
     //var credentials = new StoredProfileAWSCredentials("production");
-    var chain = new Amazon.Runtime.CredentialManagement.CredentialProfileStoreChain();
+    /*var chain = new Amazon.Runtime.CredentialManagement.CredentialProfileStoreChain();
 
     if (chain.TryGetProfile("production", out var profile))
     {
@@ -43,6 +45,24 @@ try
                 options.SecretFilter = entry => entry.Name.StartsWith($"{env}_{appName}_");
                 options.KeyGenerator = (_, s) => s.Replace($"{env}_{appName}_", string.Empty).Replace("__", ":");
             });
+    }*/
+
+    var vaultName = builder.Configuration["KeyVault:Vault"];
+    builder.Configuration.AddAzureKeyVault($"https://{vaultName}.vault.azure.net/",
+        builder.Configuration["KeyVault:ClientId"],
+        GetCertificate(builder.Configuration["KeyVault:Thumbprint"]),
+        new PrefixKeyVault("CityDiscoverTouristAPI"));
+
+    static X509Certificate2 GetCertificate(string thumbprint)
+    {
+        var store = new X509Store(StoreName.My, StoreLocation.CurrentUser);
+        store.Open(OpenFlags.ReadOnly);
+        var certificates = store.Certificates.Find(X509FindType.FindByThumbprint, thumbprint, false);
+        if (certificates.Count == 0)
+        {
+            throw new Exception($"Could not find certificate with thumbprint {thumbprint}");
+        }
+        return certificates[0];
     }
     /*builder.Configuration.AddSecretsManager(
         credentials: credentials,
@@ -57,7 +77,7 @@ try
     AppContext.SetSwitch(managedNetworkingAppContextSwitch, true);
 // Add services to the container.
     builder.Services.SetupDatabase(builder.Configuration);
-    builder.Services.SetupFirebaseAuth(builder.Configuration, builder.Environment);
+    //builder.Services.SetupFirebaseAuth(builder.Configuration, builder.Environment);
     builder.Services.SetupRepositories();
     builder.Services.SetupHelper();
     builder.Services.SetupServices();
