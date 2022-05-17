@@ -46,12 +46,17 @@ try
                 options.KeyGenerator = (_, s) => s.Replace($"{env}_{appName}_", string.Empty).Replace("__", ":");
             });
     }*/
-
-    var vaultName = builder.Configuration["KeyVault:Vault"];
-    builder.Configuration.AddAzureKeyVault($"https://{vaultName}.vault.azure.net/",
-        builder.Configuration["KeyVault:ClientId"],
-        GetCertificate(builder.Configuration["KeyVault:Thumbprint"]),
-        new PrefixKeyVault("CityDiscoverTouristAPI"));
+    if (env == "Production")
+    {
+        var vaultName = builder.Configuration["KeyVault:Vault"];
+        if (!string.IsNullOrEmpty(vaultName))
+        {
+            builder.Configuration.AddAzureKeyVault($"https://{vaultName}.vault.azure.net/",
+                builder.Configuration["KeyVault:ClientId"],
+                GetCertificate(builder.Configuration["KeyVault:Thumbprint"]),
+                new PrefixKeyVault("CityDiscoverTouristAPI"));
+        }
+    }
 
     static X509Certificate2 GetCertificate(string thumbprint)
     {
@@ -77,7 +82,7 @@ try
     AppContext.SetSwitch(managedNetworkingAppContextSwitch, true);
 // Add services to the container.
     builder.Services.SetupDatabase(builder.Configuration);
-    //builder.Services.SetupFirebaseAuth(builder.Configuration, builder.Environment);
+    builder.Services.SetupFirebaseAuth(builder.Configuration, builder.Environment);
     builder.Services.SetupRepositories();
     builder.Services.SetupHelper();
     builder.Services.SetupServices();
