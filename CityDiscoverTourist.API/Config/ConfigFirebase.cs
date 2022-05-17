@@ -51,7 +51,7 @@ public static class ConfigFirebase
             });
         }else
         {
-            var secretName = configuration.GetSection("AWS").Get<AwsSetting>().SecretName;
+            var secretName = "arn:aws:secretsmanager:ap-southeast-1:958841795550:secret:Production_CityDiscoverTourist.API_AWS__SecretName-LxMoWa";
             const string region = "ap-southeast-1";
 
             var memoryStream = new MemoryStream();
