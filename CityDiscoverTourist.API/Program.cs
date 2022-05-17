@@ -57,7 +57,7 @@ try
     AppContext.SetSwitch(managedNetworkingAppContextSwitch, true);
 // Add services to the container.
     builder.Services.SetupDatabase(builder.Configuration);
-    //builder.Services.SetupFirebaseAuth(builder.Configuration, builder.Environment);
+    builder.Services.SetupFirebaseAuth(builder.Configuration, builder.Environment);
     builder.Services.SetupRepositories();
     builder.Services.SetupHelper();
     builder.Services.SetupServices();
