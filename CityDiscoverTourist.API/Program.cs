@@ -1,6 +1,4 @@
 using System.Security.Cryptography.X509Certificates;
-using Amazon;
-using Amazon.Runtime;
 using CityDiscoverTourist.API.AWS;
 using CityDiscoverTourist.API.Config;
 using CityDiscoverTourist.Business.Data;
