@@ -30,9 +30,9 @@ public class LocationService: BaseService, ILocationService
     {
         var listAll = _locationRepository.GetAll();
 
-        //Search(ref listAll, param);
+        Search(ref listAll, @params);
         var sortedQuests = _sortHelper.ApplySort(listAll, @params.OrderBy);
-        //var shapedData = _dataShaper.ShapeData(sortedQuests, param.Fields);
+
         var mappedData = _mapper.Map<IEnumerable<LocationResponseModel>>(sortedQuests);
         return PageList<LocationResponseModel>.ToPageList(mappedData, @params.PageNume, @params.PageSize);
     }
@@ -99,13 +99,13 @@ public class LocationService: BaseService, ILocationService
         return jsonResult["candidates"]![0]!["place_id"]!.ToString();
     }
 
-    /*private static void Search(ref IQueryable<Location> entities, QuestParams param)
+    private static void Search(ref IQueryable<Location> entities, LocationParams param)
     {
         if (!entities.Any()) return;
 
         if(param.Name != null)
         {
-            entities = entities.Where(r => r.Title!.Contains(param.Name));
+            entities = entities.Where(r => r.Name!.Contains(param.Name));
         }
         if (param.Description != null)
         {
@@ -115,5 +115,5 @@ public class LocationService: BaseService, ILocationService
         {
             entities = entities.Where(r => r.Status!.Contains(param.Status));
         }
-    }*/
+    }
 }
