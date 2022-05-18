@@ -98,7 +98,6 @@ public class LocationService: BaseService, ILocationService
         var jsonResult = JObject.Parse(response.Content.ReadAsStringAsync().Result);
         return jsonResult["candidates"]![0]!["place_id"]!.ToString();
     }
-
     private static void Search(ref IQueryable<Location> entities, LocationParams param)
     {
         if (!entities.Any()) return;
