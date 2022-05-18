@@ -1,7 +1,4 @@
 using System.Text;
-using Amazon;
-using Amazon.SecretsManager;
-using Amazon.SecretsManager.Model;
 using CityDiscoverTourist.Business.Settings;
 using CityDiscoverTourist.Data.Models;
 using FirebaseAdmin;
