@@ -35,8 +35,7 @@ public static class ConfigFirebase
             options.AppId = "531990824494705";
             options.AppSecret = "66835ceb1352abc8a9e13a66fbeadaa8";
         });
-        if (webHostEnvironment.IsDevelopment())
-        {
+
             var fireBaseCredential = new FirestoreCredentialInitializer(configuration);
             var serializerSettings = new JsonSerializerSettings
             {
@@ -49,7 +48,7 @@ public static class ConfigFirebase
             {
                 Credential = GoogleCredential.FromJson(JsonConvert.SerializeObject(fireBaseCredential, serializerSettings)),
             });
-        }else
+        /*else
         {
             var secretName = "arn:aws:secretsmanager:ap-southeast-1:958841795550:secret:Production_CityDiscoverTourist.API_Firebase-w0HA5C";
             const string region = "ap-southeast-1";
@@ -72,7 +71,7 @@ public static class ConfigFirebase
             {
                 Credential = GoogleCredential.FromJson(response.SecretString),
             });
-        }
+        }*/
 
         services.AddAuthentication(opt =>
         {
