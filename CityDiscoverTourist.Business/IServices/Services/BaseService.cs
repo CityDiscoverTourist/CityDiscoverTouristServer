@@ -4,11 +4,13 @@ public class BaseService
 {
     protected static void CheckDataNotNull(string name, object value)
     {
-        throw value switch
+        switch (value)
         {
-            Task => new InvalidOperationException("Should not pass task here"),
-            null => new KeyNotFoundException($"{name} not found"),
-            _ => new ArgumentException("Exception occured")
-        };
+            case Task:
+                throw new System.InvalidOperationException("Should not pass task here");
+            //throw new RequestException(ErrorCodes.DataIsEmpty, $"{name} must be not null");
+            case null:
+                throw new System.Exception($"{name} must be not null");
+        }
     }
 }

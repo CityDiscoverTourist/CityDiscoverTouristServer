@@ -48,7 +48,7 @@ try
             });
     }*/
 
-    if (env == "Production")
+    /*if (env == "Production")
     {
         var vaultName = builder.Configuration["KeyVault:Vault"];
         if (!string.IsNullOrEmpty(vaultName))
@@ -70,7 +70,7 @@ try
             throw new Exception($"Certificate with thumbprint {thumbprint} not found");
         }
         return certificates[0];
-    }
+    }*/
     /*builder.Configuration.AddSecretsManager(
         credentials: credentials,
         region: RegionEndpoint.APSoutheast1, configurator: options =>
