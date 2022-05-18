@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.HttpOverrides;
 using Newtonsoft.Json;
 using Serilog;
 using Serilog.Events;
+using Azure.Identity;
 
 
 Log.Logger = new LoggerConfiguration()
@@ -66,7 +67,7 @@ try
         var certificates = store.Certificates.Find(X509FindType.FindByThumbprint, thumbprint, false);
         if (certificates.Count == 0)
         {
-            throw new Exception($"Could not find certificate with thumbprint {thumbprint}");
+            throw new Exception($"Certificate with thumbprint {thumbprint} not found");
         }
         return certificates[0];
     }

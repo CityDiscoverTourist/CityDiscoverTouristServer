@@ -8,6 +8,8 @@
     </PropertyGroup>
 
     <ItemGroup>
+        <PackageReference Include="Azure.Extensions.AspNetCore.Configuration.Secrets" Version="1.0.0" />
+        <PackageReference Include="Azure.Identity" Version="1.4.0" />
         <PackageReference Include="FirebaseAdmin" Version="2.3.0" />
         <PackageReference Include="Kralizek.Extensions.Configuration.AWSSecretsManager" Version="1.6.3" />
         <PackageReference Include="Microsoft.AspNet.WebApi.Versioning" Version="4.1.1" />
