@@ -5,7 +5,7 @@
         <Nullable>enable</Nullable>
         <ImplicitUsings>enable</ImplicitUsings>
         <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
-        <PackageCertificateThumbprint>099822424207A0CF4EB1882413C031C05C1D91D3</PackageCertificateThumbprint>
+        <PackageCertificateThumbprint>099822424207a0cf4eb1882413c031c05c1d91d3</PackageCertificateThumbprint>
     </PropertyGroup>
 
     <ItemGroup>
