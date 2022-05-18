@@ -46,6 +46,7 @@ try
                 options.KeyGenerator = (_, s) => s.Replace($"{env}_{appName}_", string.Empty).Replace("__", ":");
             });
     }*/
+
     if (env == "Production")
     {
         var vaultName = builder.Configuration["KeyVault:Vault"];
