@@ -46,32 +46,8 @@ public static class ConfigFirebase
             };
             FirebaseApp.Create(new AppOptions
             {
-                Credential = GoogleCredential.FromJson(JsonConvert.SerializeObject(fireBaseCredential, serializerSettings)),
+                Credential = GoogleCredential.FromFile("adminsdk.json"),
             });
-        /*else
-        {
-            var secretName = "arn:aws:secretsmanager:ap-southeast-1:958841795550:secret:Production_CityDiscoverTourist.API_Firebase-w0HA5C";
-            const string region = "ap-southeast-1";
-
-            var memoryStream = new MemoryStream();
-
-            IAmazonSecretsManager client = new AmazonSecretsManagerClient(RegionEndpoint.GetBySystemName(region));
-
-            var request = new GetSecretValueRequest
-            {
-                SecretId = secretName,
-                VersionStage = "AWSCURRENT" // VersionStage defaults to AWSCURRENT if unspecified.
-            };
-
-            GetSecretValueResponse response = null;
-
-            response = client.GetSecretValueAsync(request).Result;
-
-            FirebaseApp.Create(new AppOptions
-            {
-                Credential = GoogleCredential.FromJson(response.SecretString),
-            });
-        }*/
 
         services.AddAuthentication(opt =>
         {
