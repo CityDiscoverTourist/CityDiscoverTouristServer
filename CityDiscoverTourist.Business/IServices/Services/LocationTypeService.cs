@@ -25,10 +25,10 @@ public class LocationTypeService: BaseService, ILocationTypeService
     {
         var listAll = _locationTypeRepository.GetAll();
 
-        //Search(ref listAll, param);
+        Search(ref listAll, @params);
 
         var sortedQuests = _sortHelper.ApplySort(listAll, @params.OrderBy);
-        //var shapedData = _dataShaper.ShapeData(sortedQuests, param.Fields);
+
         var mappedData = _mapper.Map<IEnumerable<LocationTypeResponseModel>>(sortedQuests);
         return PageList<LocationTypeResponseModel>.ToPageList(mappedData, @params.PageNume, @params.PageSize);
     }
@@ -60,21 +60,11 @@ public class LocationTypeService: BaseService, ILocationTypeService
         return _mapper.Map<LocationTypeResponseModel>(entity);
     }
 
-    /*private static void Search(ref IQueryable<LocationType> entities, QuestParams param)
+    private static void Search(ref IQueryable<LocationType> entities, LocationTypeParams param)
     {
         if (!entities.Any()) return;
 
         if(param.Name != null)
-        {
-            entities = entities.Where(r => r.Title!.Contains(param.Name));
-        }
-        if (param.Description != null)
-        {
-            entities = entities.Where(r => r.Description!.Contains(param.Description));
-        }
-        if (param.Status != null)
-        {
-            entities = entities.Where(r => r.Status!.Contains(param.Status));
-        }
-    }*/
+            entities = entities.Where(r => r.Name!.Contains(param.Name));
+    }
 }
