@@ -28,6 +28,11 @@ try
         .ReadFrom.Services(services)
         .Enrich.FromLogContext());
 
+    builder.Services.AddCors(options =>
+    {
+        options.AddPolicy("EnableCORS",
+            builder => { builder.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod(); });
+    });
     var env = builder.Environment.EnvironmentName;
     var appName = builder.Environment.ApplicationName;
     //var credentials = new StoredProfileAWSCredentials("production");
@@ -141,7 +146,7 @@ try
     app.HandlerExceptionProduction(app.Environment.IsDevelopment());
     app.UseHttpsRedirection();
     app.UseHsts();
-
+    app.UseCors("EnableCORS");
     app.UseAuthorization();
 
     app.MapControllers();
