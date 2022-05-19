@@ -27,12 +27,9 @@ public static class ConfigFirebase
                 opt.Lockout.MaxFailedAccessAttempts = 3;
             }).AddEntityFrameworkStores<ApplicationDbContext>()
             .AddDefaultTokenProviders();
-        services.AddAuthentication().AddFacebook(options =>
-        {
-            options.AppId = "531990824494705";
-            options.AppSecret = "66835ceb1352abc8a9e13a66fbeadaa8";
-        });
 
+        if (webHostEnvironment.IsDevelopment())
+        {
             var fireBaseCredential = new FirestoreCredentialInitializer(configuration);
             var serializerSettings = new JsonSerializerSettings
             {
@@ -43,8 +40,18 @@ public static class ConfigFirebase
             };
             FirebaseApp.Create(new AppOptions
             {
-                Credential = GoogleCredential.FromFile("adminsdk.json"),
+                Credential = GoogleCredential.FromJson(JsonConvert.SerializeObject(fireBaseCredential, serializerSettings)),
             });
+        }
+        else
+        {
+            var fireBaseCredential = configuration.GetSection("Firebase").Value;
+            FirebaseApp.Create(new AppOptions
+            {
+                Credential = GoogleCredential.FromJson(fireBaseCredential),
+            });
+        }
+
 
         services.AddAuthentication(opt =>
         {

@@ -20,7 +20,7 @@ public class AuthController : ControllerBase
         _facebookService = facebookService;
     }
 
-    [HttpPost("loginFirebase")]
+    [HttpPost("login-firebase")]
     public async Task<ActionResult<LoginResponseModel>> LoginFirebase(LoginFirebaseModel model)
     {
         return Ok(await _authService.LoginFirebase(model));
