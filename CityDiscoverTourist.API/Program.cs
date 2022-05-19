@@ -74,32 +74,9 @@ try
         }
     }
 
-    /*static X509Certificate2 GetCertificate(string thumbprint)
-    {
-        var store = new X509Store(StoreName.My, StoreLocation.CurrentUser);
-        store.Open(OpenFlags.ReadOnly);
-        var certificates = store.Certificates.Find(X509FindType.FindByThumbprint, thumbprint, false);
-        var certificates1 = store.Certificates.f
-        if (certificates.Count == 0)
-        {
-            throw new Exception($"Certificate with thumbprint {thumbprint} not found");
-        }
-
-        store.Certificates.ImportFromPemFile("certificate.pem");
-        return certificates[0];
-    }*/
-    /*builder.Configuration.AddSecretsManager(
-        credentials: credentials,
-        region: RegionEndpoint.APSoutheast1, configurator: options =>
-        {
-            //arn:aws:secretsmanager:ap-southeast-1:958841795550:secret:Production_CityDiscoverTourist.API_ConnectionStrings__DefaultConnection-65jWxM
-            options.SecretFilter = entry => entry.Name.StartsWith($"{env}_{appName}_");
-            options.KeyGenerator = (_, s) => s.Replace($"{env}_{appName}_", string.Empty).Replace("__", ":");
-        });*/
-
     const string managedNetworkingAppContextSwitch = "Switch.Microsoft.Data.SqlClient.UseManagedNetworkingOnWindows";
     AppContext.SetSwitch(managedNetworkingAppContextSwitch, true);
-// Add services to the container.
+    // Add services to the container.
     builder.Services.SetupDatabase(builder.Configuration);
     builder.Services.SetupFirebaseAuth(builder.Configuration, builder.Environment);
     builder.Services.SetupRepositories();
