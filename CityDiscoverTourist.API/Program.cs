@@ -10,6 +10,9 @@ using Newtonsoft.Json;
 using Serilog;
 using Serilog.Events;
 using Azure.Identity;
+using Microsoft.Azure.KeyVault;
+using Microsoft.Azure.Services.AppAuthentication;
+using Microsoft.Extensions.Configuration.AzureKeyVault;
 
 
 Log.Logger = new LoggerConfiguration()
@@ -51,27 +54,38 @@ try
             });
     }*/
 
-    /*if (env == "Production")
+    if (env == "Production")
     {
+        var store = new X509Store(StoreName.My, StoreLocation.CurrentUser);
+        store.Open(OpenFlags.ReadOnly);
         var vaultName = builder.Configuration["KeyVault:Vault"];
         if (!string.IsNullOrEmpty(vaultName))
         {
-            builder.Configuration.AddAzureKeyVault($"https://{vaultName}.vault.azure.net/",
+            /*builder.Configuration.AddAzureKeyVault($"https://{vaultName}.vault.azure.net/",
                 builder.Configuration["KeyVault:ClientId"],
                 GetCertificate(builder.Configuration["KeyVault:Thumbprint"]),
+                new PrefixKeyVault("CityDiscoverTouristAPI"));*/
+            var azureServiceTokenProvider = new AzureServiceTokenProvider();
+            var keyVaultClient =
+                new KeyVaultClient(
+                    new KeyVaultClient.AuthenticationCallback(azureServiceTokenProvider.KeyVaultTokenCallback));
+            builder.Configuration.AddAzureKeyVault($"https://{vaultName}.vault.azure.net/", keyVaultClient,
                 new PrefixKeyVault("CityDiscoverTouristAPI"));
         }
     }
 
-    static X509Certificate2 GetCertificate(string thumbprint)
+    /*static X509Certificate2 GetCertificate(string thumbprint)
     {
         var store = new X509Store(StoreName.My, StoreLocation.CurrentUser);
         store.Open(OpenFlags.ReadOnly);
         var certificates = store.Certificates.Find(X509FindType.FindByThumbprint, thumbprint, false);
+        var certificates1 = store.Certificates.f
         if (certificates.Count == 0)
         {
             throw new Exception($"Certificate with thumbprint {thumbprint} not found");
         }
+
+        store.Certificates.ImportFromPemFile("certificate.pem");
         return certificates[0];
     }*/
     /*builder.Configuration.AddSecretsManager(
