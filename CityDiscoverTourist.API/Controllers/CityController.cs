@@ -11,7 +11,7 @@ using Newtonsoft.Json;
 
 namespace CityDiscoverTourist.API.Controllers;
 
-[Route("api/v{version:apiVersion}/[controller]s")]
+[Route("api/v{version:apiVersion}/cites")]
 [ApiVersion("1.0")]
 [ApiController]
 public class CityController : ControllerBase
