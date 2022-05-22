@@ -75,5 +75,7 @@ public class AutoMapperProfile : Profile
 
         CreateMap<SuggestionRequestModel, Suggestion>().ReverseMap();
         CreateMap<SuggestionResponseModel, Suggestion>().ReverseMap();
+
+        CreateMap<CustomerResponseModel, ApplicationUser>().ReverseMap();
     }
 }

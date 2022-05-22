@@ -48,6 +48,7 @@ public static class ConfigController
         services.AddScoped<IPaymentService, PaymentService>();
         services.AddScoped<IOwnerPaymentService, OwnerPaymentService>();
         services.AddScoped<ISuggestionService, SuggestionService>();
+        services.AddScoped<ICustomerService, CustomerService>();
     }
 
     public static void SetupHelper(this IServiceCollection services)
@@ -74,6 +75,7 @@ public static class ConfigController
         services.AddScoped<ISortHelper<Suggestion>, SortHelper<Suggestion>>();
         services.AddScoped<ISortHelper<CustomerTask>, SortHelper<CustomerTask>>();
         services.AddScoped<ISortHelper<CustomerAnswer>, SortHelper<CustomerAnswer>>();
+        services.AddScoped<ISortHelper<ApplicationUser>, SortHelper<ApplicationUser>>();
     }
 
     public static void SetupRepositories(this IServiceCollection services)
