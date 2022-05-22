@@ -30,7 +30,7 @@ public class RewardService : BaseService, IRewardService
         var sortedQuests = _sortHelper.ApplySort(listAll, @params.OrderBy);
         var mappedData = _mapper.Map<IEnumerable<RewardResponseModel>>(sortedQuests);
 
-        return PageList<RewardResponseModel>.ToPageList(mappedData, @params.PageNume, @params.PageSize);
+        return PageList<RewardResponseModel>.ToPageList(mappedData, @params.PageNumber, @params.PageSize);
     }
 
     public async Task<RewardResponseModel> Get(int id)

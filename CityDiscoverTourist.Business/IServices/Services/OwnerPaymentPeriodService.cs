@@ -30,7 +30,7 @@ public class OwnerPaymentPeriodService: BaseService, IOwnerPaymentPeriodService
         var sortedQuests = _sortHelper.ApplySort(listAll, @params.OrderBy);
         //var shapedData = _dataShaper.ShapeData(sortedQuests, param.Fields);
         var mappedData = _mapper.Map<IEnumerable<OwnerPaymentPeriodResponseModel>>(sortedQuests);
-        return PageList<OwnerPaymentPeriodResponseModel>.ToPageList(mappedData, @params.PageNume, @params.PageSize);
+        return PageList<OwnerPaymentPeriodResponseModel>.ToPageList(mappedData, @params.PageNumber, @params.PageSize);
     }
 
     public async Task<OwnerPaymentPeriodResponseModel> Get(int id)

@@ -29,7 +29,7 @@ public class AreaService: BaseService, IAreaService
 
         var sortedQuests = _sortHelper.ApplySort(listAll, @params.OrderBy);
         var mappedData = _mapper.Map<IEnumerable<AreaResponseModel>>(sortedQuests);
-        return PageList<AreaResponseModel>.ToPageList(mappedData, @params.PageNume, @params.PageSize);
+        return PageList<AreaResponseModel>.ToPageList(mappedData, @params.PageNumber, @params.PageSize);
     }
 
     public async Task<AreaResponseModel> Get(int id)

@@ -14,7 +14,7 @@
         {
             Data = items;
             TotalCount = count;
-            PageSize = pageNum;
+            PageSize = pageSize;
             CurrentPage = pageNum;
             TotalPages = (int)Math.Ceiling(count / (double)pageSize);
 

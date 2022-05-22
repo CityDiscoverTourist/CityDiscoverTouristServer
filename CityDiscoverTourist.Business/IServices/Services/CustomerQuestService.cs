@@ -36,7 +36,7 @@ public class CustomerQuestService: BaseService, ICustomerQuestService
         var sortedQuests = _sortHelper.ApplySort(listAll, @params.OrderBy);
         //var shapedData = _dataShaper.ShapeData(sortedQuests, param.Fields);
         var mappedData = _mapper.Map<IEnumerable<CustomerQuestResponseModel>>(sortedQuests);
-        return PageList<CustomerQuestResponseModel>.ToPageList(mappedData, @params.PageNume, @params.PageSize);
+        return PageList<CustomerQuestResponseModel>.ToPageList(mappedData, @params.PageNumber, @params.PageSize);
     }
 
     public async Task<CustomerQuestResponseModel> Get(int id)

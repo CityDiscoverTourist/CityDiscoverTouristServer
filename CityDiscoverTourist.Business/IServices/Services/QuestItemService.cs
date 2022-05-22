@@ -29,7 +29,7 @@ public class QuestItemService: BaseService, IQuestItemService
         var sortedQuests = _sortHelper.ApplySort(listAll, @params.OrderBy);
         var mappedData = _mapper.Map<IEnumerable<QuestItemResponseModel>>(sortedQuests);
 
-        return PageList<QuestItemResponseModel>.ToPageList(mappedData, @params.PageNume, @params.PageSize);
+        return PageList<QuestItemResponseModel>.ToPageList(mappedData, @params.PageNumber, @params.PageSize);
     }
 
     public async Task<QuestItemResponseModel> Get(int id)

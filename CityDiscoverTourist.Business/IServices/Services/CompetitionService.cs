@@ -29,7 +29,7 @@ public class CompetitionService: BaseService, ICompetitionService
 
         var sortedQuests = _sortHelper.ApplySort(listAll, @params.OrderBy);
         var mappedData = _mapper.Map<IEnumerable<CompetitionResponseModel>>(sortedQuests);
-        return PageList<CompetitionResponseModel>.ToPageList(mappedData, @params.PageNume, @params.PageSize);
+        return PageList<CompetitionResponseModel>.ToPageList(mappedData, @params.PageNumber, @params.PageSize);
     }
 
     public async Task<CompetitionResponseModel> Get(int id)

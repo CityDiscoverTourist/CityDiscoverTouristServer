@@ -29,7 +29,7 @@ public class CommissionService: BaseService, ICommissionService
 
         var sortedQuests = _sortHelper.ApplySort(listAll, @params.OrderBy);
         var mappedData = _mapper.Map<IEnumerable<CommissionResponseModel>>(sortedQuests);
-        return PageList<CommissionResponseModel>.ToPageList(mappedData, @params.PageNume, @params.PageSize);
+        return PageList<CommissionResponseModel>.ToPageList(mappedData, @params.PageNumber, @params.PageSize);
     }
 
     public async Task<CommissionResponseModel> Get(int id)

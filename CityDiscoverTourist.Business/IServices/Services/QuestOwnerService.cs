@@ -30,7 +30,7 @@ public class QuestOwnerService: BaseService, IQuestOwnerService
         var sortedQuests = _sortHelper.ApplySort(listAll, @params.OrderBy);
         //var shapedData = _dataShaper.ShapeData(sortedQuests, param.Fields);
         var mappedData = _mapper.Map<IEnumerable<QuestOwnerResponseModel>>(sortedQuests);
-        return PageList<QuestOwnerResponseModel>.ToPageList(mappedData, @params.PageNume, @params.PageSize);
+        return PageList<QuestOwnerResponseModel>.ToPageList(mappedData, @params.PageNumber, @params.PageSize);
     }
 
     public async Task<QuestOwnerResponseModel> Get(int id)

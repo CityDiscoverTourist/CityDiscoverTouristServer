@@ -30,7 +30,7 @@ public class WalletService: BaseService, IWalletService
         var sortedQuests = _sortHelper.ApplySort(listAll, @params.OrderBy);
         //var shapedData = _dataShaper.ShapeData(sortedQuests, param.Fields);
         var mappedData = _mapper.Map<IEnumerable<WalletResponseModel>>(sortedQuests);
-        return PageList<WalletResponseModel>.ToPageList(mappedData, @params.PageNume, @params.PageSize);
+        return PageList<WalletResponseModel>.ToPageList(mappedData, @params.PageNumber, @params.PageSize);
     }
 
     public async Task<WalletResponseModel> Get(int id)

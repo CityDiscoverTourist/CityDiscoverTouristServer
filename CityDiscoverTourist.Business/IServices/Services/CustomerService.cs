@@ -23,7 +23,7 @@ public class CustomerService: BaseService, ICustomerService
     {
         var customers = _userManager.Users!.AsQueryable();
         var mappedData = _mapper.Map<IEnumerable<CustomerResponseModel>>(customers);
-        return PageList<CustomerResponseModel>.ToPageList(mappedData, @params.PageNume, @params.PageSize);
+        return PageList<CustomerResponseModel>.ToPageList(mappedData, @params.PageNumber, @params.PageSize);
     }
 
     public async Task<CustomerResponseModel> Get(string id)
