@@ -1,3 +1,5 @@
+using Azure.Storage.Blobs;
+using CityDiscoverTourist.API.AzureHelper;
 using CityDiscoverTourist.Business.Helper.EmailHelper;
 using CityDiscoverTourist.Business.Settings;
 
@@ -13,5 +15,9 @@ public static class ThirdPartyConfig
 
         var googleConfig = configuration.GetSection("Googleapis").Get<GoogleApiSetting>() ?? new GoogleApiSetting();
         services.AddSingleton(googleConfig);
+
+        services.AddSingleton(x => new BlobServiceClient(configuration.GetSection("AzureStorage:ConnectionString").Value));
+        services.AddSingleton<IBlobService, BlobService>();
+
     }
 }
