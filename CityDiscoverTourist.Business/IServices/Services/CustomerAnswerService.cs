@@ -30,7 +30,7 @@ public class CustomerAnswerService: BaseService, ICustomerAnswerService
 
         var sortedQuests = _sortHelper.ApplySort(listAll, @params.OrderBy);
         var mappedData = _mapper.Map<IEnumerable<CustomerAnswerResponseModel>>(sortedQuests);
-        return PageList<CustomerAnswerResponseModel>.ToPageList(mappedData, @params.PageNume, @params.PageSize);
+        return PageList<CustomerAnswerResponseModel>.ToPageList(mappedData, @params.PageNumber, @params.PageSize);
     }
     public async Task<CustomerAnswerResponseModel> Get(int id)
     {

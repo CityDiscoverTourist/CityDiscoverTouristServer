@@ -31,7 +31,7 @@ public class QuestService: BaseService, IQuestService
         var sortedQuests = _sortHelper.ApplySort(listAll, param.OrderBy);
         //var shapedData = _dataShaper.ShapeData(sortedQuests, param.Fields);
         var mappedData = _mapper.Map<IEnumerable<QuestResponseModel>>(sortedQuests);
-        return PageList<QuestResponseModel>.ToPageList(mappedData, param.PageNume, param.PageSize);
+        return PageList<QuestResponseModel>.ToPageList(mappedData, param.PageNumber, param.PageSize);
     }
 
     public async Task<QuestResponseModel> Get(int id)

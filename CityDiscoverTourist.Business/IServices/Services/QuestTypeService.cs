@@ -30,7 +30,7 @@ public class QuestTypeService : BaseService, IQuestTypeService
         var sortedQuests = _sortHelper.ApplySort(listAll, @params.OrderBy);
         var mappedData = _mapper.Map<IEnumerable<QuestTypeResponseModel>>(sortedQuests);
 
-        return PageList<QuestTypeResponseModel>.ToPageList(mappedData, @params.PageNume, @params.PageSize);
+        return PageList<QuestTypeResponseModel>.ToPageList(mappedData, @params.PageNumber, @params.PageSize);
     }
 
     public async Task<QuestTypeResponseModel> Get(int id)

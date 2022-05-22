@@ -30,7 +30,7 @@ public class LocationTypeService: BaseService, ILocationTypeService
         var sortedQuests = _sortHelper.ApplySort(listAll, @params.OrderBy);
 
         var mappedData = _mapper.Map<IEnumerable<LocationTypeResponseModel>>(sortedQuests);
-        return PageList<LocationTypeResponseModel>.ToPageList(mappedData, @params.PageNume, @params.PageSize);
+        return PageList<LocationTypeResponseModel>.ToPageList(mappedData, @params.PageNumber, @params.PageSize);
     }
 
     public async Task<LocationTypeResponseModel> Get(int id)

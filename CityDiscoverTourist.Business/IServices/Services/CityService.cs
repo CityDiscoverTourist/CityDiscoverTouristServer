@@ -29,7 +29,7 @@ public class CityService: BaseService, ICityService
 
         var sortedQuests = _sortHelper.ApplySort(listAll, @params.OrderBy);
         var mappedData = _mapper.Map<IEnumerable<CityResponseModel>>(sortedQuests);
-        return PageList<CityResponseModel>.ToPageList(mappedData, @params.PageNume, @params.PageSize);
+        return PageList<CityResponseModel>.ToPageList(mappedData, @params.PageNumber, @params.PageSize);
     }
 
     public async Task<CityResponseModel> Get(int id)

@@ -30,7 +30,7 @@ public class NoteService: BaseService, INoteService
         var sortedQuests = _sortHelper.ApplySort(listAll, @params.OrderBy);
         //var shapedData = _dataShaper.ShapeData(sortedQuests, param.Fields);
         var mappedData = _mapper.Map<IEnumerable<NoteResponseModel>>(sortedQuests);
-        return PageList<NoteResponseModel>.ToPageList(mappedData, @params.PageNume, @params.PageSize);
+        return PageList<NoteResponseModel>.ToPageList(mappedData, @params.PageNumber, @params.PageSize);
     }
 
     public async Task<NoteResponseModel> Get(int id)
