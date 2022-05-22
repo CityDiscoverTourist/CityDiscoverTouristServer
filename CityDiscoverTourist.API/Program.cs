@@ -1,5 +1,4 @@
 using System.Security.Cryptography.X509Certificates;
-using CityDiscoverTourist.API.AWS;
 using CityDiscoverTourist.API.Config;
 using CityDiscoverTourist.Business.Data;
 using CityDiscoverTourist.Business.Exceptions;
@@ -10,6 +9,7 @@ using Newtonsoft.Json;
 using Serilog;
 using Serilog.Events;
 using Azure.Identity;
+using CityDiscoverTourist.API.AzureHelper;
 using Microsoft.Azure.KeyVault;
 using Microsoft.Azure.Services.AppAuthentication;
 using Microsoft.Extensions.Configuration.AzureKeyVault;
