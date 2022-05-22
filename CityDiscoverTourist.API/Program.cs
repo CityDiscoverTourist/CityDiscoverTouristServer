@@ -8,7 +8,6 @@ using Microsoft.AspNetCore.HttpOverrides;
 using Newtonsoft.Json;
 using Serilog;
 using Serilog.Events;
-using Azure.Identity;
 using CityDiscoverTourist.API.AzureHelper;
 using Microsoft.Azure.KeyVault;
 using Microsoft.Azure.Services.AppAuthentication;
@@ -31,28 +30,7 @@ try
         .ReadFrom.Services(services)
         .Enrich.FromLogContext());
 
-    builder.Services.AddCors(options =>
-    {
-        options.AddPolicy("EnableCORS",
-            builder => { builder.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod(); });
-    });
     var env = builder.Environment.EnvironmentName;
-    var appName = builder.Environment.ApplicationName;
-    //var credentials = new StoredProfileAWSCredentials("production");
-    /*var chain = new Amazon.Runtime.CredentialManagement.CredentialProfileStoreChain();
-
-    if (chain.TryGetProfile("production", out var profile))
-    {
-        var credentials = profile.GetAWSCredentials(profile.CredentialProfileStore);
-        builder.Configuration.AddSecretsManager(
-            credentials: credentials,
-            region: RegionEndpoint.APSoutheast1, configurator: options =>
-            {
-                //arn:aws:secretsmanager:ap-southeast-1:958841795550:secret:Production_CityDiscoverTourist.API_ConnectionStrings__DefaultConnection-65jWxM
-                options.SecretFilter = entry => entry.Name.StartsWith($"{env}_{appName}_");
-                options.KeyGenerator = (_, s) => s.Replace($"{env}_{appName}_", string.Empty).Replace("__", ":");
-            });
-    }*/
 
     if (env == "Production")
     {
@@ -61,10 +39,6 @@ try
         var vaultName = builder.Configuration["KeyVault:Vault"];
         if (!string.IsNullOrEmpty(vaultName))
         {
-            /*builder.Configuration.AddAzureKeyVault($"https://{vaultName}.vault.azure.net/",
-                builder.Configuration["KeyVault:ClientId"],
-                GetCertificate(builder.Configuration["KeyVault:Thumbprint"]),
-                new PrefixKeyVault("CityDiscoverTouristAPI"));*/
             var azureServiceTokenProvider = new AzureServiceTokenProvider();
             var keyVaultClient =
                 new KeyVaultClient(

@@ -108,6 +108,12 @@ public static class ConfigController
 
     public static void SetupSwagger(this IServiceCollection services, IConfiguration configuration)
     {
+        services.AddCors(options =>
+        {
+            options.AddPolicy("EnableCORS",
+                builder => { builder.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod(); });
+        });
+
         services.AddSwaggerGen();
         services.AddSwaggerGen(c =>
         {

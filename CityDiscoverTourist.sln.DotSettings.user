@@ -22,4 +22,5 @@
   &lt;TestAncestor&gt;&#xD;
     &lt;TestId&gt;xUnit::42284DC8-6FD7-486F-A5ED-D4E93EE91F12::net6.0::CityDiscoverTourist.Test.QuestControllerTest&lt;/TestId&gt;&#xD;
   &lt;/TestAncestor&gt;&#xD;
-&lt;/SessionState&gt;</s:String></wpf:ResourceDictionary>
+&lt;/SessionState&gt;</s:String>
+	<s:Boolean x:Key="/Default/UserDictionary/Words/=appsettings/@EntryIndexedValue">True</s:Boolean></wpf:ResourceDictionary>
