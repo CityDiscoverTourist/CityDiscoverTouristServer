@@ -2,8 +2,9 @@ using System.Globalization;
 using System.IdentityModel.Tokens.Jwt;
 using System.Net.Http.Headers;
 using System.Security.Claims;
-using CityDiscoverTourist.Business.Data.RequestModel;
 using CityDiscoverTourist.Business.Data.ResponseModel;
+using CityDiscoverTourist.Business.Enums;
+using CityDiscoverTourist.Business.Exceptions;
 using CityDiscoverTourist.Data.Models;
 using Microsoft.AspNetCore.Identity;
 using Newtonsoft.Json;
@@ -63,6 +64,7 @@ public class FacebookService: IFacebookService
 
     public async Task<LoginResponseModel> LoginFacebookAsync(string token)
     {
+        await _authService.CreateRole();
         if (string.IsNullOrEmpty(token))
         {
             throw new KeyNotFoundException("Token is null");
@@ -70,8 +72,10 @@ public class FacebookService: IFacebookService
 
         var facebookUser = await GetUserFromFacebookAsync(token);
         var userDb = await _userManager.FindByEmailAsync(facebookUser.Email);
-
         if (await CreateUserIfNotExits(userDb, facebookUser)) return null!;
+
+        if (userDb is {LockoutEnabled: false }) throw new AppException("User is locked");
+
         var authClaims = new List<Claim>
         {
             new (ClaimTypes.Name, facebookUser.FullName!),
@@ -109,6 +113,7 @@ public class FacebookService: IFacebookService
         };
         var loginInfo = new ExternalLoginInfo(new ClaimsPrincipal(), "Facebook", facebookUser.FacebookId, "Facebook");
         var result = await _userManager.CreateAsync(user);
+        await _userManager.AddToRoleAsync(user, Role.User.ToString());
         await _userManager.AddLoginAsync(user, loginInfo);
 
         return !result.Succeeded;
