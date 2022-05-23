@@ -1,3 +1,5 @@
+using Microsoft.AspNetCore.Http;
+
 namespace CityDiscoverTourist.Business.Data.RequestModel;
 
 public class QuestRequestModel
@@ -8,6 +10,7 @@ public class QuestRequestModel
     public float Price { get; set; }
     public string? EstimatedTime { get; set; }
     public string? EstimatedDistance { get; set; }
+    public IFormFile? Image { get; set; }
     public DateTime? AvailableTime { get; set; }
     public DateTime? CreatedDate { get; set; }
     public DateTime? UpdatedDate { get; set; }

@@ -1,4 +1,5 @@
 using CityDiscoverTourist.API.AzureHelper;
+using CityDiscoverTourist.Business.IServices;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CityDiscoverTourist.API.Controllers;
@@ -18,7 +19,7 @@ public class BlobController : ControllerBase
     [HttpGet]
     public async Task<IActionResult> GetFileAsync()
     {
-        var result = await _blobService.GetBlogAsync("student.PNG");
+        var result = await _blobService.GetImgPathAsync("14_student.PNG");
         return File(result, "application/octet-stream");
     }
 

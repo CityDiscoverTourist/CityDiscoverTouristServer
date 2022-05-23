@@ -13,12 +13,14 @@ public class QuestService: BaseService, IQuestService
     private readonly IQuestRepository _questRepository;
     private readonly ISortHelper<Quest> _sortHelper;
     private readonly IMapper _mapper;
+    private readonly IBlobService _blobService;
 
-    public QuestService(IQuestRepository questRepository, ISortHelper<Quest> sortHelper, IMapper mapper)
+    public QuestService(IQuestRepository questRepository, ISortHelper<Quest> sortHelper, IMapper mapper, IBlobService blobService)
     {
         _questRepository = questRepository;
         _sortHelper = sortHelper;
         _mapper = mapper;
+        _blobService = blobService;
     }
 
 
@@ -45,13 +47,20 @@ public class QuestService: BaseService, IQuestService
     {
         var entity = _mapper.Map<Quest>(request);
         entity = await _questRepository.Add(entity);
+        //return string img from blob, mapped to Quest model and store in db
+        var imgPath = await _blobService.UploadQuestImgAndReturnImgPathAsync(request.Image, entity.Id);
+
         return _mapper.Map<QuestResponseModel>(entity);
     }
 
     public async Task<QuestResponseModel> UpdateAsync(QuestRequestModel request)
     {
+
+
         var entity = _mapper.Map<Quest>(request);
         entity = await _questRepository.Update(entity);
+        await _blobService.UploadQuestImgAndReturnImgPathAsync(request.Image, entity.Id);
+
         return _mapper.Map<QuestResponseModel>(entity);
     }
 

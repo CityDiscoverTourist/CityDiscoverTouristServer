@@ -1,6 +1,8 @@
 using Azure.Storage.Blobs;
 using CityDiscoverTourist.API.AzureHelper;
 using CityDiscoverTourist.Business.Helper.EmailHelper;
+using CityDiscoverTourist.Business.IServices;
+using CityDiscoverTourist.Business.IServices.Services;
 using CityDiscoverTourist.Business.Settings;
 
 namespace CityDiscoverTourist.API.Config;
