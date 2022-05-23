@@ -12,4 +12,5 @@ public interface IAuthService
     public Task <LoginResponseModel> LoginFirebase(LoginFirebaseModel model);
     public JwtSecurityToken GetJwtToken(IEnumerable<Claim> claims);
     public string GenerateRefreshToken();
+    public Task CreateRole();
 }

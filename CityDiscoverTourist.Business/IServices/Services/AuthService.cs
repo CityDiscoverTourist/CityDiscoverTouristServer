@@ -3,9 +3,10 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
-using CityDiscoverTourist.Business.Data;
 using CityDiscoverTourist.Business.Data.RequestModel;
 using CityDiscoverTourist.Business.Data.ResponseModel;
+using CityDiscoverTourist.Business.Enums;
+using CityDiscoverTourist.Business.Exceptions;
 using CityDiscoverTourist.Data.Models;
 using FirebaseAdmin.Auth;
 using Microsoft.AspNetCore.Identity;
@@ -18,23 +19,25 @@ public class AuthService: IAuthService
 {
     private readonly UserManager<ApplicationUser> _userManager;
     private static  IConfiguration? _configuration;
+    private  readonly RoleManager<IdentityRole> _roleManager;
 
 
-    public AuthService(UserManager<ApplicationUser> userManager, IConfiguration? configuration)
+    public AuthService(UserManager<ApplicationUser> userManager, IConfiguration? configuration, RoleManager<IdentityRole> roleManager)
     {
         _userManager = userManager;
         _configuration = configuration;
+        _roleManager = roleManager;
     }
 
     public async Task<LoginResponseModel> LoginFirebase(LoginFirebaseModel model)
     {
+        await CreateRole();
         var userViewModel = await VerifyFirebaseToken(model.TokenId);
         var user = await _userManager.FindByNameAsync(userViewModel.Email);
 
         if (await CreateUserIfNotExits(user, userViewModel)) return null!;
 
-        //if (user is {LockoutEnabled: false }) throw new ResponseModelException(ResponseCode.Forbidden, "User is locked");
-        //if (!user.LockoutEnabled) throw new ResponseModelException(ResponseCode.Forbidden, "User is locked");
+        if (user is {LockoutEnabled: false }) throw new AppException("User is locked");
         var authClaims = new List<Claim>
         {
             new (ClaimTypes.Name, userViewModel.Email ?? string.Empty),
@@ -53,6 +56,7 @@ public class AuthService: IAuthService
 
     private async Task<bool> CreateUserIfNotExits(ApplicationUser user, LoginResponseModel userViewModel)
     {
+        // ReSharper disable once ConditionIsAlwaysTrueOrFalse
         if (user != null) return false;
         user = new ApplicationUser()
         {
@@ -66,6 +70,7 @@ public class AuthService: IAuthService
         };
         var loginInfo = new ExternalLoginInfo(new ClaimsPrincipal(), "Firebase-Email", userViewModel.IdProvider, userViewModel.Email);
         var result = await _userManager.CreateAsync(user);
+        await _userManager.AddToRoleAsync(user, Role.User.ToString());
         await _userManager.AddLoginAsync(user, loginInfo);
         return !result.Succeeded;
     }
@@ -110,5 +115,15 @@ public class AuthService: IAuthService
             ImagePath = user.PhotoUrl
         };
         return loginViewModel;
+    }
+
+    public async Task CreateRole()
+    {
+        if (!_roleManager.RoleExistsAsync(Role.Admin.ToString()).GetAwaiter().GetResult())
+        {
+            await _roleManager.CreateAsync(new IdentityRole(Role.Admin.ToString()));
+            await _roleManager.CreateAsync(new IdentityRole(Role.User.ToString()));
+            await _roleManager.CreateAsync(new IdentityRole(Role.QuestOwner.ToString()));
+        }
     }
 }
