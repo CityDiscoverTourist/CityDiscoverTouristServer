@@ -25,6 +25,17 @@ namespace CityDiscoverTourist.Data.IRepositories.Repositories
             return entity;
         }
 
+        public async Task<T> UpdateFields(T entity, params Expression<Func<T, object>>[] properties)
+        {
+            var dbEntry = _context.Entry(entity);
+            foreach (var property in properties)
+            {
+                dbEntry.Property(property).IsModified = true;
+            }
+            await _context.SaveChangesAsync();
+            return entity;
+        }
+
         public async Task<T?> Delete(K id)
         {
             var entity = await _context.Set<T>().FindAsync(id).ConfigureAwait(false);
