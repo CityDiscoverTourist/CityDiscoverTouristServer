@@ -13,4 +13,6 @@ public interface ICustomerTaskService
     public Task<CustomerTaskResponseModel> CreateAsync(CustomerTaskRequestModel request);
     public Task<CustomerTaskResponseModel> UpdateAsync(CustomerTaskRequestModel request);
     public Task<CustomerTaskResponseModel> DeleteAsync(int id);
+    public Task<CustomerTaskResponseModel> UpdateCurrentPointAsync(int id, float currentPoint);
+    public Task<CustomerTaskResponseModel> UpdateStatusAsync(int id, string status);
 }
