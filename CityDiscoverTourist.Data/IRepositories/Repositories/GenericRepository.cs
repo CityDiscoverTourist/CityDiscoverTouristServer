@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CityDiscoverTourist.Data.IRepositories.Repositories
 {
-    public class GenericRepository<T, K> : IGenericRepository<T, K> where T : class
+    public class GenericRepository<T, TK> : IGenericRepository<T, TK> where T : class
     {
         private readonly ApplicationDbContext _context;
 
@@ -36,7 +36,7 @@ namespace CityDiscoverTourist.Data.IRepositories.Repositories
             return entity;
         }
 
-        public async Task<T?> Delete(K id)
+        public async Task<T> Delete(TK id)
         {
             var entity = await _context.Set<T>().FindAsync(id).ConfigureAwait(false);
             if (entity == null) return null;
@@ -47,7 +47,7 @@ namespace CityDiscoverTourist.Data.IRepositories.Repositories
             return entity;
         }
 
-        public async Task<T> Get(K id)
+        public async Task<T> Get(TK id)
         {
             return await _context.Set<T>().FindAsync(id);
         }
