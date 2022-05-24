@@ -1,8 +1,4 @@
-﻿using System.Diagnostics;
-using System.Globalization;
-using Microsoft.AspNetCore.Mvc;
-using MimeKit;
-using MimeKit.Text;
+﻿using MimeKit;
 using SmtpClient = MailKit.Net.Smtp.SmtpClient;
 
 namespace CityDiscoverTourist.Business.Helper.EmailHelper;

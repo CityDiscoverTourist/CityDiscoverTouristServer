@@ -1,4 +1,3 @@
-using System.Security.Cryptography.X509Certificates;
 using CityDiscoverTourist.API.Config;
 using CityDiscoverTourist.Business.Data;
 using CityDiscoverTourist.Business.Exceptions;
@@ -11,7 +10,6 @@ using Serilog.Events;
 using CityDiscoverTourist.API.AzureHelper;
 using Microsoft.Azure.KeyVault;
 using Microsoft.Azure.Services.AppAuthentication;
-using Microsoft.Extensions.Configuration.AzureKeyVault;
 
 
 Log.Logger = new LoggerConfiguration()
@@ -34,8 +32,6 @@ try
 
     if (env == "Production")
     {
-        var store = new X509Store(StoreName.My, StoreLocation.CurrentUser);
-        store.Open(OpenFlags.ReadOnly);
         var vaultName = builder.Configuration["KeyVault:Vault"];
         if (!string.IsNullOrEmpty(vaultName))
         {

@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using CityDiscoverTourist.Business.Data.RequestModel;
 using CityDiscoverTourist.Business.Data.ResponseModel;
-using CityDiscoverTourist.Business.Helper;
 using CityDiscoverTourist.Data.Models;
 
 namespace CityDiscoverTourist.Business.Data;

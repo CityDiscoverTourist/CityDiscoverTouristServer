@@ -1,7 +1,6 @@
 using System.Globalization;
 using System.Text.RegularExpressions;
 using CityDiscoverTourist.Business.Helper;
-using CityDiscoverTourist.Business.Helper.EmailHelper;
 using CityDiscoverTourist.Business.IServices;
 using CityDiscoverTourist.Business.IServices.Services;
 using CityDiscoverTourist.Data.IRepositories;
