@@ -58,4 +58,20 @@ public class CustomerTaskService: BaseService, ICustomerTaskService
         var entity = await _customerTaskService.Delete(id);
         return _mapper.Map<CustomerTaskResponseModel>(entity);
     }
+
+    public async Task<CustomerTaskResponseModel> UpdateCurrentPointAsync(int id, float currentPoint)
+    {
+        var customerTask = await _customerTaskService.Get(id);
+        customerTask.CurrentPoint = currentPoint;
+        customerTask = await _customerTaskService.UpdateFields(customerTask, r => r.CurrentPoint);
+        return _mapper.Map<CustomerTaskResponseModel>(customerTask);
+    }
+
+    public async Task<CustomerTaskResponseModel> UpdateStatusAsync(int id, string status)
+    {
+        var customerTask = await _customerTaskService.Get(id);
+        customerTask.Status = status;
+        customerTask = await _customerTaskService.UpdateFields(customerTask, r => r.Status ?? string.Empty);
+        return _mapper.Map<CustomerTaskResponseModel>(customerTask);
+    }
 }

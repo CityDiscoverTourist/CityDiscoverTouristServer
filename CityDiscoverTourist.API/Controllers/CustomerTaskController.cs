@@ -66,11 +66,24 @@ public class CustomerTaskController : ControllerBase
         return ApiResponse<CustomerTaskResponseModel>.Created(entity);
     }
 
+    [HttpPut("update-current-point")]
+    public async Task<ApiResponse<CustomerTaskResponseModel>> UpdateCurrentPoint(int id, float currentPoint)
+    {
+        var entity = await _customerTaskService.UpdateCurrentPointAsync(id, currentPoint);
+        return ApiResponse<CustomerTaskResponseModel>.Created(entity);
+    }
+
+    [HttpPut("update-status")]
+    public async Task<ApiResponse<CustomerTaskResponseModel>> UpdateStatus(int id, string status)
+    {
+        var entity = await _customerTaskService.UpdateStatusAsync(id, status);
+        return ApiResponse<CustomerTaskResponseModel>.Created(entity);
+    }
+
     [HttpDelete("{id:int}")]
     public async Task<ActionResult<ApiResponse<CustomerTaskResponseModel>>> Delete(int id)
     {
         var entity = await _customerTaskService.DeleteAsync(id);
         return ApiResponse<CustomerTaskResponseModel>.Ok(entity);
     }
-
 }
