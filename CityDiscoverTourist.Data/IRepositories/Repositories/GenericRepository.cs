@@ -36,6 +36,17 @@ namespace CityDiscoverTourist.Data.IRepositories.Repositories
             return entity;
         }
 
+        public async Task<T> NoneUpdateFields(T entity, params Expression<Func<T, object>>[] noneUpdateFields)
+        {
+            var dbEntry = _context.Update(entity);
+            foreach (var property in noneUpdateFields)
+            {
+                dbEntry.Property(property).IsModified = false;
+            }
+            await _context.SaveChangesAsync();
+            return entity;
+        }
+
         public async Task<T> Delete(TK id)
         {
             var entity = await _context.Set<T>().FindAsync(id).ConfigureAwait(false);

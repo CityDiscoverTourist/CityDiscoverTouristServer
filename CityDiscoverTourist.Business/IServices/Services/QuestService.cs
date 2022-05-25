@@ -56,11 +56,11 @@ public class QuestService: BaseService, IQuestService
 
     public async Task<QuestResponseModel> UpdateAsync(QuestRequestModel request)
     {
-
+        var imgPath = await _blobService.UploadQuestImgAndReturnImgPathAsync(request.Image, request.Id);
 
         var entity = _mapper.Map<Quest>(request);
-        entity = await _questRepository.Update(entity);
-        await _blobService.UploadQuestImgAndReturnImgPathAsync(request.Image, entity.Id);
+        entity.ImagePath = imgPath;
+        entity = await _questRepository.NoneUpdateFields(entity, r => r.CreatedDate!);
 
         return _mapper.Map<QuestResponseModel>(entity);
     }

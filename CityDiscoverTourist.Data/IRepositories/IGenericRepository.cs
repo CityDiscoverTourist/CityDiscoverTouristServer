@@ -18,6 +18,7 @@ namespace CityDiscoverTourist.Data.IRepositories
 
         Task<T> Update(T entity);
         Task<T> UpdateFields(T entity, params Expression<Func<T, object>>[] properties);
+        Task<T> NoneUpdateFields(T entity, params Expression<Func<T, object>>[] noneUpdateFields);
 
         Task<T> Delete(K id);
     }
