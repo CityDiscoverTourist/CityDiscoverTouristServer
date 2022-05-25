@@ -24,7 +24,6 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     public DbSet<Commission> Commissions { get; set; }
     public DbSet<Area> Areas { get; set; }
     public DbSet<City> Cities { get; set; }
-    public DbSet<Competition> Competitions { get; set; }
     public DbSet<LocationType> LocationTypes { get; set; }
     public DbSet<OwnerPayment> OwnerPayments { get; set; }
     public DbSet<OwnerPaymentPeriod> OwnerPaymentPeriods { get; set; }

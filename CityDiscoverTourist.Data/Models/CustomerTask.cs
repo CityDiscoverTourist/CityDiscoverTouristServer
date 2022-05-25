@@ -5,6 +5,7 @@ public class CustomerTask: BaseEntity
     public float CurrentPoint { get; set; }
     public string? Status { get; set; }
     public DateTime? CreatedDate { get; set; }
+    public int CountSuggestion { get; set; }
 
     public QuestItem? QuestItem { get; set; }
     public int QuestItemId { get; set; }

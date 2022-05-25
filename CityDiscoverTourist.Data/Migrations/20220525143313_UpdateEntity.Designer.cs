@@ -4,6 +4,7 @@ using CityDiscoverTourist.Data.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CityDiscoverTourist.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220525143313_UpdateEntity")]
+    partial class UpdateEntity
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -273,17 +275,12 @@ namespace CityDiscoverTourist.Data.Migrations
                     b.Property<string>("FeedBack")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("QuestId")
-                        .HasColumnType("int");
-
                     b.Property<int>("Rating")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
                     b.HasIndex("CustomerId");
-
-                    b.HasIndex("QuestId");
 
                     b.ToTable("CustomerQuests");
                 });
@@ -524,9 +521,6 @@ namespace CityDiscoverTourist.Data.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("EstimatedTime")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("ImagePath")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<float>("Price")
@@ -999,15 +993,7 @@ namespace CityDiscoverTourist.Data.Migrations
                         .WithMany("CustomerQuests")
                         .HasForeignKey("CustomerId");
 
-                    b.HasOne("CityDiscoverTourist.Data.Models.Quest", "Quest")
-                        .WithMany("CustomerQuests")
-                        .HasForeignKey("QuestId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.Navigation("Customer");
-
-                    b.Navigation("Quest");
                 });
 
             modelBuilder.Entity("CityDiscoverTourist.Data.Models.CustomerTask", b =>
@@ -1314,8 +1300,6 @@ namespace CityDiscoverTourist.Data.Migrations
 
             modelBuilder.Entity("CityDiscoverTourist.Data.Models.Quest", b =>
                 {
-                    b.Navigation("CustomerQuests");
-
                     b.Navigation("OwnerPayments");
 
                     b.Navigation("QuestItems");

@@ -30,9 +30,6 @@ public class AutoMapperProfile : Profile
         CreateMap<CustomerTaskRequestModel, CustomerTask>().ReverseMap();
         CreateMap<CustomerTaskResponseModel, CustomerTask>().ReverseMap();
 
-        CreateMap<CompetitionRequestModel, Competition>().ReverseMap();
-        CreateMap<CompetitionResponseModel, Competition>().ReverseMap();
-
         CreateMap<NoteRequestModel, Note>().ReverseMap();
         CreateMap<NoteResponseModel, Note>().ReverseMap();
 
