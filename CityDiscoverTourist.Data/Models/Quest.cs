@@ -9,6 +9,7 @@ public class Quest: BaseEntity
     public string? Title { get; set; }
     public string? Description { get; set; }
     public float Price { get; set; }
+    public string? ImagePath { get; set; }
     public string? EstimatedTime { get; set; }
     public string? EstimatedDistance { get; set; }
     public DateTime? AvailableTime { get; set; }
@@ -26,9 +27,9 @@ public class Quest: BaseEntity
     public QuestOwner? QuestOwner { get; set; }
     public int? QuestOwnerId { get; set; }
 
-    public List<QuestItem>? QuestItems { get; set; }
+    public List<CustomerQuest>? CustomerQuests { get; set; }
 
-    public List<Competition>? Competitions { get; set; }
+    public List<QuestItem>? QuestItems { get; set; }
 
     public List<OwnerPayment>? OwnerPayments { get; set; }
 

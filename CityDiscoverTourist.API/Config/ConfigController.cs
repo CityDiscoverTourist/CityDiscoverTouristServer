@@ -39,7 +39,6 @@ public static class ConfigController
         services.AddScoped<ILocationService, LocationService>();
         services.AddScoped<ILocationService, LocationService>();
         services.AddScoped<ILocationTypeService, LocationTypeService>();
-        services.AddScoped<ICompetitionService, CompetitionService>();
         services.AddScoped<IOwnerPaymentPeriodService, OwnerPaymentPeriodService>();
         services.AddScoped<IQuestOwnerService, QuestOwnerService>();
         services.AddScoped<IWalletService, WalletService>();
@@ -64,7 +63,6 @@ public static class ConfigController
         services.AddScoped<ISortHelper<LocationType>, SortHelper<LocationType>>();
         services.AddScoped<ISortHelper<Note>, SortHelper<Note>>();
         services.AddScoped<ISortHelper<CustomerQuest>, SortHelper<CustomerQuest>>();
-        services.AddScoped<ISortHelper<Competition>, SortHelper<Competition>>();
         services.AddScoped<ISortHelper<OwnerPaymentPeriod>, SortHelper<OwnerPaymentPeriod>>();
         services.AddScoped<ISortHelper<QuestOwner>, SortHelper<QuestOwner>>();
         services.AddScoped<ISortHelper<Wallet>, SortHelper<Wallet>>();
@@ -97,7 +95,6 @@ public static class ConfigController
         services.AddScoped<ICityRepository, CityRepository>();
         services.AddScoped<ILocationRepository, LocationRepository>();
         services.AddScoped<ILocationTypeRepository, LocationTypeRepository>();
-        services.AddScoped<ICompetitionRepository, CompetitionRepository>();
         services.AddScoped<IOwnerPaymentPeriodRepository, OwnerPaymentPeriodRepository>();
         services.AddScoped<IQuestOwnerRepository, QuestOwnerRepository>();
         services.AddScoped<IWalletRepository, WalletRepository>();
