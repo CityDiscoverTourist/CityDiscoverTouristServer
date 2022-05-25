@@ -61,7 +61,7 @@ public class QuestController : ControllerBase
     }
 
     [HttpPut]
-    public async Task<ApiResponse<QuestResponseModel>> Put([FromBody] QuestRequestModel data)
+    public async Task<ApiResponse<QuestResponseModel>> Put([FromForm] QuestRequestModel data)
     {
         var entity = await _questService.UpdateAsync(data);
         return ApiResponse<Quest>.Created(entity);
