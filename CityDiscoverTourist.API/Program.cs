@@ -8,6 +8,7 @@ using Newtonsoft.Json;
 using Serilog;
 using Serilog.Events;
 using CityDiscoverTourist.API.AzureHelper;
+using Microsoft.ApplicationInsights.Extensibility;
 using Microsoft.Azure.KeyVault;
 using Microsoft.Azure.Services.AppAuthentication;
 
@@ -16,6 +17,7 @@ Log.Logger = new LoggerConfiguration()
     .MinimumLevel.Override("Microsoft", LogEventLevel.Information)
     .Enrich.FromLogContext()
     .WriteTo.Console()
+    .WriteTo.ApplicationInsights(TelemetryConfiguration.Active.InstrumentationKey, TelemetryConverter.Traces)
     .CreateLogger();
 try
 {
@@ -56,6 +58,7 @@ try
     builder.Services.SetupSwagger(builder.Configuration);
     builder.Services.SetUpCache(builder.Configuration);
     builder.Services.SetUpHealthCheck(builder.Configuration);
+    builder.Services.SetUpApplicationInsight(builder.Configuration);
 
     builder.Services.AddAutoMapper(typeof(AutoMapperProfile).Assembly);
 
