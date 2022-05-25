@@ -8,6 +8,7 @@ public class QuestRequestModel
     public string? Title { get; set; }
     public string? Description { get; set; }
     public float Price { get; set; }
+    public string? ImagePath { get; set; }
     public string? EstimatedTime { get; set; }
     public string? EstimatedDistance { get; set; }
     public IFormFile? Image { get; set; }
