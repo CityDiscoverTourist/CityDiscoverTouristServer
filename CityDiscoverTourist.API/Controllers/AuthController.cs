@@ -26,6 +26,19 @@ public class AuthController : ControllerBase
         return Ok(await _authService.LoginFirebase(model));
     }
 
+    [HttpPost("login-admin")]
+    public async Task<ActionResult<LoginResponseModel>> LoginAdmin(LoginRequestModel model)
+    {
+        return Ok(await _authService.LoginForAdmin(model));
+    }
+
+    //register user
+    [HttpPost("register-admin-account")]
+    public async Task<ActionResult> Register(LoginRequestModel model)
+    {
+        return Ok(await _authService.Register(model));
+    }
+
     [HttpPost("login-facebook")]
     public async Task<IActionResult> FacebookLoginAsync([FromQuery] string resource)
     {
