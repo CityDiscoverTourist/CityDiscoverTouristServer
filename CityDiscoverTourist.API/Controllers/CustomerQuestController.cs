@@ -68,6 +68,13 @@ public class CustomerQuestController : ControllerBase
         return ApiResponse<CustomerQuestResponseModel>.Created(entity);
     }
 
+    [HttpPut("update-end-point")]
+    public async Task<ApiResponse<CustomerQuestResponseModel>> UpdateEndPoint(int id)
+    {
+        var entity = await _customerQuestService.UpdateEndPointWhenFinishAsync(id);
+        return ApiResponse<CustomerQuestResponseModel>.Created(entity);
+    }
+
     [HttpDelete("{id:int}")]
     public async Task<ActionResult<ApiResponse<CustomerQuestResponseModel>>> Delete(int id)
     {

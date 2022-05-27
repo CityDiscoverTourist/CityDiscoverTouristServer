@@ -15,4 +15,9 @@ public interface ICustomerTaskService
     public Task<CustomerTaskResponseModel> DeleteAsync(int id);
     public Task<CustomerTaskResponseModel> UpdateCurrentPointAsync(int id, float currentPoint);
     public Task<CustomerTaskResponseModel> UpdateStatusAsync(int id, string status);
+    public string GetBeginPointsAsync(int customerQuestId);
+    public Task<CustomerTaskResponseModel> DecreasePointWhenHitSuggestion(int customerQuestId);
+    public Task<CustomerTaskResponseModel> DecreasePointWhenWrongAnswer(int customerQuestId);
+    public Task<bool> IsLastQuestItem(int customerQuestId);
+    public float GetLastPoint(int customerQuestId);
 }
