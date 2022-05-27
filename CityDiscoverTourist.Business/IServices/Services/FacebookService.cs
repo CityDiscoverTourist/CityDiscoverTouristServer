@@ -94,6 +94,7 @@ public class FacebookService: IFacebookService
             JwtToken = new JwtSecurityTokenHandler().WriteToken(accessToken),
             RefreshToken = _authService.GenerateRefreshToken(),
             RefreshTokenExpiryTime = DateTime.Now.AddHours(1),
+            AccountId = userDb.Id,
         };
     }
 

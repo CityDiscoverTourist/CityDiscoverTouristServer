@@ -51,6 +51,8 @@ public class AuthService: IAuthService
         userViewModel.JwtToken = new JwtSecurityTokenHandler().WriteToken(accessToken);
         userViewModel.RefreshToken = GenerateRefreshToken();
         userViewModel.RefreshTokenExpiryTime = DateTime.Now.AddSeconds(7);
+        userViewModel.AccountId = user.Id;
+
         return userViewModel;
     }
 
@@ -75,7 +77,8 @@ public class AuthService: IAuthService
             JwtToken = new JwtSecurityTokenHandler().WriteToken(accessToken),
             RefreshToken = GenerateRefreshToken(),
             RefreshTokenExpiryTime = DateTime.Now.AddSeconds(7),
-            Email = user.Email
+            Email = user.Email,
+            AccountId = user.Id
         };
         return userViewModel;
     }
