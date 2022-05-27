@@ -39,7 +39,7 @@ public class CustomerTaskController : ControllerBase
             entity.HasPrevious,
         };
         Response.Headers.Add("X-Pagination", JsonConvert.SerializeObject(metadata));
-
+        var a = _customerTaskService.IsLastQuestItem(8).Result;
         return ApiResponse<List<CustomerTask>>.Success(entity, metadata);
     }
 
@@ -63,21 +63,35 @@ public class CustomerTaskController : ControllerBase
     public async Task<ApiResponse<CustomerTaskResponseModel>> Put(CustomerTaskRequestModel data)
     {
         var entity = await _customerTaskService.UpdateAsync(data);
-        return ApiResponse<CustomerTaskResponseModel>.Created(entity);
+        return ApiResponse<CustomerTaskResponseModel>.Ok(entity);
     }
 
     [HttpPut("update-current-point")]
     public async Task<ApiResponse<CustomerTaskResponseModel>> UpdateCurrentPoint(int id, float currentPoint)
     {
         var entity = await _customerTaskService.UpdateCurrentPointAsync(id, currentPoint);
-        return ApiResponse<CustomerTaskResponseModel>.Created(entity);
+        return ApiResponse<CustomerTaskResponseModel>.Ok(entity);
     }
 
     [HttpPut("update-status")]
     public async Task<ApiResponse<CustomerTaskResponseModel>> UpdateStatus(int id, string status)
     {
         var entity = await _customerTaskService.UpdateStatusAsync(id, status);
-        return ApiResponse<CustomerTaskResponseModel>.Created(entity);
+        return ApiResponse<CustomerTaskResponseModel>.Ok(entity);
+    }
+
+    [HttpPut("decrease-point-suggestion")]
+    public async Task<ApiResponse<CustomerTaskResponseModel>> DecreasePointWhenHitSuggestion(int customerQuestId)
+    {
+        var entity = await _customerTaskService.DecreasePointWhenHitSuggestion(customerQuestId);
+        return ApiResponse<CustomerTaskResponseModel>.Ok(entity);
+    }
+
+    [HttpPut("decrease-point-wrong-answer")]
+    public async Task<ApiResponse<CustomerTaskResponseModel>> DecreasePointWhenWrongAnswer(int customerQuestId)
+    {
+        var entity = await _customerTaskService.DecreasePointWhenWrongAnswer(customerQuestId);
+        return ApiResponse<CustomerTaskResponseModel>.Ok(entity);
     }
 
     [HttpDelete("{id:int}")]

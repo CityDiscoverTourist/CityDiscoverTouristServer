@@ -13,4 +13,5 @@ public interface ICustomerQuestService
     public Task<CustomerQuestResponseModel> CreateAsync(CustomerQuestRequestModel request);
     public Task<CustomerQuestResponseModel> UpdateAsync(CustomerQuestRequestModel request);
     public Task<CustomerQuestResponseModel> DeleteAsync(int id);
+    public Task<CustomerQuestResponseModel> UpdateEndPointWhenFinishAsync(int id);
 }
