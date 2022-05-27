@@ -54,6 +54,67 @@ public class AuthService: IAuthService
         return userViewModel;
     }
 
+    public async Task<LoginResponseModel> LoginForAdmin(LoginRequestModel model)
+    {
+        var user = await _userManager.FindByEmailAsync(model.Email);
+        if (user is null) throw new AppException("User not found");
+        if (!await _userManager.CheckPasswordAsync(user, model.Password))
+            throw new UnauthorizedAccessException("Invalid credentials");
+        var authClaims = new List<Claim>
+        {
+            new (ClaimTypes.Name, user.Email ?? string.Empty),
+            new (JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+            new (ClaimTypes.Email, user.Email ?? string.Empty),
+            new (ClaimTypes.Expiration, DateTime.Now.AddHours(1).ToString(CultureInfo.CurrentCulture)),
+        };
+
+        var accessToken = GetJwtToken(authClaims);
+
+        var userViewModel = new LoginResponseModel
+        {
+            JwtToken = new JwtSecurityTokenHandler().WriteToken(accessToken),
+            RefreshToken = GenerateRefreshToken(),
+            RefreshTokenExpiryTime = DateTime.Now.AddSeconds(7),
+            Email = user.Email
+        };
+        return userViewModel;
+    }
+
+    // register new user
+    public async Task<LoginResponseModel> Register(LoginRequestModel model)
+    {
+        var user = await _userManager.FindByEmailAsync(model.Email);
+        if (user is { }) throw new AppException("User already exists");
+        user = new ApplicationUser
+        {
+            UserName = model.Email,
+            Email = model.Email,
+            EmailConfirmed = true,
+            LockoutEnabled = false
+        };
+        var result = await _userManager.CreateAsync(user, model.Password);
+        if (!result.Succeeded) throw new AppException(result.Errors.First().Description);
+        await _userManager.AddToRoleAsync(user, Role.Admin.ToString());
+        var authClaims = new List<Claim>
+        {
+            new (ClaimTypes.Name, user.Email ?? string.Empty),
+            new (JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+            new (ClaimTypes.Email, user.Email ?? string.Empty),
+            new (ClaimTypes.Expiration, DateTime.Now.AddHours(1).ToString(CultureInfo.CurrentCulture)),
+        };
+
+        var accessToken = GetJwtToken(authClaims);
+
+        var userViewModel = new LoginResponseModel
+        {
+            JwtToken = new JwtSecurityTokenHandler().WriteToken(accessToken),
+            RefreshToken = GenerateRefreshToken(),
+            RefreshTokenExpiryTime = DateTime.Now.AddSeconds(7),
+            Email = user.Email
+        };
+        return userViewModel;
+    }
+
     private async Task<bool> CreateUserIfNotExits(ApplicationUser user, LoginResponseModel userViewModel)
     {
         // ReSharper disable once ConditionIsAlwaysTrueOrFalse
