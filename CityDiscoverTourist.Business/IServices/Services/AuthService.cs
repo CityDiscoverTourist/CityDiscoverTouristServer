@@ -62,9 +62,12 @@ public class AuthService: IAuthService
     public async Task<LoginResponseModel> LoginForAdmin(LoginRequestModel model)
     {
         var user = await _userManager.FindByEmailAsync(model.Email);
-        if (user is null) throw new AppException("User not found");
+        if (user is null) throw new AppException("Admin not found");
         if (!await _userManager.CheckPasswordAsync(user, model.Password))
             throw new UnauthorizedAccessException("Invalid credentials");
+        if (!user.LockoutEnabled) throw new AppException("Admin is locked");
+        if (!user.EmailConfirmed) throw new AppException("Admin is not confirmed");
+
         var authClaims = new List<Claim>
         {
             new (ClaimTypes.Name, user.Email ?? string.Empty),
@@ -81,7 +84,8 @@ public class AuthService: IAuthService
             RefreshToken = GenerateRefreshToken(),
             RefreshTokenExpiryTime = DateTime.Now.AddSeconds(7),
             Email = user.Email,
-            AccountId = user.Id
+            AccountId = user.Id,
+            FullName = user.UserName
         };
         return userViewModel;
     }
