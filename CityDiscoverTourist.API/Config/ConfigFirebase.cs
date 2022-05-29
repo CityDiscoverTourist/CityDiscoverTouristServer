@@ -25,6 +25,7 @@ public static class ConfigFirebase
                 opt.Lockout.AllowedForNewUsers = true;
                 opt.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(2);
                 opt.Lockout.MaxFailedAccessAttempts = 3;
+                opt.SignIn.RequireConfirmedEmail = true;
             }).AddEntityFrameworkStores<ApplicationDbContext>()
             .AddDefaultTokenProviders();
 

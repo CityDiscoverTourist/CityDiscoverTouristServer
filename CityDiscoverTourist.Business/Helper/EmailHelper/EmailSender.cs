@@ -1,4 +1,6 @@
-﻿using MimeKit;
+﻿using System.Net;
+using System.Net.Mail;
+using MimeKit;
 using SmtpClient = MailKit.Net.Smtp.SmtpClient;
 
 namespace CityDiscoverTourist.Business.Helper.EmailHelper;
@@ -18,6 +20,36 @@ public class EmailSender : IEmailSender
 
         await SendAsync(mailMessage);
     }
+
+    public async Task SendMailConfirmAsync(string email, string subject, string htmlMessage)
+    {
+        var emailMessage = new MimeMessage();
+        emailMessage.From.Add(new MailboxAddress("City Tourist", _emailConfig.From));
+        emailMessage.Subject = subject;
+        emailMessage.To.Add(new MailboxAddress("", email));
+        var bodyBuilder = new BodyBuilder
+        {
+            HtmlBody = string.Format(htmlMessage)
+        };
+
+        emailMessage.Body = bodyBuilder.ToMessageBody();
+        using var client = new SmtpClient();
+        try
+        {
+            await client.ConnectAsync(_emailConfig.SmtpServer, _emailConfig.Port, true);
+            client.AuthenticationMechanisms.Remove("XOAUTH2");
+            await client.AuthenticateAsync(_emailConfig.From, _emailConfig.Password);
+            await client.SendAsync(emailMessage);
+        }
+        finally
+        {
+            await client.DisconnectAsync(true);
+            client.Dispose();
+        }
+    }
+
+
+
 
     public static void SendMailWithMailGun(Message message)
     {
