@@ -24,7 +24,7 @@ public class EmailSender : IEmailSender
     public async Task SendMailConfirmAsync(string email, string subject, string htmlMessage)
     {
         var emailMessage = new MimeMessage();
-        emailMessage.From.Add(new MailboxAddress("City Tourist", "dathaha2000@gmail.com"));
+        emailMessage.From.Add(new MailboxAddress("City Tourist", _emailConfig.From));
         emailMessage.Subject = subject;
         emailMessage.To.Add(new MailboxAddress("", email));
         var bodyBuilder = new BodyBuilder
