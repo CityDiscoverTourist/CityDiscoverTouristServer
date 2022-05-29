@@ -103,8 +103,8 @@ public class AuthService: IAuthService
         await _userManager.AddToRoleAsync(user, Role.Admin.ToString());
         // send mail to user with confirmation link to activate account
         var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-
-        var confirmationLink = $"{_configuration!["AppUrl"]}/api/v1/auths/confirm-email?userId={user.Id}&token={token}";
+        var urlEncode = System.Web.HttpUtility.UrlEncode(token);
+        var confirmationLink = $"{_configuration!["AppUrl"]}/api/v1/auths/confirm-email?userId={user.Id}&token={urlEncode}";
         var message = $"<h1>Welcome to City Discover Tourist</h1> <br/>" +
                       $"<p>Please confirm your account by clicking <a href='{confirmationLink}'>here</a></p>";
         await _emailSender.SendMailConfirmAsync(user.Email!, "Confirm your account", message);
