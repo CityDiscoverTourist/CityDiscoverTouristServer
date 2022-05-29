@@ -7,8 +7,10 @@ using CityDiscoverTourist.Business.Data.RequestModel;
 using CityDiscoverTourist.Business.Data.ResponseModel;
 using CityDiscoverTourist.Business.Enums;
 using CityDiscoverTourist.Business.Exceptions;
+using CityDiscoverTourist.Business.Helper.EmailHelper;
 using CityDiscoverTourist.Data.Models;
 using FirebaseAdmin.Auth;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
@@ -20,13 +22,14 @@ public class AuthService: IAuthService
     private readonly UserManager<ApplicationUser> _userManager;
     private static  IConfiguration? _configuration;
     private  readonly RoleManager<IdentityRole> _roleManager;
+    private readonly IEmailSender _emailSender;
 
-
-    public AuthService(UserManager<ApplicationUser> userManager, IConfiguration? configuration, RoleManager<IdentityRole> roleManager)
+    public AuthService(UserManager<ApplicationUser> userManager, IConfiguration? configuration, RoleManager<IdentityRole> roleManager, IEmailSender emailSender)
     {
         _userManager = userManager;
         _configuration = configuration;
         _roleManager = roleManager;
+        _emailSender = emailSender;
     }
 
     public async Task<LoginResponseModel> LoginFirebase(LoginFirebaseModel model)
@@ -84,7 +87,7 @@ public class AuthService: IAuthService
     }
 
     // register new user
-    public async Task<LoginResponseModel> Register(LoginRequestModel model)
+    public async Task<bool> Register(LoginRequestModel model)
     {
         var user = await _userManager.FindByEmailAsync(model.Email);
         if (user is { }) throw new AppException("User already exists");
@@ -92,30 +95,29 @@ public class AuthService: IAuthService
         {
             UserName = model.Email,
             Email = model.Email,
-            EmailConfirmed = true,
+            EmailConfirmed = false,
             LockoutEnabled = false
         };
         var result = await _userManager.CreateAsync(user, model.Password);
         if (!result.Succeeded) throw new AppException(result.Errors.First().Description);
         await _userManager.AddToRoleAsync(user, Role.Admin.ToString());
-        var authClaims = new List<Claim>
-        {
-            new (ClaimTypes.Name, user.Email ?? string.Empty),
-            new (JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-            new (ClaimTypes.Email, user.Email ?? string.Empty),
-            new (ClaimTypes.Expiration, DateTime.Now.AddHours(1).ToString(CultureInfo.CurrentCulture)),
-        };
+        // send mail to user with confirmation link to activate account
+        var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
 
-        var accessToken = GetJwtToken(authClaims);
+        var confirmationLink = $"{_configuration!["AppUrl"]}/api/v1/auths/confirm-email?userId={user.Id}&token={token}";
+        var message = $"<h1>Welcome to City Discover Tourist</h1> <br/>" +
+                      $"<p>Please confirm your account by clicking <a href='{confirmationLink}'>here</a></p>";
+        await _emailSender.SendMailConfirmAsync(user.Email!, "Confirm your account", message);
 
-        var userViewModel = new LoginResponseModel
-        {
-            JwtToken = new JwtSecurityTokenHandler().WriteToken(accessToken),
-            RefreshToken = GenerateRefreshToken(),
-            RefreshTokenExpiryTime = DateTime.Now.AddSeconds(7),
-            Email = user.Email
-        };
-        return userViewModel;
+        return result.Succeeded;
+    }
+
+    public async Task<string> ConfirmEmail(string userId, string token)
+    {
+        var user = await _userManager.FindByIdAsync(userId);
+        if (user is null) throw new AppException("User not found");
+        var result = await _userManager.ConfirmEmailAsync(user, token);
+        return result.Succeeded ? "Confirm success" : "Invalid token";
     }
 
     private async Task<bool> CreateUserIfNotExits(ApplicationUser user, LoginResponseModel userViewModel)

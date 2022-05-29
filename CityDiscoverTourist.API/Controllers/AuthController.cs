@@ -39,6 +39,12 @@ public class AuthController : ControllerBase
         return Ok(await _authService.Register(model));
     }
 
+    [HttpGet("confirm-email")]
+    public async Task<ActionResult> ConfirmEmail(string userId, string token)
+    {
+        return Ok(await _authService.ConfirmEmail(userId, token));
+    }
+
     [HttpPost("login-facebook")]
     public async Task<IActionResult> FacebookLoginAsync([FromQuery] string resource)
     {
