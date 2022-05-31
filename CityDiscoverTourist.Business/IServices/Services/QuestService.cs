@@ -48,7 +48,7 @@ public class QuestService: BaseService, IQuestService
         var entity = _mapper.Map<Quest>(request);
         entity = await _questRepository.Add(entity);
         //return string img from blob, mapped to Quest model and store in db
-        var imgPath = await _blobService.UploadQuestImgAndReturnImgPathAsync(request.Image, entity.Id);
+        var imgPath = await _blobService.UploadQuestImgAndReturnImgPathAsync(request.Image, entity.Id, "quest");
         entity.ImagePath = imgPath;
         await _questRepository.UpdateFields(entity, r => r.ImagePath!);
         return _mapper.Map<QuestResponseModel>(entity);
@@ -56,7 +56,7 @@ public class QuestService: BaseService, IQuestService
 
     public async Task<QuestResponseModel> UpdateAsync(QuestRequestModel request)
     {
-        var imgPath = await _blobService.UploadQuestImgAndReturnImgPathAsync(request.Image, request.Id);
+        var imgPath = await _blobService.UploadQuestImgAndReturnImgPathAsync(request.Image, request.Id, "quest");
 
         var entity = _mapper.Map<Quest>(request);
         entity.ImagePath = imgPath;

@@ -26,7 +26,7 @@ public class BlobController : ControllerBase
     [HttpPost]
     public async Task<IActionResult> UploadAsync(IFormFile file)
     {
-        var result = await _blobService.UploadBlogAsync(file);
+        var result = await _blobService.UploadBlogAsync(file, "");
         return Ok(result);
     }
 }

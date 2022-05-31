@@ -2,6 +2,7 @@ using System.Globalization;
 using AutoMapper;
 using CityDiscoverTourist.Business.Data.RequestModel;
 using CityDiscoverTourist.Business.Data.ResponseModel;
+using CityDiscoverTourist.Business.Exceptions;
 using CityDiscoverTourist.Business.Helper;
 using CityDiscoverTourist.Business.Helper.Params;
 using CityDiscoverTourist.Data.IRepositories;
@@ -72,7 +73,7 @@ public class CustomerQuestService: BaseService, ICustomerQuestService
     {
         var isLastItem = await _customerTaskService.IsLastQuestItem(id);
 
-        if (!isLastItem) return null!;
+        if (!isLastItem) throw new AppException("Quest is not finished");
 
         var lastPoint = _customerTaskService.GetLastPoint(id);
         var entity = await  _customerQuestRepository.Get(id);

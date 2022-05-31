@@ -47,7 +47,7 @@ public class QuestTypeService : BaseService, IQuestTypeService
         var entity = _mapper.Map<QuestType>(request);
         entity = await _questTypeRepository.Add(entity);
 
-        var imgPath = await _blobService.UploadQuestImgAndReturnImgPathAsync(request.Image, entity.Id);
+        var imgPath = await _blobService.UploadQuestImgAndReturnImgPathAsync(request.Image, entity.Id, "quest-type");
         entity.ImagePath = imgPath;
         await _questTypeRepository.UpdateFields(entity, r => r.ImagePath!);
 
@@ -56,7 +56,7 @@ public class QuestTypeService : BaseService, IQuestTypeService
 
     public async Task<QuestTypeResponseModel> UpdateAsync(QuestTypeRequestModel request)
     {
-        var imgPath = await _blobService.UploadQuestImgAndReturnImgPathAsync(request.Image, request.Id);
+        var imgPath = await _blobService.UploadQuestImgAndReturnImgPathAsync(request.Image, request.Id, "quest-type");
 
         var entity = _mapper.Map<QuestType>(request);
 
