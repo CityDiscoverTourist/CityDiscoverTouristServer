@@ -9,6 +9,7 @@ public class QuestType: BaseEntity
     public string? Status { get; set; }
     public string? DurationMode { get; set; }
     public string? DistanceMode { get; set; }
+    public string? ImagePath { get; set; }
 
     public List<Quest>? Quests { get; set; }
     public List<Commission>? Commissions { get; set; }
