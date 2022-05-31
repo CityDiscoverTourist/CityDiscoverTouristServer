@@ -13,12 +13,14 @@ public class QuestTypeService : BaseService, IQuestTypeService
     private readonly IQuestTypeRepository _questTypeRepository;
     private readonly IMapper _mapper;
     private readonly ISortHelper<QuestType> _sortHelper;
+    private readonly IBlobService _blobService;
 
-    public QuestTypeService(IMapper mapper, ISortHelper<QuestType> sortHelper, IQuestTypeRepository questTypeRepository)
+    public QuestTypeService(IMapper mapper, ISortHelper<QuestType> sortHelper, IQuestTypeRepository questTypeRepository, IBlobService blobService)
     {
         _mapper = mapper;
         _sortHelper = sortHelper;
         _questTypeRepository = questTypeRepository;
+        _blobService = blobService;
     }
 
     public PageList<QuestTypeResponseModel> GetAll(QuestTypeParams @params)
@@ -44,13 +46,23 @@ public class QuestTypeService : BaseService, IQuestTypeService
     {
         var entity = _mapper.Map<QuestType>(request);
         entity = await _questTypeRepository.Add(entity);
+
+        var imgPath = await _blobService.UploadQuestImgAndReturnImgPathAsync(request.Image, entity.Id);
+        entity.ImagePath = imgPath;
+        await _questTypeRepository.UpdateFields(entity, r => r.ImagePath!);
+
         return _mapper.Map<QuestTypeResponseModel>(entity);
     }
 
     public async Task<QuestTypeResponseModel> UpdateAsync(QuestTypeRequestModel request)
     {
+        var imgPath = await _blobService.UploadQuestImgAndReturnImgPathAsync(request.Image, request.Id);
+
         var entity = _mapper.Map<QuestType>(request);
-        entity = await _questTypeRepository.Update(entity);
+
+        entity.ImagePath = imgPath;
+        entity = await _questTypeRepository.UpdateFields(entity, r => r.ImagePath!);
+
         return _mapper.Map<QuestTypeResponseModel>(entity);
     }
 
