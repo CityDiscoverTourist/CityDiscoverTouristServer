@@ -11,8 +11,8 @@ public class Quest: BaseEntity
     public float Price { get; set; }
     public string? ImagePath { get; set; }
     public string? EstimatedTime { get; set; }
+    public string? AvailableTime { get; set; }
     public string? EstimatedDistance { get; set; }
-    public DateTime? AvailableTime { get; set; }
     public string? Status { get; set; }
 
     public DateTime? CreatedDate { get; set; }
