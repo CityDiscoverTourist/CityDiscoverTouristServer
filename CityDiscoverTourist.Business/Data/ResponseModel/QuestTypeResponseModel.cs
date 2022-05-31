@@ -7,4 +7,5 @@ public class QuestTypeResponseModel
     public string? Status { get; set; }
     public string? DurationMode { get; set; }
     public string? DistanceMode { get; set; }
+    public string? ImagePath { get; set; }
 }

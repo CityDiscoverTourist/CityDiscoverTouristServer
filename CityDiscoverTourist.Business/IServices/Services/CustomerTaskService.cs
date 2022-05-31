@@ -3,9 +3,11 @@ using CityDiscoverTourist.Business.Data.RequestModel;
 using CityDiscoverTourist.Business.Data.ResponseModel;
 using CityDiscoverTourist.Business.Helper;
 using CityDiscoverTourist.Business.Helper.Params;
+using CityDiscoverTourist.Business.Settings;
 using CityDiscoverTourist.Data.IRepositories;
 using CityDiscoverTourist.Data.Models;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json.Linq;
 
 namespace CityDiscoverTourist.Business.IServices.Services;
 
@@ -16,16 +18,20 @@ public class CustomerTaskService: BaseService, ICustomerTaskService
     private readonly ISortHelper<CustomerTask> _sortHelper;
     private readonly ICustomerQuestRepository _customerQuestRepo;
     private readonly IQuestItemRepository _questItemRepo;
+    private readonly ILocationRepository _locationRepo;
+    private static  GoogleApiSetting? _googleApiSettings;
     private const int PointWhenHitSuggestion = 150;
     private const int PointWhenWrongAnswer = 100;
 
-    public CustomerTaskService(ICustomerTaskRepository customerTaskRepository, IMapper mapper, ISortHelper<CustomerTask> sortHelper, ICustomerQuestRepository customerQuestRepo, IQuestItemRepository questItemRepo)
+    public CustomerTaskService(ICustomerTaskRepository customerTaskRepository, IMapper mapper, ISortHelper<CustomerTask> sortHelper, ICustomerQuestRepository customerQuestRepo, IQuestItemRepository questItemRepo, ILocationRepository locationRepo, GoogleApiSetting? googleApiSettings)
     {
         _customerTaskRepo = customerTaskRepository;
         _mapper = mapper;
         _sortHelper = sortHelper;
         _customerQuestRepo = customerQuestRepo;
         _questItemRepo = questItemRepo;
+        _locationRepo = locationRepo;
+        _googleApiSettings = googleApiSettings;
     }
 
     public PageList<CustomerTaskResponseModel> GetAll(CustomerTaskParams @params)
@@ -133,5 +139,40 @@ public class CustomerTaskService: BaseService, ICustomerTaskService
             .GetAllByCondition(x => x.CustomerQuestId == customerQuestId)
             .OrderByDescending(x => x.CurrentPoint)
             .LastOrDefaultAsync().Result!.CurrentPoint;
+    }
+
+    public IEnumerable<string> GetLongLatFromCurrentQuestItemOfCustomer(int customerQuestId)
+    {
+        //get long lat of current quest item customer prepare to do
+        var itemId = _customerTaskRepo
+            .GetAllByCondition(x => x.CustomerQuestId == customerQuestId)
+            .OrderByDescending(x => x.CurrentPoint)
+            .LastOrDefaultAsync().Result!.QuestItemId;
+
+        var locationOfQuestItem = _questItemRepo.Get(itemId).Result.LocationId;
+        var longLat = _locationRepo.Get(locationOfQuestItem).Result.Longitude + " " + _locationRepo.Get(locationOfQuestItem).Result.Latitude;
+        return new List<string> { longLat };
+    }
+
+    public float DistanceBetweenCustomerLocationAndQuestItem(int customerQuestId, float longitude, float latitude)
+    {
+        // get from db
+        var longLatOfQuestItem = GetLongLatFromCurrentQuestItemOfCustomer(customerQuestId);
+        // current user location get from flutter
+        //var placeId = _locationService.GetPlaceIdFromLongLat(longitude, latitude);
+
+        return CalculateDistance(longitude + " " + latitude, longLatOfQuestItem.First());
+    }
+
+    private static float CalculateDistance(string placeId, string longLat)
+    {
+        var baseUrl = $"https://maps.googleapis.com/maps/api/distancematrix/json?origins={placeId}" +
+                      $"&destinations={longLat}&key={_googleApiSettings!.ApiKey2}";
+        var client = new HttpClient();
+        var response = client.GetAsync(baseUrl).Result;
+        var content = response.Content.ReadAsStringAsync().Result;
+        var json = JObject.Parse(content);
+        var distance = json["rows"][0]["elements"][0]["distance"]["value"];
+        return distance!.Value<float>();
     }
 }

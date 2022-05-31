@@ -87,5 +87,9 @@ public class QuestService: BaseService, IQuestService
         {
             entities = entities.Where(r => r.Status!.Contains(param.Status));
         }
+        if (param.QuestTypeId != 0)
+        {
+            entities = entities.Where(r => r.QuestTypeId.Equals(param.QuestTypeId));
+        }
     }
 }
