@@ -53,14 +53,14 @@ public class QuestTypeController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<ApiResponse<QuestTypeResponseModel>> Post(QuestTypeRequestModel data)
+    public async Task<ApiResponse<QuestTypeResponseModel>> Post([FromForm] QuestTypeRequestModel data)
     {
         var entity = await _questTypeService.CreateAsync(data);
         return ApiResponse<QuestType>.Created(entity);
     }
 
     [HttpPut]
-    public async Task<ApiResponse<QuestTypeResponseModel>> Put(QuestTypeRequestModel data)
+    public async Task<ApiResponse<QuestTypeResponseModel>> Put([FromForm] QuestTypeRequestModel data)
     {
         var entity = await _questTypeService.UpdateAsync(data);
         return ApiResponse<QuestType>.Created(entity);
