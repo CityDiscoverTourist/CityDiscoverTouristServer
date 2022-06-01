@@ -5,6 +5,7 @@ using CityDiscoverTourist.Business.Helper;
 using CityDiscoverTourist.Business.Helper.Params;
 using CityDiscoverTourist.Data.IRepositories;
 using CityDiscoverTourist.Data.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace CityDiscoverTourist.Business.IServices.Services;
 
@@ -23,7 +24,9 @@ public class CityService: BaseService, ICityService
 
     public PageList<CityResponseModel> GetAll(CityParams @params)
     {
-        var listAll = _cityRepository.GetAll();
+        var listAll = _cityRepository.GetAll()
+            .Include(x => x.Areas)
+            .AsNoTracking();
 
         Search(ref listAll, @params);
 

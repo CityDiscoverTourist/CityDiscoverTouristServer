@@ -24,7 +24,7 @@ public class QuestItemService: BaseService, IQuestItemService
     public PageList<QuestItemResponseModel> GetAll(TaskParams @params)
     {
         var listAll = _taskRepository.GetAll();
-        //Search(ref listAll, @params);
+        Search(ref listAll, @params);
 
         var sortedQuests = _sortHelper.ApplySort(listAll, @params.OrderBy);
         var mappedData = _mapper.Map<IEnumerable<QuestItemResponseModel>>(sortedQuests);
@@ -67,7 +67,7 @@ public class QuestItemService: BaseService, IQuestItemService
         throw new NotImplementedException();
     }*/
 
-    /*private static void Search(ref IQueryable<QuestItem> entities, TaskParams param)
+    private static void Search(ref IQueryable<QuestItem> entities, TaskParams param)
     {
         if (!entities.Any() || string.IsNullOrWhiteSpace(param.Name) && string.IsNullOrWhiteSpace(param.Description)) return;
 
@@ -79,5 +79,5 @@ public class QuestItemService: BaseService, IQuestItemService
         var listAll = _taskRepository.GetAll();
         var count = listAll.Count(r => r.QuestId.Equals(questId));
         return count;
-    }*/
+    }
 }

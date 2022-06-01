@@ -1,3 +1,6 @@
+using AutoMapper.Configuration.Annotations;
+using CityDiscoverTourist.Data.Models;
+
 namespace CityDiscoverTourist.Business.Data.ResponseModel;
 
 public class QuestTypeResponseModel
@@ -8,4 +11,5 @@ public class QuestTypeResponseModel
     public string? DurationMode { get; set; }
     public string? DistanceMode { get; set; }
     public string? ImagePath { get; set; }
+    public List<QuestResponseModel>? Quests { get; set; }
 }

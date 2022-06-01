@@ -5,6 +5,7 @@ using CityDiscoverTourist.Business.Helper;
 using CityDiscoverTourist.Business.Helper.Params;
 using CityDiscoverTourist.Data.IRepositories;
 using CityDiscoverTourist.Data.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace CityDiscoverTourist.Business.IServices.Services;
 
@@ -25,13 +26,14 @@ public class QuestTypeService : BaseService, IQuestTypeService
 
     public PageList<QuestTypeResponseModel> GetAll(QuestTypeParams @params)
     {
-        var listAll = _questTypeRepository.GetAll();
+        var listAll = _questTypeRepository.GetAll()
+            .Include(x => x.Quests)
+            .AsNoTracking();
 
         Search(ref listAll, @params);
 
         var sortedQuests = _sortHelper.ApplySort(listAll, @params.OrderBy);
         var mappedData = _mapper.Map<IEnumerable<QuestTypeResponseModel>>(sortedQuests);
-
         return PageList<QuestTypeResponseModel>.ToPageList(mappedData, @params.PageNumber, @params.PageSize);
     }
 
