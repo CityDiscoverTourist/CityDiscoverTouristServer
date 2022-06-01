@@ -95,11 +95,11 @@ public class CustomerTaskService: BaseService, ICustomerTaskService
     public async Task<CustomerTaskResponseModel> DecreasePointWhenHitSuggestion(int customerQuestId)
     {
         var currentPoint = _customerTaskRepo
-            .GetAllByCondition(x => x.CustomerQuestId == customerQuestId)
+            .GetByCondition(x => x.CustomerQuestId == customerQuestId)
             .OrderByDescending(x => x.CurrentPoint)
             .LastOrDefaultAsync().Result!.CurrentPoint;
 
-        var customerTask = await _customerTaskRepo.GetAllByCondition(x => x.CustomerQuestId == customerQuestId)
+        var customerTask = await _customerTaskRepo.GetByCondition(x => x.CustomerQuestId == customerQuestId)
             .OrderByDescending(x => x.CurrentPoint)
             .LastOrDefaultAsync();
 
@@ -111,11 +111,11 @@ public class CustomerTaskService: BaseService, ICustomerTaskService
     public async Task<CustomerTaskResponseModel> DecreasePointWhenWrongAnswer(int customerQuestId)
     {
         var currentPoint = _customerTaskRepo
-            .GetAllByCondition(x => x.CustomerQuestId == customerQuestId)
+            .GetByCondition(x => x.CustomerQuestId == customerQuestId)
             .OrderByDescending(x => x.CurrentPoint)
             .LastOrDefaultAsync().Result!.CurrentPoint;
 
-        var customerTask = await _customerTaskRepo.GetAllByCondition(x => x.CustomerQuestId == customerQuestId)
+        var customerTask = await _customerTaskRepo.GetByCondition(x => x.CustomerQuestId == customerQuestId)
             .OrderByDescending(x => x.CurrentPoint)
             .LastOrDefaultAsync();
 
@@ -127,16 +127,16 @@ public class CustomerTaskService: BaseService, ICustomerTaskService
     public Task<bool> IsLastQuestItem(int customerQuestId)
     {
         var numOfItemCustomerHasDone = _customerTaskRepo
-            .GetAllByCondition(x => x.CustomerQuestId == customerQuestId).Count();
+            .GetByCondition(x => x.CustomerQuestId == customerQuestId).Count();
         var numOfItemInQuest = _questItemRepo
-            .GetAllByCondition(x => x.QuestId == _customerQuestRepo.Get(customerQuestId).Result.QuestId).Count();
+            .GetByCondition(x => x.QuestId == _customerQuestRepo.Get(customerQuestId).Result.QuestId).Count();
         return Task.FromResult(numOfItemCustomerHasDone == numOfItemInQuest);
     }
 
     public float GetLastPoint(int customerQuestId)
     {
         return _customerTaskRepo
-            .GetAllByCondition(x => x.CustomerQuestId == customerQuestId)
+            .GetByCondition(x => x.CustomerQuestId == customerQuestId)
             .OrderByDescending(x => x.CurrentPoint)
             .LastOrDefaultAsync().Result!.CurrentPoint;
     }
@@ -145,7 +145,7 @@ public class CustomerTaskService: BaseService, ICustomerTaskService
     {
         //get long lat of current quest item customer prepare to do
         var itemId = _customerTaskRepo
-            .GetAllByCondition(x => x.CustomerQuestId == customerQuestId)
+            .GetByCondition(x => x.CustomerQuestId == customerQuestId)
             .OrderByDescending(x => x.CurrentPoint)
             .LastOrDefaultAsync().Result!.QuestItemId;
 

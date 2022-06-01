@@ -13,4 +13,5 @@ public interface IQuestTypeService
     public Task<QuestTypeResponseModel> CreateAsync(QuestTypeRequestModel request);
     public Task<QuestTypeResponseModel> UpdateAsync(QuestTypeRequestModel request);
     public Task<QuestTypeResponseModel> DeleteAsync(int id);
+    public Task<int> CountQuestInQuestType(int questTypeId);
 }
