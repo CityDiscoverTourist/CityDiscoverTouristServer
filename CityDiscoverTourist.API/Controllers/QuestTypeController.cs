@@ -44,12 +44,20 @@ public class QuestTypeController : ControllerBase
 
     [HttpGet("{id:int}")]
     //[Cached(600)]
-
     public async Task<ApiResponse<QuestTypeResponseModel>> Get(int id)
     {
         var entity = await _questTypeService.Get(id);
 
         return ApiResponse<QuestType>.Ok(entity);
+    }
+
+    [HttpGet("count")]
+    //[Cached(600)]
+    public async Task<OkObjectResult> CountQuestInQuestType(int id)
+    {
+        var entity = await _questTypeService.CountQuestInQuestType(id);
+
+        return Ok(entity);
     }
 
     [HttpPost]

@@ -10,7 +10,7 @@ public class BaseService
                 throw new System.InvalidOperationException("Should not pass task here");
             //throw new RequestException(ErrorCodes.DataIsEmpty, $"{name} must be not null");
             case null:
-                throw new System.Exception($"{name} must be not null");
+                throw new KeyNotFoundException($"{name} must be not null");
         }
     }
 }

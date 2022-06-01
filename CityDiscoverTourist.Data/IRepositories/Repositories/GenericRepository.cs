@@ -75,7 +75,7 @@ namespace CityDiscoverTourist.Data.IRepositories.Repositories
             return _context.Set<T>().AsNoTracking();
         }
 
-        public IQueryable<T> GetAllByCondition(Expression<Func<T, bool>> expression)
+        public IQueryable<T> GetByCondition(Expression<Func<T, bool>> expression)
         {
             return _context.Set<T>().Where(expression).AsNoTracking();
         }
