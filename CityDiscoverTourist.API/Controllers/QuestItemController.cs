@@ -44,10 +44,19 @@ public class QuestItemController : ControllerBase
 
     [HttpGet("{id:int}")]
     //[Cached(600)]
-
     public async Task<ApiResponse<QuestItemResponseModel>> Get(int id)
     {
         var entity = await _taskService.Get(id);
+
+        return ApiResponse<QuestItem>.Ok(entity);
+    }
+
+
+    [HttpGet("get-by-quest-id/{questId:int}")]
+    //[Cached(600)]
+    public async Task<ApiResponse<List<QuestItemResponseModel>>> GetByQuestId(int questId)
+    {
+        var entity = await _taskService.GetByQuestId(questId);
 
         return ApiResponse<QuestItem>.Ok(entity);
     }
