@@ -1,6 +1,7 @@
 using CityDiscoverTourist.API.Response;
 using CityDiscoverTourist.Business.Data.RequestModel;
 using CityDiscoverTourist.Business.Data.ResponseModel;
+using CityDiscoverTourist.Business.Enums;
 using CityDiscoverTourist.Business.Helper;
 using CityDiscoverTourist.Business.Helper.Params;
 using CityDiscoverTourist.Business.IServices;
@@ -69,9 +70,9 @@ public class CustomerQuestController : ControllerBase
     }
 
     [HttpPut("update-end-point")]
-    public async Task<ApiResponse<CustomerQuestResponseModel>> UpdateEndPoint(int id)
+    public async Task<ApiResponse<CustomerQuestResponseModel>> UpdateEndPoint(int id, CommonStatus status)
     {
-        var entity = await _customerQuestService.UpdateEndPointWhenFinishAsync(id);
+        var entity = await _customerQuestService.UpdateEndPointAndStatusWhenFinishQuestAsync(id, status);
         return ApiResponse<CustomerQuestResponseModel>.Created(entity);
     }
 

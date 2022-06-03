@@ -4,6 +4,7 @@ using CityDiscoverTourist.Data.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CityDiscoverTourist.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220602120531_AddStatusField")]
+    partial class AddStatusField
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -273,9 +275,6 @@ namespace CityDiscoverTourist.Data.Migrations
                     b.Property<string>("FeedBack")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool>("IsFinished")
-                        .HasColumnType("bit");
-
                     b.Property<int>("QuestId")
                         .HasColumnType("int");
 
@@ -313,9 +312,6 @@ namespace CityDiscoverTourist.Data.Migrations
 
                     b.Property<int>("CustomerQuestId")
                         .HasColumnType("int");
-
-                    b.Property<bool>("IsFinished")
-                        .HasColumnType("bit");
 
                     b.Property<int>("QuestItemId")
                         .HasColumnType("int");

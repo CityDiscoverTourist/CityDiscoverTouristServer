@@ -20,10 +20,11 @@ public class CustomerTaskService: BaseService, ICustomerTaskService
     private readonly IQuestItemRepository _questItemRepo;
     private readonly ILocationRepository _locationRepo;
     private static  GoogleApiSetting? _googleApiSettings;
+    private readonly ILocationService _locationService;
     private const int PointWhenHitSuggestion = 150;
     private const int PointWhenWrongAnswer = 100;
 
-    public CustomerTaskService(ICustomerTaskRepository customerTaskRepository, IMapper mapper, ISortHelper<CustomerTask> sortHelper, ICustomerQuestRepository customerQuestRepo, IQuestItemRepository questItemRepo, ILocationRepository locationRepo, GoogleApiSetting? googleApiSettings)
+    public CustomerTaskService(ICustomerTaskRepository customerTaskRepository, IMapper mapper, ISortHelper<CustomerTask> sortHelper, ICustomerQuestRepository customerQuestRepo, IQuestItemRepository questItemRepo, ILocationRepository locationRepo, GoogleApiSetting? googleApiSettings, ILocationService locationService)
     {
         _customerTaskRepo = customerTaskRepository;
         _mapper = mapper;
@@ -32,6 +33,7 @@ public class CustomerTaskService: BaseService, ICustomerTaskService
         _questItemRepo = questItemRepo;
         _locationRepo = locationRepo;
         _googleApiSettings = googleApiSettings;
+        _locationService = locationService;
     }
 
     public PageList<CustomerTaskResponseModel> GetAll(CustomerTaskParams @params)
@@ -150,8 +152,8 @@ public class CustomerTaskService: BaseService, ICustomerTaskService
             .LastOrDefaultAsync().Result!.QuestItemId;
 
         var locationOfQuestItem = _questItemRepo.Get(itemId).Result.LocationId;
-        var longLat = _locationRepo.Get(locationOfQuestItem).Result.Longitude + " " + _locationRepo.Get(locationOfQuestItem).Result.Latitude;
-        return new List<string> { longLat };
+        var latLong = _locationRepo.Get(locationOfQuestItem).Result.Latitude + " " + _locationRepo.Get(locationOfQuestItem).Result.Longitude;
+        return new List<string> { latLong };
     }
 
     public float DistanceBetweenCustomerLocationAndQuestItem(int customerQuestId, float longitude, float latitude)
@@ -159,14 +161,14 @@ public class CustomerTaskService: BaseService, ICustomerTaskService
         // get from db
         var longLatOfQuestItem = GetLongLatFromCurrentQuestItemOfCustomer(customerQuestId);
         // current user location get from flutter
-        //var placeId = _locationService.GetPlaceIdFromLongLat(longitude, latitude);
+        var placeId = _locationService.GetPlaceIdFromLongLat(longitude, latitude);
 
-        return CalculateDistance(longitude + " " + latitude, longLatOfQuestItem.First());
+        return CalculateDistance(placeId, longLatOfQuestItem.First());
     }
 
     private static float CalculateDistance(string placeId, string longLat)
     {
-        var baseUrl = $"https://maps.googleapis.com/maps/api/distancematrix/json?origins={placeId}" +
+        var baseUrl = $"https://maps.googleapis.com/maps/api/distancematrix/json?origins=place_id:{placeId}" +
                       $"&destinations={longLat}&key={_googleApiSettings!.ApiKey2}";
         var client = new HttpClient();
         var response = client.GetAsync(baseUrl).Result;

@@ -6,6 +6,7 @@ public class CustomerTask: BaseEntity
     public string? Status { get; set; }
     public DateTime? CreatedDate { get; set; }
     public int CountSuggestion { get; set; }
+    public bool IsFinished { get; set; }
 
     public QuestItem? QuestItem { get; set; }
     public int QuestItemId { get; set; }

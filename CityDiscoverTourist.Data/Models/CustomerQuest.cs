@@ -7,6 +7,8 @@ public class CustomerQuest: BaseEntity
     public DateTime? CreatedDate { get; set; }
     public int Rating { get; set; }
     public string? FeedBack { get; set; }
+    public string? Status { get; set; }
+    public bool IsFinished { get; set; }
 
     public Quest? Quest { get; set; }
     public int QuestId { get; set; }

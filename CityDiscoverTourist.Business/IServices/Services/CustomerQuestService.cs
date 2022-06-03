@@ -2,6 +2,7 @@ using System.Globalization;
 using AutoMapper;
 using CityDiscoverTourist.Business.Data.RequestModel;
 using CityDiscoverTourist.Business.Data.ResponseModel;
+using CityDiscoverTourist.Business.Enums;
 using CityDiscoverTourist.Business.Exceptions;
 using CityDiscoverTourist.Business.Helper;
 using CityDiscoverTourist.Business.Helper.Params;
@@ -69,7 +70,7 @@ public class CustomerQuestService: BaseService, ICustomerQuestService
         return _mapper.Map<CustomerQuestResponseModel>(entity);
     }
 
-    public async Task<CustomerQuestResponseModel> UpdateEndPointWhenFinishAsync(int id)
+    public async Task<CustomerQuestResponseModel> UpdateEndPointAndStatusWhenFinishQuestAsync(int id, CommonStatus status)
     {
         var isLastItem = await _customerTaskService.IsLastQuestItem(id);
 
@@ -79,6 +80,7 @@ public class CustomerQuestService: BaseService, ICustomerQuestService
         var entity = await  _customerQuestRepository.Get(id);
 
         entity.EndPoint = lastPoint.ToString(CultureInfo.InvariantCulture);
+        entity.Status = CommonStatus.Done.ToString();
         entity = await _customerQuestRepository.UpdateFields(entity, x => x.EndPoint!);
 
         return _mapper.Map<CustomerQuestResponseModel>(entity);

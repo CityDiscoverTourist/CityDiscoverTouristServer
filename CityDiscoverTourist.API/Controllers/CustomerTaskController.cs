@@ -53,9 +53,9 @@ public class CustomerTaskController : ControllerBase
     }
 
     [HttpGet("test")]
-    public async Task<OkObjectResult> Demo(float log, float lat)
+    public async Task<OkObjectResult> Demo(float lng, float lat)
     {
-        var a = _customerTaskService.DistanceBetweenCustomerLocationAndQuestItem(3, log, lat);
+        var a = _customerTaskService.DistanceBetweenCustomerLocationAndQuestItem(8, lng, lat);
 
         return Ok(a);
     }
@@ -71,13 +71,6 @@ public class CustomerTaskController : ControllerBase
     public async Task<ApiResponse<CustomerTaskResponseModel>> Put(CustomerTaskRequestModel data)
     {
         var entity = await _customerTaskService.UpdateAsync(data);
-        return ApiResponse<CustomerTaskResponseModel>.Ok(entity);
-    }
-
-    [HttpPut("update-current-point")]
-    public async Task<ApiResponse<CustomerTaskResponseModel>> UpdateCurrentPoint(int id, float currentPoint)
-    {
-        var entity = await _customerTaskService.UpdateCurrentPointAsync(id, currentPoint);
         return ApiResponse<CustomerTaskResponseModel>.Ok(entity);
     }
 

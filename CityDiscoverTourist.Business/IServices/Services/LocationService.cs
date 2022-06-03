@@ -73,7 +73,7 @@ public class LocationService: BaseService, ILocationService
     public float[] GetLatLongFromPlaceId(string address)
     {
         var placeId = GetPlaceIdFromAddress(address);
-        var baseUrl = $"https://maps.googleapis.com/maps/api/place/details/json?place_id={placeId}&key={_googleApiSetting!.ApiKey}";
+        var baseUrl = $"https://maps.googleapis.com/maps/api/place/details/json?place_id={placeId}&key={_googleApiSetting!.ApiKey2}";
 
         var client = new HttpClient();
         var response = client.GetAsync(baseUrl).Result;
@@ -86,9 +86,9 @@ public class LocationService: BaseService, ILocationService
         return new float[] { float.Parse(latitude), float.Parse(longitude) };
     }
 
-    public string GetPlaceIdFromLongLat(float lat, float lng)
+    public string GetPlaceIdFromLongLat(float lng, float lat)
     {
-        var baseUrl = $"https://maps.googleapis.com/maps/api/place/nearbysearch/json?location={lat},{lng}&radius=500&type=restaurant&key={_googleApiSetting!.ApiKey}";
+        var baseUrl = $"https://maps.googleapis.com/maps/api/place/nearbysearch/json?location={lat},{lng}&radius=500&type=restaurant&key={_googleApiSetting!.ApiKey2}";
 
         var client = new HttpClient();
         var response = client.GetAsync(baseUrl).Result;
@@ -104,7 +104,7 @@ public class LocationService: BaseService, ILocationService
     private static string GetPlaceIdFromAddress(string address)
     {
         var baseUrl =
-            $"https://maps.googleapis.com/maps/api/place/findplacefromtext/json?input={address}&inputtype=textquery&fields=name,place_id&key={_googleApiSetting!.ApiKey}";
+            $"https://maps.googleapis.com/maps/api/place/findplacefromtext/json?input={address}&inputtype=textquery&fields=name,place_id&key={_googleApiSetting!.ApiKey2}";
 
         var client = new HttpClient();
         var response = client.GetAsync(baseUrl).Result;

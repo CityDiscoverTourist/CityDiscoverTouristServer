@@ -1,6 +1,6 @@
 namespace CityDiscoverTourist.Business.Enums;
 
-public enum TaskStatus
+public enum CommonStatus
 {
     Done,
     Canceled,
