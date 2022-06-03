@@ -62,6 +62,13 @@ public class QuestItemService: BaseService, IQuestItemService
         return _mapper.Map<QuestItemResponseModel>(entity);
     }
 
+    public async Task<List<QuestItemResponseModel>> GetByQuestId(int id)
+    {
+        var entity = _taskRepository.GetByCondition(x => x.QuestId == id).ToList();
+        CheckDataNotNull("QuestItem", entity);
+        return _mapper.Map<List<QuestItemResponseModel>>(entity);
+    }
+
     /*public int CountTaskInQuest(Guid questId)
     {
         throw new NotImplementedException();
