@@ -81,7 +81,8 @@ public class CustomerQuestService: BaseService, ICustomerQuestService
 
         entity.EndPoint = lastPoint.ToString(CultureInfo.InvariantCulture);
         entity.Status = CommonStatus.Done.ToString();
-        entity = await _customerQuestRepository.UpdateFields(entity, x => x.EndPoint!);
+        entity = await _customerQuestRepository.UpdateFields(entity, x => x.EndPoint!,
+            x => x.Status!);
 
         return _mapper.Map<CustomerQuestResponseModel>(entity);
     }
