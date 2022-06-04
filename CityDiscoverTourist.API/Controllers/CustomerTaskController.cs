@@ -39,7 +39,7 @@ public class CustomerTaskController : ControllerBase
             entity.HasPrevious,
         };
         Response.Headers.Add("X-Pagination", JsonConvert.SerializeObject(metadata));
-        var a = _customerTaskService.DistanceBetweenCustomerLocationAndQuestItem(8, 0, 0);
+        var a = _customerTaskService.IsCustomerAtQuestItemLocation(8, (float) 106.702810, (float) 10.783332);
         return ApiResponse<List<CustomerTask>>.Success(entity, metadata);
     }
 
@@ -50,14 +50,6 @@ public class CustomerTaskController : ControllerBase
         var entity = await _customerTaskService.Get(id);
 
         return ApiResponse<CustomerTaskResponseModel>.Ok(entity);
-    }
-
-    [HttpGet("test")]
-    public async Task<OkObjectResult> Demo(float lng, float lat)
-    {
-        var a = _customerTaskService.DistanceBetweenCustomerLocationAndQuestItem(8, lng, lat);
-
-        return Ok(a);
     }
 
     [HttpPost]

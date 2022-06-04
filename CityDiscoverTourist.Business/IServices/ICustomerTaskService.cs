@@ -21,5 +21,6 @@ public interface ICustomerTaskService
     public Task<bool> IsLastQuestItem(int customerQuestId);
     public float GetLastPoint(int customerQuestId);
     public IEnumerable<string> GetLongLatFromCurrentQuestItemOfCustomer(int customerQuestId);
-    public float DistanceBetweenCustomerLocationAndQuestItem(int customerQuestId, float longitude, float latitude);
+    public bool IsCustomerAtQuestItemLocation(int customerQuestId, float longitude, float latitude);
+
 }

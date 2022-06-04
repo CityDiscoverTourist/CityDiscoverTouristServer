@@ -23,6 +23,8 @@ public class CustomerTaskService: BaseService, ICustomerTaskService
     private readonly ILocationService _locationService;
     private const int PointWhenHitSuggestion = 150;
     private const int PointWhenWrongAnswer = 100;
+    private const float DistanceThreshold = 1000;
+
 
     public CustomerTaskService(ICustomerTaskRepository customerTaskRepository, IMapper mapper, ISortHelper<CustomerTask> sortHelper, ICustomerQuestRepository customerQuestRepo, IQuestItemRepository questItemRepo, ILocationRepository locationRepo, GoogleApiSetting? googleApiSettings, ILocationService locationService)
     {
@@ -152,24 +154,24 @@ public class CustomerTaskService: BaseService, ICustomerTaskService
             .LastOrDefaultAsync().Result!.QuestItemId;
 
         var locationOfQuestItem = _questItemRepo.Get(itemId).Result.LocationId;
-        var latLong = _locationRepo.Get(locationOfQuestItem).Result.Latitude + " " + _locationRepo.Get(locationOfQuestItem).Result.Longitude;
+        var latLong = _locationRepo.Get(locationOfQuestItem).Result.Latitude + "," + _locationRepo.Get(locationOfQuestItem).Result.Longitude;
         return new List<string> { latLong };
     }
 
-    public float DistanceBetweenCustomerLocationAndQuestItem(int customerQuestId, float longitude, float latitude)
+    public bool IsCustomerAtQuestItemLocation(int customerQuestId, float longitude, float latitude)
     {
         // get from db
         var longLatOfQuestItem = GetLongLatFromCurrentQuestItemOfCustomer(customerQuestId);
-        // current user location get from flutter
-        //var placeId = _locationService.GetPlaceIdFromLongLat(longitude, latitude);
 
-        return CalculateDistance("placeId", longLatOfQuestItem.First());
+        var distance = CalculateDistanceBetweenCustomerLocationAndQuestItem(longLatOfQuestItem.First(), latitude + "," + longitude);
+        return distance < DistanceThreshold;
     }
 
-    private static float CalculateDistance(string placeId, string longLat)
+
+    private static float CalculateDistanceBetweenCustomerLocationAndQuestItem(string latLongFromLocation, string latLongFromUserDevice)
     {
-        var baseUrl = $"https://maps.googleapis.com/maps/api/distancematrix/json?origins=place_id:{placeId}" +
-                      $"&destinations={longLat}&key={_googleApiSettings!.ApiKey2}";
+        var baseUrl = $"https://rsapi.goong.io/DistanceMatrix?origins={latLongFromLocation}" +
+                      $"&destinations={latLongFromUserDevice}&vehicle=car&api_key={_googleApiSettings!.ApiKey}";
         var client = new HttpClient();
         var response = client.GetAsync(baseUrl).Result;
         var content = response.Content.ReadAsStringAsync().Result;
