@@ -52,6 +52,12 @@ public class CustomerTaskController : ControllerBase
         return ApiResponse<CustomerTaskResponseModel>.Ok(entity);
     }
 
+    [HttpGet("check-location/{customerQuestId:int}")]
+    public Task<bool> CheckCustomerLocation(int customerQuestId, float latitude, float longitude)
+    {
+        return Task.FromResult(_customerTaskService.IsCustomerAtQuestItemLocation(customerQuestId, latitude, longitude));
+    }
+
     [HttpPost]
     public async Task<ApiResponse<CustomerTaskResponseModel>> Post(CustomerTaskRequestModel data)
     {
@@ -73,14 +79,14 @@ public class CustomerTaskController : ControllerBase
         return ApiResponse<CustomerTaskResponseModel>.Ok(entity);
     }
 
-    [HttpPut("decrease-point-suggestion")]
+    [HttpPut("decrease-point-suggestion/{customerQuestId:int}")]
     public async Task<ApiResponse<CustomerTaskResponseModel>> DecreasePointWhenHitSuggestion(int customerQuestId)
     {
         var entity = await _customerTaskService.DecreasePointWhenHitSuggestion(customerQuestId);
         return ApiResponse<CustomerTaskResponseModel>.Ok(entity);
     }
 
-    [HttpPut("decrease-point-wrong-answer")]
+    [HttpPut("decrease-point-wrong-answer/{customerQuestId:int}")]
     public async Task<ApiResponse<CustomerTaskResponseModel>> DecreasePointWhenWrongAnswer(int customerQuestId)
     {
         var entity = await _customerTaskService.DecreasePointWhenWrongAnswer(customerQuestId);
