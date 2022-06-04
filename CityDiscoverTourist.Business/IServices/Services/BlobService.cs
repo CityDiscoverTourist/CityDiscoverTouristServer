@@ -33,9 +33,12 @@ public class BlobService: IBlobService
     {
         if (file == null) return null;
 
+        var renameFile = file.FileName.Replace(file.FileName, containerName);
+
         var containerClient = _blobServiceClient.GetBlobContainerClient(containerName);
-        var blobClient = containerClient.GetBlobClient($"{questId}_{file.FileName}");
+        var blobClient = containerClient.GetBlobClient($"{questId}_{renameFile}");
         await blobClient.UploadAsync(file.OpenReadStream(), true);
+
         return blobClient.Uri.AbsoluteUri;
     }
 
