@@ -12,7 +12,7 @@ public interface ILocationService
     public Task<LocationResponseModel> Get(int id);
     public Task<LocationResponseModel> CreateAsync(LocationRequestModel request);
     public Task<LocationResponseModel> UpdateAsync(LocationRequestModel request);
+    public Task<LocationResponseModel> UpdateAddressAsync(LocationRequestModel request);
     public Task<LocationResponseModel> DeleteAsync(int id);
-    public float[] GetLatLongFromPlaceId(string address);
-    public string GetPlaceIdFromLongLat(float lng, float lat);
+    public string[] GetLatLongAndPlaceIdFromAddress(string address);
 }

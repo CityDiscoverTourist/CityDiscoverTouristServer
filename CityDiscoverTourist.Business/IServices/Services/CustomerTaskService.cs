@@ -161,9 +161,9 @@ public class CustomerTaskService: BaseService, ICustomerTaskService
         // get from db
         var longLatOfQuestItem = GetLongLatFromCurrentQuestItemOfCustomer(customerQuestId);
         // current user location get from flutter
-        var placeId = _locationService.GetPlaceIdFromLongLat(longitude, latitude);
+        //var placeId = _locationService.GetPlaceIdFromLongLat(longitude, latitude);
 
-        return CalculateDistance(placeId, longLatOfQuestItem.First());
+        return CalculateDistance("placeId", longLatOfQuestItem.First());
     }
 
     private static float CalculateDistance(string placeId, string longLat)

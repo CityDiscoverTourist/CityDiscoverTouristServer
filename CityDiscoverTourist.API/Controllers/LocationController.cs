@@ -66,6 +66,13 @@ public class LocationController : ControllerBase
         return ApiResponse<Location>.Created(entity);
     }
 
+    [HttpPut("update-address")]
+    public async Task<ApiResponse<LocationResponseModel>> UpdateAddressAsync(LocationRequestModel request)
+    {
+        var entity = await _locationService.UpdateAddressAsync(request);
+        return ApiResponse<Location>.Created(entity);
+    }
+
     [HttpDelete("{id:int}")]
     public async Task<ActionResult<ApiResponse<LocationResponseModel>>> Delete(int id)
     {
