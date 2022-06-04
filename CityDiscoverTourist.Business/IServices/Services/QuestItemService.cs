@@ -62,29 +62,23 @@ public class QuestItemService: BaseService, IQuestItemService
         return _mapper.Map<QuestItemResponseModel>(entity);
     }
 
-    public async Task<List<QuestItemResponseModel>> GetByQuestId(int id)
+    public async Task<QuestItemResponseModel> GetByQuestId(int id)
     {
         var entity = _taskRepository.GetByCondition(x => x.QuestId == id).ToList();
         CheckDataNotNull("QuestItem", entity);
-        return _mapper.Map<List<QuestItemResponseModel>>(entity);
+        return _mapper.Map<QuestItemResponseModel>(entity);
     }
-
-    /*public int CountTaskInQuest(Guid questId)
-    {
-        throw new NotImplementedException();
-    }*/
 
     private static void Search(ref IQueryable<QuestItem> entities, TaskParams param)
     {
-        if (!entities.Any() || string.IsNullOrWhiteSpace(param.Name) && string.IsNullOrWhiteSpace(param.Description)) return;
-
-        entities = entities.Where(x => x.Description!.Contains(param.Description!));
-    }
-
-    public int CountTaskInQuest(Guid questId)
-    {
-        var listAll = _taskRepository.GetAll();
-        var count = listAll.Count(r => r.QuestId.Equals(questId));
-        return count;
+        if (!entities.Any()) return;
+        if (param.Name != null)
+        {
+            entities = entities.Where(x => x.Content!.Contains(param.Name));
+        }
+        if (param.QuestId != 0)
+        {
+            entities = entities.Where(x => x.QuestId == param.QuestId);
+        }
     }
 }
