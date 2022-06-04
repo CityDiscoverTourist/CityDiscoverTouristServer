@@ -158,7 +158,7 @@ public class CustomerTaskService: BaseService, ICustomerTaskService
         return new List<string> { latLong };
     }
 
-    public bool IsCustomerAtQuestItemLocation(int customerQuestId, float longitude, float latitude)
+    public bool IsCustomerAtQuestItemLocation(int customerQuestId, float latitude, float longitude)
     {
         // get from db
         var longLatOfQuestItem = GetLongLatFromCurrentQuestItemOfCustomer(customerQuestId);
