@@ -28,7 +28,9 @@ public class QuestService: BaseService, IQuestService
 
     public PageList<QuestResponseModel> GetAll(QuestParams param)
     {
-        var listAll = _questRepository.GetAll();
+        var listAll = _questRepository.GetAll()
+            .Include(x => x.QuestItems)
+            .AsNoTracking();
 
         Search(ref listAll, param);
 

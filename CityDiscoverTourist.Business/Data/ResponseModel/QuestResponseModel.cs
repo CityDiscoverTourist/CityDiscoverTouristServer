@@ -18,4 +18,6 @@ public class QuestResponseModel
     public int QuestTypeId { get; set; }
     public int? QuestOwnerId { get; set; }
     public int AreaId { get; set; }
+
+    public List<QuestItemResponseModel>? QuestItems { get; set; }
 }
