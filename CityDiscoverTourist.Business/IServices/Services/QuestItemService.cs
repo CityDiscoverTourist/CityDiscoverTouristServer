@@ -80,5 +80,10 @@ public class QuestItemService: BaseService, IQuestItemService
         {
             entities = entities.Where(x => x.QuestId == param.QuestId);
         }
+
+        if (param.QuestItemTypeId != 0)
+        {
+            entities = entities.Where(x => x.QuestItemTypeId == param.QuestItemTypeId);
+        }
     }
 }
