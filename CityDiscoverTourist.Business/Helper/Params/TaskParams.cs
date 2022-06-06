@@ -4,7 +4,5 @@ public class TaskParams: QueryStringParams
 {
     public string? Name { get; set; }
     public int QuestId { get; set; }
-    public string? Address { get; set; }
-    public string? Description { get; set; }
-    public string? Status { get; set; }
+    public int QuestItemTypeId { get; set; }
 }
