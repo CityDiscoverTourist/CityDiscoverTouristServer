@@ -19,6 +19,7 @@ public class QuestResponseModel
     public int? QuestOwnerId { get; set; }
     public int AreaId { get; set; }
     public int CountQuestItem { get; set; }
+    public string? Address { get; set; }
 
     public List<QuestItemResponseModel>? QuestItems { get; set; }
 }
