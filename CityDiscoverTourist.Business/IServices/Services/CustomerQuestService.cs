@@ -34,10 +34,10 @@ public class CustomerQuestService: BaseService, ICustomerQuestService
     {
         var listAll = _customerQuestRepository.GetAll();
 
-        //Search(ref listAll, param);
+        Search(ref listAll, @params);
 
         var sortedQuests = _sortHelper.ApplySort(listAll, @params.OrderBy);
-        //var shapedData = _dataShaper.ShapeData(sortedQuests, param.Fields);
+
         var mappedData = _mapper.Map<IEnumerable<CustomerQuestResponseModel>>(sortedQuests);
         return PageList<CustomerQuestResponseModel>.ToPageList(mappedData, @params.PageNumber, @params.PageSize);
     }
@@ -87,10 +87,11 @@ public class CustomerQuestService: BaseService, ICustomerQuestService
         return _mapper.Map<CustomerQuestResponseModel>(entity);
     }
 
-    private int CountTaskInQuest(int questId)
+    private static void Search(ref IQueryable<CustomerQuest> entities, CustomerQuestParams param)
     {
-        var listAll = _taskRepository.GetAll();
-        var count = listAll.Count(r => r.QuestId.Equals(questId));
-        return count;
+        if (!entities.Any()) return;
+
+        if (param.QuestId != 0)
+            entities = entities.Where(x => x.QuestId == param.QuestId);
     }
 }
