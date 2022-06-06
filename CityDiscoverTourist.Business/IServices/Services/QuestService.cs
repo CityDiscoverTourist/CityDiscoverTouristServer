@@ -13,16 +13,18 @@ namespace CityDiscoverTourist.Business.IServices.Services;
 public class QuestService: BaseService, IQuestService
 {
     private readonly IQuestRepository _questRepository;
+    private readonly ILocationRepository _locationRepository;
     private readonly ISortHelper<Quest> _sortHelper;
     private readonly IMapper _mapper;
     private readonly IBlobService _blobService;
 
-    public QuestService(IQuestRepository questRepository, ISortHelper<Quest> sortHelper, IMapper mapper, IBlobService blobService)
+    public QuestService(IQuestRepository questRepository, ISortHelper<Quest> sortHelper, IMapper mapper, IBlobService blobService, ILocationRepository locationRepository)
     {
         _questRepository = questRepository;
         _sortHelper = sortHelper;
         _mapper = mapper;
         _blobService = blobService;
+        _locationRepository = locationRepository;
     }
 
 
@@ -35,9 +37,28 @@ public class QuestService: BaseService, IQuestService
         Search(ref listAll, param);
 
         var sortedQuests = _sortHelper.ApplySort(listAll, param.OrderBy);
-        //var shapedData = _dataShaper.ShapeData(sortedQuests, param.Fields);
+
         var mappedData = _mapper.Map<IEnumerable<QuestResponseModel>>(sortedQuests);
-        return PageList<QuestResponseModel>.ToPageList(mappedData, param.PageNumber, param.PageSize);
+        // count quest item for each quest
+        var questResponseModels = mappedData as QuestResponseModel[] ?? mappedData.ToArray();
+
+        for (var i = 0; i < questResponseModels.Length; i++)
+        {
+            for (var j = 0; j < questResponseModels[i].QuestItems!.Count; j++)
+            {
+                var questItem = questResponseModels[i].QuestItems![j];
+                if (questItem.ItemId != 0) continue;
+
+                var questItemId = questItem.Id;
+                var locationId = questItem.LocationId;
+                var location = _locationRepository.Get(locationId).Result.Address;
+                questResponseModels[i].Address = location;
+            }
+            var quest = questResponseModels[i].QuestItems!.Count;
+            questResponseModels[i].CountQuestItem = quest;
+        }
+
+        return PageList<QuestResponseModel>.ToPageList(questResponseModels, param.PageNumber, param.PageSize);
     }
 
     public async Task<QuestResponseModel> Get(int id)
