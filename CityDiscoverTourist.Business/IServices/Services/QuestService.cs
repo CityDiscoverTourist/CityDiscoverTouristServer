@@ -42,8 +42,11 @@ public class QuestService: BaseService, IQuestService
 
     public async Task<QuestResponseModel> Get(int id)
     {
-        var entity = await _questRepository.Get(id);
-        CheckDataNotNull("Quest", entity);
+        var entity = await _questRepository.GetByCondition(x => x.Id == id)
+            .Include(x => x.QuestItems)
+            .FirstOrDefaultAsync();
+
+        CheckDataNotNull("Quest", entity!);
         return _mapper.Map<QuestResponseModel>(entity);
     }
 
