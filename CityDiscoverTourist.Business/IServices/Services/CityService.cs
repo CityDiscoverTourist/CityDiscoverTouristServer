@@ -68,7 +68,7 @@ public class CityService: BaseService, ICityService
 
         if(param.Name != null)
         {
-            entities = entities.Where(r => r.Name!.Equals((param.Name)));
+            entities = entities.Where(r => r.Name!.Contains((param.Name)));
         }
     }
 }
