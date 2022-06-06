@@ -61,8 +61,11 @@ public class QuestItemTypeService : BaseService, IQuestItemTypeService
 
     private static void Search(ref IQueryable<QuestItemType> entities, TaskTypeParams param)
     {
-        if (!entities.Any() || string.IsNullOrWhiteSpace(param.Name) && string.IsNullOrWhiteSpace(param.Status)) return;
+        if (!entities.Any()) return;
 
-        //entities = entities.Where(r => r.Name!.Contains(param.Name!));
+        if (param.Name != null)
+        {
+            entities = entities.Where(x => x.Name!.Contains(param.Name));
+        }
     }
 }
