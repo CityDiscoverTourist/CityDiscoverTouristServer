@@ -4,6 +4,7 @@ namespace CityDiscoverTourist.Business.Data.ResponseModel;
 
 public class CustomerQuestResponseModel
 {
+    public int Id { get; set; }
     public string? BeginPoint { get; set; }
     public string? EndPoint { get; set; }
     public DateTime? CreatedDate { get; set; }

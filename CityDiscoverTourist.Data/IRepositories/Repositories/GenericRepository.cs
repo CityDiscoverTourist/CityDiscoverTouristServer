@@ -60,7 +60,7 @@ namespace CityDiscoverTourist.Data.IRepositories.Repositories
 
         public async Task<T> Get(TK id)
         {
-            return await _context.Set<T>().FindAsync(id);
+            return (await _context.Set<T>().FindAsync(id))!;
         }
 
         public async Task<T> Update(T entity)
