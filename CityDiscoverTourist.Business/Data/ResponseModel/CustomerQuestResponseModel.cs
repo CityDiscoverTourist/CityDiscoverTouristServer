@@ -12,8 +12,10 @@ public class CustomerQuestResponseModel
     public string? FeedBack { get; set; }
 
     public string? CustomerId { get; set; }
+    public bool IsFinished { get; set; }
 
-    public int CompetitionId { get; set; }
+    public int QuestId { get; set; }
+    public string? Status { get; set; }
 
     public Payment? PaymentMethod { get; set; }
 }
