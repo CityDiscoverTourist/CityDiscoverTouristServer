@@ -14,7 +14,7 @@ public static class ThirdPartyConfig
         services.AddSingleton(emailConfig);
         services.AddScoped<IEmailSender, EmailSender>();
 
-        var googleConfig = configuration.GetSection("Googleapis").Get<GoogleApiSetting>() ?? new GoogleApiSetting();
+        var googleConfig = configuration.GetSection("GoongApi").Get<GoongApiSetting>() ?? new GoongApiSetting();
         services.AddSingleton(googleConfig);
 
         services.AddSingleton(x => new BlobServiceClient(configuration.GetSection("AzureStorage:ConnectionString").Value));

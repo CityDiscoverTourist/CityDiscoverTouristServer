@@ -19,14 +19,14 @@ public class CustomerTaskService: BaseService, ICustomerTaskService
     private readonly ICustomerQuestRepository _customerQuestRepo;
     private readonly IQuestItemRepository _questItemRepo;
     private readonly ILocationRepository _locationRepo;
-    private static  GoogleApiSetting? _googleApiSettings;
+    private static  GoongApiSetting? _googleApiSettings;
     private readonly ILocationService _locationService;
     private const int PointWhenHitSuggestion = 150;
     private const int PointWhenWrongAnswer = 100;
     private const float DistanceThreshold = 1000;
 
 
-    public CustomerTaskService(ICustomerTaskRepository customerTaskRepository, IMapper mapper, ISortHelper<CustomerTask> sortHelper, ICustomerQuestRepository customerQuestRepo, IQuestItemRepository questItemRepo, ILocationRepository locationRepo, GoogleApiSetting? googleApiSettings, ILocationService locationService)
+    public CustomerTaskService(ICustomerTaskRepository customerTaskRepository, IMapper mapper, ISortHelper<CustomerTask> sortHelper, ICustomerQuestRepository customerQuestRepo, IQuestItemRepository questItemRepo, ILocationRepository locationRepo, GoongApiSetting? googleApiSettings, ILocationService locationService)
     {
         _customerTaskRepo = customerTaskRepository;
         _mapper = mapper;

@@ -16,9 +16,9 @@ public class LocationService: BaseService, ILocationService
     private readonly ILocationRepository _locationRepository;
     private readonly IMapper _mapper;
     private readonly ISortHelper<Location> _sortHelper;
-    private static  GoogleApiSetting? _googleApiSetting;
+    private static  GoongApiSetting? _googleApiSetting;
 
-    public LocationService(ILocationRepository locationRepository, IMapper mapper, ISortHelper<Location> sortHelper, GoogleApiSetting? googleApiSetting)
+    public LocationService(ILocationRepository locationRepository, IMapper mapper, ISortHelper<Location> sortHelper, GoongApiSetting? googleApiSetting)
     {
         _locationRepository = locationRepository;
         _mapper = mapper;
