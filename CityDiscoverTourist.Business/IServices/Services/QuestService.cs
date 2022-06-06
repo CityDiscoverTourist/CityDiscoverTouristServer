@@ -37,7 +37,15 @@ public class QuestService: BaseService, IQuestService
         var sortedQuests = _sortHelper.ApplySort(listAll, param.OrderBy);
         //var shapedData = _dataShaper.ShapeData(sortedQuests, param.Fields);
         var mappedData = _mapper.Map<IEnumerable<QuestResponseModel>>(sortedQuests);
-        return PageList<QuestResponseModel>.ToPageList(mappedData, param.PageNumber, param.PageSize);
+        // count quest item for each quest
+        var questResponseModels = mappedData as QuestResponseModel[] ?? mappedData.ToArray();
+        for (var i = 0; i < questResponseModels.Length; i++)
+        {
+            var quest = questResponseModels[i].QuestItems!.Count;
+            questResponseModels[i].CountQuestItem = quest;
+        }
+
+        return PageList<QuestResponseModel>.ToPageList(questResponseModels, param.PageNumber, param.PageSize);
     }
 
     public async Task<QuestResponseModel> Get(int id)
