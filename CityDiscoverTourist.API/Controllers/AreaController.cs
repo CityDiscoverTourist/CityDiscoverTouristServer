@@ -23,7 +23,7 @@ public class AreaController : ControllerBase
     {
         _areaService = areaService;
     }
-    [HttpGet("nganluong_4a26a97795b77d23ed6ec4abc3e53360.html")]
+    [HttpGet("nganluong_4a26a97795b77d23ed6ec4abc3e53360aa.html")]
     public ContentResult ConfirmVerify()
     {
         var html = System.IO.File.ReadAllText("D:\\C#\\CityDiscoverTourist\\CityDiscoverTourist.API\\nganluong_4a26a97795b77d23ed6ec4abc3e53360.html");
