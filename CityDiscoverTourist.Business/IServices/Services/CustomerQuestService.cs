@@ -53,6 +53,9 @@ public class CustomerQuestService: BaseService, ICustomerQuestService
     {
         var entity = _mapper.Map<CustomerQuest>(request);
 
+        entity.IsFinished = false;
+        entity.BeginPoint = CalculateBeginPoint(request.QuestId);
+
         entity = await _customerQuestRepository.Add(entity);
         return _mapper.Map<CustomerQuestResponseModel>(entity);
     }
@@ -70,7 +73,7 @@ public class CustomerQuestService: BaseService, ICustomerQuestService
         return _mapper.Map<CustomerQuestResponseModel>(entity);
     }
 
-    public async Task<CustomerQuestResponseModel> UpdateEndPointAndStatusWhenFinishQuestAsync(int id, CommonStatus status)
+    public async Task<CustomerQuestResponseModel> UpdateEndPointAndStatusWhenFinishQuestAsync(int id)
     {
         var isLastItem = await _customerTaskService.IsLastQuestItem(id);
 
@@ -81,8 +84,9 @@ public class CustomerQuestService: BaseService, ICustomerQuestService
 
         entity.EndPoint = lastPoint.ToString(CultureInfo.InvariantCulture);
         entity.Status = CommonStatus.Done.ToString();
+        entity.IsFinished = true;
         entity = await _customerQuestRepository.UpdateFields(entity, x => x.EndPoint!,
-            x => x.Status!);
+            x => x.Status!, x => x.IsFinished);
 
         return _mapper.Map<CustomerQuestResponseModel>(entity);
     }
@@ -93,5 +97,16 @@ public class CustomerQuestService: BaseService, ICustomerQuestService
 
         if (param.QuestId != 0)
             entities = entities.Where(x => x.QuestId == param.QuestId);
+    }
+
+    private int CountQuestItemInQuest(int questId)
+    {
+        var questItems = _taskRepository.GetByCondition(x => x.QuestId == questId);
+        return questItems.Count();
+    }
+
+    private string CalculateBeginPoint(int questId)
+    {
+        return (CountQuestItemInQuest(questId) * BaseMultiplier).ToString();
     }
 }
