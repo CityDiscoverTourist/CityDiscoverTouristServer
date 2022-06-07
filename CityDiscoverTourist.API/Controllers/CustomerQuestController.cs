@@ -70,9 +70,9 @@ public class CustomerQuestController : ControllerBase
     }
 
     [HttpPut("update-end-point")]
-    public async Task<ApiResponse<CustomerQuestResponseModel>> UpdateEndPoint(int id, CommonStatus status)
+    public async Task<ApiResponse<CustomerQuestResponseModel>> UpdateEndPoint(int id)
     {
-        var entity = await _customerQuestService.UpdateEndPointAndStatusWhenFinishQuestAsync(id, status);
+        var entity = await _customerQuestService.UpdateEndPointAndStatusWhenFinishQuestAsync(id);
         return ApiResponse<CustomerQuestResponseModel>.Created(entity);
     }
 
