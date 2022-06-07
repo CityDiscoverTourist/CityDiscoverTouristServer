@@ -26,7 +26,7 @@ public class AreaController : ControllerBase
     [HttpGet("nganluong_4a26a97795b77d23ed6ec4abc3e53360.html")]
     public ContentResult ConfirmVerify()
     {
-        var html = System.IO.File.ReadAllText(@"./nganluong_4a26a97795b77d23ed6ec4abc3e53360.html");
+        var html = System.IO.File.ReadAllText("D:\\C#\\CityDiscoverTourist\\CityDiscoverTourist.API\\nganluong_4a26a97795b77d23ed6ec4abc3e53360.html");
         return base.Content(html, "text/html");
     }
     [HttpGet]
