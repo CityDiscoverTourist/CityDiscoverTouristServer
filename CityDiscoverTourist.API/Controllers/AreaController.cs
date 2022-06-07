@@ -1,3 +1,4 @@
+using System.Net.Http.Headers;
 using CityDiscoverTourist.API.Cache;
 using CityDiscoverTourist.API.Response;
 using CityDiscoverTourist.Business.Data.RequestModel;
@@ -22,7 +23,12 @@ public class AreaController : ControllerBase
     {
         _areaService = areaService;
     }
-
+    [HttpGet("nganluong_4a26a97795b77d23ed6ec4abc3e53360.html")]
+    public ContentResult ConfirmVerify()
+    {
+        var html = System.IO.File.ReadAllText(@"./nganluong_4a26a97795b77d23ed6ec4abc3e53360.html");
+        return base.Content(html, "text/html");
+    }
     [HttpGet]
     //[Cached(600)]
     public ApiResponse<PageList<AreaResponseModel>> GetAll([FromQuery] AreaParams param)

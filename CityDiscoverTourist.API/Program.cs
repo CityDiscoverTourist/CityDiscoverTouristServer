@@ -9,6 +9,7 @@ using Serilog;
 using Serilog.Events;
 using CityDiscoverTourist.API.AzureHelper;
 using Microsoft.ApplicationInsights.Extensibility;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.Azure.KeyVault;
 using Microsoft.Azure.Services.AppAuthentication;
 
