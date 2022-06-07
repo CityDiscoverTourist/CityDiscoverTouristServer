@@ -66,9 +66,18 @@ public class QuestService: BaseService, IQuestService
         var entity = await _questRepository.GetByCondition(x => x.Id == id)
             .Include(x => x.QuestItems)
             .FirstOrDefaultAsync();
-
+        var mappedData = _mapper.Map<QuestResponseModel>(entity);
+        foreach (var item in mappedData.QuestItems!)
+        {
+            if (item.ItemId != 0) continue;
+            var questItemId = item.Id;
+            var locationId = item.LocationId;
+            var location = _locationRepository.Get(locationId).Result.Address;
+            mappedData.Address = location;
+        }
+        mappedData.CountQuestItem = mappedData.QuestItems!.Count;
         CheckDataNotNull("Quest", entity!);
-        return _mapper.Map<QuestResponseModel>(entity);
+        return mappedData;
     }
 
     public async Task<QuestResponseModel> CreateAsync(QuestRequestModel request)
