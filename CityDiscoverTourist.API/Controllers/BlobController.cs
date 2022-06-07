@@ -16,11 +16,11 @@ public class BlobController : ControllerBase
         _blobService = blobService;
     }
 
-    [HttpGet]
+    [HttpGet("nganluong_10d04f903b41a83e948f5653627e1a22.html")]
     public async Task<IActionResult> GetFileAsync()
     {
-        var result = await _blobService.GetImgPathAsync("14_student.PNG");
-        return File(result, "application/octet-stream");
+        var result = await _blobService.GetImgPathAsync("nganluong_10d04f903b41a83e948f5653627e1a22.html");
+        return base.Content(result, "text/html");
     }
 
     [HttpPost]

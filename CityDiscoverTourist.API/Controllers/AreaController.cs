@@ -33,7 +33,7 @@ public class AreaController : ControllerBase
     [HttpGet("nganluong_4a26a97795b77d23ed6ec4abc3e53360.html")]
     public ContentResult ConfirmVerify2()
     {
-        var html = System.IO.File.ReadAllText("nganluong_4a26a97795b77d23ed6ec4abc3e53360.html");
+        var html = System.IO.File.ReadAllText($"https://citytouriststorage.blob.core.windows.net/quest/nganluong_b33f67a3f413f9def8a0722681c96348.html");
         return base.Content(html, "text/html");
     }
     [HttpGet]

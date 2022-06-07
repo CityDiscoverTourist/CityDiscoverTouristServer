@@ -44,10 +44,23 @@ public class BlobService: IBlobService
 
 
     // get image from blob storage
-    public  Task<string> GetImgPathAsync(string name)
+    public async  Task<string> GetImgPathAsync(string name)
     {
         var containerClient = _blobServiceClient.GetBlobContainerClient("quest");
         var blobClient = containerClient.GetBlobClient(name);
-        return Task.FromResult(blobClient.Uri.AbsoluteUri);
+        //var blobInfo = await blobClient.DownloadAsync();
+        var line = "";
+        if (!await blobClient.ExistsAsync()) return line;
+
+        var response = await blobClient.DownloadAsync();
+
+        using var streamReader = new StreamReader(response.Value.Content);
+        while (!streamReader.EndOfStream)
+        {
+            line = await streamReader.ReadLineAsync();
+            Console.WriteLine(line);
+        }
+
+        return line;
     }
 }
