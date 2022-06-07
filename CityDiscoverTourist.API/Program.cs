@@ -23,7 +23,6 @@ try
 {
     Log.Information("Starting up");
     var builder = WebApplication.CreateBuilder(args);
-
     // Full setup of serilog. We read log settings from appsettings.json
     builder.Host.UseSerilog((context, services, configuration) => configuration
         .ReadFrom.Configuration(context.Configuration)
