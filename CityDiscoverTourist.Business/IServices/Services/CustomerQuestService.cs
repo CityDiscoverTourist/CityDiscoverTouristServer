@@ -19,7 +19,7 @@ public class CustomerQuestService: BaseService, ICustomerQuestService
     private readonly ICustomerTaskService _customerTaskService;
     private readonly IMapper _mapper;
     private readonly ISortHelper<CustomerQuest> _sortHelper;
-    private const int BaseMultiplier = 150;
+    private const int BaseMultiplier = 300;
 
     public CustomerQuestService(ICustomerQuestRepository customerQuestRepository, IMapper mapper, IQuestItemRepository taskRepository, ISortHelper<CustomerQuest> sortHelper, ICustomerTaskService customerTaskService)
     {
@@ -54,6 +54,7 @@ public class CustomerQuestService: BaseService, ICustomerQuestService
         var entity = _mapper.Map<CustomerQuest>(request);
 
         entity.IsFinished = false;
+        entity.Status = PaymentStatus.Success.ToString();
         entity.BeginPoint = CalculateBeginPoint(request.QuestId);
 
         entity = await _customerQuestRepository.Add(entity);

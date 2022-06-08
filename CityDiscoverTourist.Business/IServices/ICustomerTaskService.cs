@@ -10,14 +10,15 @@ public interface ICustomerTaskService
 {
     public PageList<CustomerTaskResponseModel> GetAll(CustomerTaskParams @params);
     public Task<CustomerTaskResponseModel> Get(int id);
-    public Task<CustomerTaskResponseModel> CreateAsync(CustomerTaskRequestModel request);
+    public Task<CustomerTaskResponseModel> CustomerStartQuest(CustomerTaskRequestModel request, int questId);
+    public Task<CustomerTaskResponseModel> MoveCustomerToNextTask(int questId, int customerQuestId);
     public Task<CustomerTaskResponseModel> UpdateAsync(CustomerTaskRequestModel request);
     public Task<CustomerTaskResponseModel> DeleteAsync(int id);
     public Task<CustomerTaskResponseModel> UpdateCurrentPointAsync(int id, float currentPoint);
     public Task<CustomerTaskResponseModel> UpdateStatusAsync(int id, string status);
     public string GetBeginPointsAsync(int customerQuestId);
     public Task<CustomerTaskResponseModel> DecreasePointWhenHitSuggestion(int customerQuestId);
-    public Task<CustomerTaskResponseModel> DecreasePointWhenWrongAnswer(int customerQuestId);
+    public Task<CustomerTaskResponseModel> CheckCustomerAnswer(int customerQuestId, string customerReply, int questItemId);
     public Task<bool> IsLastQuestItem(int customerQuestId);
     public float GetLastPoint(int customerQuestId);
     public IEnumerable<string> GetLongLatFromCurrentQuestItemOfCustomer(int customerQuestId);
