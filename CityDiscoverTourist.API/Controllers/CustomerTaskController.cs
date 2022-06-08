@@ -39,7 +39,6 @@ public class CustomerTaskController : ControllerBase
             entity.HasPrevious,
         };
         Response.Headers.Add("X-Pagination", JsonConvert.SerializeObject(metadata));
-        var a = _customerTaskService.IsCustomerAtQuestItemLocation(8, (float) 106.702810, (float) 10.783332);
         return ApiResponse<List<CustomerTask>>.Success(entity, metadata);
     }
 
@@ -58,10 +57,10 @@ public class CustomerTaskController : ControllerBase
         return Task.FromResult(_customerTaskService.IsCustomerAtQuestItemLocation(customerQuestId, latitude, longitude));
     }
 
-    [HttpPost]
-    public async Task<ApiResponse<CustomerTaskResponseModel>> Post(CustomerTaskRequestModel data)
+    [HttpPost("{questId:int}")]
+    public async Task<ApiResponse<CustomerTaskResponseModel>> Post(CustomerTaskRequestModel data, int questId)
     {
-        var entity = await _customerTaskService.CreateAsync(data);
+        var entity = await _customerTaskService.CustomerStartQuest(data, questId);
         return ApiResponse<CustomerTaskResponseModel>.Created(entity);
     }
 
@@ -69,6 +68,13 @@ public class CustomerTaskController : ControllerBase
     public async Task<ApiResponse<CustomerTaskResponseModel>> Put(CustomerTaskRequestModel data)
     {
         var entity = await _customerTaskService.UpdateAsync(data);
+        return ApiResponse<CustomerTaskResponseModel>.Ok(entity);
+    }
+
+    [HttpPut("move-next-task")]
+    public async Task<ApiResponse<CustomerTaskResponseModel>> MoveToNextTask(int questId, int customerQuestId)
+    {
+        var entity = await _customerTaskService.MoveCustomerToNextTask(questId, customerQuestId);
         return ApiResponse<CustomerTaskResponseModel>.Ok(entity);
     }
 
@@ -86,10 +92,10 @@ public class CustomerTaskController : ControllerBase
         return ApiResponse<CustomerTaskResponseModel>.Ok(entity);
     }
 
-    [HttpPut("decrease-point-wrong-answer/{customerQuestId:int}")]
-    public async Task<ApiResponse<CustomerTaskResponseModel>> DecreasePointWhenWrongAnswer(int customerQuestId)
+    [HttpPut("check-answer/{customerQuestId:int}")]
+    public async Task<ApiResponse<CustomerTaskResponseModel>> CheckCustomerAnswer(int customerQuestId, string customerReply, int questItemId)
     {
-        var entity = await _customerTaskService.DecreasePointWhenWrongAnswer(customerQuestId);
+        var entity = await _customerTaskService.CheckCustomerAnswer(customerQuestId, customerReply, questItemId);
         return ApiResponse<CustomerTaskResponseModel>.Ok(entity);
     }
 

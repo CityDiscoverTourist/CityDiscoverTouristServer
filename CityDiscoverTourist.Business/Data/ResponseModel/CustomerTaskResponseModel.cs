@@ -6,8 +6,9 @@ public class CustomerTaskResponseModel
     public float CurrentPoint { get; set; }
     public string? Status { get; set; }
     public DateTime? CreatedDate { get; set; }
-
     public int QuestItemId { get; set; }
-
     public int CustomerQuestId { get; set; }
+    public int CountWrongAnswer { get; set; }
+    public int CountSuggestion { get; set; }
+    public bool IsFinished { get; set; }
 }
