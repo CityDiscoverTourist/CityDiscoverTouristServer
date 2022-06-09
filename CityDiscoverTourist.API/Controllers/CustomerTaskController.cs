@@ -4,7 +4,6 @@ using CityDiscoverTourist.Business.Data.ResponseModel;
 using CityDiscoverTourist.Business.Helper;
 using CityDiscoverTourist.Business.Helper.Params;
 using CityDiscoverTourist.Business.IServices;
-using CityDiscoverTourist.Business.IServices.Services;
 using CityDiscoverTourist.Data.Models;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
@@ -64,25 +63,11 @@ public class CustomerTaskController : ControllerBase
         return ApiResponse<CustomerTaskResponseModel>.Created(entity);
     }
 
-    [HttpPut]
-    public async Task<ApiResponse<CustomerTaskResponseModel>> Put(CustomerTaskRequestModel data)
-    {
-        var entity = await _customerTaskService.UpdateAsync(data);
-        return ApiResponse<CustomerTaskResponseModel>.Ok(entity);
-    }
-
     [HttpPut("move-next-task")]
-    public async Task<ApiResponse<CustomerTaskResponseModel>> MoveToNextTask(int questId, int customerQuestId)
+    public async Task<int> MoveToNextTask(int questId, int customerQuestId)
     {
         var entity = await _customerTaskService.MoveCustomerToNextTask(questId, customerQuestId);
-        return ApiResponse<CustomerTaskResponseModel>.Ok(entity);
-    }
-
-    [HttpPut("update-status")]
-    public async Task<ApiResponse<CustomerTaskResponseModel>> UpdateStatus(int id, string status)
-    {
-        var entity = await _customerTaskService.UpdateStatusAsync(id, status);
-        return ApiResponse<CustomerTaskResponseModel>.Ok(entity);
+        return entity;
     }
 
     [HttpPut("decrease-point-suggestion/{customerQuestId:int}")]

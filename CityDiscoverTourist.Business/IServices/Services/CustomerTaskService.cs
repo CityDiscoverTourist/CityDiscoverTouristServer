@@ -1,4 +1,3 @@
-using System.Linq;
 using AutoMapper;
 using CityDiscoverTourist.Business.Data.RequestModel;
 using CityDiscoverTourist.Business.Data.ResponseModel;
@@ -23,24 +22,23 @@ public class CustomerTaskService: BaseService, ICustomerTaskService
     private readonly IQuestItemRepository _questItemRepo;
     private readonly ILocationRepository _locationRepo;
     private static  GoongApiSetting? _googleApiSettings;
-    private readonly ILocationService _locationService;
     private readonly ICustomerAnswerService _customerAnswerService;
     private const int PointWhenHitSuggestion = 150;
     private const int PointWhenWrongAnswer = 100;
     private const float DistanceThreshold = 1000;
 
 
-    public CustomerTaskService(ICustomerTaskRepository customerTaskRepository, IMapper mapper, ISortHelper<CustomerTask> sortHelper, ICustomerQuestRepository customerQuestRepo, IQuestItemRepository questItemRepo, ILocationRepository locationRepo, GoongApiSetting? googleApiSettings, ILocationService locationService, ICustomerAnswerService customerAnswerService)
+    public CustomerTaskService(ICustomerTaskRepository customerTaskRepository, IMapper mapper, ISortHelper<CustomerTask> sortHelper, ICustomerQuestRepository customerQuestRepo, IQuestItemRepository questItemRepo,
+        GoongApiSetting? googleApiSettings, ICustomerAnswerService customerAnswerService, ILocationRepository locationRepo)
     {
         _customerTaskRepo = customerTaskRepository;
         _mapper = mapper;
         _sortHelper = sortHelper;
         _customerQuestRepo = customerQuestRepo;
         _questItemRepo = questItemRepo;
-        _locationRepo = locationRepo;
         _googleApiSettings = googleApiSettings;
-        _locationService = locationService;
         _customerAnswerService = customerAnswerService;
+        _locationRepo = locationRepo;
     }
 
     public PageList<CustomerTaskResponseModel> GetAll(CustomerTaskParams @params)
@@ -73,8 +71,9 @@ public class CustomerTaskService: BaseService, ICustomerTaskService
         return _mapper.Map<CustomerTaskResponseModel>(entity);
     }
 
-    public async Task<CustomerTaskResponseModel> MoveCustomerToNextTask(int questId, int customerQuestId)
+    public async Task<int> MoveCustomerToNextTask(int questId, int customerQuestId)
     {
+        var nextQuestItemId = 0;
         // get last quest item customer has done
         var lastQuestItemCustomerFinished = _customerTaskRepo.GetAll()
             .Where(x => x.CustomerQuestId == customerQuestId && x.IsFinished == true)
@@ -89,24 +88,21 @@ public class CustomerTaskService: BaseService, ICustomerTaskService
             if (lastQuestItemCustomerFinished!.QuestItemId != questItem.Id) continue;
             //move to next quest item
             var nextQuestItem = questItems.FirstOrDefault(x => x.ItemId == questItem.Id);
+
+            if (nextQuestItem == null) throw new AppException("This quest is finished");
+
+            nextQuestItemId = nextQuestItem.Id;
             var customerTask = new CustomerTaskResponseModel
             {
                 CustomerQuestId = customerQuestId,
-                QuestItemId = nextQuestItem!.Id,
+                QuestItemId = nextQuestItem.Id,
                 IsFinished = false,
                 CurrentPoint = lastQuestItemCustomerFinished.CurrentPoint,
                 Status = "Progress"
             };
             await _customerTaskRepo.Add(_mapper.Map<CustomerTask>(customerTask));
         }
-        return await Get(customerQuestId);
-    }
-
-    public async Task<CustomerTaskResponseModel> UpdateAsync(CustomerTaskRequestModel request)
-    {
-        var entity = _mapper.Map<CustomerTask>(request);
-        entity = await _customerTaskRepo.Update(entity);
-        return _mapper.Map<CustomerTaskResponseModel>(entity);
+        return nextQuestItemId;
     }
 
     public async Task<CustomerTaskResponseModel> DeleteAsync(int id)
@@ -120,14 +116,6 @@ public class CustomerTaskService: BaseService, ICustomerTaskService
         var customerTask = await _customerTaskRepo.Get(id);
         customerTask.CurrentPoint = currentPoint;
         customerTask = await _customerTaskRepo.UpdateFields(customerTask, r => r.CurrentPoint);
-        return _mapper.Map<CustomerTaskResponseModel>(customerTask);
-    }
-
-    public async Task<CustomerTaskResponseModel> UpdateStatusAsync(int id, string status)
-    {
-        var customerTask = await _customerTaskRepo.Get(id);
-        customerTask.Status = status;
-        customerTask = await _customerTaskRepo.UpdateFields(customerTask, r => r.Status ?? string.Empty);
         return _mapper.Map<CustomerTaskResponseModel>(customerTask);
     }
 
@@ -149,7 +137,7 @@ public class CustomerTaskService: BaseService, ICustomerTaskService
 
         if (customerTask!.CountSuggestion >=3) throw new AppException("You have already hit 3 suggestions");
 
-        customerTask!.CurrentPoint = currentPoint - PointWhenHitSuggestion;
+        customerTask.CurrentPoint = currentPoint - PointWhenHitSuggestion;
         customerTask.CountSuggestion++;
 
         customerTask = await _customerTaskRepo.UpdateFields(customerTask, r => r.CurrentPoint,
@@ -161,7 +149,6 @@ public class CustomerTaskService: BaseService, ICustomerTaskService
     public async Task<CustomerTaskResponseModel> CheckCustomerAnswer(int customerQuestId, string customerReply, int questItemId)
     {
         var isCustomerReplyCorrect = true;
-        var isCustomerWrongAnswer = true;
 
         var currentPoint = _customerTaskRepo
             .GetByCondition(x => x.CustomerQuestId == customerQuestId)
@@ -231,7 +218,7 @@ public class CustomerTaskService: BaseService, ICustomerTaskService
             Note = note.ToString(),
             CustomerReply = customerReply
         };
-        var customerAnswerResponse = await _customerAnswerService.CreateAsync(customerAnswer);
+        await _customerAnswerService.CreateAsync(customerAnswer);
     }
 
     public Task<bool> IsLastQuestItem(int customerQuestId)
@@ -281,7 +268,7 @@ public class CustomerTaskService: BaseService, ICustomerTaskService
         var response = client.GetAsync(baseUrl).Result;
         var content = response.Content.ReadAsStringAsync().Result;
         var json = JObject.Parse(content);
-        var distance = json["rows"][0]["elements"][0]["distance"]["value"];
+        var distance = json["rows"]![0]!["elements"]![0]!["distance"]!["value"];
         return distance!.Value<float>();
     }
 

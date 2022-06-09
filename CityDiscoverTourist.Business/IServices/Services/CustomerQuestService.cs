@@ -8,7 +8,6 @@ using CityDiscoverTourist.Business.Helper;
 using CityDiscoverTourist.Business.Helper.Params;
 using CityDiscoverTourist.Data.IRepositories;
 using CityDiscoverTourist.Data.Models;
-using Quest = CityDiscoverTourist.Data.Models.Quest;
 
 namespace CityDiscoverTourist.Business.IServices.Services;
 
@@ -61,27 +60,20 @@ public class CustomerQuestService: BaseService, ICustomerQuestService
         return _mapper.Map<CustomerQuestResponseModel>(entity);
     }
 
-    public async Task<CustomerQuestResponseModel> UpdateAsync(CustomerQuestRequestModel request)
-    {
-        var entity = _mapper.Map<CustomerQuest>(request);
-        entity = await _customerQuestRepository.Update(entity);
-        return _mapper.Map<CustomerQuestResponseModel>(entity);
-    }
-
     public async Task<CustomerQuestResponseModel> DeleteAsync(int id)
     {
         var entity = await _customerQuestRepository.Delete(id);
         return _mapper.Map<CustomerQuestResponseModel>(entity);
     }
 
-    public async Task<CustomerQuestResponseModel> UpdateEndPointAndStatusWhenFinishQuestAsync(int id)
+    public async Task<CustomerQuestResponseModel> UpdateEndPointAndStatusWhenFinishQuestAsync(int customerQuestId)
     {
-        var isLastItem = await _customerTaskService.IsLastQuestItem(id);
+        var isLastItem = await _customerTaskService.IsLastQuestItem(customerQuestId);
 
         if (!isLastItem) throw new AppException("Quest is not finished");
 
-        var lastPoint = _customerTaskService.GetLastPoint(id);
-        var entity = await  _customerQuestRepository.Get(id);
+        var lastPoint = _customerTaskService.GetLastPoint(customerQuestId);
+        var entity = await  _customerQuestRepository.Get(customerQuestId);
 
         entity.EndPoint = lastPoint.ToString(CultureInfo.InvariantCulture);
         entity.Status = CommonStatus.Done.ToString();

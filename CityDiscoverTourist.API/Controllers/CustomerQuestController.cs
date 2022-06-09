@@ -1,15 +1,11 @@
 using CityDiscoverTourist.API.Response;
 using CityDiscoverTourist.Business.Data.RequestModel;
 using CityDiscoverTourist.Business.Data.ResponseModel;
-using CityDiscoverTourist.Business.Enums;
 using CityDiscoverTourist.Business.Helper;
 using CityDiscoverTourist.Business.Helper.Params;
 using CityDiscoverTourist.Business.IServices;
-using CityDiscoverTourist.Business.IServices.Services;
-using CityDiscoverTourist.Data.Models;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
-using Quest = CityDiscoverTourist.Data.Models.Quest;
 
 namespace CityDiscoverTourist.API.Controllers;
 
@@ -62,17 +58,10 @@ public class CustomerQuestController : ControllerBase
         return ApiResponse<CustomerQuestResponseModel>.Created(entity);
     }
 
-    [HttpPut]
-    public async Task<ApiResponse<CustomerQuestResponseModel>> Put(CustomerQuestRequestModel data)
+    [HttpPut("update-end-point/{customerQuestId:int}")]
+    public async Task<ApiResponse<CustomerQuestResponseModel>> UpdateEndPoint(int customerQuestId)
     {
-        var entity = await _customerQuestService.UpdateAsync(data);
-        return ApiResponse<CustomerQuestResponseModel>.Created(entity);
-    }
-
-    [HttpPut("update-end-point")]
-    public async Task<ApiResponse<CustomerQuestResponseModel>> UpdateEndPoint(int id)
-    {
-        var entity = await _customerQuestService.UpdateEndPointAndStatusWhenFinishQuestAsync(id);
+        var entity = await _customerQuestService.UpdateEndPointAndStatusWhenFinishQuestAsync(customerQuestId);
         return ApiResponse<CustomerQuestResponseModel>.Created(entity);
     }
 
