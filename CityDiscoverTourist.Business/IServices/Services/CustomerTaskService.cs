@@ -20,17 +20,18 @@ public class CustomerTaskService: BaseService, ICustomerTaskService
     private readonly ISortHelper<CustomerTask> _sortHelper;
     private readonly ICustomerQuestRepository _customerQuestRepo;
     private readonly IQuestItemRepository _questItemRepo;
+    private readonly IQuestRepository _questRepo;
     private readonly ILocationRepository _locationRepo;
     private readonly ISuggestionRepository _suggestionRepo;
     private static  GoongApiSetting? _googleApiSettings;
     private readonly ICustomerAnswerService _customerAnswerService;
     private const int PointWhenHitSuggestion = 150;
     private const int PointWhenWrongAnswer = 100;
-    private const float DistanceThreshold = 1000;
+    private const float DistanceThreshold = 500;
 
 
     public CustomerTaskService(ICustomerTaskRepository customerTaskRepository, IMapper mapper, ISortHelper<CustomerTask> sortHelper, ICustomerQuestRepository customerQuestRepo, IQuestItemRepository questItemRepo,
-        GoongApiSetting? googleApiSettings, ICustomerAnswerService customerAnswerService, ILocationRepository locationRepo, ISuggestionRepository suggestionRepo)
+        GoongApiSetting? googleApiSettings, ICustomerAnswerService customerAnswerService, ILocationRepository locationRepo, ISuggestionRepository suggestionRepo, IQuestRepository questRepo)
     {
         _customerTaskRepo = customerTaskRepository;
         _mapper = mapper;
@@ -41,6 +42,7 @@ public class CustomerTaskService: BaseService, ICustomerTaskService
         _customerAnswerService = customerAnswerService;
         _locationRepo = locationRepo;
         _suggestionRepo = suggestionRepo;
+        _questRepo = questRepo;
     }
 
     public PageList<CustomerTaskResponseModel> GetAll(CustomerTaskParams @params)
@@ -111,14 +113,6 @@ public class CustomerTaskService: BaseService, ICustomerTaskService
     {
         var entity = await _customerTaskRepo.Delete(id);
         return _mapper.Map<CustomerTaskResponseModel>(entity);
-    }
-
-    public async Task<CustomerTaskResponseModel> UpdateCurrentPointAsync(int id, float currentPoint)
-    {
-        var customerTask = await _customerTaskRepo.Get(id);
-        customerTask.CurrentPoint = currentPoint;
-        customerTask = await _customerTaskRepo.UpdateFields(customerTask, r => r.CurrentPoint);
-        return _mapper.Map<CustomerTaskResponseModel>(customerTask);
     }
 
     public string GetBeginPointsAsync(int customerQuestId)
@@ -211,18 +205,6 @@ public class CustomerTaskService: BaseService, ICustomerTaskService
         return _mapper.Map<CustomerTaskResponseModel>(customerTask);
     }
 
-    private async Task SaveCustomerAnswer(CustomerTask customerTask, string customerReply, NoteCustomerAnswer note)
-    {
-        var customerAnswer = new CustomerAnswerRequestModel
-        {
-            CustomerTaskId = customerTask.Id,
-            QuestItemId = customerTask.QuestItemId,
-            Note = note.ToString(),
-            CustomerReply = customerReply
-        };
-        await _customerAnswerService.CreateAsync(customerAnswer);
-    }
-
     public Task<bool> IsLastQuestItem(int customerQuestId)
     {
         var numOfItemCustomerHasDone = _customerTaskRepo
@@ -258,7 +240,7 @@ public class CustomerTaskService: BaseService, ICustomerTaskService
         // get from db
         var longLatOfQuestItem = GetLongLatFromCurrentQuestItemOfCustomer(customerQuestId);
 
-        var distance = CalculateDistanceBetweenCustomerLocationAndQuestItem(longLatOfQuestItem.First(), latitude + "," + longitude);
+        var distance = CalculateDistance(longLatOfQuestItem.First(), latitude + "," + longitude);
         return distance < DistanceThreshold;
     }
 
@@ -268,7 +250,17 @@ public class CustomerTaskService: BaseService, ICustomerTaskService
         return Task.FromResult(string.Join(",", suggestions));
     }
 
-    private static float CalculateDistanceBetweenCustomerLocationAndQuestItem(string latLongFromLocation, string latLongFromUserDevice)
+    public bool CheckCustomerLocationWithQuestLocation(int questId, float latitude, float longitude)
+    {
+        // check if customer is at quest location
+        var latLong = GetStartingAddress(questId);
+        var distance = CalculateDistance(latLong, latitude + "," + longitude);
+        return distance < DistanceThreshold;
+    }
+
+    #region MyRegion
+
+    private static float CalculateDistance(string latLongFromLocation, string latLongFromUserDevice)
     {
         var baseUrl = $"https://rsapi.goong.io/DistanceMatrix?origins={latLongFromLocation}" +
                       $"&destinations={latLongFromUserDevice}&vehicle=car&api_key={_googleApiSettings!.ApiKey}";
@@ -285,4 +277,27 @@ public class CustomerTaskService: BaseService, ICustomerTaskService
         var questItems = _questItemRepo.GetByCondition(x => x.QuestId == questId);
         return (from questItem in questItems.ToList() where questItem.ItemId == null select questItem.Id).FirstOrDefault();
     }
+
+    private string GetStartingAddress(int questId)
+    {
+        //get starting address of quest
+        var questItems = _questItemRepo.GetByCondition(x => x.QuestId == questId);
+        var locationId = questItems.FirstOrDefault(x => x.ItemId == null)!.LocationId;
+        var location = _locationRepo.Get(locationId).Result;
+        return  location.Latitude + "," + location.Longitude;
+    }
+
+    private async Task SaveCustomerAnswer(CustomerTask customerTask, string customerReply, NoteCustomerAnswer note)
+    {
+        var customerAnswer = new CustomerAnswerRequestModel
+        {
+            CustomerTaskId = customerTask.Id,
+            QuestItemId = customerTask.QuestItemId,
+            Note = note.ToString(),
+            CustomerReply = customerReply
+        };
+        await _customerAnswerService.CreateAsync(customerAnswer);
+    }
+
+    #endregion
 }

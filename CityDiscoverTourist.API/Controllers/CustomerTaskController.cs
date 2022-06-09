@@ -1,6 +1,7 @@
 using CityDiscoverTourist.API.Response;
 using CityDiscoverTourist.Business.Data.RequestModel;
 using CityDiscoverTourist.Business.Data.ResponseModel;
+using CityDiscoverTourist.Business.Exceptions;
 using CityDiscoverTourist.Business.Helper;
 using CityDiscoverTourist.Business.Helper.Params;
 using CityDiscoverTourist.Business.IServices;
@@ -38,6 +39,7 @@ public class CustomerTaskController : ControllerBase
             entity.HasPrevious,
         };
         Response.Headers.Add("X-Pagination", JsonConvert.SerializeObject(metadata));
+        var s = _customerTaskService.CustomerStartQuest(null, 10);
         return ApiResponse<List<CustomerTask>>.Success(entity, metadata);
     }
 
@@ -58,10 +60,20 @@ public class CustomerTaskController : ControllerBase
         return JsonConvert.SerializeObject(entity);
     }
 
-    [HttpGet("check-location/{customerQuestId:int}")]
-    public Task<bool> CheckCustomerLocation(int customerQuestId, float latitude, float longitude)
+    [HttpGet("check-location-with-quest-item/{customerQuestId:int}")]
+    public Task<bool> CheckCustomerLocationWithQuestItem(int customerQuestId, float latitude, float longitude)
     {
-        return Task.FromResult(_customerTaskService.IsCustomerAtQuestItemLocation(customerQuestId, latitude, longitude));
+        var isCustomerAtQuestItemLocation = _customerTaskService.IsCustomerAtQuestItemLocation(customerQuestId, latitude, longitude);
+        if (!isCustomerAtQuestItemLocation) throw new AppException("Customer is not at quest item location");
+        return Task.FromResult(isCustomerAtQuestItemLocation);
+    }
+
+    [HttpGet("check-location-with-quest/{questId:int}")]
+    public Task<bool> CheckCustomerLocationWithQuest(int questId, float latitude, float longitude)
+    {
+        var isCustomerAtQuestLocation = _customerTaskService.CheckCustomerLocationWithQuestLocation(questId, latitude, longitude);
+        if (!isCustomerAtQuestLocation) throw new AppException("Customer is not at quest location");
+        return Task.FromResult(isCustomerAtQuestLocation);
     }
 
     [HttpPost("{questId:int}")]
