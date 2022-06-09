@@ -7,7 +7,7 @@ public static class HealthCheckConfig
 {
     public static void SetUpHealthCheck(this IServiceCollection services, IConfiguration configuration)
     {
-        services.AddHealthChecks().AddDbContextCheck<ApplicationDbContext>()
-            .AddCheck<RedisHealthCheck>("redis");
+        services.AddHealthChecks().AddDbContextCheck<ApplicationDbContext>();
+        //.AddCheck<RedisHealthCheck>("redis");
     }
 }
