@@ -10,6 +10,9 @@ using Newtonsoft.Json;
 
 namespace CityDiscoverTourist.API.Controllers;
 
+/// <summary>
+///
+/// </summary>
 [Route("api/v{version:apiVersion}/[controller]s")]
 [ApiVersion("1.0")]
 [ApiController]
@@ -17,11 +20,20 @@ public class QuestTypeController : ControllerBase
 {
     private readonly IQuestTypeService _questTypeService;
 
+    /// <summary>
+    ///
+    /// </summary>
+    /// <param name="questTypeService"></param>
     public QuestTypeController(IQuestTypeService questTypeService)
     {
         _questTypeService = questTypeService;
     }
 
+    /// <summary>
+    /// get all quest types
+    /// </summary>
+    /// <param name="param"></param>
+    /// <returns></returns>
     [HttpGet]
     //[Cached(600)]
     public ApiResponse<PageList<QuestTypeResponseModel>> GetAll([FromQuery] QuestTypeParams param)
@@ -42,6 +54,11 @@ public class QuestTypeController : ControllerBase
         return ApiResponse<List<QuestTypeResponseModel>>.Success(entity, metadata);
     }
 
+    /// <summary>
+    /// get quest type by id
+    /// </summary>
+    /// <param name="id"></param>
+    /// <returns></returns>
     [HttpGet("{id:int}")]
     //[Cached(600)]
     public async Task<ApiResponse<QuestTypeResponseModel>> Get(int id)
@@ -51,6 +68,11 @@ public class QuestTypeController : ControllerBase
         return ApiResponse<QuestType>.Ok(entity);
     }
 
+    /// <summary>
+    /// count all quest in quest type
+    /// </summary>
+    /// <param name="id"></param>
+    /// <returns></returns>
     [HttpGet("count")]
     //[Cached(600)]
     public async Task<OkObjectResult> CountQuestInQuestType(int id)
@@ -60,6 +82,11 @@ public class QuestTypeController : ControllerBase
         return Ok(entity);
     }
 
+    /// <summary>
+    /// create quest type
+    /// </summary>
+    /// <param name="data"></param>
+    /// <returns></returns>
     [HttpPost]
     public async Task<ApiResponse<QuestTypeResponseModel>> Post([FromForm] QuestTypeRequestModel data)
     {
@@ -67,6 +94,11 @@ public class QuestTypeController : ControllerBase
         return ApiResponse<QuestType>.Created(entity);
     }
 
+    /// <summary>
+    /// update quest type
+    /// </summary>
+    /// <param name="data"></param>
+    /// <returns></returns>
     [HttpPut]
     public async Task<ApiResponse<QuestTypeResponseModel>> Put([FromForm] QuestTypeRequestModel data)
     {
@@ -74,6 +106,11 @@ public class QuestTypeController : ControllerBase
         return ApiResponse<QuestType>.Created(entity);
     }
 
+    /// <summary>
+    /// delete quest type
+    /// </summary>
+    /// <param name="id"></param>
+    /// <returns></returns>
     [HttpDelete("{id:int}")]
     public async Task<ActionResult<ApiResponse<QuestTypeResponseModel>>> Delete(int id)
     {

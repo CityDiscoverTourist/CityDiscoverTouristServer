@@ -11,6 +11,9 @@ using Newtonsoft.Json;
 
 namespace CityDiscoverTourist.API.Controllers;
 
+/// <summary>
+///
+/// </summary>
 [Route("api/v{version:apiVersion}/[controller]s")]
 [ApiVersion("1.0")]
 [ApiController]
@@ -18,11 +21,20 @@ public class CustomerAnswerController : ControllerBase
 {
     private readonly ICustomerAnswerService _customerAnswerService;
 
+    /// <summary>
+    ///
+    /// </summary>
+    /// <param name="customerAnswerService"></param>
     public CustomerAnswerController(ICustomerAnswerService customerAnswerService)
     {
         _customerAnswerService = customerAnswerService;
     }
 
+    /// <summary>
+    /// Get all customer answers
+    /// </summary>
+    /// <param name="param"></param>
+    /// <returns></returns>
     [HttpGet]
     //[Cached(600)]
     public ApiResponse<PageList<CustomerAnswerResponseModel>> GetAll([FromQuery] CustomerAnswerParams param)
@@ -42,6 +54,11 @@ public class CustomerAnswerController : ControllerBase
 
         return ApiResponse<List<CustomerAnswer>>.Success(entity, metadata);
     }
+    /// <summary>
+    /// Get customer answer by id
+    /// </summary>
+    /// <param name="id"></param>
+    /// <returns></returns>
     [HttpGet("{id:int}")]
     //[Cached(600)]
     public async Task<ApiResponse<CustomerAnswerResponseModel>> Get(int id)
@@ -51,6 +68,11 @@ public class CustomerAnswerController : ControllerBase
         return ApiResponse<CustomerAnswer>.Ok(entity);
     }
 
+    /// <summary>
+    /// Create a new CustomerAnswer
+    /// </summary>
+    /// <param name="data"></param>
+    /// <returns></returns>
     [HttpPost]
     public async Task<ApiResponse<CustomerAnswerResponseModel>> Post(CustomerAnswerRequestModel data)
     {
@@ -58,6 +80,11 @@ public class CustomerAnswerController : ControllerBase
         return ApiResponse<CustomerAnswer>.Created(entity);
     }
 
+    /// <summary>
+    /// Update a customer answer
+    /// </summary>
+    /// <param name="data"></param>
+    /// <returns></returns>
     [HttpPut]
     public async Task<ApiResponse<CustomerAnswerResponseModel>> Put(CustomerAnswerRequestModel data)
     {
@@ -65,6 +92,11 @@ public class CustomerAnswerController : ControllerBase
         return ApiResponse<CustomerAnswer>.Created(entity);
     }
 
+    /// <summary>
+    /// Delete a customer answer
+    /// </summary>
+    /// <param name="id"></param>
+    /// <returns></returns>
     [HttpDelete("{id:int}")]
     public async Task<ActionResult<ApiResponse<CustomerAnswerResponseModel>>> Delete(int id)
     {

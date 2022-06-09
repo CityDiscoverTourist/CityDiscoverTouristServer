@@ -8,6 +8,14 @@
         <PackageCertificateThumbprint>099822424207a0cf4eb1882413c031c05c1d91d3</PackageCertificateThumbprint>
     </PropertyGroup>
 
+    <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+      <DocumentationFile>bin\Debug\CityDiscoverTourist.API.xml</DocumentationFile>
+    </PropertyGroup>
+
+    <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+      <DocumentationFile>bin\Release\CityDiscoverTourist.API.xml</DocumentationFile>
+    </PropertyGroup>
+
     <ItemGroup>
         <PackageReference Include="Azure.Extensions.AspNetCore.Configuration.Secrets" Version="1.0.0" />
         <PackageReference Include="Azure.Identity" Version="1.4.0" />

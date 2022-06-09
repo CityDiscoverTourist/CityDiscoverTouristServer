@@ -11,6 +11,9 @@ using Newtonsoft.Json;
 
 namespace CityDiscoverTourist.API.Controllers;
 
+/// <summary>
+///
+/// </summary>
 [Route("api/v{version:apiVersion}/cites")]
 [ApiVersion("1.0")]
 [ApiController]
@@ -18,11 +21,20 @@ public class CityController : ControllerBase
 {
     private readonly ICityService _cityService;
 
+    /// <summary>
+    ///
+    /// </summary>
+    /// <param name="cityService"></param>
     public CityController(ICityService cityService)
     {
         _cityService = cityService;
     }
 
+    /// <summary>
+    /// get all cities
+    /// </summary>
+    /// <param name="param"></param>
+    /// <returns></returns>
     [HttpGet]
     //[Cached(600)]
     public ApiResponse<PageList<CityResponseModel>> GetAll([FromQuery] CityParams param)
@@ -43,6 +55,11 @@ public class CityController : ControllerBase
         return ApiResponse<List<City>>.Success(entity, metadata);
     }
 
+    /// <summary>
+    /// get city by id
+    /// </summary>
+    /// <param name="id"></param>
+    /// <returns></returns>
     [HttpGet("{id:int}")]
     //[Cached(600)]
 
@@ -53,6 +70,11 @@ public class CityController : ControllerBase
         return ApiResponse<City>.Ok(entity);
     }
 
+    /// <summary>
+    /// create city
+    /// </summary>
+    /// <param name="data"></param>
+    /// <returns></returns>
     [HttpPost]
     public async Task<ApiResponse<CityResponseModel>> Post(CityRequestModel data)
     {
@@ -60,6 +82,11 @@ public class CityController : ControllerBase
         return ApiResponse<City>.Created(entity);
     }
 
+    /// <summary>
+    /// update city
+    /// </summary>
+    /// <param name="data"></param>
+    /// <returns></returns>
     [HttpPut]
     public async Task<ApiResponse<CityResponseModel>> Put([FromBody] CityRequestModel data)
     {
@@ -67,6 +94,11 @@ public class CityController : ControllerBase
         return ApiResponse<City>.Created(entity);
     }
 
+    /// <summary>
+    /// delete city
+    /// </summary>
+    /// <param name="id"></param>
+    /// <returns></returns>
     [HttpDelete("{id:int}")]
     public async Task<ActionResult<ApiResponse<CityResponseModel>>> Delete(int id)
     {

@@ -11,6 +11,9 @@ using Newtonsoft.Json;
 
 namespace CityDiscoverTourist.API.Controllers;
 
+/// <summary>
+///
+/// </summary>
 [Route("api/v{version:apiVersion}/[controller]s")]
 [ApiVersion("1.0")]
 [ApiController]
@@ -18,11 +21,20 @@ public class QuestController : ControllerBase
 {
     private readonly IQuestService _questService;
 
+    /// <summary>
+    ///
+    /// </summary>
+    /// <param name="questService"></param>
     public QuestController(IQuestService questService)
     {
         _questService = questService;
     }
 
+    /// <summary>
+    /// get all quests
+    /// </summary>
+    /// <param name="param"></param>
+    /// <returns></returns>
     [HttpGet]
     //[Cached(600)]
     public ApiResponse<PageList<QuestResponseModel>> GetAll([FromQuery] QuestParams param)
@@ -43,6 +55,11 @@ public class QuestController : ControllerBase
         return ApiResponse<List<QuestResponseModel>>.Success(entity, metadata);
     }
 
+    /// <summary>
+    /// get quest by id
+    /// </summary>
+    /// <param name="id"></param>
+    /// <returns></returns>
     [HttpGet("{id:int}")]
     //[Cached(600)]
 
@@ -53,6 +70,11 @@ public class QuestController : ControllerBase
         return ApiResponse<QuestResponseModel>.Ok(entity);
     }
 
+    /// <summary>
+    /// create a new quest
+    /// </summary>
+    /// <param name="data"></param>
+    /// <returns></returns>
     [HttpPost]
     public async Task<ApiResponse<QuestResponseModel>> Post([FromForm] QuestRequestModel data)
     {
@@ -60,6 +82,11 @@ public class QuestController : ControllerBase
         return ApiResponse<Quest>.Created(entity);
     }
 
+    /// <summary>
+    /// update quest
+    /// </summary>
+    /// <param name="data"></param>
+    /// <returns></returns>
     [HttpPut]
     public async Task<ApiResponse<QuestResponseModel>> Put([FromForm] QuestRequestModel data)
     {
@@ -67,6 +94,11 @@ public class QuestController : ControllerBase
         return ApiResponse<Quest>.Created(entity);
     }
 
+    /// <summary>
+    /// delete quest
+    /// </summary>
+    /// <param name="id"></param>
+    /// <returns></returns>
     [HttpDelete("{id:int}")]
     public async Task<ActionResult<ApiResponse<QuestResponseModel>>> Delete(int id)
     {

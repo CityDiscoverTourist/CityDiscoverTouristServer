@@ -12,6 +12,9 @@ using Newtonsoft.Json;
 
 namespace CityDiscoverTourist.API.Controllers;
 
+/// <summary>
+///
+/// </summary>
 [Route("api/v{version:apiVersion}/[controller]s")]
 [ApiVersion("1.0")]
 [ApiController]
@@ -19,10 +22,15 @@ public class AreaController : ControllerBase
 {
     private readonly IAreaService _areaService;
 
+    /// <inheritdoc />
     public AreaController(IAreaService areaService)
     {
         _areaService = areaService;
     }
+    /// <summary>
+    ///
+    /// </summary>
+    /// <returns></returns>
     [HttpGet("nganluong_4a26a97795b77d23ed6ec4abc3e53360aa.html")]
     public ContentResult ConfirmVerify()
     {
@@ -30,12 +38,22 @@ public class AreaController : ControllerBase
         return base.Content(html, "text/html");
     }
 
+    /// <summary>
+    ///
+    /// </summary>
+    /// <returns></returns>
     [HttpGet("nganluong_4a26a97795b77d23ed6ec4abc3e53360.html")]
     public ContentResult ConfirmVerify2()
     {
         var html = System.IO.File.ReadAllText($"https://citytouriststorage.blob.core.windows.net/quest/nganluong_b33f67a3f413f9def8a0722681c96348.html");
         return base.Content(html, "text/html");
     }
+
+    /// <summary>
+    /// get all areas
+    /// </summary>
+    /// <param name="param"></param>
+    /// <returns></returns>
     [HttpGet]
     //[Cached(600)]
     public ApiResponse<PageList<AreaResponseModel>> GetAll([FromQuery] AreaParams param)
@@ -56,6 +74,11 @@ public class AreaController : ControllerBase
         return ApiResponse<List<AreaResponseModel>>.Success(entity, metadata);
     }
 
+    /// <summary>
+    /// get area by id
+    /// </summary>
+    /// <param name="id"></param>
+    /// <returns></returns>
     [HttpGet("{id:int}")]
     //[Cached(600)]
 
@@ -66,6 +89,11 @@ public class AreaController : ControllerBase
         return ApiResponse<Area>.Ok(entity);
     }
 
+    /// <summary>
+    /// create area
+    /// </summary>
+    /// <param name="data"></param>
+    /// <returns></returns>
     [HttpPost]
     public async Task<ApiResponse<AreaResponseModel>> Post(AreaRequestModel data)
     {
@@ -73,6 +101,11 @@ public class AreaController : ControllerBase
         return ApiResponse<Area>.Created(entity);
     }
 
+    /// <summary>
+    /// update area
+    /// </summary>
+    /// <param name="data"></param>
+    /// <returns></returns>
     [HttpPut]
     public async Task<ApiResponse<AreaResponseModel>> Put([FromBody] AreaRequestModel data)
     {
@@ -80,6 +113,11 @@ public class AreaController : ControllerBase
         return ApiResponse<Area>.Created(entity);
     }
 
+    /// <summary>
+    /// delete area
+    /// </summary>
+    /// <param name="id"></param>
+    /// <returns></returns>
     [HttpDelete("{id:int}")]
     public async Task<ActionResult<ApiResponse<AreaResponseModel>>> Delete(int id)
     {

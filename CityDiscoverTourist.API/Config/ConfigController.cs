@@ -114,6 +114,8 @@ public static class ConfigController
         services.AddSwaggerGen(c =>
         {
             c.SwaggerDoc("v1", new OpenApiInfo { Title = "City Tourist", Version = "v1" });
+            var filePath = Path.Combine(System.AppContext.BaseDirectory, "CityDiscoverTourist.API.xml");
+            c.IncludeXmlComments(filePath);
         });
 
         services.AddSwaggerGen(setup =>

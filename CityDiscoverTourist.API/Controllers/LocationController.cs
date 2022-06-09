@@ -10,6 +10,9 @@ using Newtonsoft.Json;
 
 namespace CityDiscoverTourist.API.Controllers;
 
+/// <summary>
+///
+/// </summary>
 [Route("api/v{version:apiVersion}/[controller]s")]
 [ApiVersion("1.0")]
 [ApiController]
@@ -17,11 +20,20 @@ public class LocationController : ControllerBase
 {
     private readonly ILocationService _locationService;
 
+    /// <summary>
+    ///
+    /// </summary>
+    /// <param name="locationService"></param>
     public LocationController(ILocationService locationService)
     {
         _locationService = locationService;
     }
 
+    /// <summary>
+    /// get all locations
+    /// </summary>
+    /// <param name="param"></param>
+    /// <returns></returns>
     [HttpGet]
     //[Cached(600)]
     public ApiResponse<PageList<LocationResponseModel>> GetAll([FromQuery] LocationParams param)
@@ -42,6 +54,11 @@ public class LocationController : ControllerBase
         return ApiResponse<List<Location>>.Success(entity, metadata);
     }
 
+    /// <summary>
+    /// get location by id
+    /// </summary>
+    /// <param name="id"></param>
+    /// <returns></returns>
     [HttpGet("{id:int}")]
     //[Cached(600)]
 
@@ -52,6 +69,11 @@ public class LocationController : ControllerBase
         return ApiResponse<Location>.Ok(entity);
     }
 
+    /// <summary>
+    /// create location
+    /// </summary>
+    /// <param name="data"></param>
+    /// <returns></returns>
     [HttpPost]
     public async Task<ApiResponse<LocationResponseModel>> Post(LocationRequestModel data)
     {
@@ -59,6 +81,11 @@ public class LocationController : ControllerBase
         return ApiResponse<Location>.Created(entity);
     }
 
+    /// <summary>
+    /// update location
+    /// </summary>
+    /// <param name="data"></param>
+    /// <returns></returns>
     [HttpPut]
     public async Task<ApiResponse<LocationResponseModel>> Put([FromBody] LocationRequestModel data)
     {
@@ -66,6 +93,11 @@ public class LocationController : ControllerBase
         return ApiResponse<Location>.Created(entity);
     }
 
+    /// <summary>
+    /// update address in location
+    /// </summary>
+    /// <param name="request"></param>
+    /// <returns></returns>
     [HttpPut("update-address")]
     public async Task<ApiResponse<LocationResponseModel>> UpdateAddressAsync(LocationRequestModel request)
     {
@@ -73,6 +105,11 @@ public class LocationController : ControllerBase
         return ApiResponse<Location>.Created(entity);
     }
 
+    /// <summary>
+    /// delete location by id
+    /// </summary>
+    /// <param name="id"></param>
+    /// <returns></returns>
     [HttpDelete("{id:int}")]
     public async Task<ActionResult<ApiResponse<LocationResponseModel>>> Delete(int id)
     {

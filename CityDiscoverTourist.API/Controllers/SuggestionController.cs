@@ -10,6 +10,9 @@ using Newtonsoft.Json;
 
 namespace CityDiscoverTourist.API.Controllers;
 
+/// <summary>
+///
+/// </summary>
 [Route("api/v{version:apiVersion}/[controller]s")]
 [ApiVersion("1.0")]
 [ApiController]
@@ -17,11 +20,20 @@ public class SuggestionController : ControllerBase
 {
     private readonly ISuggestionService _suggestionService;
 
+    /// <summary>
+    ///
+    /// </summary>
+    /// <param name="suggestionService"></param>
     public SuggestionController(ISuggestionService suggestionService)
     {
         _suggestionService = suggestionService;
     }
 
+    /// <summary>
+    /// get all suggestions
+    /// </summary>
+    /// <param name="param"></param>
+    /// <returns></returns>
     [HttpGet]
     //[Cached(600)]
     public ApiResponse<PageList<SuggestionResponseModel>> GetAll([FromQuery] SuggestionParams param)
@@ -42,6 +54,11 @@ public class SuggestionController : ControllerBase
         return ApiResponse<List<Suggestion>>.Success(entity, metadata);
     }
 
+    /// <summary>
+    /// get suggestion by id
+    /// </summary>
+    /// <param name="id"></param>
+    /// <returns></returns>
     [HttpGet("{id:int}")]
     //[Cached(600)]
 
@@ -52,6 +69,11 @@ public class SuggestionController : ControllerBase
         return ApiResponse<Suggestion>.Ok(entity);
     }
 
+    /// <summary>
+    /// create suggestion
+    /// </summary>
+    /// <param name="data"></param>
+    /// <returns></returns>
     [HttpPost]
     public async Task<ApiResponse<SuggestionResponseModel>> Post(SuggestionRequestModel data)
     {
@@ -59,6 +81,11 @@ public class SuggestionController : ControllerBase
         return ApiResponse<Suggestion>.Created(entity);
     }
 
+    /// <summary>
+    /// update suggestion
+    /// </summary>
+    /// <param name="data"></param>
+    /// <returns></returns>
     [HttpPut]
     public async Task<ApiResponse<SuggestionResponseModel>> Put([FromBody] SuggestionRequestModel data)
     {
@@ -66,6 +93,11 @@ public class SuggestionController : ControllerBase
         return ApiResponse<Suggestion>.Created(entity);
     }
 
+    /// <summary>
+    /// delete suggestion
+    /// </summary>
+    /// <param name="id"></param>
+    /// <returns></returns>
     [HttpDelete("{id:int}")]
     public async Task<ActionResult<ApiResponse<SuggestionResponseModel>>> Delete(int id)
     {

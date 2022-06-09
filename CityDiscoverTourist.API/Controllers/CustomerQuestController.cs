@@ -9,6 +9,9 @@ using Newtonsoft.Json;
 
 namespace CityDiscoverTourist.API.Controllers;
 
+/// <summary>
+///
+/// </summary>
 [Route("api/v{version:apiVersion}/[controller]s")]
 [ApiVersion("1.0")]
 [ApiController]
@@ -16,11 +19,20 @@ public class CustomerQuestController : ControllerBase
 {
     private readonly ICustomerQuestService _customerQuestService;
 
+    /// <summary>
+    ///
+    /// </summary>
+    /// <param name="customerQuestService"></param>
     public CustomerQuestController(ICustomerQuestService customerQuestService)
     {
         _customerQuestService = customerQuestService;
     }
 
+    /// <summary>
+    /// get all customer quest
+    /// </summary>
+    /// <param name="param"></param>
+    /// <returns></returns>
     [HttpGet]
     //[Cached(600)]
     public ApiResponse<PageList<CustomerQuestResponseModel>> GetAll([FromQuery] CustomerQuestParams param)
@@ -42,6 +54,11 @@ public class CustomerQuestController : ControllerBase
     }
 
 
+    /// <summary>
+    /// get customer quest by id
+    /// </summary>
+    /// <param name="id"></param>
+    /// <returns></returns>
     [HttpGet("{id:int}")]
     //[Cached(600)]
     public async Task<ApiResponse<CustomerQuestResponseModel>> Get(int id)
@@ -51,6 +68,11 @@ public class CustomerQuestController : ControllerBase
         return ApiResponse<CustomerQuestResponseModel>.Ok(entity);
     }
 
+    /// <summary>
+    /// create customer quest
+    /// </summary>
+    /// <param name="data"></param>
+    /// <returns></returns>
     [HttpPost]
     public async Task<ApiResponse<CustomerQuestResponseModel>> Post(CustomerQuestRequestModel data)
     {
@@ -58,6 +80,11 @@ public class CustomerQuestController : ControllerBase
         return ApiResponse<CustomerQuestResponseModel>.Created(entity);
     }
 
+    /// <summary>
+    /// update customer end point when customer finish quest
+    /// </summary>
+    /// <param name="customerQuestId"></param>
+    /// <returns></returns>
     [HttpPut("update-end-point/{customerQuestId:int}")]
     public async Task<ApiResponse<CustomerQuestResponseModel>> UpdateEndPoint(int customerQuestId)
     {
@@ -65,6 +92,11 @@ public class CustomerQuestController : ControllerBase
         return ApiResponse<CustomerQuestResponseModel>.Created(entity);
     }
 
+    /// <summary>
+    /// delete customer quest
+    /// </summary>
+    /// <param name="id"></param>
+    /// <returns></returns>
     [HttpDelete("{id:int}")]
     public async Task<ActionResult<ApiResponse<CustomerQuestResponseModel>>> Delete(int id)
     {

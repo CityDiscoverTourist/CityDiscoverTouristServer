@@ -8,17 +8,29 @@ using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 
 namespace CityDiscoverTourist.API.Controllers;
+/// <summary>
+///
+/// </summary>
 [Route("api/v{version:apiVersion}/[controller]s")]
 [ApiVersion("1.0")]
 [ApiController]
 public class CustomerController : ControllerBase
 {
     private readonly ICustomerService _customerService;
+    /// <summary>
+    ///
+    /// </summary>
+    /// <param name="customerService"></param>
     public CustomerController(ICustomerService customerService)
     {
         _customerService = customerService;
     }
 
+    /// <summary>
+    /// get all customers
+    /// </summary>
+    /// <param name="param"></param>
+    /// <returns></returns>
     [HttpGet]
     //[Cached(600)]
     public ApiResponse<PageList<CustomerResponseModel>> GetAll([FromQuery] CustomerParams param)
@@ -38,6 +50,11 @@ public class CustomerController : ControllerBase
 
         return ApiResponse<List<CustomerResponseModel>>.Success(entity, metadata);
     }
+    /// <summary>
+    /// get customer by id
+    /// </summary>
+    /// <param name="id"></param>
+    /// <returns></returns>
     [HttpGet($"{{id}}")]
     //[Cached(600)]
     public async Task<ApiResponse<CustomerResponseModel>> Get(string id)
@@ -47,6 +64,11 @@ public class CustomerController : ControllerBase
         return ApiResponse<ApplicationUser>.Ok(entity);
     }
 
+    /// <summary>
+    /// update customer
+    /// </summary>
+    /// <param name="data"></param>
+    /// <returns></returns>
     [HttpPut]
     public async Task<ApiResponse<CustomerResponseModel>> Put([FromBody] ApplicationUser data)
     {

@@ -11,6 +11,7 @@ using Newtonsoft.Json;
 
 namespace CityDiscoverTourist.API.Controllers;
 
+/// <inheritdoc />
 [Route("api/v{version:apiVersion}/[controller]s")]
 [ApiVersion("1.0")]
 [ApiController]
@@ -18,11 +19,20 @@ public class CustomerTaskController : ControllerBase
 {
     private readonly ICustomerTaskService _customerTaskService;
 
+    /// <summary>
+    ///    Constructor
+    /// </summary>
+    /// <param name="taskService"></param>
     public CustomerTaskController(ICustomerTaskService taskService)
     {
         _customerTaskService = taskService;
     }
 
+    /// <summary>
+    /// Get all tasks
+    /// </summary>
+    /// <param name="param"></param>
+    /// <returns></returns>
     [HttpGet]
     //[Cached(600)]
     public ApiResponse<PageList<CustomerTaskResponseModel>> GetAll([FromQuery] CustomerTaskParams param)
@@ -39,10 +49,14 @@ public class CustomerTaskController : ControllerBase
             entity.HasPrevious,
         };
         Response.Headers.Add("X-Pagination", JsonConvert.SerializeObject(metadata));
-        var s = _customerTaskService.CustomerStartQuest(null, 10);
         return ApiResponse<List<CustomerTask>>.Success(entity, metadata);
     }
 
+    /// <summary>
+    /// get customer task by id
+    /// </summary>
+    /// <param name="id"></param>
+    /// <returns></returns>
     [HttpGet("{id:int}")]
     //[Cached(600)]
     public async Task<ApiResponse<CustomerTaskResponseModel>> Get(int id)
@@ -52,6 +66,11 @@ public class CustomerTaskController : ControllerBase
         return ApiResponse<CustomerTaskResponseModel>.Ok(entity);
     }
 
+    /// <summary>
+    /// Get suggestions for the customer
+    /// </summary>
+    /// <param name="questItemId"></param>
+    /// <returns></returns>
     [HttpGet("show-suggestion/{questItemId:int}")]
     public async Task<string> GetSuggestion(int questItemId)
     {
@@ -60,6 +79,14 @@ public class CustomerTaskController : ControllerBase
         return JsonConvert.SerializeObject(entity);
     }
 
+    /// <summary>
+    /// check customer location with quest item location if true allow to start quest item
+    /// </summary>
+    /// <param name="customerQuestId"></param>
+    /// <param name="latitude"></param>
+    /// <param name="longitude"></param>
+    /// <returns></returns>
+    /// <exception cref="AppException"></exception>
     [HttpGet("check-location-with-quest-item/{customerQuestId:int}")]
     public Task<bool> CheckCustomerLocationWithQuestItem(int customerQuestId, float latitude, float longitude)
     {
@@ -68,6 +95,14 @@ public class CustomerTaskController : ControllerBase
         return Task.FromResult(isCustomerAtQuestItemLocation);
     }
 
+    /// <summary>
+    /// check customer location with quest location if true allow to start quest
+    /// </summary>
+    /// <param name="questId"></param>
+    /// <param name="latitude"></param>
+    /// <param name="longitude"></param>
+    /// <returns></returns>
+    /// <exception cref="AppException"></exception>
     [HttpGet("check-location-with-quest/{questId:int}")]
     public Task<bool> CheckCustomerLocationWithQuest(int questId, float latitude, float longitude)
     {
@@ -76,6 +111,12 @@ public class CustomerTaskController : ControllerBase
         return Task.FromResult(isCustomerAtQuestLocation);
     }
 
+    /// <summary>
+    /// add customer task for the first time when customer start quest
+    /// </summary>
+    /// <param name="data"></param>
+    /// <param name="questId"></param>
+    /// <returns></returns>
     [HttpPost("{questId:int}")]
     public async Task<ApiResponse<CustomerTaskResponseModel>> Post(CustomerTaskRequestModel data, int questId)
     {
@@ -83,6 +124,12 @@ public class CustomerTaskController : ControllerBase
         return ApiResponse<CustomerTaskResponseModel>.Created(entity);
     }
 
+    /// <summary>
+    /// if customer correct answer then move to next quest item
+    /// </summary>
+    /// <param name="questId"></param>
+    /// <param name="customerQuestId"></param>
+    /// <returns></returns>
     [HttpPut("move-next-task")]
     public async Task<int> MoveToNextTask(int questId, int customerQuestId)
     {
@@ -90,6 +137,11 @@ public class CustomerTaskController : ControllerBase
         return entity;
     }
 
+    /// <summary>
+    /// decrease customer point when they hit suggestion
+    /// </summary>
+    /// <param name="customerQuestId"></param>
+    /// <returns></returns>
     [HttpPut("decrease-point-suggestion/{customerQuestId:int}")]
     public async Task<ApiResponse<CustomerTaskResponseModel>> DecreasePointWhenHitSuggestion(int customerQuestId)
     {
@@ -97,6 +149,13 @@ public class CustomerTaskController : ControllerBase
         return ApiResponse<CustomerTaskResponseModel>.Ok(entity);
     }
 
+    /// <summary>
+    /// check customer answer if correct then call MoveToNextTask method, if not then decrease point
+    /// </summary>
+    /// <param name="customerQuestId"></param>
+    /// <param name="customerReply"></param>
+    /// <param name="questItemId"></param>
+    /// <returns></returns>
     [HttpPut("check-answer/{customerQuestId:int}")]
     public async Task<ApiResponse<CustomerTaskResponseModel>> CheckCustomerAnswer(int customerQuestId, string customerReply, int questItemId)
     {
@@ -104,6 +163,11 @@ public class CustomerTaskController : ControllerBase
         return ApiResponse<CustomerTaskResponseModel>.Ok(entity);
     }
 
+    /// <summary>
+    /// delete customer task
+    /// </summary>
+    /// <param name="id"></param>
+    /// <returns></returns>
     [HttpDelete("{id:int}")]
     public async Task<ActionResult<ApiResponse<CustomerTaskResponseModel>>> Delete(int id)
     {

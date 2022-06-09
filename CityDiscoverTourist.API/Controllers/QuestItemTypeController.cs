@@ -10,6 +10,9 @@ using Newtonsoft.Json;
 
 namespace CityDiscoverTourist.API.Controllers;
 
+/// <summary>
+///
+/// </summary>
 [Route("api/v{version:apiVersion}/[controller]s")]
 [ApiVersion("1.0")]
 [ApiController]
@@ -17,11 +20,20 @@ public class QuestItemTypeController : ControllerBase
 {
     private readonly IQuestItemTypeService _questItemTypeService;
 
+    /// <summary>
+    ///
+    /// </summary>
+    /// <param name="questItemTypeService"></param>
     public QuestItemTypeController(IQuestItemTypeService questItemTypeService)
     {
         _questItemTypeService = questItemTypeService;
     }
 
+    /// <summary>
+    /// get all quest item types
+    /// </summary>
+    /// <param name="param"></param>
+    /// <returns></returns>
     [HttpGet]
     //[Cached(600)]
     public ApiResponse<PageList<QuestItemTypeResponseModel>> GetAll([FromQuery] TaskTypeParams param)
@@ -42,6 +54,12 @@ public class QuestItemTypeController : ControllerBase
         return ApiResponse<List<QuestItemTypeResponseModel>>.Success(entity, metadata);
     }
 
+    /// <summary>
+    /// get quest item type by id
+    /// </summary>
+    /// <param name="id"></param>
+    /// <param name="fields"></param>
+    /// <returns></returns>
     [HttpGet("{id:int}")]
     //[Cached(600)]
 
@@ -52,6 +70,11 @@ public class QuestItemTypeController : ControllerBase
         return ApiResponse<QuestItemType>.Ok(entity);
     }
 
+    /// <summary>
+    /// create quest item type
+    /// </summary>
+    /// <param name="data"></param>
+    /// <returns></returns>
     [HttpPost]
     public async Task<ApiResponse<QuestItemTypeResponseModel>> Post(QuestItemTypeRequestModel data)
     {
@@ -59,6 +82,11 @@ public class QuestItemTypeController : ControllerBase
         return ApiResponse<QuestItemType>.Created(entity);
     }
 
+    /// <summary>
+    /// update quest item type
+    /// </summary>
+    /// <param name="data"></param>
+    /// <returns></returns>
     [HttpPut]
     public async Task<ApiResponse<QuestItemTypeResponseModel>> Put(QuestItemTypeRequestModel data)
     {
@@ -66,6 +94,11 @@ public class QuestItemTypeController : ControllerBase
         return ApiResponse<QuestItemType>.Created(entity);
     }
 
+    /// <summary>
+    /// delete quest item type
+    /// </summary>
+    /// <param name="id"></param>
+    /// <returns></returns>
     [HttpDelete("{id:int}")]
     public async Task<ActionResult<ApiResponse<QuestItemTypeResponseModel>>> Delete(int id)
     {
