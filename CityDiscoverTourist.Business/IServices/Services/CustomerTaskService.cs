@@ -21,6 +21,7 @@ public class CustomerTaskService: BaseService, ICustomerTaskService
     private readonly ICustomerQuestRepository _customerQuestRepo;
     private readonly IQuestItemRepository _questItemRepo;
     private readonly ILocationRepository _locationRepo;
+    private readonly ISuggestionRepository _suggestionRepo;
     private static  GoongApiSetting? _googleApiSettings;
     private readonly ICustomerAnswerService _customerAnswerService;
     private const int PointWhenHitSuggestion = 150;
@@ -29,7 +30,7 @@ public class CustomerTaskService: BaseService, ICustomerTaskService
 
 
     public CustomerTaskService(ICustomerTaskRepository customerTaskRepository, IMapper mapper, ISortHelper<CustomerTask> sortHelper, ICustomerQuestRepository customerQuestRepo, IQuestItemRepository questItemRepo,
-        GoongApiSetting? googleApiSettings, ICustomerAnswerService customerAnswerService, ILocationRepository locationRepo)
+        GoongApiSetting? googleApiSettings, ICustomerAnswerService customerAnswerService, ILocationRepository locationRepo, ISuggestionRepository suggestionRepo)
     {
         _customerTaskRepo = customerTaskRepository;
         _mapper = mapper;
@@ -39,6 +40,7 @@ public class CustomerTaskService: BaseService, ICustomerTaskService
         _googleApiSettings = googleApiSettings;
         _customerAnswerService = customerAnswerService;
         _locationRepo = locationRepo;
+        _suggestionRepo = suggestionRepo;
     }
 
     public PageList<CustomerTaskResponseModel> GetAll(CustomerTaskParams @params)
@@ -258,6 +260,12 @@ public class CustomerTaskService: BaseService, ICustomerTaskService
 
         var distance = CalculateDistanceBetweenCustomerLocationAndQuestItem(longLatOfQuestItem.First(), latitude + "," + longitude);
         return distance < DistanceThreshold;
+    }
+
+    public Task<string> ShowSuggestions(int questItemId)
+    {
+        var suggestions = _suggestionRepo.GetByCondition(x => x.QuestItemId == questItemId).Select(x => x.Content).ToList();
+        return Task.FromResult(string.Join(",", suggestions));
     }
 
     private static float CalculateDistanceBetweenCustomerLocationAndQuestItem(string latLongFromLocation, string latLongFromUserDevice)

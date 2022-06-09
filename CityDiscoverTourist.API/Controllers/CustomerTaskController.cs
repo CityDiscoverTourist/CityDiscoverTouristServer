@@ -50,6 +50,14 @@ public class CustomerTaskController : ControllerBase
         return ApiResponse<CustomerTaskResponseModel>.Ok(entity);
     }
 
+    [HttpGet("show-suggestion/{questItemId:int}")]
+    public async Task<string> GetSuggestion(int questItemId)
+    {
+        var entity = await _customerTaskService.ShowSuggestions(questItemId);
+
+        return JsonConvert.SerializeObject(entity);
+    }
+
     [HttpGet("check-location/{customerQuestId:int}")]
     public Task<bool> CheckCustomerLocation(int customerQuestId, float latitude, float longitude)
     {
