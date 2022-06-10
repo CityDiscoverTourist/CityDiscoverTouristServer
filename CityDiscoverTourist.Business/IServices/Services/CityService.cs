@@ -1,6 +1,7 @@
 using AutoMapper;
 using CityDiscoverTourist.Business.Data.RequestModel;
 using CityDiscoverTourist.Business.Data.ResponseModel;
+using CityDiscoverTourist.Business.Exceptions;
 using CityDiscoverTourist.Business.Helper;
 using CityDiscoverTourist.Business.Helper.Params;
 using CityDiscoverTourist.Data.IRepositories;
@@ -44,6 +45,9 @@ public class CityService: BaseService, ICityService
 
     public async Task<CityResponseModel> CreateAsync(CityRequestModel request)
     {
+        var existValue = _cityRepository.GetByCondition(x => request.Name == x.Name).FirstOrDefaultAsync().Result;
+        if(existValue!.Name == request.Name) throw new AppException("City already exists");
+
         var entity = _mapper.Map<City>(request);
         entity = await _cityRepository.Add(entity);
         return _mapper.Map<CityResponseModel>(entity);
@@ -51,6 +55,9 @@ public class CityService: BaseService, ICityService
 
     public async Task<CityResponseModel> UpdateAsync(CityRequestModel request)
     {
+        var existValue = _cityRepository.GetByCondition(x => request.Name == x.Name).FirstOrDefaultAsync().Result;
+        if(existValue!.Name == request.Name) throw new AppException("City already exists");
+
         var entity = _mapper.Map<City>(request);
         entity = await _cityRepository.Update(entity);
         return _mapper.Map<CityResponseModel>(entity);

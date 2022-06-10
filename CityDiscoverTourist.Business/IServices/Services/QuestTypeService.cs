@@ -1,6 +1,7 @@
 using AutoMapper;
 using CityDiscoverTourist.Business.Data.RequestModel;
 using CityDiscoverTourist.Business.Data.ResponseModel;
+using CityDiscoverTourist.Business.Exceptions;
 using CityDiscoverTourist.Business.Helper;
 using CityDiscoverTourist.Business.Helper.Params;
 using CityDiscoverTourist.Data.IRepositories;
@@ -50,6 +51,9 @@ public class QuestTypeService : BaseService, IQuestTypeService
 
     public async Task<QuestTypeResponseModel> CreateAsync(QuestTypeRequestModel request)
     {
+        var existValue = _questTypeRepository.GetByCondition(x => request.Name == x.Name).FirstOrDefaultAsync().Result;
+        if(existValue!.Name == request.Name) throw new AppException("Quest type already exists");
+
         var entity = _mapper.Map<QuestType>(request);
         entity = await _questTypeRepository.Add(entity);
 
@@ -62,6 +66,9 @@ public class QuestTypeService : BaseService, IQuestTypeService
 
     public async Task<QuestTypeResponseModel> UpdateAsync(QuestTypeRequestModel request)
     {
+        var existValue = _questTypeRepository.GetByCondition(x => request.Name == x.Name).FirstOrDefaultAsync().Result;
+        if(existValue!.Name == request.Name) throw new AppException("Quest type already exists");
+
         var imgPath = await _blobService.UploadQuestImgAndReturnImgPathAsync(request.Image, request.Id, "quest-type");
 
         var entity = _mapper.Map<QuestType>(request);
