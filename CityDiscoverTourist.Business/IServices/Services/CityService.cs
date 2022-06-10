@@ -56,7 +56,7 @@ public class CityService: BaseService, ICityService
     public async Task<CityResponseModel> UpdateAsync(CityRequestModel request)
     {
         var existValue = _cityRepository.GetByCondition(x => request.Name == x.Name).FirstOrDefaultAsync().Result;
-        if(existValue!.Name == request.Name) throw new AppException("City already exists");
+        if (existValue != null) throw new AppException("City with this name already exists");
 
         var entity = _mapper.Map<City>(request);
         entity = await _cityRepository.Update(entity);

@@ -44,7 +44,7 @@ public class QuestItemService: BaseService, IQuestItemService
     public async Task<QuestItemResponseModel> CreateAsync(QuestItemRequestModel request)
     {
         var existValue = _taskRepository.GetByCondition(x => request.Content == x.Content).FirstOrDefaultAsync().Result;
-        if(existValue!.Content == request.Content) throw new AppException("Quest item already exists");
+        if (existValue != null) throw new AppException("Quest item with this name already exists");
 
         request.ItemId ??= null;
         var entity = _mapper.Map<QuestItem>(request);
@@ -56,7 +56,7 @@ public class QuestItemService: BaseService, IQuestItemService
     public async Task<QuestItemResponseModel> UpdateAsync(QuestItemRequestModel request)
     {
         var existValue = _taskRepository.GetByCondition(x => request.Content == x.Content).FirstOrDefaultAsync().Result;
-        if(existValue!.Content == request.Content) throw new AppException("Quest item already exists");
+        if (existValue != null) throw new AppException("Quest item with this name already exists");
 
         request.ItemId ??= null;
         var entity = _mapper.Map<QuestItem>(request);

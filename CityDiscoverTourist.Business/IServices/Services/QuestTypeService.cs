@@ -52,7 +52,7 @@ public class QuestTypeService : BaseService, IQuestTypeService
     public async Task<QuestTypeResponseModel> CreateAsync(QuestTypeRequestModel request)
     {
         var existValue = _questTypeRepository.GetByCondition(x => request.Name == x.Name).FirstOrDefaultAsync().Result;
-        if(existValue!.Name == request.Name) throw new AppException("Quest type already exists");
+        if (existValue != null) throw new AppException("QuestType with this name already exists");
 
         var entity = _mapper.Map<QuestType>(request);
         entity = await _questTypeRepository.Add(entity);

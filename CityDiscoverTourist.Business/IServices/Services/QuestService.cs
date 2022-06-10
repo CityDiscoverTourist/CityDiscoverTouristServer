@@ -84,7 +84,7 @@ public class QuestService: BaseService, IQuestService
     public async Task<QuestResponseModel> CreateAsync(QuestRequestModel request)
     {
         var existValue = _questRepository.GetByCondition(x => request.Title == x.Title).FirstOrDefaultAsync().Result;
-        if(existValue!.Title == request.Title) throw new AppException("Quest already exists");
+        if (existValue != null) throw new AppException("Quest with this name already exists");
 
         var entity = _mapper.Map<Quest>(request);
         entity = await _questRepository.Add(entity);
@@ -98,7 +98,7 @@ public class QuestService: BaseService, IQuestService
     public async Task<QuestResponseModel> UpdateAsync(QuestRequestModel request)
     {
         var existValue = _questRepository.GetByCondition(x => request.Title == x.Title).FirstOrDefaultAsync().Result;
-        if(existValue!.Title == request.Title) throw new AppException("Quest already exists");
+        if (existValue != null) throw new AppException("Quest with this name already exists");
 
         var imgPath = await _blobService.UploadQuestImgAndReturnImgPathAsync(request.Image, request.Id, "quest");
 
