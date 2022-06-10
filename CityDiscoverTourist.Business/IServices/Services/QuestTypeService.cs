@@ -67,7 +67,12 @@ public class QuestTypeService : BaseService, IQuestTypeService
         var entity = _mapper.Map<QuestType>(request);
 
         entity.ImagePath = imgPath;
-        entity = await _questTypeRepository.UpdateFields(entity, r => r.ImagePath!);
+        if (entity.ImagePath == null)
+        {
+            entity = await _questTypeRepository.NoneUpdateFields(entity, r => r.Id!, r => r.ImagePath!);
+            return _mapper.Map<QuestTypeResponseModel>(entity);
+        }
+        entity = await _questTypeRepository.NoneUpdateFields(entity, r => r.Id!);
 
         return _mapper.Map<QuestTypeResponseModel>(entity);
     }
