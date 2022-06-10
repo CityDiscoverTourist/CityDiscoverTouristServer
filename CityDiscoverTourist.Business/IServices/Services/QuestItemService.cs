@@ -1,10 +1,12 @@
 using AutoMapper;
 using CityDiscoverTourist.Business.Data.RequestModel;
 using CityDiscoverTourist.Business.Data.ResponseModel;
+using CityDiscoverTourist.Business.Exceptions;
 using CityDiscoverTourist.Business.Helper;
 using CityDiscoverTourist.Business.Helper.Params;
 using CityDiscoverTourist.Data.IRepositories;
 using CityDiscoverTourist.Data.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace CityDiscoverTourist.Business.IServices.Services;
 
@@ -41,6 +43,9 @@ public class QuestItemService: BaseService, IQuestItemService
 
     public async Task<QuestItemResponseModel> CreateAsync(QuestItemRequestModel request)
     {
+        var existValue = _taskRepository.GetByCondition(x => request.Content == x.Content).FirstOrDefaultAsync().Result;
+        if(existValue!.Content == request.Content) throw new AppException("Quest item already exists");
+
         request.ItemId ??= null;
         var entity = _mapper.Map<QuestItem>(request);
 
@@ -50,6 +55,9 @@ public class QuestItemService: BaseService, IQuestItemService
 
     public async Task<QuestItemResponseModel> UpdateAsync(QuestItemRequestModel request)
     {
+        var existValue = _taskRepository.GetByCondition(x => request.Content == x.Content).FirstOrDefaultAsync().Result;
+        if(existValue!.Content == request.Content) throw new AppException("Quest item already exists");
+
         request.ItemId ??= null;
         var entity = _mapper.Map<QuestItem>(request);
         entity = await _taskRepository.Update(entity);

@@ -2,11 +2,13 @@ using System.Globalization;
 using AutoMapper;
 using CityDiscoverTourist.Business.Data.RequestModel;
 using CityDiscoverTourist.Business.Data.ResponseModel;
+using CityDiscoverTourist.Business.Exceptions;
 using CityDiscoverTourist.Business.Helper;
 using CityDiscoverTourist.Business.Helper.Params;
 using CityDiscoverTourist.Business.Settings;
 using CityDiscoverTourist.Data.IRepositories;
 using CityDiscoverTourist.Data.Models;
+using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json.Linq;
 
 namespace CityDiscoverTourist.Business.IServices.Services;
@@ -46,6 +48,9 @@ public class LocationService: BaseService, ILocationService
 
     public async Task<LocationResponseModel> CreateAsync(LocationRequestModel request)
     {
+        var existValue = _locationRepository.GetByCondition(x => request.Name == x.Name).FirstOrDefaultAsync().Result;
+        if(existValue!.Name == request.Name) throw new AppException("Location already exists");
+
         var entity = _mapper.Map<Location>(request);
 
         var longLat = GetLatLongAndPlaceIdFromAddress(entity.Address ?? throw new InvalidOperationException());
@@ -59,6 +64,9 @@ public class LocationService: BaseService, ILocationService
 
     public async Task<LocationResponseModel> UpdateAsync(LocationRequestModel request)
     {
+        var existValue = _locationRepository.GetByCondition(x => request.Name == x.Name).FirstOrDefaultAsync().Result;
+        if(existValue!.Name == request.Name) throw new AppException("Location already exists");
+
         var entity = _mapper.Map<Location>(request);
         entity = await _locationRepository.Update(entity);
         return _mapper.Map<LocationResponseModel>(entity);

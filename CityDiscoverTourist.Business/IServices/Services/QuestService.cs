@@ -2,6 +2,7 @@ using AutoMapper;
 using CityDiscoverTourist.Business.Data.RequestModel;
 using CityDiscoverTourist.Business.Data.ResponseModel;
 using CityDiscoverTourist.Business.Enums;
+using CityDiscoverTourist.Business.Exceptions;
 using CityDiscoverTourist.Business.Helper;
 using CityDiscoverTourist.Business.Helper.Params;
 using CityDiscoverTourist.Data.IRepositories;
@@ -82,6 +83,9 @@ public class QuestService: BaseService, IQuestService
 
     public async Task<QuestResponseModel> CreateAsync(QuestRequestModel request)
     {
+        var existValue = _questRepository.GetByCondition(x => request.Title == x.Title).FirstOrDefaultAsync().Result;
+        if(existValue!.Title == request.Title) throw new AppException("Quest already exists");
+
         var entity = _mapper.Map<Quest>(request);
         entity = await _questRepository.Add(entity);
         //return string img from blob, mapped to Quest model and store in db
@@ -93,6 +97,9 @@ public class QuestService: BaseService, IQuestService
 
     public async Task<QuestResponseModel> UpdateAsync(QuestRequestModel request)
     {
+        var existValue = _questRepository.GetByCondition(x => request.Title == x.Title).FirstOrDefaultAsync().Result;
+        if(existValue!.Title == request.Title) throw new AppException("Quest already exists");
+
         var imgPath = await _blobService.UploadQuestImgAndReturnImgPathAsync(request.Image, request.Id, "quest");
 
         var entity = _mapper.Map<Quest>(request);
