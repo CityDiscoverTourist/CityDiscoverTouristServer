@@ -97,6 +97,12 @@ public class QuestService: BaseService, IQuestService
 
         var entity = _mapper.Map<Quest>(request);
         entity.ImagePath = imgPath;
+        if (entity.ImagePath == null)
+        {
+            entity = await _questRepository.NoneUpdateFields(entity, r => r.CreatedDate!, r => r.ImagePath!);
+            return _mapper.Map<QuestResponseModel>(entity);
+        }
+
         entity = await _questRepository.NoneUpdateFields(entity, r => r.CreatedDate!);
 
         return _mapper.Map<QuestResponseModel>(entity);
