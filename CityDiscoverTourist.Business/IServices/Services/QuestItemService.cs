@@ -42,13 +42,23 @@ public class QuestItemService: BaseService, IQuestItemService
 
     public async Task<QuestItemResponseModel> CreateAsync(QuestItemRequestModel request)
     {
-        var existValue = _taskRepository.GetByCondition(x => request.Content == x.Content).FirstOrDefaultAsync().Result;
+        var existValue = _taskRepository
+            .GetByCondition(x => x.Content == request.Content || x.Content == ReverseQuestion(request.Content!))
+            .FirstOrDefaultAsync().Result;
         if (existValue != null) throw new AppException("Quest item with this name already exists");
+
+        // set sequence for new quest item
+        var questItems = _taskRepository.GetByCondition(x => x.QuestId == request.QuestId).ToList();
+        if (questItems.Count == 0) request.ItemId = null;
+        else
+        {
+            var lastQuestItemId = questItems.Max(x => x.Id);
+            request.ItemId = lastQuestItemId;
+        }
 
         // quest item type 3 is ReverseQuestion
         if (request.QuestItemTypeId == 3) request.Content = ReverseQuestion(request.Content!);
 
-        request.ItemId ??= null;
         var entity = _mapper.Map<QuestItem>(request);
 
         entity = await _taskRepository.Add(entity);
