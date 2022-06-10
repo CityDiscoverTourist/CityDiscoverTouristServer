@@ -100,11 +100,11 @@ public class LocationService: BaseService, ILocationService
 
         var jsonResult = JObject.Parse(response.Content.ReadAsStringAsync().Result);
 
-        var longitude = jsonResult["results"][0]["geometry"]["location"]["lng"].ToString();
-        var latitude = jsonResult["results"][0]["geometry"]["location"]["lat"].ToString();
-        var placeId = jsonResult["results"][0]["place_id"].ToString();
+        var longitude = jsonResult["results"]![0]!["geometry"]!["location"]!["lng"]!.ToString();
+        var latitude = jsonResult["results"]![0]!["geometry"]!["location"]?["lat"]?.ToString();
+        var placeId = jsonResult["results"]?[0]?["place_id"]?.ToString();
 
-        return new[] { latitude, longitude, placeId };
+        return new [] { latitude ?? string.Empty, longitude, placeId ?? string.Empty };
     }
 
     private static void Search(ref IQueryable<Location> entities, LocationParams param)

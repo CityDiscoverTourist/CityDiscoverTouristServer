@@ -50,7 +50,6 @@ public class QuestService: BaseService, IQuestService
                 var questItem = questResponseModels[i].QuestItems![j];
                 if (questItem.ItemId != 0) continue;
 
-                var questItemId = questItem.Id;
                 var locationId = questItem.LocationId;
                 var location = _locationRepository.Get(locationId).Result.Address;
                 questResponseModels[i].Address = location;

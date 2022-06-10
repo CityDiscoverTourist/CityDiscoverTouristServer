@@ -1,4 +1,3 @@
-using CityDiscoverTourist.Business.Data.RequestModel;
 using CityDiscoverTourist.Business.Data.ResponseModel;
 
 namespace CityDiscoverTourist.Business.IServices;

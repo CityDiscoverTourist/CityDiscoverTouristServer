@@ -4,15 +4,28 @@ using Newtonsoft.Json.Serialization;
 
 namespace CityDiscoverTourist.API.Cache;
 
+/// <summary>
+///
+/// </summary>
 public class ResponseCacheService : IResponseCacheService
 {
     private readonly IDistributedCache _distributedCache;
 
+    /// <summary>
+    ///
+    /// </summary>
+    /// <param name="distributedCache"></param>
     public ResponseCacheService(IDistributedCache distributedCache)
     {
         _distributedCache = distributedCache;
     }
 
+    /// <summary>
+    ///
+    /// </summary>
+    /// <param name="key"></param>
+    /// <param name="value"></param>
+    /// <param name="timeToLive"></param>
     public async Task CacheResponseAsync(string key, object? value, TimeSpan timeToLive)
     {
         if (value == null) return;
@@ -30,6 +43,11 @@ public class ResponseCacheService : IResponseCacheService
         });
     }
 
+    /// <summary>
+    ///
+    /// </summary>
+    /// <param name="key"></param>
+    /// <returns></returns>
     public async Task<string> GetCacheResponseAsync(string key)
     {
         var cacheReponse = await _distributedCache.GetStringAsync(key);

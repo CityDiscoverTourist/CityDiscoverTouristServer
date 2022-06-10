@@ -4,8 +4,16 @@ using StackExchange.Redis;
 
 namespace CityDiscoverTourist.API.Config;
 
+/// <summary>
+///
+/// </summary>
 public static class CacheConfig
 {
+    /// <summary>
+    ///
+    /// </summary>
+    /// <param name="services"></param>
+    /// <param name="configuration"></param>
     public static void SetUpCache(this IServiceCollection services, IConfiguration configuration)
     {
         var redisCache = new RedisCacheSetting();

@@ -82,11 +82,11 @@ public class QuestItemService: BaseService, IQuestItemService
         return _mapper.Map<QuestItemResponseModel>(entity);
     }
 
-    public async Task<QuestItemResponseModel> GetByQuestId(int id)
+    public Task<QuestItemResponseModel> GetByQuestId(int id)
     {
         var entity = _taskRepository.GetByCondition(x => x.QuestId == id).ToList();
         CheckDataNotNull("QuestItem", entity);
-        return _mapper.Map<QuestItemResponseModel>(entity);
+        return Task.FromResult(_mapper.Map<QuestItemResponseModel>(entity));
     }
 
     private static void Search(ref IQueryable<QuestItem> entities, TaskParams param)

@@ -10,7 +10,6 @@ using CityDiscoverTourist.Business.Exceptions;
 using CityDiscoverTourist.Business.Helper.EmailHelper;
 using CityDiscoverTourist.Data.Models;
 using FirebaseAdmin.Auth;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;

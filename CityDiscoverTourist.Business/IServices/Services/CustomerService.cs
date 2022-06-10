@@ -1,4 +1,3 @@
-using System.Collections;
 using AutoMapper;
 using CityDiscoverTourist.Business.Data.ResponseModel;
 using CityDiscoverTourist.Business.Helper;
@@ -13,7 +12,7 @@ public class CustomerService: BaseService, ICustomerService
     private readonly UserManager<ApplicationUser> _userManager;
     private readonly IMapper _mapper;
 
-    public CustomerService(UserManager<ApplicationUser> userManager, IMapper mapper, ISortHelper<ApplicationUser> sortHelper)
+    public CustomerService(UserManager<ApplicationUser> userManager, IMapper mapper)
     {
         _userManager = userManager;
         _mapper = mapper;

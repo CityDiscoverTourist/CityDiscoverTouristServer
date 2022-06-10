@@ -1,9 +1,7 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
-using CityDiscoverTourist.Business.Data;
 using CityDiscoverTourist.Business.Data.RequestModel;
 using CityDiscoverTourist.Business.Data.ResponseModel;
-using CityDiscoverTourist.Data.Models;
 
 namespace CityDiscoverTourist.Business.IServices;
 

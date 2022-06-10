@@ -76,10 +76,10 @@ public class QuestTypeService : BaseService, IQuestTypeService
         entity.ImagePath = imgPath;
         if (entity.ImagePath == null)
         {
-            entity = await _questTypeRepository.NoneUpdateFields(entity, r => r.Id!, r => r.ImagePath!);
+            entity = await _questTypeRepository.NoneUpdateFields(entity, r => r.Id, r => r.ImagePath!);
             return _mapper.Map<QuestTypeResponseModel>(entity);
         }
-        entity = await _questTypeRepository.NoneUpdateFields(entity, r => r.Id!);
+        entity = await _questTypeRepository.NoneUpdateFields(entity, r => r.Id);
 
         return _mapper.Map<QuestTypeResponseModel>(entity);
     }
@@ -90,9 +90,9 @@ public class QuestTypeService : BaseService, IQuestTypeService
         return _mapper.Map<QuestTypeResponseModel>(entity);
     }
 
-    public async Task<int> CountQuestInQuestType(int questTypeId)
+    public  Task<int> CountQuestInQuestType(int questTypeId)
     {
-        return _questRepository.GetAll().Count(x => x.QuestTypeId == questTypeId);
+        return Task.FromResult(_questRepository.GetAll().Count(x => x.QuestTypeId == questTypeId));
     }
 
     private static void Search(ref IQueryable<QuestType> entities, QuestTypeParams param)

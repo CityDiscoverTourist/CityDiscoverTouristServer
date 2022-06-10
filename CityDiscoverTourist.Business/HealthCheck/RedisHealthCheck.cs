@@ -17,7 +17,6 @@ public class RedisHealthCheck: IHealthCheck
         try
         {
             var database = _connectionMultiplexer.GetDatabase();
-            var ping = database.PingAsync();
             database.StringGet("/api/healthcheck");
             return Task.FromResult(new HealthCheckResult(HealthStatus.Healthy, "Redis is healthy"));
         }

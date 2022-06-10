@@ -20,7 +20,6 @@ public class CustomerTaskService: BaseService, ICustomerTaskService
     private readonly ISortHelper<CustomerTask> _sortHelper;
     private readonly ICustomerQuestRepository _customerQuestRepo;
     private readonly IQuestItemRepository _questItemRepo;
-    private readonly IQuestRepository _questRepo;
     private readonly ILocationRepository _locationRepo;
     private readonly ISuggestionRepository _suggestionRepo;
     private static  GoongApiSetting? _googleApiSettings;
@@ -31,7 +30,7 @@ public class CustomerTaskService: BaseService, ICustomerTaskService
 
 
     public CustomerTaskService(ICustomerTaskRepository customerTaskRepository, IMapper mapper, ISortHelper<CustomerTask> sortHelper, ICustomerQuestRepository customerQuestRepo, IQuestItemRepository questItemRepo,
-        GoongApiSetting? googleApiSettings, ICustomerAnswerService customerAnswerService, ILocationRepository locationRepo, ISuggestionRepository suggestionRepo, IQuestRepository questRepo)
+        GoongApiSetting? googleApiSettings, ICustomerAnswerService customerAnswerService, ILocationRepository locationRepo, ISuggestionRepository suggestionRepo)
     {
         _customerTaskRepo = customerTaskRepository;
         _mapper = mapper;
@@ -42,7 +41,6 @@ public class CustomerTaskService: BaseService, ICustomerTaskService
         _customerAnswerService = customerAnswerService;
         _locationRepo = locationRepo;
         _suggestionRepo = suggestionRepo;
-        _questRepo = questRepo;
     }
 
     public PageList<CustomerTaskResponseModel> GetAll(CustomerTaskParams @params)

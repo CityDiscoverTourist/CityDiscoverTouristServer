@@ -9,7 +9,6 @@ using Serilog;
 using Serilog.Events;
 using CityDiscoverTourist.API.AzureHelper;
 using Microsoft.ApplicationInsights.Extensibility;
-using Microsoft.AspNetCore.Builder;
 using Microsoft.Azure.KeyVault;
 using Microsoft.Azure.Services.AppAuthentication;
 
@@ -18,7 +17,9 @@ Log.Logger = new LoggerConfiguration()
     .MinimumLevel.Override("Microsoft", LogEventLevel.Information)
     .Enrich.FromLogContext()
     .WriteTo.Console()
+#pragma warning disable CS0618
     .WriteTo.ApplicationInsights(TelemetryConfiguration.Active.InstrumentationKey, TelemetryConverter.Traces)
+#pragma warning restore CS0618
     .CreateLogger();
 try
 {

@@ -1,5 +1,3 @@
-using System.Net.Http.Headers;
-using CityDiscoverTourist.API.Cache;
 using CityDiscoverTourist.API.Response;
 using CityDiscoverTourist.Business.Data.RequestModel;
 using CityDiscoverTourist.Business.Data.ResponseModel;

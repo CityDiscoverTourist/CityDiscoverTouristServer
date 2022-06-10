@@ -11,8 +11,17 @@ using Newtonsoft.Json.Serialization;
 
 namespace CityDiscoverTourist.API.Config;
 
+/// <summary>
+///
+/// </summary>
 public static class ConfigFirebase
 {
+    /// <summary>
+    ///
+    /// </summary>
+    /// <param name="services"></param>
+    /// <param name="configuration"></param>
+    /// <param name="webHostEnvironment"></param>
     public static void SetupFirebaseAuth( this IServiceCollection services, IConfiguration configuration,
         IWebHostEnvironment webHostEnvironment)
     {

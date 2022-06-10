@@ -8,7 +8,7 @@ public class BaseService
         switch (value)
         {
             case Task:
-                throw new System.InvalidOperationException("Should not pass task here");
+                throw new InvalidOperationException("Should not pass task here");
             //throw new RequestException(ErrorCodes.DataIsEmpty, $"{name} must be not null");
             case null:
                 throw new KeyNotFoundException($"{name} must be not null");

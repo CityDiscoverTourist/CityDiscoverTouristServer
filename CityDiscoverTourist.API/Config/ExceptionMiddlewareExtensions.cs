@@ -3,8 +3,16 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace CityDiscoverTourist.API.Config;
 
+/// <summary>
+///
+/// </summary>
 public static class ExceptionMiddlewareExtensions
 {
+    /// <summary>
+    ///
+    /// </summary>
+    /// <param name="app"></param>
+    /// <param name="isDevelopment"></param>
     public static void HandlerExceptionProduction(this IApplicationBuilder app, bool isDevelopment)
 {
     if (!isDevelopment)

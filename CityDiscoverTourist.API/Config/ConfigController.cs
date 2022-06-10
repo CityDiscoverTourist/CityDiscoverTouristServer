@@ -18,6 +18,10 @@ namespace CityDiscoverTourist.API.Config;
 /// </summary>
 public static class ConfigController
 {
+    /// <summary>
+    ///
+    /// </summary>
+    /// <param name="services"></param>
     public static void SetupServices(this IServiceCollection services)
     {
         services.AddScoped<IAuthService, AuthService>();
@@ -49,6 +53,10 @@ public static class ConfigController
         services.AddScoped<ICustomerService, CustomerService>();
     }
 
+    /// <summary>
+    ///
+    /// </summary>
+    /// <param name="services"></param>
     public static void SetupHelper(this IServiceCollection services)
     {
         services.AddScoped<ISortHelper<Quest>, SortHelper<Quest>>();
@@ -75,6 +83,10 @@ public static class ConfigController
         services.AddScoped<ISortHelper<ApplicationUser>, SortHelper<ApplicationUser>>();
     }
 
+    /// <summary>
+    ///
+    /// </summary>
+    /// <param name="services"></param>
     public static void SetupRepositories(this IServiceCollection services)
     {
         services.AddScoped<IQuestRepository, QuestRepository>();
@@ -102,6 +114,11 @@ public static class ConfigController
         services.AddScoped<IOwnerPaymentRepository, OwnerPaymentRepository>();
     }
 
+    /// <summary>
+    ///
+    /// </summary>
+    /// <param name="services"></param>
+    /// <param name="configuration"></param>
     public static void SetupSwagger(this IServiceCollection services, IConfiguration configuration)
     {
         services.AddCors(options =>
@@ -114,7 +131,7 @@ public static class ConfigController
         services.AddSwaggerGen(c =>
         {
             c.SwaggerDoc("v1", new OpenApiInfo { Title = "City Tourist", Version = "v1" });
-            var filePath = Path.Combine(System.AppContext.BaseDirectory, "CityDiscoverTourist.API.xml");
+            var filePath = Path.Combine(AppContext.BaseDirectory, "CityDiscoverTourist.API.xml");
             c.IncludeXmlComments(filePath);
         });
 
@@ -174,7 +191,8 @@ public static class ConfigController
         public string TransformOutbound(object? value)
         {
             // Slugify value
-            return Regex.Replace(value?.ToString() ?? string.Empty, "([a-z])([A-Z])", "$1-$2").ToLower(new CultureInfo("en", false));
+            return Regex.Replace(value?.ToString() ?? string.Empty, "([a-z])([A-Z])", "$1-$2")
+                .ToLower(new CultureInfo("en", false));
         }
     }
 }

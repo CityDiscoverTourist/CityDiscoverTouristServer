@@ -31,7 +31,7 @@ public class BlobService: IBlobService
     // upload file to blob storage with pattern name = {id}_{fileName}
     public async Task<string> UploadQuestImgAndReturnImgPathAsync(IFormFile? file, int questId, string containerName)
     {
-        if (file == null) return null;
+        if (file == null) return null!;
 
         var renameFile = file.FileName.Replace(file.FileName, containerName);
 
@@ -61,6 +61,6 @@ public class BlobService: IBlobService
             Console.WriteLine(line);
         }
 
-        return line;
+        return line!;
     }
 }

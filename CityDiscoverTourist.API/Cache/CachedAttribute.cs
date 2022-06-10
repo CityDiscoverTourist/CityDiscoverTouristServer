@@ -5,16 +5,22 @@ using Microsoft.AspNetCore.Mvc.Filters;
 
 namespace CityDiscoverTourist.API.Cache;
 
+
+/// <summary>
+///
+/// </summary>
 [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method)]
 public class CachedAttribute : Attribute, IAsyncActionFilter
 {
     private readonly int _timeToLiveSeconds;
 
+    /// <inheritdoc />
     public CachedAttribute(int timeToLiveSeconds)
     {
         _timeToLiveSeconds = timeToLiveSeconds;
     }
 
+    /// <inheritdoc />
     public async Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
     {
         var cacheSetting = context.HttpContext.RequestServices.GetRequiredService<RedisCacheSetting>();

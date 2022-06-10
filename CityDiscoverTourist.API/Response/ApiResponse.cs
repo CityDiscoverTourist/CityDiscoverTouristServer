@@ -1,7 +1,17 @@
 ﻿namespace CityDiscoverTourist.API.Response;
 
+    /// <summary>
+    ///
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
     public class ApiResponse<T>
     {
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="message"></param>
+        /// <param name="data"></param>
+        /// <param name="status"></param>
         public ApiResponse(string message, T data, string status)
         {
             Message = message;
