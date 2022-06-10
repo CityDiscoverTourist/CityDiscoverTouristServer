@@ -70,10 +70,10 @@ public class QuestService: BaseService, IQuestService
         foreach (var item in mappedData.QuestItems!)
         {
             if (item.ItemId != 0) continue;
-            var questItemId = item.Id;
             var locationId = item.LocationId;
-            var location = _locationRepository.Get(locationId).Result.Address;
-            mappedData.Address = location;
+            var location = _locationRepository.Get(locationId).Result;
+            mappedData.Address = location.Address;
+            mappedData.LatLong = location.Latitude + "," + location.Longitude;
         }
         mappedData.CountQuestItem = mappedData.QuestItems!.Count;
         CheckDataNotNull("Quest", entity!);

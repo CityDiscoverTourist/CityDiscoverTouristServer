@@ -170,17 +170,8 @@ public class CustomerTaskService: BaseService, ICustomerTaskService
             // if count number of customer answer wrong >= 5
             // show right answer move to next quest item
             // code here:
-            if (customerTask.CountWrongAnswer >= 3)
-            {
-                customerTask.CountWrongAnswer++;
-                customerTask.CurrentPoint = currentPoint - PointWhenWrongAnswer;
-                await _customerTaskRepo.UpdateFields(customerTask, r => r.CurrentPoint,
-                    r => r.CountWrongAnswer);
-                if (customerTask.CountWrongAnswer >= 5)
-                {
-                    throw new AppException("You have already hit 5 wrong answers");
-                }
-            }
+            if (customerTask.CountWrongAnswer >= 5)
+                throw new AppException("You have already hit 5 wrong answers, We will show the right answer");
 
             customerTask.CurrentPoint = currentPoint - PointWhenWrongAnswer;
             customerTask.CountWrongAnswer++;

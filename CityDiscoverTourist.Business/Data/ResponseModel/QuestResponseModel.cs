@@ -20,6 +20,7 @@ public class QuestResponseModel
     public int AreaId { get; set; }
     public int CountQuestItem { get; set; }
     public string? Address { get; set; }
+    public string? LatLong { get; set; }
 
     public List<QuestItemResponseModel>? QuestItems { get; set; }
 }
