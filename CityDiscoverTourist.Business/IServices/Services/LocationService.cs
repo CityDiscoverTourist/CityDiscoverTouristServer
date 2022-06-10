@@ -107,13 +107,13 @@ public class LocationService: BaseService, ILocationService
         {
             entities = entities.Where(r => r.Name!.Contains(param.Name));
         }
-        if (param.Description != null)
+        if (param.AreaId != 0)
         {
-            entities = entities.Where(r => r.Description!.Contains(param.Description));
+            entities = entities.Where(r => r.AreaId == param.AreaId);
         }
-        if (param.Status != null)
+        if (param.LocationTypeId != 0)
         {
-            entities = entities.Where(r => r.Status!.Contains(param.Status));
+            entities = entities.Where(r => r.LocationTypeId == param.LocationTypeId);
         }
     }
 }
