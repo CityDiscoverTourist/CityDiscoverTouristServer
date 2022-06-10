@@ -27,7 +27,6 @@ public class QuestItemService: BaseService, IQuestItemService
     {
         var listAll = _taskRepository.GetAll();
         Search(ref listAll, @params);
-
         var sortedQuests = _sortHelper.ApplySort(listAll, @params.OrderBy);
         var mappedData = _mapper.Map<IEnumerable<QuestItemResponseModel>>(sortedQuests);
 
@@ -45,6 +44,9 @@ public class QuestItemService: BaseService, IQuestItemService
     {
         var existValue = _taskRepository.GetByCondition(x => request.Content == x.Content).FirstOrDefaultAsync().Result;
         if (existValue != null) throw new AppException("Quest item with this name already exists");
+
+        // quest item type 3 is ReverseQuestion
+        if (request.QuestItemTypeId == 3) request.Content = ReverseQuestion(request.Content!);
 
         request.ItemId ??= null;
         var entity = _mapper.Map<QuestItem>(request);
@@ -93,5 +95,15 @@ public class QuestItemService: BaseService, IQuestItemService
         {
             entities = entities.Where(x => x.QuestItemTypeId == param.QuestItemTypeId);
         }
+    }
+
+    private static string ReverseQuestion(string question)
+    {
+        var reversed = "";
+        for (var i = question.Length - 1; i >= 0; i--)
+        {
+            reversed += question[i];
+        }
+        return reversed;
     }
 }
