@@ -11,7 +11,27 @@ using CityDiscoverTourist.API.AzureHelper;
 using Microsoft.ApplicationInsights.Extensibility;
 using Microsoft.Azure.KeyVault;
 using Microsoft.Azure.Services.AppAuthentication;
+using Serilog.Sinks.MSSqlServer;
 
+var builder = WebApplication.CreateBuilder(args);
+var env = builder.Environment.EnvironmentName;
+
+
+if (env == "Production")
+{
+    var vaultName = builder.Configuration["KeyVault:Vault"];
+    if (!string.IsNullOrEmpty(vaultName))
+    {
+        var azureServiceTokenProvider = new AzureServiceTokenProvider();
+        var keyVaultClient =
+            new KeyVaultClient(
+                new KeyVaultClient.AuthenticationCallback(azureServiceTokenProvider.KeyVaultTokenCallback));
+        builder.Configuration.AddAzureKeyVault($"https://{vaultName}.vault.azure.net/", keyVaultClient,
+            new PrefixKeyVault("CityDiscoverTouristAPI"));
+    }
+}
+
+var con = builder.Configuration.GetConnectionString("DefaultConnection");
 
 Log.Logger = new LoggerConfiguration()
     .MinimumLevel.Override("Microsoft", LogEventLevel.Information)
@@ -21,31 +41,18 @@ Log.Logger = new LoggerConfiguration()
     .WriteTo.ApplicationInsights(TelemetryConfiguration.Active.InstrumentationKey, TelemetryConverter.Traces)
 #pragma warning restore CS0618
     .CreateLogger();
+
 try
 {
     Log.Information("Starting up");
-    var builder = WebApplication.CreateBuilder(args);
     // Full setup of serilog. We read log settings from appsettings.json
     builder.Host.UseSerilog((context, services, configuration) => configuration
         .ReadFrom.Configuration(context.Configuration)
         .ReadFrom.Services(services)
+        .WriteTo.MSSqlServer(con,
+             new MSSqlServerSinkOptions { TableName = "UserLogs"}, restrictedToMinimumLevel: LogEventLevel.Information)
         .Enrich.FromLogContext());
 
-    var env = builder.Environment.EnvironmentName;
-
-    if (env == "Production")
-    {
-        var vaultName = builder.Configuration["KeyVault:Vault"];
-        if (!string.IsNullOrEmpty(vaultName))
-        {
-            var azureServiceTokenProvider = new AzureServiceTokenProvider();
-            var keyVaultClient =
-                new KeyVaultClient(
-                    new KeyVaultClient.AuthenticationCallback(azureServiceTokenProvider.KeyVaultTokenCallback));
-            builder.Configuration.AddAzureKeyVault($"https://{vaultName}.vault.azure.net/", keyVaultClient,
-                new PrefixKeyVault("CityDiscoverTouristAPI"));
-        }
-    }
 
     const string managedNetworkingAppContextSwitch = "Switch.Microsoft.Data.SqlClient.UseManagedNetworkingOnWindows";
     AppContext.SetSwitch(managedNetworkingAppContextSwitch, true);

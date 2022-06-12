@@ -43,9 +43,12 @@
         <PackageReference Include="Redi.StackExchangeRedis.Cache.Extension" Version="1.5.3" />
         <PackageReference Include="Serilog.AspNetCore" Version="5.0.0" />
         <PackageReference Include="Serilog.Sinks.ApplicationInsights" Version="3.1.0" />
+        <PackageReference Include="Serilog.Sinks.MSSqlServer" Version="5.7.0" />
+        <PackageReference Include="Serilog.Sinks.MSSqlServerCore" Version="1.1.1" />
         <PackageReference Include="Serilog.Sinks.Seq" Version="5.1.1" />
         <PackageReference Include="SerilogTimings" Version="2.3.0" />
         <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
+        <PackageReference Include="System.Data.SqlClient" Version="4.1.0" />
     </ItemGroup>
 
     <ItemGroup>
