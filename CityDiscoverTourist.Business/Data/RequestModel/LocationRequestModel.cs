@@ -13,4 +13,14 @@ public class LocationRequestModel
     public int AreaId { get; set; }
 
     public int LocationTypeId { get; set; }
+
+    public void Validate()
+    {
+        Name = Name?.Trim();
+        Description = Description?.Trim();
+        Longitude = Longitude?.Trim();
+        Latitude = Latitude?.Trim();
+        Address = Address?.Trim();
+        Status = Status?.Trim();
+    }
 }

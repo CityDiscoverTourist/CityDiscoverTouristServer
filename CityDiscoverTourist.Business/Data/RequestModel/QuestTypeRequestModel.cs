@@ -10,4 +10,10 @@ public class QuestTypeRequestModel
     public string? DurationMode { get; set; }
     public string? DistanceMode { get; set; }
     public IFormFile? Image { get; set; }
+
+    public void Validate()
+    {
+        Name = Name?.Trim();
+        Status = Status?.Trim();
+    }
 }

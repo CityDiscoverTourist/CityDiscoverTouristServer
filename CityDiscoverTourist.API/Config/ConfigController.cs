@@ -51,6 +51,7 @@ public static class ConfigController
         services.AddScoped<IOwnerPaymentService, OwnerPaymentService>();
         services.AddScoped<ISuggestionService, SuggestionService>();
         services.AddScoped<ICustomerService, CustomerService>();
+        services.AddScoped<IBlobService, BlobService>();
     }
 
     /// <summary>

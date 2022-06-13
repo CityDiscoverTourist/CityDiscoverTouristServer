@@ -48,6 +48,7 @@ public class LocationService: BaseService, ILocationService
 
     public async Task<LocationResponseModel> CreateAsync(LocationRequestModel request)
     {
+        request.Validate();
         var existValue = _locationRepository.GetByCondition(x => request.Name == x.Name).FirstOrDefaultAsync().Result;
         if (existValue != null) throw new AppException("Location with this name already exists");
 
@@ -64,6 +65,7 @@ public class LocationService: BaseService, ILocationService
 
     public async Task<LocationResponseModel> UpdateAsync(LocationRequestModel request)
     {
+        request.Validate();
         var existValue = _locationRepository.GetByCondition(x => request.Name == x.Name).FirstOrDefaultAsync().Result;
         if (existValue != null) throw new AppException("Location with this name already exists");
 
@@ -74,6 +76,7 @@ public class LocationService: BaseService, ILocationService
 
     public async Task<LocationResponseModel> UpdateAddressAsync(LocationRequestModel request)
     {
+        request.Validate();
         var entity = _mapper.Map<Location>(request);
         var longLat = GetLatLongAndPlaceIdFromAddress(entity.Address ?? throw new InvalidOperationException());
 

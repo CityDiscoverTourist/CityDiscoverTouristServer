@@ -13,6 +13,11 @@ namespace CityDiscoverTourist.Data.IRepositories.Repositories
             _context = context;
         }
 
+        public IQueryable<T> GetQueryable()
+        {
+            return _context.Set<T>();
+        }
+
         public DbSet<T> DbSet()
         {
             return _context.Set<T>();

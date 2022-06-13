@@ -9,6 +9,7 @@ namespace CityDiscoverTourist.Data.IRepositories
         IQueryable<T> GetAll();
 
         IQueryable<T> GetByCondition(Expression<Func<T, bool>> expression);
+        IQueryable<T> GetQueryable();
 
         DbSet<T> DbSet();
 
