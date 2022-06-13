@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Http;
 
 namespace CityDiscoverTourist.Business.IServices.Services;
 
-public class BlobService: IBlobService
+public class BlobService : IBlobService
 {
     private readonly BlobServiceClient _blobServiceClient;
 

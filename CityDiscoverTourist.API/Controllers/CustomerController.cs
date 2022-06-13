@@ -8,8 +8,8 @@ using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 
 namespace CityDiscoverTourist.API.Controllers;
+
 /// <summary>
-///
 /// </summary>
 [Route("api/v{version:apiVersion}/[controller]s")]
 [ApiVersion("1.0")]
@@ -17,8 +17,8 @@ namespace CityDiscoverTourist.API.Controllers;
 public class CustomerController : ControllerBase
 {
     private readonly ICustomerService _customerService;
+
     /// <summary>
-    ///
     /// </summary>
     /// <param name="customerService"></param>
     public CustomerController(ICustomerService customerService)
@@ -27,7 +27,7 @@ public class CustomerController : ControllerBase
     }
 
     /// <summary>
-    /// get all customers
+    ///     get all customers
     /// </summary>
     /// <param name="param"></param>
     /// <returns></returns>
@@ -44,18 +44,19 @@ public class CustomerController : ControllerBase
             entity.PageSize,
             entity.CurrentPage,
             entity.HasNext,
-            entity.HasPrevious,
+            entity.HasPrevious
         };
         Response.Headers.Add("X-Pagination", JsonConvert.SerializeObject(metadata));
 
         return ApiResponse<List<CustomerResponseModel>>.Success(entity, metadata);
     }
+
     /// <summary>
-    /// get customer by id
+    ///     get customer by id
     /// </summary>
     /// <param name="id"></param>
     /// <returns></returns>
-    [HttpGet($"{{id}}")]
+    [HttpGet("{id}")]
     //[Cached(600)]
     public async Task<ApiResponse<CustomerResponseModel>> Get(string id)
     {
@@ -65,7 +66,7 @@ public class CustomerController : ControllerBase
     }
 
     /// <summary>
-    /// update customer
+    ///     update customer
     /// </summary>
     /// <param name="data"></param>
     /// <returns></returns>

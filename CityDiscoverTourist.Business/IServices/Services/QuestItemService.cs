@@ -10,11 +10,11 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CityDiscoverTourist.Business.IServices.Services;
 
-public class QuestItemService: BaseService, IQuestItemService
+public class QuestItemService : BaseService, IQuestItemService
 {
-    private readonly IQuestItemRepository _taskRepository;
     private readonly IMapper _mapper;
     private readonly ISortHelper<QuestItem> _sortHelper;
+    private readonly IQuestItemRepository _taskRepository;
 
     public QuestItemService(IQuestItemRepository taskRepository, IMapper mapper, ISortHelper<QuestItem> sortHelper)
     {
@@ -50,7 +50,10 @@ public class QuestItemService: BaseService, IQuestItemService
 
         // set sequence for new quest item
         var questItems = _taskRepository.GetByCondition(x => x.QuestId == request.QuestId).ToList();
-        if (questItems.Count == 0) request.ItemId = null;
+        if (questItems.Count == 0)
+        {
+            request.ItemId = null;
+        }
         else
         {
             var lastQuestItemId = questItems.Max(x => x.Id);
@@ -94,28 +97,16 @@ public class QuestItemService: BaseService, IQuestItemService
     private static void Search(ref IQueryable<QuestItem> entities, TaskParams param)
     {
         if (!entities.Any()) return;
-        if (param.Name != null)
-        {
-            entities = entities.Where(x => x.Content!.Contains(param.Name));
-        }
-        if (param.QuestId != 0)
-        {
-            entities = entities.Where(x => x.QuestId == param.QuestId);
-        }
+        if (param.Name != null) entities = entities.Where(x => x.Content!.Contains(param.Name));
+        if (param.QuestId != 0) entities = entities.Where(x => x.QuestId == param.QuestId);
 
-        if (param.QuestItemTypeId != 0)
-        {
-            entities = entities.Where(x => x.QuestItemTypeId == param.QuestItemTypeId);
-        }
+        if (param.QuestItemTypeId != 0) entities = entities.Where(x => x.QuestItemTypeId == param.QuestItemTypeId);
     }
 
     private static string ReverseQuestion(string question)
     {
         var reversed = "";
-        for (var i = question.Length - 1; i >= 0; i--)
-        {
-            reversed += question[i];
-        }
+        for (var i = question.Length - 1; i >= 0; i--) reversed += question[i];
         return reversed;
     }
 }

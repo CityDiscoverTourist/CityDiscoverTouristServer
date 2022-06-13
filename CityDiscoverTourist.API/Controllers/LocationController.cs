@@ -11,7 +11,6 @@ using Newtonsoft.Json;
 namespace CityDiscoverTourist.API.Controllers;
 
 /// <summary>
-///
 /// </summary>
 [Route("api/v{version:apiVersion}/[controller]s")]
 [ApiVersion("1.0")]
@@ -21,7 +20,6 @@ public class LocationController : ControllerBase
     private readonly ILocationService _locationService;
 
     /// <summary>
-    ///
     /// </summary>
     /// <param name="locationService"></param>
     public LocationController(ILocationService locationService)
@@ -30,7 +28,7 @@ public class LocationController : ControllerBase
     }
 
     /// <summary>
-    /// get all locations
+    ///     get all locations
     /// </summary>
     /// <param name="param"></param>
     /// <returns></returns>
@@ -47,7 +45,7 @@ public class LocationController : ControllerBase
             entity.PageSize,
             entity.CurrentPage,
             entity.HasNext,
-            entity.HasPrevious,
+            entity.HasPrevious
         };
         Response.Headers.Add("X-Pagination", JsonConvert.SerializeObject(metadata));
 
@@ -55,13 +53,12 @@ public class LocationController : ControllerBase
     }
 
     /// <summary>
-    /// get location by id
+    ///     get location by id
     /// </summary>
     /// <param name="id"></param>
     /// <returns></returns>
     [HttpGet("{id:int}")]
     //[Cached(600)]
-
     public async Task<ApiResponse<LocationResponseModel>> Get(int id)
     {
         var entity = await _locationService.Get(id);
@@ -70,7 +67,7 @@ public class LocationController : ControllerBase
     }
 
     /// <summary>
-    /// create location
+    ///     create location
     /// </summary>
     /// <param name="data"></param>
     /// <returns></returns>
@@ -82,7 +79,7 @@ public class LocationController : ControllerBase
     }
 
     /// <summary>
-    /// update location
+    ///     update location
     /// </summary>
     /// <param name="data"></param>
     /// <returns></returns>
@@ -94,7 +91,7 @@ public class LocationController : ControllerBase
     }
 
     /// <summary>
-    /// update address in location
+    ///     update address in location
     /// </summary>
     /// <param name="request"></param>
     /// <returns></returns>
@@ -106,7 +103,7 @@ public class LocationController : ControllerBase
     }
 
     /// <summary>
-    /// delete location by id
+    ///     delete location by id
     /// </summary>
     /// <param name="id"></param>
     /// <returns></returns>
@@ -116,5 +113,4 @@ public class LocationController : ControllerBase
         var entity = await _locationService.DeleteAsync(id);
         return ApiResponse<Location>.Ok(entity);
     }
-
 }

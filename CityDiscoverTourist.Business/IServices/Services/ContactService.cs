@@ -3,7 +3,7 @@ using CityDiscoverTourist.Data.Models;
 
 namespace CityDiscoverTourist.Business.IServices.Services;
 
-public class ContactService: BaseService, IContactService
+public class ContactService : BaseService, IContactService
 {
     private readonly IContactRepository _contactRepository;
 

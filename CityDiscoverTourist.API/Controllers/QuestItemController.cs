@@ -11,7 +11,6 @@ using Newtonsoft.Json;
 namespace CityDiscoverTourist.API.Controllers;
 
 /// <summary>
-///
 /// </summary>
 [Route("api/v{version:apiVersion}/[controller]s")]
 [ApiVersion("1.0")]
@@ -21,7 +20,6 @@ public class QuestItemController : ControllerBase
     private readonly IQuestItemService _taskService;
 
     /// <summary>
-    ///
     /// </summary>
     /// <param name="taskService"></param>
     public QuestItemController(IQuestItemService taskService)
@@ -30,7 +28,7 @@ public class QuestItemController : ControllerBase
     }
 
     /// <summary>
-    /// get all quest items
+    ///     get all quest items
     /// </summary>
     /// <param name="param"></param>
     /// <returns></returns>
@@ -47,7 +45,7 @@ public class QuestItemController : ControllerBase
             entity.PageSize,
             entity.CurrentPage,
             entity.HasNext,
-            entity.HasPrevious,
+            entity.HasPrevious
         };
         Response.Headers.Add("X-Pagination", JsonConvert.SerializeObject(metadata));
 
@@ -55,7 +53,7 @@ public class QuestItemController : ControllerBase
     }
 
     /// <summary>
-    /// get quest item by id
+    ///     get quest item by id
     /// </summary>
     /// <param name="id"></param>
     /// <returns></returns>
@@ -70,7 +68,7 @@ public class QuestItemController : ControllerBase
 
 
     /// <summary>
-    /// get quest item by quest id
+    ///     get quest item by quest id
     /// </summary>
     /// <param name="questId"></param>
     /// <returns></returns>
@@ -84,7 +82,7 @@ public class QuestItemController : ControllerBase
     }
 
     /// <summary>
-    /// create quest item
+    ///     create quest item
     /// </summary>
     /// <param name="data"></param>
     /// <returns></returns>
@@ -96,7 +94,6 @@ public class QuestItemController : ControllerBase
     }
 
     /// <summary>
-    ///
     /// </summary>
     /// <param name="data"></param>
     /// <returns></returns>
@@ -108,7 +105,7 @@ public class QuestItemController : ControllerBase
     }
 
     /// <summary>
-    /// delete quest item
+    ///     delete quest item
     /// </summary>
     /// <param name="id"></param>
     /// <returns></returns>

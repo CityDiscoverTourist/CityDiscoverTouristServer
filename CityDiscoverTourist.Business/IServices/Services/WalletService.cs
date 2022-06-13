@@ -8,11 +8,11 @@ using CityDiscoverTourist.Data.Models;
 
 namespace CityDiscoverTourist.Business.IServices.Services;
 
-public class WalletService: BaseService, IWalletService
+public class WalletService : BaseService, IWalletService
 {
-    private readonly IWalletRepository _walletRepository;
     private readonly IMapper _mapper;
     private readonly ISortHelper<Wallet> _sortHelper;
+    private readonly IWalletRepository _walletRepository;
 
     public WalletService(IWalletRepository walletRepository, IMapper mapper, ISortHelper<Wallet> sortHelper)
     {

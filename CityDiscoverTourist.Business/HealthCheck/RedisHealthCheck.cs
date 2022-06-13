@@ -3,7 +3,7 @@ using StackExchange.Redis;
 
 namespace CityDiscoverTourist.Business.HealthCheck;
 
-public class RedisHealthCheck: IHealthCheck
+public class RedisHealthCheck : IHealthCheck
 {
     private readonly IConnectionMultiplexer _connectionMultiplexer;
 
@@ -12,7 +12,8 @@ public class RedisHealthCheck: IHealthCheck
         _connectionMultiplexer = connectionMultiplexer;
     }
 
-    public Task<HealthCheckResult> CheckHealthAsync(HealthCheckContext context, CancellationToken cancellationToken = new CancellationToken())
+    public Task<HealthCheckResult> CheckHealthAsync(HealthCheckContext context,
+        CancellationToken cancellationToken = new ())
     {
         try
         {

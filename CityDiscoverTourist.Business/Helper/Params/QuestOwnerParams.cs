@@ -1,6 +1,5 @@
 namespace CityDiscoverTourist.Business.Helper.Params;
 
-public class QuestOwnerParams: QueryStringParams
+public class QuestOwnerParams : QueryStringParams
 {
-
 }

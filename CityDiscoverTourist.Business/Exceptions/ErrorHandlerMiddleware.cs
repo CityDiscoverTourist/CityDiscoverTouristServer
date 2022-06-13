@@ -8,10 +8,12 @@ namespace CityDiscoverTourist.Business.Exceptions;
 public class ErrorHandlerMiddleware
 {
     private readonly RequestDelegate _next;
+
     public ErrorHandlerMiddleware(RequestDelegate next)
     {
         _next = next;
     }
+
     public async Task Invoke(HttpContext context, IEmailSender emailSender)
     {
         try
@@ -23,23 +25,23 @@ public class ErrorHandlerMiddleware
             var response = context.Response;
             response.ContentType = "application/json";
 
-            switch(error)
+            switch (error)
             {
                 case AppException:
                     // custom application error
-                    response.StatusCode = (int)HttpStatusCode.BadRequest;
+                    response.StatusCode = (int) HttpStatusCode.BadRequest;
                     break;
                 case KeyNotFoundException:
                     // not found error
-                    response.StatusCode = (int)HttpStatusCode.NotFound;
+                    response.StatusCode = (int) HttpStatusCode.NotFound;
                     break;
                 case UnauthorizedAccessException:
                     // unauthorized error
-                    response.StatusCode = (int)HttpStatusCode.Unauthorized;
+                    response.StatusCode = (int) HttpStatusCode.Unauthorized;
                     break;
                 default:
                     // unhandled error
-                    response.StatusCode = (int)HttpStatusCode.InternalServerError;
+                    response.StatusCode = (int) HttpStatusCode.InternalServerError;
                     break;
             }
 

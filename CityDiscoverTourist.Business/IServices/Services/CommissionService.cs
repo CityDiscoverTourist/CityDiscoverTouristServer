@@ -8,7 +8,7 @@ using CityDiscoverTourist.Data.Models;
 
 namespace CityDiscoverTourist.Business.IServices.Services;
 
-public class CommissionService: BaseService, ICommissionService
+public class CommissionService : BaseService, ICommissionService
 {
     private readonly ICommissionRepository _commissionService;
     private readonly IMapper _mapper;
@@ -63,24 +63,13 @@ public class CommissionService: BaseService, ICommissionService
     {
         if (!entities.Any()) return;
 
-        if (param.Percentage != 0)
-        {
-            entities = entities.Where(x => x.Percentage == param.Percentage);
-        }
-        if (param.MaxAmount != 0)
-        {
-            entities = entities.Where(x => x.MaxAmount == param.MaxAmount);
-        }
+        if (param.Percentage != 0) entities = entities.Where(x => x.Percentage == param.Percentage);
+        if (param.MaxAmount != 0) entities = entities.Where(x => x.MaxAmount == param.MaxAmount);
 
-        if (param.MinAmount != 0)
-        {
-            entities = entities.Where(x => x.MinAmount == param.MinAmount);
-        }
+        if (param.MinAmount != 0) entities = entities.Where(x => x.MinAmount == param.MinAmount);
 
         if (param.MaxAmount != 0 && param.MinAmount != 0)
-        {
             entities = entities.Where(x => x.MaxAmount == param.MaxAmount && x.MinAmount == param.MinAmount);
-        }
 
         /*if (!entities.Any()) return;
 

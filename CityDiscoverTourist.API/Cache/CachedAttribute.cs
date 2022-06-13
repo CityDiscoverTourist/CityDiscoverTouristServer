@@ -5,9 +5,7 @@ using Microsoft.AspNetCore.Mvc.Filters;
 
 namespace CityDiscoverTourist.API.Cache;
 
-
 /// <summary>
-///
 /// </summary>
 [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method)]
 public class CachedAttribute : Attribute, IAsyncActionFilter

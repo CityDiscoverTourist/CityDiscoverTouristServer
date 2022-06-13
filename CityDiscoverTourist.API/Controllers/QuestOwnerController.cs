@@ -35,7 +35,7 @@ public class QuestOwnerController : ControllerBase
             entity.PageSize,
             entity.CurrentPage,
             entity.HasNext,
-            entity.HasPrevious,
+            entity.HasPrevious
         };
         Response.Headers.Add("X-Pagination", JsonConvert.SerializeObject(metadata));
 
@@ -44,7 +44,6 @@ public class QuestOwnerController : ControllerBase
 
     [HttpGet("{id:int}")]
     //[Cached(600)]
-
     public async Task<ApiResponse<QuestOwnerResponseModel>> Get(int id)
     {
         var entity = await _questOwnerService.Get(id);
@@ -72,5 +71,4 @@ public class QuestOwnerController : ControllerBase
         var entity = await _questOwnerService.DeleteAsync(id);
         return ApiResponse<QuestOwner>.Ok(entity);
     }
-
 }

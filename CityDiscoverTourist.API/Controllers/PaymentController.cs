@@ -34,7 +34,7 @@ public class PaymentController : ControllerBase
             entity.PageSize,
             entity.CurrentPage,
             entity.HasNext,
-            entity.HasPrevious,
+            entity.HasPrevious
         };
         Response.Headers.Add("X-Pagination", JsonConvert.SerializeObject(metadata));
 
@@ -43,7 +43,6 @@ public class PaymentController : ControllerBase
 
     [HttpGet("{id:int}")]
     //[Cached(600)]
-
     public async Task<ApiResponse<PaymentRequestModel>> Get(int id)
     {
         var entity = await _paymentService.Get(id);
@@ -71,5 +70,4 @@ public class PaymentController : ControllerBase
         var entity = await _paymentService.DeleteAsync(id);
         return ApiResponse<Payment>.Ok(entity);
     }
-
 }

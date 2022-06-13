@@ -34,7 +34,7 @@ public class RewardController : ControllerBase
             entity.PageSize,
             entity.CurrentPage,
             entity.HasNext,
-            entity.HasPrevious,
+            entity.HasPrevious
         };
         Response.Headers.Add("X-Pagination", JsonConvert.SerializeObject(metadata));
 
@@ -43,7 +43,6 @@ public class RewardController : ControllerBase
 
     [HttpGet("{id:int}")]
     //[Cached(600)]
-
     public async Task<ApiResponse<RewardResponseModel>> Get(int id)
     {
         var entity = await _rewardService.Get(id);
@@ -71,5 +70,4 @@ public class RewardController : ControllerBase
         var entity = await _rewardService.DeleteAsync(id);
         return ApiResponse<Task>.Ok(entity);
     }
-
 }

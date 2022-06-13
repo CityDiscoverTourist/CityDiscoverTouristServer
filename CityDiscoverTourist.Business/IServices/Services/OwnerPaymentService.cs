@@ -8,13 +8,14 @@ using CityDiscoverTourist.Data.Models;
 
 namespace CityDiscoverTourist.Business.IServices.Services;
 
-public class OwnerPaymentService: BaseService, IOwnerPaymentService
+public class OwnerPaymentService : BaseService, IOwnerPaymentService
 {
-    private readonly IOwnerPaymentRepository _ownerPaymentRepository;
     private readonly IMapper _mapper;
+    private readonly IOwnerPaymentRepository _ownerPaymentRepository;
     private readonly ISortHelper<OwnerPayment> _sortHelper;
 
-    public OwnerPaymentService(IOwnerPaymentRepository ownerPaymentRepository, IMapper mapper, ISortHelper<OwnerPayment> sortHelper)
+    public OwnerPaymentService(IOwnerPaymentRepository ownerPaymentRepository, IMapper mapper,
+        ISortHelper<OwnerPayment> sortHelper)
     {
         _ownerPaymentRepository = ownerPaymentRepository;
         _mapper = mapper;

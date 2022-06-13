@@ -11,7 +11,6 @@ using Newtonsoft.Json;
 namespace CityDiscoverTourist.API.Controllers;
 
 /// <summary>
-///
 /// </summary>
 [Route("api/v{version:apiVersion}/[controller]s")]
 [ApiVersion("1.0")]
@@ -21,7 +20,6 @@ public class QuestTypeController : ControllerBase
     private readonly IQuestTypeService _questTypeService;
 
     /// <summary>
-    ///
     /// </summary>
     /// <param name="questTypeService"></param>
     public QuestTypeController(IQuestTypeService questTypeService)
@@ -30,7 +28,7 @@ public class QuestTypeController : ControllerBase
     }
 
     /// <summary>
-    /// get all quest types
+    ///     get all quest types
     /// </summary>
     /// <param name="param"></param>
     /// <returns></returns>
@@ -47,7 +45,7 @@ public class QuestTypeController : ControllerBase
             entity.PageSize,
             entity.CurrentPage,
             entity.HasNext,
-            entity.HasPrevious,
+            entity.HasPrevious
         };
         Response.Headers.Add("X-Pagination", JsonConvert.SerializeObject(metadata));
 
@@ -55,7 +53,7 @@ public class QuestTypeController : ControllerBase
     }
 
     /// <summary>
-    /// get quest type by id
+    ///     get quest type by id
     /// </summary>
     /// <param name="id"></param>
     /// <returns></returns>
@@ -69,7 +67,7 @@ public class QuestTypeController : ControllerBase
     }
 
     /// <summary>
-    /// count all quest in quest type
+    ///     count all quest in quest type
     /// </summary>
     /// <param name="id"></param>
     /// <returns></returns>
@@ -83,7 +81,7 @@ public class QuestTypeController : ControllerBase
     }
 
     /// <summary>
-    /// create quest type
+    ///     create quest type
     /// </summary>
     /// <param name="data"></param>
     /// <returns></returns>
@@ -95,7 +93,7 @@ public class QuestTypeController : ControllerBase
     }
 
     /// <summary>
-    /// update quest type
+    ///     update quest type
     /// </summary>
     /// <param name="data"></param>
     /// <returns></returns>
@@ -107,7 +105,7 @@ public class QuestTypeController : ControllerBase
     }
 
     /// <summary>
-    /// delete quest type
+    ///     delete quest type
     /// </summary>
     /// <param name="id"></param>
     /// <returns></returns>
@@ -117,5 +115,4 @@ public class QuestTypeController : ControllerBase
         var entity = await _questTypeService.DeleteAsync(id);
         return ApiResponse<QuestType>.Ok(entity);
     }
-
 }

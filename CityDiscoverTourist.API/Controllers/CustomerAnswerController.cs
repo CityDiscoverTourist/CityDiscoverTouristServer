@@ -11,7 +11,6 @@ using Newtonsoft.Json;
 namespace CityDiscoverTourist.API.Controllers;
 
 /// <summary>
-///
 /// </summary>
 [Route("api/v{version:apiVersion}/[controller]s")]
 [ApiVersion("1.0")]
@@ -21,7 +20,6 @@ public class CustomerAnswerController : ControllerBase
     private readonly ICustomerAnswerService _customerAnswerService;
 
     /// <summary>
-    ///
     /// </summary>
     /// <param name="customerAnswerService"></param>
     public CustomerAnswerController(ICustomerAnswerService customerAnswerService)
@@ -30,7 +28,7 @@ public class CustomerAnswerController : ControllerBase
     }
 
     /// <summary>
-    /// Get all customer answers
+    ///     Get all customer answers
     /// </summary>
     /// <param name="param"></param>
     /// <returns></returns>
@@ -47,14 +45,15 @@ public class CustomerAnswerController : ControllerBase
             entity.PageSize,
             entity.CurrentPage,
             entity.HasNext,
-            entity.HasPrevious,
+            entity.HasPrevious
         };
         Response.Headers.Add("X-Pagination", JsonConvert.SerializeObject(metadata));
 
         return ApiResponse<List<CustomerAnswer>>.Success(entity, metadata);
     }
+
     /// <summary>
-    /// Get customer answer by id
+    ///     Get customer answer by id
     /// </summary>
     /// <param name="id"></param>
     /// <returns></returns>
@@ -68,7 +67,7 @@ public class CustomerAnswerController : ControllerBase
     }
 
     /// <summary>
-    /// Create a new CustomerAnswer
+    ///     Create a new CustomerAnswer
     /// </summary>
     /// <param name="data"></param>
     /// <returns></returns>
@@ -80,7 +79,7 @@ public class CustomerAnswerController : ControllerBase
     }
 
     /// <summary>
-    /// Update a customer answer
+    ///     Update a customer answer
     /// </summary>
     /// <param name="data"></param>
     /// <returns></returns>
@@ -92,7 +91,7 @@ public class CustomerAnswerController : ControllerBase
     }
 
     /// <summary>
-    /// Delete a customer answer
+    ///     Delete a customer answer
     /// </summary>
     /// <param name="id"></param>
     /// <returns></returns>
@@ -102,5 +101,4 @@ public class CustomerAnswerController : ControllerBase
         var entity = await _customerAnswerService.DeleteAsync(id);
         return ApiResponse<CustomerAnswer>.Ok(entity);
     }
-
 }

@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Mvc;
 namespace CityDiscoverTourist.API.Controllers;
 
 /// <summary>
-///
 /// </summary>
 [Route("api/v{version:apiVersion}/[controller]s")]
 [ApiVersion("1.0")]
@@ -14,7 +13,6 @@ public class BlobController : ControllerBase
     private readonly IBlobService _blobService;
 
     /// <summary>
-    ///
     /// </summary>
     /// <param name="blobService"></param>
     public BlobController(IBlobService blobService)
@@ -23,7 +21,6 @@ public class BlobController : ControllerBase
     }
 
     /// <summary>
-    ///
     /// </summary>
     /// <returns></returns>
     [HttpGet("nganluong_10d04f903b41a83e948f5653627e1a22.html")]
@@ -34,7 +31,6 @@ public class BlobController : ControllerBase
     }
 
     /// <summary>
-    ///
     /// </summary>
     /// <param name="file"></param>
     /// <returns></returns>

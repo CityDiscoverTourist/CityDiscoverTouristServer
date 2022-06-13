@@ -5,14 +5,12 @@ using Newtonsoft.Json.Serialization;
 namespace CityDiscoverTourist.API.Cache;
 
 /// <summary>
-///
 /// </summary>
 public class ResponseCacheService : IResponseCacheService
 {
     private readonly IDistributedCache _distributedCache;
 
     /// <summary>
-    ///
     /// </summary>
     /// <param name="distributedCache"></param>
     public ResponseCacheService(IDistributedCache distributedCache)
@@ -21,7 +19,6 @@ public class ResponseCacheService : IResponseCacheService
     }
 
     /// <summary>
-    ///
     /// </summary>
     /// <param name="key"></param>
     /// <param name="value"></param>
@@ -44,7 +41,6 @@ public class ResponseCacheService : IResponseCacheService
     }
 
     /// <summary>
-    ///
     /// </summary>
     /// <param name="key"></param>
     /// <returns></returns>

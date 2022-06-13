@@ -11,7 +11,6 @@ using Newtonsoft.Json;
 namespace CityDiscoverTourist.API.Controllers;
 
 /// <summary>
-///
 /// </summary>
 [Route("api/v{version:apiVersion}/[controller]s")]
 [ApiVersion("1.0")]
@@ -25,8 +24,8 @@ public class AreaController : ControllerBase
     {
         _areaService = areaService;
     }
+
     /// <summary>
-    ///
     /// </summary>
     /// <returns></returns>
     [HttpGet("nganluong_4a26a97795b77d23ed6ec4abc3e53360aa.html")]
@@ -37,18 +36,18 @@ public class AreaController : ControllerBase
     }
 
     /// <summary>
-    ///
     /// </summary>
     /// <returns></returns>
     [HttpGet("nganluong_4a26a97795b77d23ed6ec4abc3e53360.html")]
     public ContentResult ConfirmVerify2()
     {
-        var html = System.IO.File.ReadAllText($"https://citytouriststorage.blob.core.windows.net/quest/nganluong_b33f67a3f413f9def8a0722681c96348.html");
+        var html = System.IO.File.ReadAllText(
+            "https://citytouriststorage.blob.core.windows.net/quest/nganluong_b33f67a3f413f9def8a0722681c96348.html");
         return base.Content(html, "text/html");
     }
 
     /// <summary>
-    /// get all areas
+    ///     get all areas
     /// </summary>
     /// <param name="param"></param>
     /// <returns></returns>
@@ -65,7 +64,7 @@ public class AreaController : ControllerBase
             entity.PageSize,
             entity.CurrentPage,
             entity.HasNext,
-            entity.HasPrevious,
+            entity.HasPrevious
         };
         Response.Headers.Add("X-Pagination", JsonConvert.SerializeObject(metadata));
 
@@ -73,13 +72,12 @@ public class AreaController : ControllerBase
     }
 
     /// <summary>
-    /// get area by id
+    ///     get area by id
     /// </summary>
     /// <param name="id"></param>
     /// <returns></returns>
     [HttpGet("{id:int}")]
     //[Cached(600)]
-
     public async Task<ApiResponse<AreaResponseModel>> Get(int id)
     {
         var entity = await _areaService.Get(id);
@@ -88,7 +86,7 @@ public class AreaController : ControllerBase
     }
 
     /// <summary>
-    /// create area
+    ///     create area
     /// </summary>
     /// <param name="data"></param>
     /// <returns></returns>
@@ -100,7 +98,7 @@ public class AreaController : ControllerBase
     }
 
     /// <summary>
-    /// update area
+    ///     update area
     /// </summary>
     /// <param name="data"></param>
     /// <returns></returns>
@@ -112,7 +110,7 @@ public class AreaController : ControllerBase
     }
 
     /// <summary>
-    /// delete area
+    ///     delete area
     /// </summary>
     /// <param name="id"></param>
     /// <returns></returns>
@@ -122,5 +120,4 @@ public class AreaController : ControllerBase
         var entity = await _areaService.DeleteAsync(id);
         return ApiResponse<Area>.Ok(entity);
     }
-
 }

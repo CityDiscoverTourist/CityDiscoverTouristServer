@@ -8,7 +8,7 @@ using CityDiscoverTourist.Data.Models;
 
 namespace CityDiscoverTourist.Business.IServices.Services;
 
-public class AreaService: BaseService, IAreaService
+public class AreaService : BaseService, IAreaService
 {
     private readonly IAreaRepository _areaRepository;
     private readonly IMapper _mapper;
@@ -63,14 +63,8 @@ public class AreaService: BaseService, IAreaService
     {
         if (!entities.Any()) return;
 
-        if (param.CityId != 0)
-        {
-            entities = entities.Where(x => x.CityId == param.CityId);
-        }
+        if (param.CityId != 0) entities = entities.Where(x => x.CityId == param.CityId);
 
-        if (param.Name != null)
-        {
-            entities = entities.Where(x => x.Name!.Contains(param.Name));
-        }
+        if (param.Name != null) entities = entities.Where(x => x.Name!.Contains(param.Name));
     }
 }

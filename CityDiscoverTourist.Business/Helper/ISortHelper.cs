@@ -1,7 +1,6 @@
-﻿namespace CityDiscoverTourist.Business.Helper
+﻿namespace CityDiscoverTourist.Business.Helper;
+
+public interface ISortHelper<T>
 {
-    public interface ISortHelper<T>
-    {
-        IQueryable<T> ApplySort(IQueryable<T> entities, string? orderByQueryString);
-    }
+    IQueryable<T> ApplySort(IQueryable<T> entities, string? orderByQueryString);
 }

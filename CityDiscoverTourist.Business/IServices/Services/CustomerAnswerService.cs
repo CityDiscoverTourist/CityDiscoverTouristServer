@@ -8,14 +8,15 @@ using CityDiscoverTourist.Data.Models;
 
 namespace CityDiscoverTourist.Business.IServices.Services;
 
-public class CustomerAnswerService: BaseService, ICustomerAnswerService
+public class CustomerAnswerService : BaseService, ICustomerAnswerService
 {
     private readonly ICustomerAnswerRepository _answerRepository;
     private readonly IMapper _mapper;
     private readonly ISortHelper<CustomerAnswer> _sortHelper;
 
 
-    public CustomerAnswerService(ICustomerAnswerRepository answerRepository, IMapper mapper, ISortHelper<CustomerAnswer> sortHelper)
+    public CustomerAnswerService(ICustomerAnswerRepository answerRepository, IMapper mapper,
+        ISortHelper<CustomerAnswer> sortHelper)
     {
         _answerRepository = answerRepository;
         _mapper = mapper;
@@ -32,6 +33,7 @@ public class CustomerAnswerService: BaseService, ICustomerAnswerService
         var mappedData = _mapper.Map<IEnumerable<CustomerAnswerResponseModel>>(sortedQuests);
         return PageList<CustomerAnswerResponseModel>.ToPageList(mappedData, @params.PageNumber, @params.PageSize);
     }
+
     public async Task<CustomerAnswerResponseModel> Get(int id)
     {
         var entity = await _answerRepository.Get(id);

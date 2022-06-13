@@ -10,7 +10,6 @@ using Newtonsoft.Json;
 namespace CityDiscoverTourist.API.Controllers;
 
 /// <summary>
-///
 /// </summary>
 [Route("api/v{version:apiVersion}/[controller]s")]
 [ApiVersion("1.0")]
@@ -20,7 +19,6 @@ public class CustomerQuestController : ControllerBase
     private readonly ICustomerQuestService _customerQuestService;
 
     /// <summary>
-    ///
     /// </summary>
     /// <param name="customerQuestService"></param>
     public CustomerQuestController(ICustomerQuestService customerQuestService)
@@ -29,7 +27,7 @@ public class CustomerQuestController : ControllerBase
     }
 
     /// <summary>
-    /// get all customer quest
+    ///     get all customer quest
     /// </summary>
     /// <param name="param"></param>
     /// <returns></returns>
@@ -46,7 +44,7 @@ public class CustomerQuestController : ControllerBase
             entity.PageSize,
             entity.CurrentPage,
             entity.HasNext,
-            entity.HasPrevious,
+            entity.HasPrevious
         };
         Response.Headers.Add("X-Pagination", JsonConvert.SerializeObject(metadata));
 
@@ -55,7 +53,7 @@ public class CustomerQuestController : ControllerBase
 
 
     /// <summary>
-    /// get customer quest by id
+    ///     get customer quest by id
     /// </summary>
     /// <param name="id"></param>
     /// <returns></returns>
@@ -69,7 +67,7 @@ public class CustomerQuestController : ControllerBase
     }
 
     /// <summary>
-    /// create customer quest
+    ///     create customer quest
     /// </summary>
     /// <param name="data"></param>
     /// <returns></returns>
@@ -81,7 +79,7 @@ public class CustomerQuestController : ControllerBase
     }
 
     /// <summary>
-    /// update customer end point when customer finish quest
+    ///     update customer end point when customer finish quest
     /// </summary>
     /// <param name="customerQuestId"></param>
     /// <returns></returns>
@@ -93,7 +91,7 @@ public class CustomerQuestController : ControllerBase
     }
 
     /// <summary>
-    /// delete customer quest
+    ///     delete customer quest
     /// </summary>
     /// <param name="id"></param>
     /// <returns></returns>
@@ -103,5 +101,4 @@ public class CustomerQuestController : ControllerBase
         var entity = await _customerQuestService.DeleteAsync(id);
         return ApiResponse<CustomerQuestResponseModel>.Ok(entity);
     }
-
 }

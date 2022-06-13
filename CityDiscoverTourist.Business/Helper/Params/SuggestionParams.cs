@@ -1,6 +1,5 @@
 namespace CityDiscoverTourist.Business.Helper.Params;
 
-public class SuggestionParams: QueryStringParams
+public class SuggestionParams : QueryStringParams
 {
-
 }

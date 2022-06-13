@@ -3,6 +3,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
+using System.Web;
 using CityDiscoverTourist.Business.Data.RequestModel;
 using CityDiscoverTourist.Business.Data.ResponseModel;
 using CityDiscoverTourist.Business.Enums;
@@ -16,14 +17,15 @@ using Microsoft.IdentityModel.Tokens;
 
 namespace CityDiscoverTourist.Business.IServices.Services;
 
-public class AuthService: IAuthService
+public class AuthService : IAuthService
 {
-    private readonly UserManager<ApplicationUser> _userManager;
     private static  IConfiguration? _configuration;
-    private  readonly RoleManager<IdentityRole> _roleManager;
     private readonly IEmailSender _emailSender;
+    private  readonly RoleManager<IdentityRole> _roleManager;
+    private readonly UserManager<ApplicationUser> _userManager;
 
-    public AuthService(UserManager<ApplicationUser> userManager, IConfiguration? configuration, RoleManager<IdentityRole> roleManager, IEmailSender emailSender)
+    public AuthService(UserManager<ApplicationUser> userManager, IConfiguration? configuration,
+        RoleManager<IdentityRole> roleManager, IEmailSender emailSender)
     {
         _userManager = userManager;
         _configuration = configuration;
@@ -45,7 +47,7 @@ public class AuthService: IAuthService
             new (ClaimTypes.Name, userViewModel.Email ?? string.Empty),
             new (JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
             new (ClaimTypes.Email, userViewModel.Email ?? string.Empty),
-            new (ClaimTypes.Expiration, DateTime.Now.AddHours(1).ToString(CultureInfo.CurrentCulture)),
+            new (ClaimTypes.Expiration, DateTime.Now.AddHours(1).ToString(CultureInfo.CurrentCulture))
         };
 
         var accessToken = GetJwtToken(authClaims);
@@ -72,7 +74,7 @@ public class AuthService: IAuthService
             new (ClaimTypes.Name, user.Email ?? string.Empty),
             new (JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
             new (ClaimTypes.Email, user.Email ?? string.Empty),
-            new (ClaimTypes.Expiration, DateTime.Now.AddHours(1).ToString(CultureInfo.CurrentCulture)),
+            new (ClaimTypes.Expiration, DateTime.Now.AddHours(1).ToString(CultureInfo.CurrentCulture))
         };
 
         var accessToken = GetJwtToken(authClaims);
@@ -106,9 +108,10 @@ public class AuthService: IAuthService
         await _userManager.AddToRoleAsync(user, Role.Admin.ToString());
         // send mail to user with confirmation link to activate account
         var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-        var urlEncode = System.Web.HttpUtility.UrlEncode(token);
-        var confirmationLink = $"{_configuration!["AppUrl"]}/api/v1/auths/confirm-email?userId={user.Id}&token={urlEncode}";
-        var message = $"<h1>Welcome to City Discover Tourist</h1> <br/>" +
+        var urlEncode = HttpUtility.UrlEncode(token);
+        var confirmationLink =
+            $"{_configuration!["AppUrl"]}/api/v1/auths/confirm-email?userId={user.Id}&token={urlEncode}";
+        var message = "<h1>Welcome to City Discover Tourist</h1> <br/>" +
                       $"<p>Please confirm your account by clicking <a href='{confirmationLink}'>here</a></p>";
         await _emailSender.SendMailConfirmAsync(user.Email!, "Confirm your account", message);
 
@@ -123,39 +126,13 @@ public class AuthService: IAuthService
         return result.Succeeded ? "Confirm success" : "Invalid token";
     }
 
-    private async Task<bool> CreateUserIfNotExits(ApplicationUser user, LoginResponseModel userViewModel)
-    {
-        // ReSharper disable once ConditionIsAlwaysTrueOrFalse
-        if (user != null) return false;
-        user = new ApplicationUser()
-        {
-            UserName = userViewModel.Email,
-            Email = userViewModel.Email,
-            SecurityStamp = Guid.NewGuid().ToString(),
-            EmailConfirmed = true,
-            NormalizedEmail = userViewModel.Email?.ToUpper(),
-            NormalizedUserName = userViewModel.FullName?.ToUpper(),
-            PhoneNumberConfirmed = false,
-        };
-        var loginInfo = new ExternalLoginInfo(new ClaimsPrincipal(), "Firebase-Email", userViewModel.IdProvider, userViewModel.Email);
-        var result = await _userManager.CreateAsync(user);
-        await _userManager.AddToRoleAsync(user, Role.User.ToString());
-        await _userManager.AddLoginAsync(user, loginInfo);
-        return !result.Succeeded;
-    }
-
     public JwtSecurityToken GetJwtToken(IEnumerable<Claim> claims)
     {
         var secretKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration!["JWT:Secret"]));
         var signingCredentials = new SigningCredentials(secretKey, SecurityAlgorithms.HmacSha256);
 
-        var token = new JwtSecurityToken(
-            _configuration["JWT:ValidIssuer"],
-            _configuration["JWT:ValidAudience"],
-            claims,
-            expires: DateTime.Now.AddHours(1),
-            signingCredentials: signingCredentials
-        );
+        var token = new JwtSecurityToken(_configuration["JWT:ValidIssuer"], _configuration["JWT:ValidAudience"], claims,
+            expires: DateTime.Now.AddHours(1), signingCredentials: signingCredentials);
 
         return token;
     }
@@ -166,6 +143,38 @@ public class AuthService: IAuthService
         using var rng = RandomNumberGenerator.Create();
         rng.GetBytes(randomNumber);
         return Convert.ToBase64String(randomNumber);
+    }
+
+    public async Task CreateRole()
+    {
+        if (!_roleManager.RoleExistsAsync(Role.Admin.ToString()).GetAwaiter().GetResult())
+        {
+            await _roleManager.CreateAsync(new IdentityRole(Role.Admin.ToString()));
+            await _roleManager.CreateAsync(new IdentityRole(Role.User.ToString()));
+            await _roleManager.CreateAsync(new IdentityRole(Role.QuestOwner.ToString()));
+        }
+    }
+
+    private async Task<bool> CreateUserIfNotExits(ApplicationUser user, LoginResponseModel userViewModel)
+    {
+        // ReSharper disable once ConditionIsAlwaysTrueOrFalse
+        if (user != null) return false;
+        user = new ApplicationUser
+        {
+            UserName = userViewModel.Email,
+            Email = userViewModel.Email,
+            SecurityStamp = Guid.NewGuid().ToString(),
+            EmailConfirmed = true,
+            NormalizedEmail = userViewModel.Email?.ToUpper(),
+            NormalizedUserName = userViewModel.FullName?.ToUpper(),
+            PhoneNumberConfirmed = false
+        };
+        var loginInfo = new ExternalLoginInfo(new ClaimsPrincipal(), "Firebase-Email", userViewModel.IdProvider,
+            userViewModel.Email);
+        var result = await _userManager.CreateAsync(user);
+        await _userManager.AddToRoleAsync(user, Role.User.ToString());
+        await _userManager.AddLoginAsync(user, loginInfo);
+        return !result.Succeeded;
     }
 
     private static async Task<LoginResponseModel> VerifyFirebaseToken(string? token)
@@ -184,15 +193,5 @@ public class AuthService: IAuthService
             ImagePath = user.PhotoUrl
         };
         return loginViewModel;
-    }
-
-    public async Task CreateRole()
-    {
-        if (!_roleManager.RoleExistsAsync(Role.Admin.ToString()).GetAwaiter().GetResult())
-        {
-            await _roleManager.CreateAsync(new IdentityRole(Role.Admin.ToString()));
-            await _roleManager.CreateAsync(new IdentityRole(Role.User.ToString()));
-            await _roleManager.CreateAsync(new IdentityRole(Role.QuestOwner.ToString()));
-        }
     }
 }

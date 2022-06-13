@@ -13,24 +13,27 @@ using Newtonsoft.Json.Linq;
 
 namespace CityDiscoverTourist.Business.IServices.Services;
 
-public class CustomerTaskService: BaseService, ICustomerTaskService
+public class CustomerTaskService : BaseService, ICustomerTaskService
 {
-    private readonly ICustomerTaskRepository _customerTaskRepo;
-    private readonly IMapper _mapper;
-    private readonly ISortHelper<CustomerTask> _sortHelper;
-    private readonly ICustomerQuestRepository _customerQuestRepo;
-    private readonly IQuestItemRepository _questItemRepo;
-    private readonly ILocationRepository _locationRepo;
-    private readonly ISuggestionRepository _suggestionRepo;
-    private static  GoongApiSetting? _googleApiSettings;
-    private readonly ICustomerAnswerService _customerAnswerService;
     private const int PointWhenHitSuggestion = 150;
     private const int PointWhenWrongAnswer = 100;
     private const float DistanceThreshold = 500;
+    private static  GoongApiSetting? _googleApiSettings;
+    private readonly ICustomerAnswerService _customerAnswerService;
+    private readonly ICustomerQuestRepository _customerQuestRepo;
+    private readonly ICustomerTaskRepository _customerTaskRepo;
+    private readonly ILocationRepository _locationRepo;
+    private readonly IMapper _mapper;
+    private readonly IQuestItemRepository _questItemRepo;
+    private readonly ISortHelper<CustomerTask> _sortHelper;
+    private readonly ISuggestionRepository _suggestionRepo;
 
 
-    public CustomerTaskService(ICustomerTaskRepository customerTaskRepository, IMapper mapper, ISortHelper<CustomerTask> sortHelper, ICustomerQuestRepository customerQuestRepo, IQuestItemRepository questItemRepo,
-        GoongApiSetting? googleApiSettings, ICustomerAnswerService customerAnswerService, ILocationRepository locationRepo, ISuggestionRepository suggestionRepo)
+    public CustomerTaskService(ICustomerTaskRepository customerTaskRepository, IMapper mapper,
+        ISortHelper<CustomerTask> sortHelper, ICustomerQuestRepository customerQuestRepo,
+        IQuestItemRepository questItemRepo, GoongApiSetting? googleApiSettings,
+        ICustomerAnswerService customerAnswerService, ILocationRepository locationRepo,
+        ISuggestionRepository suggestionRepo)
     {
         _customerTaskRepo = customerTaskRepository;
         _mapper = mapper;
@@ -53,6 +56,7 @@ public class CustomerTaskService: BaseService, ICustomerTaskService
         var mappedData = _mapper.Map<IEnumerable<CustomerTaskResponseModel>>(sortedQuests);
         return PageList<CustomerTaskResponseModel>.ToPageList(mappedData, @params.PageNumber, @params.PageSize);
     }
+
     public async Task<CustomerTaskResponseModel> Get(int id)
     {
         var entity = await _customerTaskRepo.Get(id);
@@ -78,9 +82,7 @@ public class CustomerTaskService: BaseService, ICustomerTaskService
         var nextQuestItemId = 0;
         // get last quest item customer has done
         var lastQuestItemCustomerFinished = _customerTaskRepo.GetAll()
-            .Where(x => x.CustomerQuestId == customerQuestId && x.IsFinished == true)
-            .AsEnumerable()
-            .LastOrDefault();
+            .Where(x => x.CustomerQuestId == customerQuestId && x.IsFinished == true).AsEnumerable().LastOrDefault();
 
         var questItems = _questItemRepo.GetByCondition(x => x.QuestId == questId).ToList();
 
@@ -104,6 +106,7 @@ public class CustomerTaskService: BaseService, ICustomerTaskService
             };
             await _customerTaskRepo.Add(_mapper.Map<CustomerTask>(customerTask));
         }
+
         return nextQuestItemId;
     }
 
@@ -121,39 +124,34 @@ public class CustomerTaskService: BaseService, ICustomerTaskService
     public async Task<CustomerTaskResponseModel> DecreasePointWhenHitSuggestion(int customerQuestId)
     {
         var currentPoint = _customerTaskRepo
-            .GetByCondition(x => x.CustomerQuestId == customerQuestId)
-            .OrderByDescending(x => x.CurrentPoint)
+            .GetByCondition(x => x.CustomerQuestId == customerQuestId).OrderByDescending(x => x.CurrentPoint)
             .LastOrDefaultAsync().Result!.CurrentPoint;
 
         var customerTask = await _customerTaskRepo.GetByCondition(x => x.CustomerQuestId == customerQuestId)
-            .OrderByDescending(x => x.CurrentPoint)
-            .LastOrDefaultAsync();
+            .OrderByDescending(x => x.CurrentPoint).LastOrDefaultAsync();
 
-        if (customerTask!.CountSuggestion >=3) throw new AppException("You have already hit 3 suggestions");
+        if (customerTask!.CountSuggestion >= 3) throw new AppException("You have already hit 3 suggestions");
 
         customerTask.CurrentPoint = currentPoint - PointWhenHitSuggestion;
         customerTask.CountSuggestion++;
 
-        customerTask = await _customerTaskRepo.UpdateFields(customerTask, r => r.CurrentPoint,
-            r => r.CountSuggestion);
+        customerTask = await _customerTaskRepo.UpdateFields(customerTask, r => r.CurrentPoint, r => r.CountSuggestion);
 
         return _mapper.Map<CustomerTaskResponseModel>(customerTask);
     }
 
-    public async Task<CustomerTaskResponseModel> CheckCustomerAnswer(int customerQuestId, string customerReply, int questItemId)
+    public async Task<CustomerTaskResponseModel> CheckCustomerAnswer(int customerQuestId, string customerReply,
+        int questItemId)
     {
         var isCustomerReplyCorrect = true;
 
         var currentPoint = _customerTaskRepo
-            .GetByCondition(x => x.CustomerQuestId == customerQuestId)
-            .OrderByDescending(x => x.CurrentPoint)
+            .GetByCondition(x => x.CustomerQuestId == customerQuestId).OrderByDescending(x => x.CurrentPoint)
             .LastOrDefaultAsync().Result!.CurrentPoint;
 
         //get current quest item of customer
         var customerTask = await _customerTaskRepo.GetByCondition(x => x.CustomerQuestId == customerQuestId)
-            .Where(x => x.QuestItemId == questItemId)
-            .OrderByDescending(x => x.CurrentPoint)
-            .LastOrDefaultAsync();
+            .Where(x => x.QuestItemId == questItemId).OrderByDescending(x => x.CurrentPoint).LastOrDefaultAsync();
 
         //compare with correct answer
         var correctAnswer = await _questItemRepo.Get(customerTask!.QuestItemId);
@@ -186,7 +184,7 @@ public class CustomerTaskService: BaseService, ICustomerTaskService
         }
 
         //save customer answer for each time customer answer wrong/true
-        if(!isCustomerReplyCorrect)
+        if (!isCustomerReplyCorrect)
             await SaveCustomerAnswer(customerTask, customerReply, NoteCustomerAnswer.WrongAnswer);
         else
             await SaveCustomerAnswer(customerTask, customerReply, NoteCustomerAnswer.CorrectAnswer);
@@ -205,22 +203,19 @@ public class CustomerTaskService: BaseService, ICustomerTaskService
 
     public float GetLastPoint(int customerQuestId)
     {
-        return _customerTaskRepo
-            .GetByCondition(x => x.CustomerQuestId == customerQuestId)
-            .OrderByDescending(x => x.CurrentPoint)
-            .LastOrDefaultAsync().Result!.CurrentPoint;
+        return _customerTaskRepo.GetByCondition(x => x.CustomerQuestId == customerQuestId)
+            .OrderByDescending(x => x.CurrentPoint).LastOrDefaultAsync().Result!.CurrentPoint;
     }
 
     public IEnumerable<string> GetLongLatFromCurrentQuestItemOfCustomer(int customerQuestId)
     {
         //get long lat of current quest item customer prepare to do
-        var itemId = _customerTaskRepo
-            .GetByCondition(x => x.CustomerQuestId == customerQuestId)
-            .OrderByDescending(x => x.CurrentPoint)
-            .LastOrDefaultAsync().Result!.QuestItemId;
+        var itemId = _customerTaskRepo.GetByCondition(x => x.CustomerQuestId == customerQuestId)
+            .OrderByDescending(x => x.CurrentPoint).LastOrDefaultAsync().Result!.QuestItemId;
 
         var locationOfQuestItem = _questItemRepo.Get(itemId).Result.LocationId;
-        var latLong = _locationRepo.Get(locationOfQuestItem).Result.Latitude + "," + _locationRepo.Get(locationOfQuestItem).Result.Longitude;
+        var latLong = _locationRepo.Get(locationOfQuestItem).Result.Latitude + "," +
+                      _locationRepo.Get(locationOfQuestItem).Result.Longitude;
         return new List<string> { latLong };
     }
 
@@ -235,7 +230,8 @@ public class CustomerTaskService: BaseService, ICustomerTaskService
 
     public Task<string> ShowSuggestions(int questItemId)
     {
-        var suggestions = _suggestionRepo.GetByCondition(x => x.QuestItemId == questItemId).Select(x => x.Content).ToList();
+        var suggestions = _suggestionRepo.GetByCondition(x => x.QuestItemId == questItemId).Select(x => x.Content)
+            .ToList();
         return Task.FromResult(string.Join(",", suggestions));
     }
 
@@ -264,7 +260,8 @@ public class CustomerTaskService: BaseService, ICustomerTaskService
     private int GetFirstQuestItemIdOfQuest(int questId)
     {
         var questItems = _questItemRepo.GetByCondition(x => x.QuestId == questId);
-        return (from questItem in questItems.ToList() where questItem.ItemId == null select questItem.Id).FirstOrDefault();
+        return (from questItem in questItems.ToList() where questItem.ItemId == null select questItem.Id)
+            .FirstOrDefault();
     }
 
     private string GetStartingAddress(int questId)

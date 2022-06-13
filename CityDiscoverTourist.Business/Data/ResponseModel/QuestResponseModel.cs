@@ -1,5 +1,3 @@
-using CityDiscoverTourist.Business.Helper;
-
 namespace CityDiscoverTourist.Business.Data.ResponseModel;
 
 public class QuestResponseModel

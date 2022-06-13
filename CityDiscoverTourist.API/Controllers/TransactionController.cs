@@ -35,7 +35,7 @@ public class TransactionController : ControllerBase
             entity.PageSize,
             entity.CurrentPage,
             entity.HasNext,
-            entity.HasPrevious,
+            entity.HasPrevious
         };
         Response.Headers.Add("X-Pagination", JsonConvert.SerializeObject(metadata));
 
@@ -44,7 +44,6 @@ public class TransactionController : ControllerBase
 
     [HttpGet("{id:int}")]
     //[Cached(600)]
-
     public async Task<ApiResponse<TransactionResponseModel>> Get(int id)
     {
         var entity = await _transService.Get(id);
@@ -72,5 +71,4 @@ public class TransactionController : ControllerBase
         var entity = await _transService.DeleteAsync(id);
         return ApiResponse<Transaction>.Ok(entity);
     }
-
 }

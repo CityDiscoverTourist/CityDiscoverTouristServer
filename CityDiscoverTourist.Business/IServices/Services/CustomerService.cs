@@ -7,10 +7,10 @@ using Microsoft.AspNetCore.Identity;
 
 namespace CityDiscoverTourist.Business.IServices.Services;
 
-public class CustomerService: BaseService, ICustomerService
+public class CustomerService : BaseService, ICustomerService
 {
-    private readonly UserManager<ApplicationUser> _userManager;
     private readonly IMapper _mapper;
+    private readonly UserManager<ApplicationUser> _userManager;
 
     public CustomerService(UserManager<ApplicationUser> userManager, IMapper mapper)
     {

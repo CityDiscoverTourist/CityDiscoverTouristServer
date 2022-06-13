@@ -11,7 +11,6 @@ using Newtonsoft.Json;
 namespace CityDiscoverTourist.API.Controllers;
 
 /// <summary>
-///
 /// </summary>
 [Route("api/v{version:apiVersion}/[controller]s")]
 [ApiVersion("1.0")]
@@ -21,7 +20,6 @@ public class LocationTypeController : ControllerBase
     private readonly ILocationTypeService _locationTypeService;
 
     /// <summary>
-    ///
     /// </summary>
     /// <param name="locationTypeService"></param>
     public LocationTypeController(ILocationTypeService locationTypeService)
@@ -30,7 +28,7 @@ public class LocationTypeController : ControllerBase
     }
 
     /// <summary>
-    /// get all location types
+    ///     get all location types
     /// </summary>
     /// <param name="param"></param>
     /// <returns></returns>
@@ -47,7 +45,7 @@ public class LocationTypeController : ControllerBase
             entity.PageSize,
             entity.CurrentPage,
             entity.HasNext,
-            entity.HasPrevious,
+            entity.HasPrevious
         };
         Response.Headers.Add("X-Pagination", JsonConvert.SerializeObject(metadata));
 
@@ -55,13 +53,12 @@ public class LocationTypeController : ControllerBase
     }
 
     /// <summary>
-    /// get location type by id
+    ///     get location type by id
     /// </summary>
     /// <param name="id"></param>
     /// <returns></returns>
     [HttpGet("{id:int}")]
     //[Cached(600)]
-
     public async Task<ApiResponse<LocationTypeResponseModel>> Get(int id)
     {
         var entity = await _locationTypeService.Get(id);
@@ -70,7 +67,7 @@ public class LocationTypeController : ControllerBase
     }
 
     /// <summary>
-    /// create location type
+    ///     create location type
     /// </summary>
     /// <param name="data"></param>
     /// <returns></returns>
@@ -82,7 +79,7 @@ public class LocationTypeController : ControllerBase
     }
 
     /// <summary>
-    /// update location type
+    ///     update location type
     /// </summary>
     /// <param name="data"></param>
     /// <returns></returns>
@@ -94,7 +91,7 @@ public class LocationTypeController : ControllerBase
     }
 
     /// <summary>
-    /// delete location type
+    ///     delete location type
     /// </summary>
     /// <param name="id"></param>
     /// <returns></returns>
@@ -104,5 +101,4 @@ public class LocationTypeController : ControllerBase
         var entity = await _locationTypeService.DeleteAsync(id);
         return ApiResponse<LocationType>.Ok(entity);
     }
-
 }

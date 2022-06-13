@@ -1,7 +1,5 @@
-﻿using System.Net;
-using System.Net.Mail;
+﻿using MailKit.Net.Smtp;
 using MimeKit;
-using SmtpClient = MailKit.Net.Smtp.SmtpClient;
 
 namespace CityDiscoverTourist.Business.Helper.EmailHelper;
 
@@ -47,8 +45,6 @@ public class EmailSender : IEmailSender
             client.Dispose();
         }
     }
-
-
 
 
     public static void SendMailWithMailGun(Message message)

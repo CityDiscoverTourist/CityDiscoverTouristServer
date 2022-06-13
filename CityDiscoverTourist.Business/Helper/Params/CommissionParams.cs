@@ -1,6 +1,6 @@
 namespace CityDiscoverTourist.Business.Helper.Params;
 
-public class CommissionParams: QueryStringParams
+public class CommissionParams : QueryStringParams
 {
     public int MinAmount { get; set; }
     public int MaxAmount { get; set; }

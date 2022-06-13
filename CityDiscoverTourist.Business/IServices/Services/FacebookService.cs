@@ -11,13 +11,13 @@ using Newtonsoft.Json;
 
 namespace CityDiscoverTourist.Business.IServices.Services;
 
-public class FacebookService: IFacebookService
+public class FacebookService : IFacebookService
 {
+    private const string FacebookUri = "https://graph.facebook.com/v2.8/";
     private readonly IAuthService _authService;
-    private readonly UserManager<ApplicationUser> _userManager;
 
     private readonly HttpClient _httpClient;
-    private const string FacebookUri = "https://graph.facebook.com/v2.8/";
+    private readonly UserManager<ApplicationUser> _userManager;
 
     public FacebookService(UserManager<ApplicationUser> userManager, IAuthService authService)
     {
@@ -27,20 +27,16 @@ public class FacebookService: IFacebookService
         {
             BaseAddress = new Uri(FacebookUri)
         };
-        _httpClient.DefaultRequestHeaders
-            .Accept
-            .Add(new MediaTypeWithQualityHeaderValue("application/json"));
+        _httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
     }
 
     public async Task<FacebookResponseModel> GetUserFromFacebookAsync(string facebookToken)
     {
-        var result = await GetAsync<dynamic>(facebookToken, "me", "scope=public_profile&fields=first_name,last_name,email,id,picture.width(100).height(100)");
-        if (result == null)
-        {
-            throw new KeyNotFoundException("Invalid facebook token");
-        }
+        var result = await GetAsync<dynamic>(facebookToken, "me",
+            "scope=public_profile&fields=first_name,last_name,email,id,picture.width(100).height(100)");
+        if (result == null) throw new KeyNotFoundException("Invalid facebook token");
 
-        var account = new FacebookResponseModel()
+        var account = new FacebookResponseModel
         {
             FullName = result.first_name + " " + result.last_name,
             ImagePath = result.picture.data.url,
@@ -55,7 +51,7 @@ public class FacebookService: IFacebookService
     {
         var response = await _httpClient.GetAsync($"{endpoint}?access_token={accessToken}&{args}");
         if (!response.IsSuccessStatusCode)
-            return default(T)!;
+            return default!;
 
         var result = await response.Content.ReadAsStringAsync();
 
@@ -65,10 +61,7 @@ public class FacebookService: IFacebookService
     public async Task<LoginResponseModel> LoginFacebookAsync(string token)
     {
         await _authService.CreateRole();
-        if (string.IsNullOrEmpty(token))
-        {
-            throw new KeyNotFoundException("Token is null");
-        }
+        if (string.IsNullOrEmpty(token)) throw new KeyNotFoundException("Token is null");
 
         var facebookUser = await GetUserFromFacebookAsync(token);
         var userDb = await _userManager.FindByEmailAsync(facebookUser.Email);
@@ -81,7 +74,7 @@ public class FacebookService: IFacebookService
             new (ClaimTypes.Name, facebookUser.FullName!),
             new (JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
             new (ClaimTypes.Email, facebookUser.Email!),
-            new (ClaimTypes.Expiration, DateTime.Now.AddHours(1).ToString(CultureInfo.CurrentCulture)),
+            new (ClaimTypes.Expiration, DateTime.Now.AddHours(1).ToString(CultureInfo.CurrentCulture))
         };
 
         var accessToken = _authService.GetJwtToken(authClaims);
@@ -94,7 +87,7 @@ public class FacebookService: IFacebookService
             JwtToken = new JwtSecurityTokenHandler().WriteToken(accessToken),
             RefreshToken = _authService.GenerateRefreshToken(),
             RefreshTokenExpiryTime = DateTime.Now.AddHours(1),
-            AccountId = userDb.Id,
+            AccountId = userDb.Id
         };
     }
 
@@ -102,7 +95,7 @@ public class FacebookService: IFacebookService
     {
         // ReSharper disable once ConditionIsAlwaysTrueOrFalse
         if (user != null) return false;
-        user = new ApplicationUser()
+        user = new ApplicationUser
         {
             UserName = facebookUser.Email,
             Email = facebookUser.Email,
@@ -110,7 +103,7 @@ public class FacebookService: IFacebookService
             EmailConfirmed = true,
             NormalizedEmail = facebookUser.Email!.ToUpper(new CultureInfo("en-US", false)),
             NormalizedUserName = facebookUser.FullName!.ToUpper(new CultureInfo("en-US", false)),
-            PhoneNumberConfirmed = false,
+            PhoneNumberConfirmed = false
         };
         var loginInfo = new ExternalLoginInfo(new ClaimsPrincipal(), "Facebook", facebookUser.FacebookId, "Facebook");
         var result = await _userManager.CreateAsync(user);

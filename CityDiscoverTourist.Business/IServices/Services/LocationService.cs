@@ -13,14 +13,15 @@ using Newtonsoft.Json.Linq;
 
 namespace CityDiscoverTourist.Business.IServices.Services;
 
-public class LocationService: BaseService, ILocationService
+public class LocationService : BaseService, ILocationService
 {
+    private static  GoongApiSetting? _googleApiSetting;
     private readonly ILocationRepository _locationRepository;
     private readonly IMapper _mapper;
     private readonly ISortHelper<Location> _sortHelper;
-    private static  GoongApiSetting? _googleApiSetting;
 
-    public LocationService(ILocationRepository locationRepository, IMapper mapper, ISortHelper<Location> sortHelper, GoongApiSetting? googleApiSetting)
+    public LocationService(ILocationRepository locationRepository, IMapper mapper, ISortHelper<Location> sortHelper,
+        GoongApiSetting? googleApiSetting)
     {
         _locationRepository = locationRepository;
         _mapper = mapper;
@@ -114,17 +115,8 @@ public class LocationService: BaseService, ILocationService
     {
         if (!entities.Any()) return;
 
-        if(param.Name != null)
-        {
-            entities = entities.Where(r => r.Name!.Contains(param.Name));
-        }
-        if (param.AreaId != 0)
-        {
-            entities = entities.Where(r => r.AreaId == param.AreaId);
-        }
-        if (param.LocationTypeId != 0)
-        {
-            entities = entities.Where(r => r.LocationTypeId == param.LocationTypeId);
-        }
+        if (param.Name != null) entities = entities.Where(r => r.Name!.Contains(param.Name));
+        if (param.AreaId != 0) entities = entities.Where(r => r.AreaId == param.AreaId);
+        if (param.LocationTypeId != 0) entities = entities.Where(r => r.LocationTypeId == param.LocationTypeId);
     }
 }

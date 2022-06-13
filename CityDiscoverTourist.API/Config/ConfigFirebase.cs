@@ -12,12 +12,10 @@ using Newtonsoft.Json.Serialization;
 namespace CityDiscoverTourist.API.Config;
 
 /// <summary>
-///
 /// </summary>
 public static class ConfigFirebase
 {
     /// <summary>
-    ///
     /// </summary>
     /// <param name="services"></param>
     /// <param name="configuration"></param>
@@ -26,17 +24,16 @@ public static class ConfigFirebase
         IWebHostEnvironment webHostEnvironment)
     {
         services.AddIdentity<ApplicationUser, IdentityRole>(opt =>
-            {
-                opt.Password.RequireUppercase = false;
-                opt.Password.RequireDigit = false;
-                opt.User.RequireUniqueEmail = true;
-                opt.SignIn.RequireConfirmedEmail = true;
-                opt.Lockout.AllowedForNewUsers = true;
-                opt.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(2);
-                opt.Lockout.MaxFailedAccessAttempts = 3;
-                opt.SignIn.RequireConfirmedEmail = true;
-            }).AddEntityFrameworkStores<ApplicationDbContext>()
-            .AddDefaultTokenProviders();
+        {
+            opt.Password.RequireUppercase = false;
+            opt.Password.RequireDigit = false;
+            opt.User.RequireUniqueEmail = true;
+            opt.SignIn.RequireConfirmedEmail = true;
+            opt.Lockout.AllowedForNewUsers = true;
+            opt.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(2);
+            opt.Lockout.MaxFailedAccessAttempts = 3;
+            opt.SignIn.RequireConfirmedEmail = true;
+        }).AddEntityFrameworkStores<ApplicationDbContext>().AddDefaultTokenProviders();
 
         if (webHostEnvironment.IsDevelopment())
         {
@@ -46,11 +43,12 @@ public static class ConfigFirebase
                 ContractResolver = new DefaultContractResolver
                 {
                     NamingStrategy = new SnakeCaseNamingStrategy()
-                },
+                }
             };
             FirebaseApp.Create(new AppOptions
             {
-                Credential = GoogleCredential.FromJson(JsonConvert.SerializeObject(fireBaseCredential, serializerSettings)),
+                Credential =
+                    GoogleCredential.FromJson(JsonConvert.SerializeObject(fireBaseCredential, serializerSettings))
             });
         }
         else
@@ -58,7 +56,7 @@ public static class ConfigFirebase
             var fireBaseCredential = configuration.GetSection("Firebase").Value;
             FirebaseApp.Create(new AppOptions
             {
-                Credential = GoogleCredential.FromJson(fireBaseCredential),
+                Credential = GoogleCredential.FromJson(fireBaseCredential)
             });
         }
 
@@ -79,8 +77,8 @@ public static class ConfigFirebase
                 ValidateIssuerSigningKey = true,
                 ValidAudience = configuration["JWT:ValidAudience"],
                 ValidIssuer = configuration["JWT:ValidIssuer"],
-                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["JWT:Secret"])),
+                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["JWT:Secret"]))
             };
         });
-}
+    }
 }

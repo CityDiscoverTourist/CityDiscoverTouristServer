@@ -4,14 +4,12 @@ using Microsoft.Extensions.Configuration.AzureKeyVault;
 namespace CityDiscoverTourist.API.AzureHelper;
 
 /// <summary>
-///
 /// </summary>
-public class PrefixKeyVault: IKeyVaultSecretManager
+public class PrefixKeyVault : IKeyVaultSecretManager
 {
     private readonly string _prefix;
 
     /// <summary>
-    ///
     /// </summary>
     /// <param name="prefix"></param>
     public PrefixKeyVault(string prefix)
@@ -20,7 +18,6 @@ public class PrefixKeyVault: IKeyVaultSecretManager
     }
 
     /// <summary>
-    ///
     /// </summary>
     /// <param name="secret"></param>
     /// <returns></returns>
@@ -30,13 +27,11 @@ public class PrefixKeyVault: IKeyVaultSecretManager
     }
 
     /// <summary>
-    ///
     /// </summary>
     /// <param name="secret"></param>
     /// <returns></returns>
     public string GetKey(SecretBundle secret)
     {
-        return secret.SecretIdentifier.Name.Substring(_prefix.Length)
-            .Replace("--", ":");
+        return secret.SecretIdentifier.Name.Substring(_prefix.Length).Replace("--", ":");
     }
 }

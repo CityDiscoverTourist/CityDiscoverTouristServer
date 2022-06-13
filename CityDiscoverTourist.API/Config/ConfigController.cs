@@ -14,12 +14,10 @@ using Newtonsoft.Json;
 namespace CityDiscoverTourist.API.Config;
 
 /// <summary>
-///
 /// </summary>
 public static class ConfigController
 {
     /// <summary>
-    ///
     /// </summary>
     /// <param name="services"></param>
     public static void SetupServices(this IServiceCollection services)
@@ -55,7 +53,6 @@ public static class ConfigController
     }
 
     /// <summary>
-    ///
     /// </summary>
     /// <param name="services"></param>
     public static void SetupHelper(this IServiceCollection services)
@@ -85,7 +82,6 @@ public static class ConfigController
     }
 
     /// <summary>
-    ///
     /// </summary>
     /// <param name="services"></param>
     public static void SetupRepositories(this IServiceCollection services)
@@ -116,7 +112,6 @@ public static class ConfigController
     }
 
     /// <summary>
-    ///
     /// </summary>
     /// <param name="services"></param>
     /// <param name="configuration"></param>

@@ -10,8 +10,8 @@ namespace CityDiscoverTourist.Business.IServices.Services;
 
 public class RewardService : BaseService, IRewardService
 {
-    private readonly IRewardRepository  _rewardRepository;
     private readonly IMapper _mapper;
+    private readonly IRewardRepository  _rewardRepository;
     private readonly ISortHelper<Reward> _sortHelper;
 
     public RewardService(IRewardRepository rewardRepository, IMapper mapper, ISortHelper<Reward> sortHelper)
@@ -64,17 +64,8 @@ public class RewardService : BaseService, IRewardService
     {
         if (!entities.Any() || string.IsNullOrWhiteSpace(param.Name) && !param.ExpiredDate.HasValue) return;
 
-        if (param.Name != null)
-        {
-            entities = entities.Where(x => x.Name.Equals(param.Name));
-        }
-        if (param.ExpiredDate != null)
-        {
-            entities = entities.Where(x => x.ExpiredDate >= param.ExpiredDate);
-        }
-        if (param.ReceivedDate != null)
-        {
-            entities = entities.Where(x => x.ReceivedDate >= param.ReceivedDate);
-        }
+        if (param.Name != null) entities = entities.Where(x => x.Name.Equals(param.Name));
+        if (param.ExpiredDate != null) entities = entities.Where(x => x.ExpiredDate >= param.ExpiredDate);
+        if (param.ReceivedDate != null) entities = entities.Where(x => x.ReceivedDate >= param.ReceivedDate);
     }
 }

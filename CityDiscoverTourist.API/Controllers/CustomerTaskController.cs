@@ -20,7 +20,7 @@ public class CustomerTaskController : ControllerBase
     private readonly ICustomerTaskService _customerTaskService;
 
     /// <summary>
-    ///    Constructor
+    ///     Constructor
     /// </summary>
     /// <param name="taskService"></param>
     public CustomerTaskController(ICustomerTaskService taskService)
@@ -29,7 +29,7 @@ public class CustomerTaskController : ControllerBase
     }
 
     /// <summary>
-    /// Get all tasks
+    ///     Get all tasks
     /// </summary>
     /// <param name="param"></param>
     /// <returns></returns>
@@ -46,14 +46,14 @@ public class CustomerTaskController : ControllerBase
             entity.PageSize,
             entity.CurrentPage,
             entity.HasNext,
-            entity.HasPrevious,
+            entity.HasPrevious
         };
         Response.Headers.Add("X-Pagination", JsonConvert.SerializeObject(metadata));
         return ApiResponse<List<CustomerTask>>.Success(entity, metadata);
     }
 
     /// <summary>
-    /// get customer task by id
+    ///     get customer task by id
     /// </summary>
     /// <param name="id"></param>
     /// <returns></returns>
@@ -67,7 +67,7 @@ public class CustomerTaskController : ControllerBase
     }
 
     /// <summary>
-    /// Get suggestions for the customer
+    ///     Get suggestions for the customer
     /// </summary>
     /// <param name="questItemId"></param>
     /// <returns></returns>
@@ -80,7 +80,7 @@ public class CustomerTaskController : ControllerBase
     }
 
     /// <summary>
-    /// check customer location with quest item location if true allow to start quest item
+    ///     check customer location with quest item location if true allow to start quest item
     /// </summary>
     /// <param name="customerQuestId"></param>
     /// <param name="latitude"></param>
@@ -90,13 +90,14 @@ public class CustomerTaskController : ControllerBase
     [HttpGet("check-location-with-quest-item/{customerQuestId:int}")]
     public Task<bool> CheckCustomerLocationWithQuestItem(int customerQuestId, float latitude, float longitude)
     {
-        var isCustomerAtQuestItemLocation = _customerTaskService.IsCustomerAtQuestItemLocation(customerQuestId, latitude, longitude);
+        var isCustomerAtQuestItemLocation =
+            _customerTaskService.IsCustomerAtQuestItemLocation(customerQuestId, latitude, longitude);
         if (!isCustomerAtQuestItemLocation) throw new AppException("Customer is not at quest item location");
         return Task.FromResult(isCustomerAtQuestItemLocation);
     }
 
     /// <summary>
-    /// check customer location with quest location if true allow to start quest
+    ///     check customer location with quest location if true allow to start quest
     /// </summary>
     /// <param name="questId"></param>
     /// <param name="latitude"></param>
@@ -106,13 +107,14 @@ public class CustomerTaskController : ControllerBase
     [HttpGet("check-location-with-quest/{questId:int}")]
     public Task<bool> CheckCustomerLocationWithQuest(int questId, float latitude, float longitude)
     {
-        var isCustomerAtQuestLocation = _customerTaskService.CheckCustomerLocationWithQuestLocation(questId, latitude, longitude);
+        var isCustomerAtQuestLocation =
+            _customerTaskService.CheckCustomerLocationWithQuestLocation(questId, latitude, longitude);
         if (!isCustomerAtQuestLocation) throw new AppException("Customer is not at quest location");
         return Task.FromResult(isCustomerAtQuestLocation);
     }
 
     /// <summary>
-    /// add customer task for the first time when customer start quest
+    ///     add customer task for the first time when customer start quest
     /// </summary>
     /// <param name="data"></param>
     /// <param name="questId"></param>
@@ -125,7 +127,7 @@ public class CustomerTaskController : ControllerBase
     }
 
     /// <summary>
-    /// if customer correct answer then move to next quest item
+    ///     if customer correct answer then move to next quest item
     /// </summary>
     /// <param name="questId"></param>
     /// <param name="customerQuestId"></param>
@@ -138,7 +140,7 @@ public class CustomerTaskController : ControllerBase
     }
 
     /// <summary>
-    /// decrease customer point when they hit suggestion
+    ///     decrease customer point when they hit suggestion
     /// </summary>
     /// <param name="customerQuestId"></param>
     /// <returns></returns>
@@ -150,21 +152,22 @@ public class CustomerTaskController : ControllerBase
     }
 
     /// <summary>
-    /// check customer answer if correct then call MoveToNextTask method, if not then decrease point
+    ///     check customer answer if correct then call MoveToNextTask method, if not then decrease point
     /// </summary>
     /// <param name="customerQuestId"></param>
     /// <param name="customerReply"></param>
     /// <param name="questItemId"></param>
     /// <returns></returns>
     [HttpPut("check-answer/{customerQuestId:int}")]
-    public async Task<ApiResponse<CustomerTaskResponseModel>> CheckCustomerAnswer(int customerQuestId, string customerReply, int questItemId)
+    public async Task<ApiResponse<CustomerTaskResponseModel>> CheckCustomerAnswer(int customerQuestId,
+        string customerReply, int questItemId)
     {
         var entity = await _customerTaskService.CheckCustomerAnswer(customerQuestId, customerReply, questItemId);
         return ApiResponse<CustomerTaskResponseModel>.Ok(entity);
     }
 
     /// <summary>
-    /// delete customer task
+    ///     delete customer task
     /// </summary>
     /// <param name="id"></param>
     /// <returns></returns>

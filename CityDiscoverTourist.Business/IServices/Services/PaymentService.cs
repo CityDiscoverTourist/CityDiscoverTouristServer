@@ -7,10 +7,10 @@ using CityDiscoverTourist.Data.Models;
 
 namespace CityDiscoverTourist.Business.IServices.Services;
 
-public class PaymentService: BaseService, IPaymentService
+public class PaymentService : BaseService, IPaymentService
 {
-    private readonly IPaymentRepository _paymentRepository;
     private readonly IMapper _mapper;
+    private readonly IPaymentRepository _paymentRepository;
     private readonly ISortHelper<Payment> _sortHelper;
 
     public PaymentService(IPaymentRepository paymentRepository, IMapper mapper, ISortHelper<Payment> sortHelper)
@@ -63,13 +63,7 @@ public class PaymentService: BaseService, IPaymentService
     {
         if (!entities.Any()) return;
 
-        if(param.PaymentMethod != null)
-        {
-            entities = entities.Where(r => r.PaymentMethod!.Equals(param.PaymentMethod));
-        }
-        if (param.CustomerQuestId != 0)
-        {
-            entities = entities.Where(r => r.CustomerQuestId == param.CustomerQuestId);
-        }
+        if (param.PaymentMethod != null) entities = entities.Where(r => r.PaymentMethod!.Equals(param.PaymentMethod));
+        if (param.CustomerQuestId != 0) entities = entities.Where(r => r.CustomerQuestId == param.CustomerQuestId);
     }
 }

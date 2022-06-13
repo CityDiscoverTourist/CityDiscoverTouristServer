@@ -8,10 +8,10 @@ using CityDiscoverTourist.Data.Models;
 
 namespace CityDiscoverTourist.Business.IServices.Services;
 
-public class NoteService: BaseService, INoteService
+public class NoteService : BaseService, INoteService
 {
-    private readonly INoteRepository _noteRepository;
     private readonly IMapper _mapper;
+    private readonly INoteRepository _noteRepository;
     private readonly ISortHelper<Note> _sortHelper;
 
     public NoteService(INoteRepository noteRepository, IMapper mapper, ISortHelper<Note> sortHelper)
@@ -64,13 +64,7 @@ public class NoteService: BaseService, INoteService
     {
         if (!entities.Any()) return;
 
-        if(param.Content != null)
-        {
-            entities = entities.Where(r => r.Content!.Equals(param.Content));
-        }
-        if (param.CustomerTaskId != 0)
-        {
-            entities = entities.Where(r => r.CustomerTaskId == param.CustomerTaskId);
-        }
+        if (param.Content != null) entities = entities.Where(r => r.Content!.Equals(param.Content));
+        if (param.CustomerTaskId != 0) entities = entities.Where(r => r.CustomerTaskId == param.CustomerTaskId);
     }
 }

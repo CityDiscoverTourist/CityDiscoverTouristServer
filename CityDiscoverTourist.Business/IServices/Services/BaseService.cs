@@ -1,4 +1,3 @@
-
 namespace CityDiscoverTourist.Business.IServices.Services;
 
 public class BaseService

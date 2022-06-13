@@ -11,7 +11,6 @@ using Newtonsoft.Json;
 namespace CityDiscoverTourist.API.Controllers;
 
 /// <summary>
-///
 /// </summary>
 [Route("api/v{version:apiVersion}/[controller]s")]
 [ApiVersion("1.0")]
@@ -21,7 +20,6 @@ public class QuestItemTypeController : ControllerBase
     private readonly IQuestItemTypeService _questItemTypeService;
 
     /// <summary>
-    ///
     /// </summary>
     /// <param name="questItemTypeService"></param>
     public QuestItemTypeController(IQuestItemTypeService questItemTypeService)
@@ -30,7 +28,7 @@ public class QuestItemTypeController : ControllerBase
     }
 
     /// <summary>
-    /// get all quest item types
+    ///     get all quest item types
     /// </summary>
     /// <param name="param"></param>
     /// <returns></returns>
@@ -47,7 +45,7 @@ public class QuestItemTypeController : ControllerBase
             entity.PageSize,
             entity.CurrentPage,
             entity.HasNext,
-            entity.HasPrevious,
+            entity.HasPrevious
         };
         Response.Headers.Add("X-Pagination", JsonConvert.SerializeObject(metadata));
 
@@ -55,14 +53,13 @@ public class QuestItemTypeController : ControllerBase
     }
 
     /// <summary>
-    /// get quest item type by id
+    ///     get quest item type by id
     /// </summary>
     /// <param name="id"></param>
     /// <param name="fields"></param>
     /// <returns></returns>
     [HttpGet("{id:int}")]
     //[Cached(600)]
-
     public async Task<ApiResponse<QuestItemTypeResponseModel>> Get(int id, string? fields)
     {
         var entity = await _questItemTypeService.Get(id, fields);
@@ -71,7 +68,7 @@ public class QuestItemTypeController : ControllerBase
     }
 
     /// <summary>
-    /// create quest item type
+    ///     create quest item type
     /// </summary>
     /// <param name="data"></param>
     /// <returns></returns>
@@ -83,7 +80,7 @@ public class QuestItemTypeController : ControllerBase
     }
 
     /// <summary>
-    /// update quest item type
+    ///     update quest item type
     /// </summary>
     /// <param name="data"></param>
     /// <returns></returns>
@@ -95,7 +92,7 @@ public class QuestItemTypeController : ControllerBase
     }
 
     /// <summary>
-    /// delete quest item type
+    ///     delete quest item type
     /// </summary>
     /// <param name="id"></param>
     /// <returns></returns>
@@ -105,5 +102,4 @@ public class QuestItemTypeController : ControllerBase
         var entity = await _questItemTypeService.DeleteAsync(id);
         return ApiResponse<QuestItemType>.Ok(entity);
     }
-
 }

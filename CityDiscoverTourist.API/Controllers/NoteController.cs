@@ -35,7 +35,7 @@ public class NoteController : ControllerBase
             entity.PageSize,
             entity.CurrentPage,
             entity.HasNext,
-            entity.HasPrevious,
+            entity.HasPrevious
         };
         Response.Headers.Add("X-Pagination", JsonConvert.SerializeObject(metadata));
 
@@ -44,7 +44,6 @@ public class NoteController : ControllerBase
 
     [HttpGet("{id:int}")]
     //[Cached(600)]
-
     public async Task<ApiResponse<NoteResponseModel>> Get(int id)
     {
         var entity = await _noteService.Get(id);
@@ -72,5 +71,4 @@ public class NoteController : ControllerBase
         var entity = await _noteService.DeleteAsync(id);
         return ApiResponse<Note>.Ok(entity);
     }
-
 }

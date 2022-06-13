@@ -8,13 +8,14 @@ using CityDiscoverTourist.Data.Models;
 
 namespace CityDiscoverTourist.Business.IServices.Services;
 
-public class LocationTypeService: BaseService, ILocationTypeService
+public class LocationTypeService : BaseService, ILocationTypeService
 {
     private readonly ILocationTypeRepository _locationTypeRepository;
     private readonly IMapper _mapper;
     private readonly ISortHelper<LocationType> _sortHelper;
 
-    public LocationTypeService(ILocationTypeRepository locationTypeRepository, IMapper mapper, ISortHelper<LocationType> sortHelper)
+    public LocationTypeService(ILocationTypeRepository locationTypeRepository, IMapper mapper,
+        ISortHelper<LocationType> sortHelper)
     {
         _locationTypeRepository = locationTypeRepository;
         _mapper = mapper;
@@ -64,7 +65,7 @@ public class LocationTypeService: BaseService, ILocationTypeService
     {
         if (!entities.Any()) return;
 
-        if(param.Name != null)
+        if (param.Name != null)
             entities = entities.Where(r => r.Name!.Contains(param.Name));
     }
 }

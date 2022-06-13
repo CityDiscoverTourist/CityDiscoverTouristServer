@@ -8,13 +8,14 @@ using CityDiscoverTourist.Data.Models;
 
 namespace CityDiscoverTourist.Business.IServices.Services;
 
-public class TransactionService: BaseService, ITransactionService
+public class TransactionService : BaseService, ITransactionService
 {
-    private readonly ITransactionRepository _transRepository;
     private readonly IMapper _mapper;
     private readonly ISortHelper<Transaction> _sortHelper;
+    private readonly ITransactionRepository _transRepository;
 
-    public TransactionService(ITransactionRepository transRepository, IMapper mapper, ISortHelper<Transaction> sortHelper)
+    public TransactionService(ITransactionRepository transRepository, IMapper mapper,
+        ISortHelper<Transaction> sortHelper)
     {
         _transRepository = transRepository;
         _mapper = mapper;
@@ -64,17 +65,8 @@ public class TransactionService: BaseService, ITransactionService
     {
         if (!entities.Any()) return;
 
-        if(param.Type != null)
-        {
-            entities = entities.Where(r => r.TypeTransaction!.Equals(param.Type));
-        }
-        if (param.Total != 0)
-        {
-            entities = entities.Where(r => r.Total == param.Total);
-        }
-        if (param.WalletId != 0)
-        {
-            entities = entities.Where(r => r.WalletId == param.WalletId);
-        }
+        if (param.Type != null) entities = entities.Where(r => r.TypeTransaction!.Equals(param.Type));
+        if (param.Total != 0) entities = entities.Where(r => r.Total == param.Total);
+        if (param.WalletId != 0) entities = entities.Where(r => r.WalletId == param.WalletId);
     }
 }

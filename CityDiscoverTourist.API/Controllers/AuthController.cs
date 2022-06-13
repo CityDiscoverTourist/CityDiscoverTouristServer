@@ -6,7 +6,6 @@ using Microsoft.AspNetCore.Mvc;
 namespace CityDiscoverTourist.API.Controllers;
 
 /// <summary>
-///
 /// </summary>
 [Route("api/v{version:apiVersion}/[controller]s")]
 [ApiVersion("1.0")]
@@ -17,7 +16,6 @@ public class AuthController : ControllerBase
     private readonly IFacebookService _facebookService;
 
     /// <summary>
-    ///
     /// </summary>
     /// <param name="authService"></param>
     /// <param name="facebookService"></param>
@@ -28,7 +26,7 @@ public class AuthController : ControllerBase
     }
 
     /// <summary>
-    ///  login with gmail
+    ///     login with gmail
     /// </summary>
     /// <param name="model"></param>
     /// <returns></returns>
@@ -39,7 +37,7 @@ public class AuthController : ControllerBase
     }
 
     /// <summary>
-    /// login with username and password for admin
+    ///     login with username and password for admin
     /// </summary>
     /// <param name="model"></param>
     /// <returns></returns>
@@ -51,7 +49,7 @@ public class AuthController : ControllerBase
 
     //register user
     /// <summary>
-    /// register admin
+    ///     register admin
     /// </summary>
     /// <param name="model"></param>
     /// <returns></returns>
@@ -62,7 +60,7 @@ public class AuthController : ControllerBase
     }
 
     /// <summary>
-    /// confirm email for admin register
+    ///     confirm email for admin register
     /// </summary>
     /// <param name="userId"></param>
     /// <param name="token"></param>
@@ -74,7 +72,7 @@ public class AuthController : ControllerBase
     }
 
     /// <summary>
-    /// login with facebook
+    ///     login with facebook
     /// </summary>
     /// <param name="resource"></param>
     /// <returns></returns>

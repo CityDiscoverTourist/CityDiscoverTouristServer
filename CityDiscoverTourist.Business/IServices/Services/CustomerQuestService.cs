@@ -11,16 +11,18 @@ using CityDiscoverTourist.Data.Models;
 
 namespace CityDiscoverTourist.Business.IServices.Services;
 
-public class CustomerQuestService: BaseService, ICustomerQuestService
+public class CustomerQuestService : BaseService, ICustomerQuestService
 {
+    private const int BaseMultiplier = 300;
     private readonly ICustomerQuestRepository _customerQuestRepository;
-    private readonly IQuestItemRepository _taskRepository;
     private readonly ICustomerTaskService _customerTaskService;
     private readonly IMapper _mapper;
     private readonly ISortHelper<CustomerQuest> _sortHelper;
-    private const int BaseMultiplier = 300;
+    private readonly IQuestItemRepository _taskRepository;
 
-    public CustomerQuestService(ICustomerQuestRepository customerQuestRepository, IMapper mapper, IQuestItemRepository taskRepository, ISortHelper<CustomerQuest> sortHelper, ICustomerTaskService customerTaskService)
+    public CustomerQuestService(ICustomerQuestRepository customerQuestRepository, IMapper mapper,
+        IQuestItemRepository taskRepository, ISortHelper<CustomerQuest> sortHelper,
+        ICustomerTaskService customerTaskService)
     {
         _customerQuestRepository = customerQuestRepository;
         _mapper = mapper;
@@ -78,8 +80,8 @@ public class CustomerQuestService: BaseService, ICustomerQuestService
         entity.EndPoint = lastPoint.ToString(CultureInfo.InvariantCulture);
         entity.Status = CommonStatus.Done.ToString();
         entity.IsFinished = true;
-        entity = await _customerQuestRepository.UpdateFields(entity, x => x.EndPoint!,
-            x => x.Status!, x => x.IsFinished);
+        entity = await _customerQuestRepository.UpdateFields(entity, x => x.EndPoint!, x => x.Status!,
+            x => x.IsFinished);
 
         return _mapper.Map<CustomerQuestResponseModel>(entity);
     }

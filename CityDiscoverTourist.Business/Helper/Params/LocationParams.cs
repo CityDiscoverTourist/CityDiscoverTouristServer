@@ -1,6 +1,6 @@
 namespace CityDiscoverTourist.Business.Helper.Params;
 
-public class LocationParams: QueryStringParams
+public class LocationParams : QueryStringParams
 {
     public string? Name { get; set; }
     public string? Longitude { get; set; }

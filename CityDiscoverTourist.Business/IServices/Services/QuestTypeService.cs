@@ -12,13 +12,14 @@ namespace CityDiscoverTourist.Business.IServices.Services;
 
 public class QuestTypeService : BaseService, IQuestTypeService
 {
-    private readonly IQuestTypeRepository _questTypeRepository;
-    private readonly IQuestRepository _questRepository;
-    private readonly IMapper _mapper;
-    private readonly ISortHelper<QuestType> _sortHelper;
     private readonly IBlobService _blobService;
+    private readonly IMapper _mapper;
+    private readonly IQuestRepository _questRepository;
+    private readonly IQuestTypeRepository _questTypeRepository;
+    private readonly ISortHelper<QuestType> _sortHelper;
 
-    public QuestTypeService(IMapper mapper, ISortHelper<QuestType> sortHelper, IQuestTypeRepository questTypeRepository, IBlobService blobService, IQuestRepository questRepository)
+    public QuestTypeService(IMapper mapper, ISortHelper<QuestType> sortHelper, IQuestTypeRepository questTypeRepository,
+        IBlobService blobService, IQuestRepository questRepository)
     {
         _mapper = mapper;
         _sortHelper = sortHelper;
@@ -29,9 +30,7 @@ public class QuestTypeService : BaseService, IQuestTypeService
 
     public PageList<QuestTypeResponseModel> GetAll(QuestTypeParams @params)
     {
-        var listAll = _questTypeRepository.GetAll()
-            .Include(x => x.Quests)
-            .AsNoTracking();
+        var listAll = _questTypeRepository.GetAll().Include(x => x.Quests).AsNoTracking();
 
         Search(ref listAll, @params);
 
@@ -42,8 +41,7 @@ public class QuestTypeService : BaseService, IQuestTypeService
 
     public async Task<QuestTypeResponseModel> Get(int id)
     {
-        var entity = await _questTypeRepository.GetByCondition(x => x.Id == id)
-            .Include(x => x.Quests)
+        var entity = await _questTypeRepository.GetByCondition(x => x.Id == id).Include(x => x.Quests)
             .FirstOrDefaultAsync();
         CheckDataNotNull("QuestType", entity!);
         return _mapper.Map<QuestTypeResponseModel>(entity);
@@ -69,7 +67,7 @@ public class QuestTypeService : BaseService, IQuestTypeService
     {
         request.Validate();
         var existValue = _questTypeRepository.GetByCondition(x => request.Name == x.Name).FirstOrDefaultAsync().Result;
-        if(existValue!.Name == request.Name) throw new AppException("Quest type already exists");
+        if (existValue!.Name == request.Name) throw new AppException("Quest type already exists");
 
         var imgPath = await _blobService.UploadQuestImgAndReturnImgPathAsync(request.Image, request.Id, "quest-type");
 
@@ -81,6 +79,7 @@ public class QuestTypeService : BaseService, IQuestTypeService
             entity = await _questTypeRepository.NoneUpdateFields(entity, r => r.Id, r => r.ImagePath!);
             return _mapper.Map<QuestTypeResponseModel>(entity);
         }
+
         entity = await _questTypeRepository.NoneUpdateFields(entity, r => r.Id);
 
         return _mapper.Map<QuestTypeResponseModel>(entity);
@@ -101,9 +100,6 @@ public class QuestTypeService : BaseService, IQuestTypeService
     {
         if (!entities.Any()) return;
 
-        if (param.Name != null)
-        {
-            entities = entities.Where(x => x.Name!.Contains(param.Name));
-        }
+        if (param.Name != null) entities = entities.Where(x => x.Name!.Contains(param.Name));
     }
 }

@@ -7,12 +7,10 @@ using CityDiscoverTourist.Business.Settings;
 namespace CityDiscoverTourist.API.Config;
 
 /// <summary>
-///
 /// </summary>
 public static class ThirdPartyConfig
 {
     /// <summary>
-    ///
     /// </summary>
     /// <param name="services"></param>
     /// <param name="configuration"></param>
@@ -25,8 +23,8 @@ public static class ThirdPartyConfig
         var googleConfig = configuration.GetSection("GoongApi").Get<GoongApiSetting>() ?? new GoongApiSetting();
         services.AddSingleton(googleConfig);
 
-        services.AddSingleton(_ => new BlobServiceClient(configuration.GetSection("AzureStorage:ConnectionString").Value));
+        services.AddSingleton(_ =>
+            new BlobServiceClient(configuration.GetSection("AzureStorage:ConnectionString").Value));
         services.AddSingleton<IBlobService, BlobService>();
-
     }
 }

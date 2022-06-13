@@ -8,13 +8,14 @@ using CityDiscoverTourist.Data.Models;
 
 namespace CityDiscoverTourist.Business.IServices.Services;
 
-public class OwnerPaymentPeriodService: BaseService, IOwnerPaymentPeriodService
+public class OwnerPaymentPeriodService : BaseService, IOwnerPaymentPeriodService
 {
-    private readonly IOwnerPaymentPeriodRepository _ownerPaymentPeriod;
     private readonly IMapper _mapper;
+    private readonly IOwnerPaymentPeriodRepository _ownerPaymentPeriod;
     private readonly ISortHelper<OwnerPaymentPeriod> _sortHelper;
 
-    public OwnerPaymentPeriodService(IOwnerPaymentPeriodRepository ownerPaymentPeriod, IMapper mapper, ISortHelper<OwnerPaymentPeriod> sortHelper)
+    public OwnerPaymentPeriodService(IOwnerPaymentPeriodRepository ownerPaymentPeriod, IMapper mapper,
+        ISortHelper<OwnerPaymentPeriod> sortHelper)
     {
         _ownerPaymentPeriod = ownerPaymentPeriod;
         _mapper = mapper;
@@ -64,13 +65,7 @@ public class OwnerPaymentPeriodService: BaseService, IOwnerPaymentPeriodService
     {
         if (!entities.Any()) return;
 
-        if(param.StartDate != null)
-        {
-            entities = entities.Where(x => x.CreatedDate >= param.StartDate);
-        }
-        if (param.EndDate != null)
-        {
-            entities = entities.Where(x => x.CreatedDate <= param.EndDate);
-        }
+        if (param.StartDate != null) entities = entities.Where(x => x.CreatedDate >= param.StartDate);
+        if (param.EndDate != null) entities = entities.Where(x => x.CreatedDate <= param.EndDate);
     }
 }

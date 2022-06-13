@@ -11,7 +11,6 @@ using Newtonsoft.Json;
 namespace CityDiscoverTourist.API.Controllers;
 
 /// <summary>
-///
 /// </summary>
 [Route("api/v{version:apiVersion}/[controller]s")]
 [ApiVersion("1.0")]
@@ -21,7 +20,6 @@ public class QuestController : ControllerBase
     private readonly IQuestService _questService;
 
     /// <summary>
-    ///
     /// </summary>
     /// <param name="questService"></param>
     public QuestController(IQuestService questService)
@@ -30,7 +28,7 @@ public class QuestController : ControllerBase
     }
 
     /// <summary>
-    /// get all quests
+    ///     get all quests
     /// </summary>
     /// <param name="param"></param>
     /// <returns></returns>
@@ -47,7 +45,7 @@ public class QuestController : ControllerBase
             entity.PageSize,
             entity.CurrentPage,
             entity.HasNext,
-            entity.HasPrevious,
+            entity.HasPrevious
         };
         Response.Headers.Add("X-Pagination", JsonConvert.SerializeObject(metadata));
 
@@ -55,13 +53,12 @@ public class QuestController : ControllerBase
     }
 
     /// <summary>
-    /// get quest by id
+    ///     get quest by id
     /// </summary>
     /// <param name="id"></param>
     /// <returns></returns>
     [HttpGet("{id:int}")]
     //[Cached(600)]
-
     public async Task<ApiResponse<QuestResponseModel>> Get(int id)
     {
         var entity = await _questService.Get(id);
@@ -70,7 +67,7 @@ public class QuestController : ControllerBase
     }
 
     /// <summary>
-    /// create a new quest
+    ///     create a new quest
     /// </summary>
     /// <param name="data"></param>
     /// <returns></returns>
@@ -82,7 +79,7 @@ public class QuestController : ControllerBase
     }
 
     /// <summary>
-    /// update quest
+    ///     update quest
     /// </summary>
     /// <param name="data"></param>
     /// <returns></returns>
@@ -94,7 +91,7 @@ public class QuestController : ControllerBase
     }
 
     /// <summary>
-    /// delete quest
+    ///     delete quest
     /// </summary>
     /// <param name="id"></param>
     /// <returns></returns>
@@ -104,5 +101,4 @@ public class QuestController : ControllerBase
         var entity = await _questService.DeleteAsync(id);
         return ApiResponse<Quest>.Ok(entity);
     }
-
 }

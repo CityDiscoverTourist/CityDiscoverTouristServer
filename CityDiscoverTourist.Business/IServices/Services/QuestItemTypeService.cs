@@ -10,11 +10,12 @@ namespace CityDiscoverTourist.Business.IServices.Services;
 
 public class QuestItemTypeService : BaseService, IQuestItemTypeService
 {
-    private readonly IQuestItemTypeRepository _questItemTypeRepository;
     private readonly IMapper _mapper;
+    private readonly IQuestItemTypeRepository _questItemTypeRepository;
     private readonly ISortHelper<QuestItemType> _sortHelper;
 
-    public QuestItemTypeService(IQuestItemTypeRepository questItemTypeRepository, IMapper mapper, ISortHelper<QuestItemType> sortHelper)
+    public QuestItemTypeService(IQuestItemTypeRepository questItemTypeRepository, IMapper mapper,
+        ISortHelper<QuestItemType> sortHelper)
     {
         _questItemTypeRepository = questItemTypeRepository;
         _mapper = mapper;
@@ -65,9 +66,6 @@ public class QuestItemTypeService : BaseService, IQuestItemTypeService
     {
         if (!entities.Any()) return;
 
-        if (param.Name != null)
-        {
-            entities = entities.Where(x => x.Name!.Contains(param.Name));
-        }
+        if (param.Name != null) entities = entities.Where(x => x.Name!.Contains(param.Name));
     }
 }

@@ -8,13 +8,14 @@ using CityDiscoverTourist.Data.Models;
 
 namespace CityDiscoverTourist.Business.IServices.Services;
 
-public class SuggestionService: BaseService, ISuggestionService
+public class SuggestionService : BaseService, ISuggestionService
 {
-    private readonly ISuggestionRepository _suggestionRepository;
     private readonly IMapper _mapper;
     private readonly ISortHelper<Suggestion> _sortHelper;
+    private readonly ISuggestionRepository _suggestionRepository;
 
-    public SuggestionService(ISuggestionRepository suggestionRepository, IMapper mapper, ISortHelper<Suggestion> sortHelper)
+    public SuggestionService(ISuggestionRepository suggestionRepository, IMapper mapper,
+        ISortHelper<Suggestion> sortHelper)
     {
         _suggestionRepository = suggestionRepository;
         _mapper = mapper;

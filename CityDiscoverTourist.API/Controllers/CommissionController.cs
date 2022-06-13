@@ -35,7 +35,7 @@ public class CommissionController : ControllerBase
             entity.PageSize,
             entity.CurrentPage,
             entity.HasNext,
-            entity.HasPrevious,
+            entity.HasPrevious
         };
         Response.Headers.Add("X-Pagination", JsonConvert.SerializeObject(metadata));
 
@@ -44,7 +44,6 @@ public class CommissionController : ControllerBase
 
     [HttpGet("{id:int}")]
     //[Cached(600)]
-
     public async Task<ApiResponse<CommissionResponseModel>> Get(int id)
     {
         var entity = await _commissionService.Get(id);
@@ -72,5 +71,4 @@ public class CommissionController : ControllerBase
         var entity = await _commissionService.DeleteAsync(id);
         return ApiResponse<Commission>.Ok(entity);
     }
-
 }

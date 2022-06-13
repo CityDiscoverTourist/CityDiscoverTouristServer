@@ -6,7 +6,6 @@ using Microsoft.AspNetCore.Mvc;
 namespace CityDiscoverTourist.API.Controllers;
 
 /// <summary>
-///
 /// </summary>
 [Route("api/v{version:apiVersion}/[controller]s")]
 [ApiVersion("1.0")]
@@ -16,7 +15,6 @@ public class ContactController : ControllerBase
     private readonly IContactService _contactService;
 
     /// <summary>
-    ///
     /// </summary>
     /// <param name="contactService"></param>
     public ContactController(IContactService contactService)
@@ -25,7 +23,7 @@ public class ContactController : ControllerBase
     }
 
     /// <summary>
-    /// get all contacts
+    ///     get all contacts
     /// </summary>
     /// <returns></returns>
     [HttpGet]
@@ -36,7 +34,7 @@ public class ContactController : ControllerBase
     }
 
     /// <summary>
-    /// get contact by id
+    ///     get contact by id
     /// </summary>
     /// <param name="id"></param>
     /// <returns></returns>
@@ -50,7 +48,7 @@ public class ContactController : ControllerBase
     }
 
     /// <summary>
-    /// create contact
+    ///     create contact
     /// </summary>
     /// <param name="data"></param>
     /// <returns></returns>
@@ -62,7 +60,7 @@ public class ContactController : ControllerBase
     }
 
     /// <summary>
-    /// update contact
+    ///     update contact
     /// </summary>
     /// <param name="data"></param>
     /// <returns></returns>
@@ -74,7 +72,7 @@ public class ContactController : ControllerBase
     }
 
     /// <summary>
-    /// delete a contact
+    ///     delete a contact
     /// </summary>
     /// <param name="id"></param>
     /// <returns></returns>

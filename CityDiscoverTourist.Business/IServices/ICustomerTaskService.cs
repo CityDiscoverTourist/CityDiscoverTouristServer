@@ -14,12 +14,14 @@ public interface ICustomerTaskService
     public Task<CustomerTaskResponseModel> DeleteAsync(int id);
     public string GetBeginPointsAsync(int customerQuestId);
     public Task<CustomerTaskResponseModel> DecreasePointWhenHitSuggestion(int customerQuestId);
-    public Task<CustomerTaskResponseModel> CheckCustomerAnswer(int customerQuestId, string customerReply, int questItemId);
+
+    public Task<CustomerTaskResponseModel> CheckCustomerAnswer(int customerQuestId, string customerReply,
+        int questItemId);
+
     public Task<bool> IsLastQuestItem(int customerQuestId);
     public float GetLastPoint(int customerQuestId);
     public IEnumerable<string> GetLongLatFromCurrentQuestItemOfCustomer(int customerQuestId);
     public bool IsCustomerAtQuestItemLocation(int customerQuestId, float latitude, float longitude);
     public Task<string> ShowSuggestions(int questItemId);
     public bool CheckCustomerLocationWithQuestLocation(int questId, float latitude, float longitude);
-
 }

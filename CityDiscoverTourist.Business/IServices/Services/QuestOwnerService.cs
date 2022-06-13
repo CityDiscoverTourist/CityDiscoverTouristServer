@@ -8,10 +8,10 @@ using CityDiscoverTourist.Data.Models;
 
 namespace CityDiscoverTourist.Business.IServices.Services;
 
-public class QuestOwnerService: BaseService, IQuestOwnerService
+public class QuestOwnerService : BaseService, IQuestOwnerService
 {
-    private readonly IQuestOwnerRepository _ownerRepository;
     private readonly IMapper _mapper;
+    private readonly IQuestOwnerRepository _ownerRepository;
     private readonly ISortHelper<QuestOwner> _sortHelper;
 
     public QuestOwnerService(IQuestOwnerRepository ownerRepository, IMapper mapper, ISortHelper<QuestOwner> sortHelper)

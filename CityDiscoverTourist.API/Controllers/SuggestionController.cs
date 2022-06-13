@@ -11,7 +11,6 @@ using Newtonsoft.Json;
 namespace CityDiscoverTourist.API.Controllers;
 
 /// <summary>
-///
 /// </summary>
 [Route("api/v{version:apiVersion}/[controller]s")]
 [ApiVersion("1.0")]
@@ -21,7 +20,6 @@ public class SuggestionController : ControllerBase
     private readonly ISuggestionService _suggestionService;
 
     /// <summary>
-    ///
     /// </summary>
     /// <param name="suggestionService"></param>
     public SuggestionController(ISuggestionService suggestionService)
@@ -30,7 +28,7 @@ public class SuggestionController : ControllerBase
     }
 
     /// <summary>
-    /// get all suggestions
+    ///     get all suggestions
     /// </summary>
     /// <param name="param"></param>
     /// <returns></returns>
@@ -47,7 +45,7 @@ public class SuggestionController : ControllerBase
             entity.PageSize,
             entity.CurrentPage,
             entity.HasNext,
-            entity.HasPrevious,
+            entity.HasPrevious
         };
         Response.Headers.Add("X-Pagination", JsonConvert.SerializeObject(metadata));
 
@@ -55,13 +53,12 @@ public class SuggestionController : ControllerBase
     }
 
     /// <summary>
-    /// get suggestion by id
+    ///     get suggestion by id
     /// </summary>
     /// <param name="id"></param>
     /// <returns></returns>
     [HttpGet("{id:int}")]
     //[Cached(600)]
-
     public async Task<ApiResponse<SuggestionResponseModel>> Get(int id)
     {
         var entity = await _suggestionService.Get(id);
@@ -70,7 +67,7 @@ public class SuggestionController : ControllerBase
     }
 
     /// <summary>
-    /// create suggestion
+    ///     create suggestion
     /// </summary>
     /// <param name="data"></param>
     /// <returns></returns>
@@ -82,7 +79,7 @@ public class SuggestionController : ControllerBase
     }
 
     /// <summary>
-    /// update suggestion
+    ///     update suggestion
     /// </summary>
     /// <param name="data"></param>
     /// <returns></returns>
@@ -94,7 +91,7 @@ public class SuggestionController : ControllerBase
     }
 
     /// <summary>
-    /// delete suggestion
+    ///     delete suggestion
     /// </summary>
     /// <param name="id"></param>
     /// <returns></returns>
@@ -104,5 +101,4 @@ public class SuggestionController : ControllerBase
         var entity = await _suggestionService.DeleteAsync(id);
         return ApiResponse<Suggestion>.Ok(entity);
     }
-
 }

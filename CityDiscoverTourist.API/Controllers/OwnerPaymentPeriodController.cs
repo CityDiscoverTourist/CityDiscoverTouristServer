@@ -35,7 +35,7 @@ public class OwnerPaymentPeriodController : ControllerBase
             entity.PageSize,
             entity.CurrentPage,
             entity.HasNext,
-            entity.HasPrevious,
+            entity.HasPrevious
         };
         Response.Headers.Add("X-Pagination", JsonConvert.SerializeObject(metadata));
 
@@ -44,7 +44,6 @@ public class OwnerPaymentPeriodController : ControllerBase
 
     [HttpGet("{id:int}")]
     //[Cached(600)]
-
     public async Task<ApiResponse<OwnerPaymentPeriodResponseModel>> Get(int id)
     {
         var entity = await _paymentPeriodService.Get(id);
@@ -72,5 +71,4 @@ public class OwnerPaymentPeriodController : ControllerBase
         var entity = await _paymentPeriodService.DeleteAsync(id);
         return ApiResponse<OwnerPaymentPeriod>.Ok(entity);
     }
-
 }

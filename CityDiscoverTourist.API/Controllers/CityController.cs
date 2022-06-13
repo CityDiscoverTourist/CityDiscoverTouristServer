@@ -11,7 +11,6 @@ using Newtonsoft.Json;
 namespace CityDiscoverTourist.API.Controllers;
 
 /// <summary>
-///
 /// </summary>
 [Route("api/v{version:apiVersion}/cites")]
 [ApiVersion("1.0")]
@@ -21,7 +20,6 @@ public class CityController : ControllerBase
     private readonly ICityService _cityService;
 
     /// <summary>
-    ///
     /// </summary>
     /// <param name="cityService"></param>
     public CityController(ICityService cityService)
@@ -30,7 +28,7 @@ public class CityController : ControllerBase
     }
 
     /// <summary>
-    /// get all cities
+    ///     get all cities
     /// </summary>
     /// <param name="param"></param>
     /// <returns></returns>
@@ -47,7 +45,7 @@ public class CityController : ControllerBase
             entity.PageSize,
             entity.CurrentPage,
             entity.HasNext,
-            entity.HasPrevious,
+            entity.HasPrevious
         };
         Response.Headers.Add("X-Pagination", JsonConvert.SerializeObject(metadata));
 
@@ -55,13 +53,12 @@ public class CityController : ControllerBase
     }
 
     /// <summary>
-    /// get city by id
+    ///     get city by id
     /// </summary>
     /// <param name="id"></param>
     /// <returns></returns>
     [HttpGet("{id:int}")]
     //[Cached(600)]
-
     public async Task<ApiResponse<CityResponseModel>> Get(int id)
     {
         var entity = await _cityService.Get(id);
@@ -70,7 +67,7 @@ public class CityController : ControllerBase
     }
 
     /// <summary>
-    /// create city
+    ///     create city
     /// </summary>
     /// <param name="data"></param>
     /// <returns></returns>
@@ -82,7 +79,7 @@ public class CityController : ControllerBase
     }
 
     /// <summary>
-    /// update city
+    ///     update city
     /// </summary>
     /// <param name="data"></param>
     /// <returns></returns>
@@ -94,7 +91,7 @@ public class CityController : ControllerBase
     }
 
     /// <summary>
-    /// delete city
+    ///     delete city
     /// </summary>
     /// <param name="id"></param>
     /// <returns></returns>
@@ -104,5 +101,4 @@ public class CityController : ControllerBase
         var entity = await _cityService.DeleteAsync(id);
         return ApiResponse<City>.Ok(entity);
     }
-
 }

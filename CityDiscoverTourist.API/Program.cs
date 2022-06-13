@@ -1,16 +1,16 @@
+using CityDiscoverTourist.API.AzureHelper;
 using CityDiscoverTourist.API.Config;
 using CityDiscoverTourist.Business.Data;
 using CityDiscoverTourist.Business.Exceptions;
 using CityDiscoverTourist.Business.HealthCheck;
+using Microsoft.ApplicationInsights.Extensibility;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.AspNetCore.HttpOverrides;
+using Microsoft.Azure.KeyVault;
+using Microsoft.Azure.Services.AppAuthentication;
 using Newtonsoft.Json;
 using Serilog;
 using Serilog.Events;
-using CityDiscoverTourist.API.AzureHelper;
-using Microsoft.ApplicationInsights.Extensibility;
-using Microsoft.Azure.KeyVault;
-using Microsoft.Azure.Services.AppAuthentication;
 using Serilog.Sinks.MSSqlServer;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -33,10 +33,8 @@ if (env == "Production")
 
 var con = builder.Configuration.GetConnectionString("DefaultConnection");
 
-Log.Logger = new LoggerConfiguration()
-    .MinimumLevel.Override("Microsoft", LogEventLevel.Information)
-    .Enrich.FromLogContext()
-    .WriteTo.Console()
+Log.Logger = new LoggerConfiguration().MinimumLevel.Override("Microsoft", LogEventLevel.Information).Enrich
+    .FromLogContext().WriteTo.Console()
 #pragma warning disable CS0618
     .WriteTo.ApplicationInsights(TelemetryConfiguration.Active.InstrumentationKey, TelemetryConverter.Traces)
 #pragma warning restore CS0618
@@ -46,11 +44,9 @@ try
 {
     Log.Information("Starting up");
     // Full setup of serilog. We read log settings from appsettings.json
-    builder.Host.UseSerilog((context, services, configuration) => configuration
-        .ReadFrom.Configuration(context.Configuration)
-        .ReadFrom.Services(services)
-        .WriteTo.MSSqlServer(con,
-             new MSSqlServerSinkOptions { TableName = "UserLogs"}, restrictedToMinimumLevel: LogEventLevel.Information)
+    builder.Host.UseSerilog((context, services, configuration) => configuration.ReadFrom
+        .Configuration(context.Configuration).ReadFrom.Services(services).WriteTo.MSSqlServer(con,
+            new MSSqlServerSinkOptions { TableName = "UserLogs"}, restrictedToMinimumLevel: LogEventLevel.Information)
         .Enrich.FromLogContext());
 
 
@@ -77,9 +73,7 @@ try
 
     var app = builder.Build();
     // Configure the HTTP request pipeline.
-    app.UseSerilogRequestLogging(_ =>
-    {
-    }); // We want to log all HTTP requests
+    app.UseSerilogRequestLogging(_ => { }); // We want to log all HTTP requests
 
     // Configure the HTTP request pipeline.
     app.UseForwardedHeaders();
