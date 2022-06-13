@@ -2,6 +2,7 @@ using System.Globalization;
 using AutoMapper;
 using CityDiscoverTourist.Business.Data.RequestModel;
 using CityDiscoverTourist.Business.Data.ResponseModel;
+using CityDiscoverTourist.Business.Enums;
 using CityDiscoverTourist.Business.Exceptions;
 using CityDiscoverTourist.Business.Helper;
 using CityDiscoverTourist.Business.Helper.Params;
@@ -89,8 +90,10 @@ public class LocationService : BaseService, ILocationService
 
     public async Task<LocationResponseModel> DeleteAsync(int id)
     {
-        var entity = await _locationRepository.Delete(id);
-        return _mapper.Map<LocationResponseModel>(entity);
+        var location = await _locationRepository.Get(id);
+        location.Status = CommonStatus.Deleted.ToString();
+        await _locationRepository.UpdateFields(location, r => r.Status!);
+        return _mapper.Map<LocationResponseModel>(location);
     }
 
     public string[] GetLatLongAndPlaceIdFromAddress(string address)

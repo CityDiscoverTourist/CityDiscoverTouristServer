@@ -1,6 +1,7 @@
 using AutoMapper;
 using CityDiscoverTourist.Business.Data.RequestModel;
 using CityDiscoverTourist.Business.Data.ResponseModel;
+using CityDiscoverTourist.Business.Enums;
 using CityDiscoverTourist.Business.Exceptions;
 using CityDiscoverTourist.Business.Helper;
 using CityDiscoverTourist.Business.Helper.Params;
@@ -63,8 +64,10 @@ public class CityService : BaseService, ICityService
 
     public async Task<CityResponseModel> DeleteAsync(int id)
     {
-        var entity = await _cityRepository.Delete(id);
-        return _mapper.Map<CityResponseModel>(entity);
+        var city = await _cityRepository.Get(id);
+        city.Status = CommonStatus.Deleted.ToString();
+        await _cityRepository.UpdateFields(city, r => r.Status!);
+        return _mapper.Map<CityResponseModel>(city);
     }
 
     private static void Search(ref IQueryable<City> entities, CityParams param)

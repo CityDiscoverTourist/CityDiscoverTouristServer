@@ -1,6 +1,7 @@
 using AutoMapper;
 using CityDiscoverTourist.Business.Data.RequestModel;
 using CityDiscoverTourist.Business.Data.ResponseModel;
+using CityDiscoverTourist.Business.Enums;
 using CityDiscoverTourist.Business.Exceptions;
 using CityDiscoverTourist.Business.Helper;
 using CityDiscoverTourist.Business.Helper.Params;
@@ -81,7 +82,9 @@ public class QuestItemService : BaseService, IQuestItemService
 
     public async Task<QuestItemResponseModel> DeleteAsync(int id)
     {
-        var entity = await _taskRepository.Delete(id);
+        var entity = await _taskRepository.Get(id);
+        entity.Status = CommonStatus.Deleted.ToString();
+        await _taskRepository.UpdateFields(entity, r => r.Status!);
         return _mapper.Map<QuestItemResponseModel>(entity);
     }
 

@@ -1,6 +1,7 @@
 using AutoMapper;
 using CityDiscoverTourist.Business.Data.RequestModel;
 using CityDiscoverTourist.Business.Data.ResponseModel;
+using CityDiscoverTourist.Business.Enums;
 using CityDiscoverTourist.Business.Helper;
 using CityDiscoverTourist.Business.Helper.Params;
 using CityDiscoverTourist.Data.IRepositories;
@@ -55,8 +56,10 @@ public class AreaService : BaseService, IAreaService
 
     public async Task<AreaResponseModel> DeleteAsync(int id)
     {
-        var entity = await _areaRepository.Delete(id);
-        return _mapper.Map<AreaResponseModel>(entity);
+        var area = await _areaRepository.Get(id);
+        area.Status = CommonStatus.Deleted.ToString();
+        await _areaRepository.UpdateFields(area, r => r.Status!);
+        return _mapper.Map<AreaResponseModel>(area);
     }
 
     private static void Search(ref IQueryable<Area> entities, AreaParams param)
