@@ -41,6 +41,7 @@ public class SuggestionService: BaseService, ISuggestionService
 
     public async Task<SuggestionResponseModel> CreateAsync(SuggestionRequestModel request)
     {
+        request.Validate();
         var entity = _mapper.Map<Suggestion>(request);
         entity = await _suggestionRepository.Add(entity);
         return _mapper.Map<SuggestionResponseModel>(entity);
@@ -48,6 +49,7 @@ public class SuggestionService: BaseService, ISuggestionService
 
     public async Task<SuggestionResponseModel> UpdateAsync(SuggestionRequestModel request)
     {
+        request.Validate();
         var entity = _mapper.Map<Suggestion>(request);
         entity = await _suggestionRepository.Update(entity);
         return _mapper.Map<SuggestionResponseModel>(entity);

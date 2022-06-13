@@ -7,4 +7,10 @@ public class SuggestionRequestModel
     public string? Status { get; set; }
 
     public int QuestItemId { get; set; }
+
+    public void Validate()
+    {
+        Content = Content?.Trim();
+        Status = Status?.Trim();
+    }
 }

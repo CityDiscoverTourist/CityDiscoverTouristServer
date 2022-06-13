@@ -18,4 +18,14 @@ public class QuestRequestModel
     public int QuestTypeId { get; set; }
     public int? QuestOwnerId { get; set; }
     public int AreaId { get; set; }
+
+    public void Validate()
+    {
+        Title = Title?.Trim();
+        Description = Description?.Trim();
+        EstimatedTime = EstimatedTime?.Trim();
+        EstimatedDistance = EstimatedDistance?.Trim();
+        AvailableTime = AvailableTime?.Trim();
+        Status = Status?.Trim();
+    }
 }

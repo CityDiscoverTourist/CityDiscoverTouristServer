@@ -41,6 +41,7 @@ public class QuestItemTypeService : BaseService, IQuestItemTypeService
 
     public async Task<QuestItemTypeResponseModel> CreateAsync(QuestItemTypeRequestModel request)
     {
+        request.Validate();
         var entity = _mapper.Map<QuestItemType>(request);
         entity = await _questItemTypeRepository.Add(entity);
         return _mapper.Map<QuestItemTypeResponseModel>(entity);
@@ -48,6 +49,7 @@ public class QuestItemTypeService : BaseService, IQuestItemTypeService
 
     public async Task<QuestItemTypeResponseModel> UpdateAsync(QuestItemTypeRequestModel request)
     {
+        request.Validate();
         var entity = _mapper.Map<QuestItemType>(request);
         entity = await _questItemTypeRepository.Update(entity);
         return _mapper.Map<QuestItemTypeResponseModel>(entity);

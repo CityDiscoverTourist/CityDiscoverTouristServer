@@ -21,4 +21,14 @@ public class QuestItemRequestModel
     public string? Status { get; set; }
 
     public int? ItemId { get; set; }
+
+    public void Validate()
+    {
+        Content = Content?.Trim();
+        Description = Description?.Trim();
+        QrCode = QrCode?.Trim();
+        RightAnswer = RightAnswer?.Trim();
+        AnswerImageUrl = AnswerImageUrl?.Trim();
+        Status = Status?.Trim();
+    }
 }

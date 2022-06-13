@@ -42,6 +42,7 @@ public class QuestItemService: BaseService, IQuestItemService
 
     public async Task<QuestItemResponseModel> CreateAsync(QuestItemRequestModel request)
     {
+        request.Validate();
         var existValue = _taskRepository
             .GetByCondition(x => x.Content == request.Content || x.Content == ReverseQuestion(request.Content!))
             .FirstOrDefaultAsync().Result;
@@ -67,6 +68,7 @@ public class QuestItemService: BaseService, IQuestItemService
 
     public async Task<QuestItemResponseModel> UpdateAsync(QuestItemRequestModel request)
     {
+        request.Validate();
         var existValue = _taskRepository.GetByCondition(x => request.Content == x.Content).FirstOrDefaultAsync().Result;
         if (existValue != null) throw new AppException("Quest item with this name already exists");
 
