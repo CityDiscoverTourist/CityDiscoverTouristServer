@@ -67,8 +67,6 @@ public class LocationService : BaseService, ILocationService
     public async Task<LocationResponseModel> UpdateAsync(LocationRequestModel request)
     {
         request.Validate();
-        var existValue = _locationRepository.GetByCondition(x => request.Name == x.Name).FirstOrDefaultAsync().Result;
-        if (existValue != null) throw new AppException("Location with this name already exists");
 
         var entity = _mapper.Map<Location>(request);
         entity = await _locationRepository.Update(entity);

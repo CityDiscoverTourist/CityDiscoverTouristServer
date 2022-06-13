@@ -66,8 +66,6 @@ public class QuestTypeService : BaseService, IQuestTypeService
     public async Task<QuestTypeResponseModel> UpdateAsync(QuestTypeRequestModel request)
     {
         request.Validate();
-        var existValue = _questTypeRepository.GetByCondition(x => request.Name == x.Name).FirstOrDefaultAsync().Result;
-        if (existValue!.Name == request.Name) throw new AppException("Quest type already exists");
 
         var imgPath = await _blobService.UploadQuestImgAndReturnImgPathAsync(request.Image, request.Id, "quest-type");
 

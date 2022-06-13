@@ -46,7 +46,7 @@ try
     // Full setup of serilog. We read log settings from appsettings.json
     builder.Host.UseSerilog((context, services, configuration) => configuration.ReadFrom
         .Configuration(context.Configuration).ReadFrom.Services(services).WriteTo.MSSqlServer(con,
-            new MSSqlServerSinkOptions { TableName = "UserLogs"}, restrictedToMinimumLevel: LogEventLevel.Information)
+            new MSSqlServerSinkOptions { TableName = "UserLogs"}, restrictedToMinimumLevel: LogEventLevel.Warning)
         .Enrich.FromLogContext());
 
 

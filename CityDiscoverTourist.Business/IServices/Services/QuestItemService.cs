@@ -72,8 +72,6 @@ public class QuestItemService : BaseService, IQuestItemService
     public async Task<QuestItemResponseModel> UpdateAsync(QuestItemRequestModel request)
     {
         request.Validate();
-        var existValue = _taskRepository.GetByCondition(x => request.Content == x.Content).FirstOrDefaultAsync().Result;
-        if (existValue != null) throw new AppException("Quest item with this name already exists");
 
         request.ItemId ??= null;
         var entity = _mapper.Map<QuestItem>(request);
