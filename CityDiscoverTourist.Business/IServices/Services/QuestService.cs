@@ -50,8 +50,9 @@ public class QuestService : BaseService, IQuestService
                 if (questItem.ItemId != 0) continue;
 
                 var locationId = questItem.LocationId;
-                var location = _locationRepository.Get(locationId).Result.Address;
-                questResponseModels[i].Address = location;
+                var location = _locationRepository.Get(locationId).Result;
+                questResponseModels[i].Address = location.Address;
+                questResponseModels[i].LatLong = location.Latitude + "," + location.Longitude;
             }
 
             var quest = questResponseModels[i].QuestItems!.Count;
