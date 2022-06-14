@@ -10,6 +10,7 @@ public interface ICustomerService
     public PageList<CustomerResponseModel> GetAll(CustomerParams @params);
     public Task<CustomerResponseModel> Get(string id);
     public Task<CustomerResponseModel> CreateAsync(ApplicationUser request);
+    public Task<CustomerResponseModel> UpdateLockUser(string id, bool isLock);
     public Task<CustomerResponseModel> UpdateAsync(ApplicationUser request);
     public Task<CustomerResponseModel> DeleteAsync(int id);
 }

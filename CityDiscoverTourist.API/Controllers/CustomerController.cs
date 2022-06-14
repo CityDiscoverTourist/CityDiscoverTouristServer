@@ -76,4 +76,17 @@ public class CustomerController : ControllerBase
         var entity = await _customerService.UpdateAsync(data);
         return ApiResponse<ApplicationUser>.Created(entity);
     }
+
+    /// <summary>
+    /// update customer status, false = inactive, true = active
+    /// </summary>
+    /// <param name="id"></param>
+    /// <param name="isLock"></param>
+    /// <returns></returns>
+    [HttpPut("{id}/{isLock:bool}")]
+    public async Task<ApiResponse<CustomerResponseModel>> UpdateLockUser(string id, bool isLock)
+    {
+        var entity = await _customerService.UpdateLockUser(id, isLock);
+        return ApiResponse<ApplicationUser>.Created(entity);
+    }
 }
