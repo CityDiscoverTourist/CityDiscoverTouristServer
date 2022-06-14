@@ -30,7 +30,7 @@ jobs:
             dotnet add CityDiscoverTourist.API  package Microsoft.SqlServer.DacFx
 
       - name: dotnet publish
-        run: dotnet publish CityDiscoverTourist.sln -c Release -o out
+        run: dotnet publish CityDiscoverTourist.sln -c Release -o out 
 
       - uses: azure/actions/login@v1
         with:
