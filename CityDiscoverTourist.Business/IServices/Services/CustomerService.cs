@@ -40,6 +40,17 @@ public class CustomerService : BaseService, ICustomerService
         throw new NotImplementedException();
     }
 
+    public async Task<CustomerResponseModel> UpdateLockUser(string id, bool isLock)
+    {
+        var entity = await _userManager.FindByIdAsync(id);
+        CheckDataNotNull("Customer", entity);
+
+        entity.LockoutEnabled = isLock;
+        await _userManager.SetLockoutEnabledAsync(entity, isLock);
+
+        return _mapper.Map<CustomerResponseModel>(entity);
+    }
+
     public async Task<CustomerResponseModel> UpdateAsync(ApplicationUser request)
     {
         var entity = await _userManager.UpdateAsync(request);
@@ -58,7 +69,7 @@ public class CustomerService : BaseService, ICustomerService
         if(param.Email != null) customers = customers.Where(x => x.Email.Contains(param.Email));
 
         customers = param.IsLock switch
-        {
+        {   //true = unlocked, false = locked
             "true" => customers.Where(x => x.LockoutEnabled == true),
             "false" => customers.Where(x => x.LockoutEnabled == false),
             _ => customers
