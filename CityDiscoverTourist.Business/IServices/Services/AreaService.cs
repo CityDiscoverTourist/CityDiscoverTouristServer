@@ -69,5 +69,7 @@ public class AreaService : BaseService, IAreaService
         if (param.CityId != 0) entities = entities.Where(x => x.CityId == param.CityId);
 
         if (param.Name != null) entities = entities.Where(x => x.Name!.Contains(param.Name));
+
+        if (param.Status != null) entities = entities.Where(x => x.Status == param.Status);
     }
 }

@@ -119,5 +119,6 @@ public class LocationService : BaseService, ILocationService
         if (param.Name != null) entities = entities.Where(r => r.Name!.Contains(param.Name));
         if (param.AreaId != 0) entities = entities.Where(r => r.AreaId == param.AreaId);
         if (param.LocationTypeId != 0) entities = entities.Where(r => r.LocationTypeId == param.LocationTypeId);
+        if (param.Status != null) entities = entities.Where(x => x.Status == param.Status);
     }
 }

@@ -100,7 +100,7 @@ public class QuestItemService : BaseService, IQuestItemService
         if (!entities.Any()) return;
         if (param.Name != null) entities = entities.Where(x => x.Content!.Contains(param.Name));
         if (param.QuestId != 0) entities = entities.Where(x => x.QuestId == param.QuestId);
-
+        if (param.Status != null) entities = entities.Where(x => x.Status == param.Status);
         if (param.QuestItemTypeId != 0) entities = entities.Where(x => x.QuestItemTypeId == param.QuestItemTypeId);
     }
 
