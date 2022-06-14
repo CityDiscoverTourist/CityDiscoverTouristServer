@@ -14,4 +14,5 @@ public abstract class QueryStringParams
     }
 
     public string? OrderBy { get; set; }
+    public string? Status { get; set; }
 }

@@ -70,5 +70,6 @@ public class LocationTypeService : BaseService, ILocationTypeService
 
         if (param.Name != null)
             entities = entities.Where(r => r.Name!.Contains(param.Name));
+        if (param.Status != null) entities = entities.Where(x => x.Status == param.Status);
     }
 }
