@@ -18,10 +18,10 @@ jobs:
         with:
           dotnet-version: 6.0.x
       - name: Restore dependencies
-        run: dotnet restore
+        run:  dotnet restore CityDiscoverTourist.sln
 
       - name: Build with dotnet
-        run: dotnet build --configuration Release
+        run: dotnet build CityDiscoverTourist.sln --configuration Release
 
       - name: Install EF Tool
         run: |
@@ -30,7 +30,7 @@ jobs:
             dotnet add CityDiscoverTourist.API  package Microsoft.SqlServer.DacFx
 
       - name: dotnet publish
-        run: dotnet publish CityDiscoverTourist.sln -c Release -o out
+        run: dotnet publish CityDiscoverTourist.sln -c Release -o out 
 
       - uses: azure/actions/login@v1
         with:
