@@ -87,13 +87,16 @@ public class CustomerTaskService : BaseService, ICustomerTaskService
         var questItems = _questItemRepo.GetByCondition(x => x.QuestId == questId).ToList();
 
         // get next quest item
-        foreach (var questItem in questItems)
+        for (var i = 0; i < questItems.Count; i++)
         {
-            if (lastQuestItemCustomerFinished!.QuestItemId != questItem.Id) continue;
+            if (lastQuestItemCustomerFinished!.QuestItemId != questItems[i].Id) continue;
             //move to next quest item
-            var nextQuestItem = questItems.FirstOrDefault(x => x.ItemId == questItem.Id);
+            var nextQuestItem = questItems.FirstOrDefault(x => x.ItemId == questItems[i].Id);
 
             if (nextQuestItem == null) throw new AppException("This quest is finished");
+
+            // recursive when ever to get next quest item with status is not deleted
+            nextQuestItem = NextQuestItem(nextQuestItem, questItems, i);
 
             nextQuestItemId = nextQuestItem.Id;
             var customerTask = new CustomerTaskResponseModel
@@ -107,7 +110,7 @@ public class CustomerTaskService : BaseService, ICustomerTaskService
             await _customerTaskRepo.Add(_mapper.Map<CustomerTask>(customerTask));
         }
 
-        return nextQuestItemId;
+        return nextQuestItemId == 0 ? 0 : nextQuestItemId;
     }
 
     public async Task<CustomerTaskResponseModel> DeleteAsync(int id)
@@ -244,6 +247,16 @@ public class CustomerTaskService : BaseService, ICustomerTaskService
     }
 
     #region MyRegion
+
+    private static QuestItem NextQuestItem(QuestItem? nextQuestItem, List<QuestItem> questItems, int i)
+    {
+        if (nextQuestItem!.Status != "Deleted") return nextQuestItem;
+
+        if(i >= questItems.Count - 1) throw new AppException("This quest is finished");
+
+        nextQuestItem = questItems[i + 1];
+        return NextQuestItem(nextQuestItem, questItems, i + 1);
+    }
 
     private static float CalculateDistance(string latLongFromLocation, string latLongFromUserDevice)
     {
