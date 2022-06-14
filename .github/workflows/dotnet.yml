@@ -38,4 +38,4 @@ jobs:
         with:
          server-name: city-discover-tourist.database.windows.net
          connection-string: ${{ secrets.CONNECTION_STRING }}
-         dacpac-package: './Database.sqlproj'
+         dacpac-package: './CityDiscoverTourist.dacpac'
