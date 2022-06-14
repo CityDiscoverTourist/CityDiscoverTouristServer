@@ -21,6 +21,9 @@ public class CustomerService : BaseService, ICustomerService
     public PageList<CustomerResponseModel> GetAll(CustomerParams @params)
     {
         var customers = _userManager.Users!.AsQueryable();
+
+        Search(ref customers, @params);
+
         var mappedData = _mapper.Map<IEnumerable<CustomerResponseModel>>(customers);
         return PageList<CustomerResponseModel>.ToPageList(mappedData, @params.PageNumber, @params.PageSize);
     }
@@ -46,5 +49,19 @@ public class CustomerService : BaseService, ICustomerService
     public Task<CustomerResponseModel> DeleteAsync(int id)
     {
         throw new NotImplementedException();
+    }
+
+    private static void Search(ref IQueryable<ApplicationUser> customers, CustomerParams param)
+    {
+        if (!customers.Any()) return;
+
+        if(param.Email != null) customers = customers.Where(x => x.Email.Contains(param.Email));
+
+        customers = param.IsLock switch
+        {
+            "true" => customers.Where(x => x.LockoutEnabled == true),
+            "false" => customers.Where(x => x.LockoutEnabled == false),
+            _ => customers
+        };
     }
 }
