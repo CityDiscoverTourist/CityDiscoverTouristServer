@@ -21,7 +21,7 @@ jobs:
         run:  dotnet restore CityDiscoverTourist.sln
 
       - name: Build with dotnet
-        run: dotnet build --configuration Release
+        run: dotnet build CityDiscoverTourist.sln --configuration Release
 
       - name: Install EF Tool
         run: |
