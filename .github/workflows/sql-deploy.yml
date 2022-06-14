@@ -1,0 +1,14 @@
+# .github/workflows/sql-deploy.yml
+on: [push]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v1
+    - uses: azure/sql-action@v1.3
+      with:        
+        connection-string: ${{ secrets.CONNECTION_STRING }}
+        project-file: './CityDiscoverTourist.API.csproj'
+        build-arguments: '-c Release'                 # Optional arguments passed to dotnet build
+        arguments: '/p:DropObjectsNotInSource=true'   # Optional parameters for SqlPackage Publish
