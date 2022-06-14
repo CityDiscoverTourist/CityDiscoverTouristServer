@@ -5,10 +5,15 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v1
-    - uses: azure/sql-action@v1.3
-      with:        
-        connection-string: ${{ secrets.CONNECTION_STRING }}
-        project-file: './CityDiscoverTourist.API.csproj'
-        build-arguments: '-c Release'                 # Optional arguments passed to dotnet build
-        arguments: '/p:DropObjectsNotInSource=true'   # Optional parameters for SqlPackage Publish
+    - name: Generate scripts
+#         run: dotnet ef migrations script --output ${{env.DOTNET_ROOT}}/sql/sql-script.sql --idempotent --context ApplicationDbContext --project CityDiscoverTourist.Data
+
+#       - name: Azure SQL Deploy
+#         uses: Azure/sql-action@v1
+#         with:
+#           # Name of the Azure SQL Server name, like Fabrikam.database.windows.net.
+#           server-name: tcp:city-discover-tourist.database.windows.net
+#           # The connection string, including authentication information, for the Azure SQL Server database.
+#           connection-string: ${{ secrets.CONNECTION_STRING }}
+#           # Path to SQL script file to deploy
+#           sql-file: ${{env.DOTNET_ROOT}}/sql/sql-script.sql
