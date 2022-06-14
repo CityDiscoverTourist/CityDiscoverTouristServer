@@ -46,7 +46,7 @@ public class CityService : BaseService, ICityService
     {
         request.Validate();
         var existValue = _cityRepository.GetByCondition(x => request.Name == x.Name).FirstOrDefaultAsync().Result;
-        if (existValue!.Name == request.Name) throw new AppException("City already exists");
+        if (existValue != null) throw new AppException("City already exists");
 
         var entity = _mapper.Map<City>(request);
         entity = await _cityRepository.Add(entity);
