@@ -12,7 +12,11 @@ public class CachedAttribute : Attribute, IAsyncActionFilter
 {
     private readonly int _timeToLiveSeconds;
 
-    /// <inheritdoc />
+
+    /// <summary>
+    ///
+    /// </summary>
+    /// <param name="timeToLiveSeconds"></param>
     public CachedAttribute(int timeToLiveSeconds)
     {
         _timeToLiveSeconds = timeToLiveSeconds;
