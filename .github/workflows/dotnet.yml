@@ -31,4 +31,11 @@ jobs:
       - name: dotnet publish
         run: dotnet publish -c Release -o ${{env.DOTNET_ROOT}}/myapp
 
-
+      - uses: azure/actions/login@v1
+        with:
+         creds: ${{ secrets.AZURE_CREDENTIALS }}
+      - uses: Azure/sql-action@v1
+        with:
+         server-name: city-discover-tourist.database.windows.net
+         connection-string: ${{ secrets.CONNECTION_STRING }}
+         dacpac-package: './Database.dacpac'
