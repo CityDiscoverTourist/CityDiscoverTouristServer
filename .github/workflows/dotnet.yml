@@ -39,3 +39,4 @@ jobs:
          server-name: city-discover-tourist.database.windows.net
          connection-string: ${{ secrets.CONNECTION_STRING }}
          dacpac-package: './CityDiscoverTourist.dacpac'
+         arguments: '/p:DropObjectsNotInSource=true' 
