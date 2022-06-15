@@ -67,6 +67,20 @@ public class CustomerQuestController : ControllerBase
     }
 
     /// <summary>
+    ///
+    /// </summary>
+    /// <param name="id"></param>
+    /// <returns></returns>
+    [HttpGet("get-by-customer-id")]
+    //[Cached(600)]
+    public async Task<ApiResponse<List<CustomerQuestResponseModel>>> GetByCustomerId(string id)
+    {
+        var entity = await _customerQuestService.GetByCustomerId(id);
+
+        return ApiResponse<CustomerQuestResponseModel>.Ok(entity);
+    }
+
+    /// <summary>
     ///     create customer quest
     /// </summary>
     /// <param name="data"></param>

@@ -50,6 +50,14 @@ public class CustomerQuestService : BaseService, ICustomerQuestService
         return _mapper.Map<CustomerQuestResponseModel>(entity);
     }
 
+    public async Task<List<CustomerQuestResponseModel>> GetByCustomerId(string id)
+    {
+        var entity = _customerQuestRepository.GetByCondition(x => x.CustomerId == id).ToList();
+        CheckDataNotNull("CustomerQuest", entity);
+        var mappedData = _mapper.Map<IEnumerable<CustomerQuestResponseModel>>(entity);
+        return mappedData.ToList();
+    }
+
     public async Task<CustomerQuestResponseModel> CreateAsync(CustomerQuestRequestModel request)
     {
         var entity = _mapper.Map<CustomerQuest>(request);
