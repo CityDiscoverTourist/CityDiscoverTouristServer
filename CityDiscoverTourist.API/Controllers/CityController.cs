@@ -91,7 +91,7 @@ public class CityController : ControllerBase
     }
 
     /// <summary>
-    ///     delete city
+    ///   soft  delete city
     /// </summary>
     /// <param name="id"></param>
     /// <returns></returns>
@@ -99,6 +99,18 @@ public class CityController : ControllerBase
     public async Task<ActionResult<ApiResponse<CityResponseModel>>> Delete(int id)
     {
         var entity = await _cityService.DeleteAsync(id);
+        return ApiResponse<City>.Ok(entity);
+    }
+
+    /// <summary>
+    /// disable city
+    /// </summary>
+    /// <param name="id"></param>
+    /// <returns></returns>
+    [HttpPut("disable/{id:int}")]
+    public async Task<ActionResult<ApiResponse<CityResponseModel>>> Disable(int id)
+    {
+        var entity = await _cityService.DisableAsync(id);
         return ApiResponse<City>.Ok(entity);
     }
 }

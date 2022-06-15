@@ -70,6 +70,14 @@ public class CityService : BaseService, ICityService
         return _mapper.Map<CityResponseModel>(city);
     }
 
+    public async Task<CityResponseModel> DisableAsync(int id)
+    {
+        var city = await _cityRepository.Get(id);
+        city.Status = CommonStatus.Inactive.ToString();
+        await _cityRepository.UpdateFields(city, r => r.Status!);
+        return _mapper.Map<CityResponseModel>(city);
+    }
+
     private static void Search(ref IQueryable<City> entities, CityParams param)
     {
         if (!entities.Any()) return;

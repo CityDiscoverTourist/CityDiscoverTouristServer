@@ -91,7 +91,7 @@ public class SuggestionController : ControllerBase
     }
 
     /// <summary>
-    ///     delete suggestion
+    ///    soft  delete suggestion
     /// </summary>
     /// <param name="id"></param>
     /// <returns></returns>
@@ -99,6 +99,18 @@ public class SuggestionController : ControllerBase
     public async Task<ActionResult<ApiResponse<SuggestionResponseModel>>> Delete(int id)
     {
         var entity = await _suggestionService.DeleteAsync(id);
+        return ApiResponse<Suggestion>.Ok(entity);
+    }
+
+    /// <summary>
+    /// disable suggestion
+    /// </summary>
+    /// <param name="id"></param>
+    /// <returns></returns>
+    [HttpPut("disable/{id:int}")]
+    public async Task<ActionResult<ApiResponse<SuggestionResponseModel>>> Disable(int id)
+    {
+        var entity = await _suggestionService.DisableAsync(id);
         return ApiResponse<Suggestion>.Ok(entity);
     }
 }

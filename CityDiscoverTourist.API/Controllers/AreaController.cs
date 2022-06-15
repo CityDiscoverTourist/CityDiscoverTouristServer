@@ -110,7 +110,7 @@ public class AreaController : ControllerBase
     }
 
     /// <summary>
-    ///     delete area
+    ///   soft  delete area
     /// </summary>
     /// <param name="id"></param>
     /// <returns></returns>
@@ -118,6 +118,18 @@ public class AreaController : ControllerBase
     public async Task<ActionResult<ApiResponse<AreaResponseModel>>> Delete(int id)
     {
         var entity = await _areaService.DeleteAsync(id);
+        return ApiResponse<Area>.Ok(entity);
+    }
+
+    /// <summary>
+    /// disable area
+    /// </summary>
+    /// <param name="id"></param>
+    /// <returns></returns>
+    [HttpPut("disable/{id:int}")]
+    public async Task<ActionResult<ApiResponse<AreaResponseModel>>> Disable(int id)
+    {
+        var entity = await _areaService.DisableAsync(id);
         return ApiResponse<Area>.Ok(entity);
     }
 }

@@ -15,7 +15,6 @@ public class QuestItemResponseModel
     public DateTime? CreatedDate { get; set; }
     public DateTime? UpdatedDate { get; set; }
     public string? QrCode { get; set; }
-    public int TriggerMode { get; set; }
     public string? RightAnswer { get; set; }
     public string? AnswerImageUrl { get; set; }
     public string? Status { get; set; }

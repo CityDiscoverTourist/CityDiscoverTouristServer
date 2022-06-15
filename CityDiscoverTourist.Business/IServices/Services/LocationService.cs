@@ -96,6 +96,14 @@ public class LocationService : BaseService, ILocationService
         return _mapper.Map<LocationResponseModel>(location);
     }
 
+    public async Task<LocationResponseModel> DisableAsync(int id)
+    {
+        var location = await _locationRepository.Get(id);
+        location.Status = CommonStatus.Inactive.ToString();
+        await _locationRepository.UpdateFields(location, r => r.Status!);
+        return _mapper.Map<LocationResponseModel>(location);
+    }
+
     public string[] GetLatLongAndPlaceIdFromAddress(string address)
     {
         var baseUrl = $"https://rsapi.goong.io/Geocode?address={address}&api_key={_googleApiSetting!.ApiKey}";

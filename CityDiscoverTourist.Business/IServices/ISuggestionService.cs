@@ -12,4 +12,5 @@ public interface ISuggestionService
     public Task<SuggestionResponseModel> CreateAsync(SuggestionRequestModel request);
     public Task<SuggestionResponseModel> UpdateAsync(SuggestionRequestModel request);
     public Task<SuggestionResponseModel> DeleteAsync(int id);
+    public Task<SuggestionResponseModel> DisableAsync(int id);
 }

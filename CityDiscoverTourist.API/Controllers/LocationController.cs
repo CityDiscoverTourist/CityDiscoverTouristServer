@@ -103,7 +103,7 @@ public class LocationController : ControllerBase
     }
 
     /// <summary>
-    ///     delete location by id
+    ///  soft   delete location by id
     /// </summary>
     /// <param name="id"></param>
     /// <returns></returns>
@@ -111,6 +111,18 @@ public class LocationController : ControllerBase
     public async Task<ActionResult<ApiResponse<LocationResponseModel>>> Delete(int id)
     {
         var entity = await _locationService.DeleteAsync(id);
+        return ApiResponse<Location>.Ok(entity);
+    }
+
+    /// <summary>
+    /// disable location by id
+    /// </summary>
+    /// <param name="id"></param>
+    /// <returns></returns>
+    [HttpPut("disable/{id:int}")]
+    public async Task<ActionResult<ApiResponse<LocationResponseModel>>> Disable(int id)
+    {
+        var entity = await _locationService.DisableAsync(id);
         return ApiResponse<Location>.Ok(entity);
     }
 }

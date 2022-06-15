@@ -19,7 +19,6 @@ public class QuestItem: BaseEntity
     public DateTime? CreatedDate { get; set; }
     public DateTime? UpdatedDate { get; set; }
     public string? QrCode { get; set; }
-    public int TriggerMode { get; set; }
     public string? RightAnswer { get; set; }
     public string? AnswerImageUrl { get; set; }
 

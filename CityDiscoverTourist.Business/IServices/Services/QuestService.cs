@@ -123,13 +123,21 @@ public class QuestService : BaseService, IQuestService
         return _mapper.Map<QuestResponseModel>(entity);
     }
 
+    public async Task<QuestResponseModel> DisableAsync(int questId)
+    {
+        var entity = await _questRepository.Get(questId);
+        entity.Status = CommonStatus.Inactive.ToString();
+        await _questRepository.UpdateFields(entity, r => r.Status!);
+        return _mapper.Map<QuestResponseModel>(entity);
+    }
+
     private static void Search(ref IQueryable<Quest> entities, QuestParams param)
     {
         if (!entities.Any()) return;
 
         if (param.Name != null) entities = entities.Where(r => r.Title!.Contains(param.Name));
         if (param.Description != null) entities = entities.Where(r => r.Description!.Contains(param.Description));
-        if (param.Status != null) entities = entities.Where(r => r.Status!.Contains(param.Status));
+        if (param.Status != null) entities = entities.Where(r => r.Status!.Equals(param.Status));
         if (param.QuestTypeId != 0) entities = entities.Where(r => r.QuestTypeId.Equals(param.QuestTypeId));
     }
 }

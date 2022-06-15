@@ -13,5 +13,6 @@ public interface ILocationService
     public Task<LocationResponseModel> UpdateAsync(LocationRequestModel request);
     public Task<LocationResponseModel> UpdateAddressAsync(LocationRequestModel request);
     public Task<LocationResponseModel> DeleteAsync(int id);
+    public Task<LocationResponseModel> DisableAsync(int id);
     public string[] GetLatLongAndPlaceIdFromAddress(string address);
 }

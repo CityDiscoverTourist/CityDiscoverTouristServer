@@ -65,6 +65,14 @@ public class QuestItemTypeService : BaseService, IQuestItemTypeService
         return _mapper.Map<QuestItemTypeResponseModel>(entity);
     }
 
+    public async Task<QuestItemTypeResponseModel> DisableAsync(int id)
+    {
+        var entity = await _questItemTypeRepository.Get(id);
+        entity.Status = CommonStatus.Inactive.ToString();
+        await _questItemTypeRepository.UpdateFields(entity, r => r.Status!);
+        return _mapper.Map<QuestItemTypeResponseModel>(entity);
+    }
+
     private static void Search(ref IQueryable<QuestItemType> entities, TaskTypeParams param)
     {
         if (!entities.Any()) return;
