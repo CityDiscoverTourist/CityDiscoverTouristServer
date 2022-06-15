@@ -12,4 +12,5 @@ public interface ICityService
     public Task<CityResponseModel> CreateAsync(CityRequestModel request);
     public Task<CityResponseModel> UpdateAsync(CityRequestModel request);
     public Task<CityResponseModel> DeleteAsync(int id);
+    public Task<CityResponseModel> DisableAsync(int id);
 }

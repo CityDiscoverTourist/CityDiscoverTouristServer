@@ -12,4 +12,5 @@ public interface ILocationTypeService
     public Task<LocationTypeResponseModel> CreateAsync(LocationTypeRequestModel request);
     public Task<LocationTypeResponseModel> UpdateAsync(LocationTypeRequestModel request);
     public Task<LocationTypeResponseModel> DeleteAsync(int id);
+    public Task<LocationTypeResponseModel> DisableAsync(int id);
 }

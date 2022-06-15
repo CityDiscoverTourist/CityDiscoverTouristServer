@@ -13,4 +13,5 @@ public interface IQuestItemTypeService
     public Task<QuestItemTypeResponseModel> CreateAsync(QuestItemTypeRequestModel request);
     public Task<QuestItemTypeResponseModel> UpdateAsync(QuestItemTypeRequestModel request);
     public Task<QuestItemTypeResponseModel> DeleteAsync(int id);
+    public Task<QuestItemTypeResponseModel> DisableAsync(int id);
 }

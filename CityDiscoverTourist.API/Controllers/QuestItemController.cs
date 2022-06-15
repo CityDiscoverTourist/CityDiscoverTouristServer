@@ -105,7 +105,7 @@ public class QuestItemController : ControllerBase
     }
 
     /// <summary>
-    ///     delete quest item
+    ///   soft  delete quest item
     /// </summary>
     /// <param name="id"></param>
     /// <returns></returns>
@@ -113,6 +113,18 @@ public class QuestItemController : ControllerBase
     public async Task<ActionResult<ApiResponse<QuestItemResponseModel>>> Delete(int id)
     {
         var entity = await _taskService.DeleteAsync(id);
+        return ApiResponse<QuestItem>.Ok(entity);
+    }
+
+    /// <summary>
+    /// disable quest item
+    /// </summary>
+    /// <param name="id"></param>
+    /// <returns></returns>
+    [HttpPut("disable/{id:int}")]
+    public async Task<ActionResult<ApiResponse<QuestItemResponseModel>>> Disable(int id)
+    {
+        var entity = await _taskService.DisableAsync(id);
         return ApiResponse<QuestItem>.Ok(entity);
     }
 }

@@ -7,5 +7,6 @@ public enum CommonStatus
     Rejected,
     InProgress,
     Error,
-    Deleted
+    Deleted,
+    Inactive
 }
