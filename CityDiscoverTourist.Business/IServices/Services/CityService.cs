@@ -14,14 +14,16 @@ namespace CityDiscoverTourist.Business.IServices.Services;
 public class CityService : BaseService, ICityService
 {
     private readonly ICityRepository _cityRepository;
+    private readonly IAreaRepository _areaRepository;
     private readonly IMapper _mapper;
     private readonly ISortHelper<City> _sortHelper;
 
-    public CityService(ICityRepository questRepository, IMapper mapper, ISortHelper<City> sortHelper)
+    public CityService(ICityRepository questRepository, IMapper mapper, ISortHelper<City> sortHelper, IAreaRepository areaRepository)
     {
         _cityRepository = questRepository;
         _mapper = mapper;
         _sortHelper = sortHelper;
+        _areaRepository = areaRepository;
     }
 
     public PageList<CityResponseModel> GetAll(CityParams @params)
@@ -76,6 +78,24 @@ public class CityService : BaseService, ICityService
         city.Status = CommonStatus.Inactive.ToString();
         await _cityRepository.UpdateFields(city, r => r.Status!);
         return _mapper.Map<CityResponseModel>(city);
+    }
+
+    public async Task<CityResponseModel> EnableAsync(int id)
+    {
+        var city = await _cityRepository.Get(id);
+        city.Status = CommonStatus.Active.ToString();
+        await _cityRepository.UpdateFields(city, r => r.Status!);
+        return _mapper.Map<CityResponseModel>(city);
+    }
+
+    public async void UpdateStatusForeignKey(int cityId, string status)
+    {
+        var areaByCityId = _areaRepository.GetByCondition(x => x.CityId == cityId).ToList();
+        foreach (var area in areaByCityId)
+        {
+            area.Status = status;
+            await _areaRepository.UpdateFields(area, r => r.Status!);
+        }
     }
 
     private static void Search(ref IQueryable<City> entities, CityParams param)

@@ -96,6 +96,14 @@ public class QuestItemService : BaseService, IQuestItemService
         return _mapper.Map<QuestItemResponseModel>(entity);
     }
 
+    public async Task<QuestItemResponseModel> EnableAsync(int id)
+    {
+        var entity = await _taskRepository.Get(id);
+        entity.Status = CommonStatus.Active.ToString();
+        await _taskRepository.UpdateFields(entity, r => r.Status!);
+        return _mapper.Map<QuestItemResponseModel>(entity);
+    }
+
     public Task<QuestItemResponseModel> GetByQuestId(int id)
     {
         var entity = _taskRepository.GetByCondition(x => x.QuestId == id).ToList();

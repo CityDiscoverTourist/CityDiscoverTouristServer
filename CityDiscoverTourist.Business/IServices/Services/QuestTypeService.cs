@@ -100,6 +100,14 @@ public class QuestTypeService : BaseService, IQuestTypeService
         return _mapper.Map<QuestTypeResponseModel>(entity);
     }
 
+    public async Task<QuestTypeResponseModel> EnableAsync(int id)
+    {
+        var entity = await _questTypeRepository.Get(id);
+        entity.Status = CommonStatus.Active.ToString();
+        await _questTypeRepository.UpdateFields(entity, r => r.Status!);
+        return _mapper.Map<QuestTypeResponseModel>(entity);
+    }
+
     public  Task<int> CountQuestInQuestType(int questTypeId)
     {
         return Task.FromResult(_questRepository.GetAll().Count(x => x.QuestTypeId == questTypeId));

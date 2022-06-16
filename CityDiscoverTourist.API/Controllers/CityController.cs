@@ -113,4 +113,28 @@ public class CityController : ControllerBase
         var entity = await _cityService.DisableAsync(id);
         return ApiResponse<City>.Ok(entity);
     }
+
+    /// <summary>
+    /// enable city
+    /// </summary>
+    /// <param name="id"></param>
+    /// <returns></returns>
+    [HttpPut("enable/{id:int}")]
+    public async Task<ActionResult<ApiResponse<CityResponseModel>>> Enable(int id)
+    {
+        var entity = await _cityService.EnableAsync(id);
+        return ApiResponse<City>.Ok(entity);
+    }
+
+    /// <summary>
+    /// update status of areas in city (enable/disable)
+    /// </summary>
+    /// <param name="id"></param>
+    /// <param name="status"></param>
+    /// <returns></returns>
+    [HttpPut("update-status-fk/{id:int}")]
+    public void UpdateStatusFkKey(int id, string status)
+    {
+        _cityService.UpdateStatusForeignKey(id, status);
+    }
 }

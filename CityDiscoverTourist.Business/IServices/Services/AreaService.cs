@@ -70,6 +70,14 @@ public class AreaService : BaseService, IAreaService
         return _mapper.Map<AreaResponseModel>(area);
     }
 
+    public async Task<AreaResponseModel> EnableAsync(int id)
+    {
+        var area = await _areaRepository.Get(id);
+        area.Status = CommonStatus.Active.ToString();
+        await _areaRepository.UpdateFields(area, r => r.Status!);
+        return _mapper.Map<AreaResponseModel>(area);
+    }
+
     private static void Search(ref IQueryable<Area> entities, AreaParams param)
     {
         if (!entities.Any()) return;

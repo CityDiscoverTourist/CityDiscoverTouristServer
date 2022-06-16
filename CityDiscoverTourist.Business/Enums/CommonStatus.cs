@@ -8,5 +8,6 @@ public enum CommonStatus
     InProgress,
     Error,
     Deleted,
-    Inactive
+    Inactive,
+    Active
 }

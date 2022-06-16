@@ -113,4 +113,16 @@ public class SuggestionController : ControllerBase
         var entity = await _suggestionService.DisableAsync(id);
         return ApiResponse<Suggestion>.Ok(entity);
     }
+
+    /// <summary>
+    /// Enable suggestion
+    /// </summary>
+    /// <param name="id"></param>
+    /// <returns></returns>
+    [HttpPut("enable/{id:int}")]
+    public async Task<ActionResult<ApiResponse<SuggestionResponseModel>>> Enable(int id)
+    {
+        var entity = await _suggestionService.EnableAsync(id);
+        return ApiResponse<Suggestion>.Ok(entity);
+    }
 }

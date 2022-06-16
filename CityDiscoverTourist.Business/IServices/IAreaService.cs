@@ -13,4 +13,5 @@ public interface IAreaService
     public Task<AreaResponseModel> UpdateAsync(AreaRequestModel request);
     public Task<AreaResponseModel> DeleteAsync(int id);
     public Task<AreaResponseModel> DisableAsync(int id);
+    public Task<AreaResponseModel> EnableAsync(int id);
 }

@@ -132,4 +132,16 @@ public class AreaController : ControllerBase
         var entity = await _areaService.DisableAsync(id);
         return ApiResponse<Area>.Ok(entity);
     }
+
+    /// <summary>
+    /// enable area
+    /// </summary>
+    /// <param name="id"></param>
+    /// <returns></returns>
+    [HttpPut("nable/{id:int}")]
+    public async Task<ActionResult<ApiResponse<AreaResponseModel>>> Enable(int id)
+    {
+        var entity = await _areaService.EnableAsync(id);
+        return ApiResponse<Area>.Ok(entity);
+    }
 }

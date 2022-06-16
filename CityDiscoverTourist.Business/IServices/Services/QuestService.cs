@@ -131,6 +131,14 @@ public class QuestService : BaseService, IQuestService
         return _mapper.Map<QuestResponseModel>(entity);
     }
 
+    public async Task<QuestResponseModel> EnableAsync(int questId)
+    {
+        var entity = await _questRepository.Get(questId);
+        entity.Status = CommonStatus.Active.ToString();
+        await _questRepository.UpdateFields(entity, r => r.Status!);
+        return _mapper.Map<QuestResponseModel>(entity);
+    }
+
     private static void Search(ref IQueryable<Quest> entities, QuestParams param)
     {
         if (!entities.Any()) return;

@@ -13,4 +13,5 @@ public interface IQuestService
     public Task<QuestResponseModel> UpdateAsync(QuestRequestModel request);
     public Task<QuestResponseModel> DeleteAsync(int questId);
     public Task<QuestResponseModel> DisableAsync(int questId);
+    public Task<QuestResponseModel> EnableAsync(int questId);
 }
