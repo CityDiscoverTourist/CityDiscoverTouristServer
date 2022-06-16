@@ -6,4 +6,5 @@ public class QuestItemTypeResponseModel
 
     public string? Name { get; set; }
     public string? Status { get; set; }
+    public List<QuestItemResponseModel>? QuestItems { get; set; }
 }

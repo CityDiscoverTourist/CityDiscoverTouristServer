@@ -127,4 +127,16 @@ public class QuestItemController : ControllerBase
         var entity = await _taskService.DisableAsync(id);
         return ApiResponse<QuestItem>.Ok(entity);
     }
+
+    /// <summary>
+    /// Enable quest item
+    /// </summary>
+    /// <param name="id"></param>
+    /// <returns></returns>
+    [HttpPut("enable/{id:int}")]
+    public async Task<ActionResult<ApiResponse<QuestItemResponseModel>>> Enable(int id)
+    {
+        var entity = await _taskService.EnableAsync(id);
+        return ApiResponse<QuestItem>.Ok(entity);
+    }
 }

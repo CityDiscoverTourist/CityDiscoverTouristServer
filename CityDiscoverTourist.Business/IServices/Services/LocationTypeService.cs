@@ -72,6 +72,14 @@ public class LocationTypeService : BaseService, ILocationTypeService
         return _mapper.Map<LocationTypeResponseModel>(entity);
     }
 
+    public async Task<LocationTypeResponseModel> EnableAsync(int id)
+    {
+        var entity = await _locationTypeRepository.Get(id);
+        entity.Status = CommonStatus.Active.ToString();
+        await _locationTypeRepository.UpdateFields(entity, r => r.Status!);
+        return _mapper.Map<LocationTypeResponseModel>(entity);
+    }
+
     private static void Search(ref IQueryable<LocationType> entities, LocationTypeParams param)
     {
         if (!entities.Any()) return;

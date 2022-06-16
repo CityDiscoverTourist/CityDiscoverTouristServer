@@ -13,4 +13,6 @@ public interface ICityService
     public Task<CityResponseModel> UpdateAsync(CityRequestModel request);
     public Task<CityResponseModel> DeleteAsync(int id);
     public Task<CityResponseModel> DisableAsync(int id);
+    public Task<CityResponseModel> EnableAsync(int id);
+    public Task<CityResponseModel> UpdateStatusForeignKey(int cityId, string status);
 }

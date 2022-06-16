@@ -73,6 +73,14 @@ public class SuggestionService : BaseService, ISuggestionService
         return _mapper.Map<SuggestionResponseModel>(entity);
     }
 
+    public async Task<SuggestionResponseModel> EnableAsync(int id)
+    {
+        var entity = await _suggestionRepository.Get(id);
+        entity.Status = CommonStatus.Active.ToString();
+        await _suggestionRepository.UpdateFields(entity, r => r.Status!);
+        return _mapper.Map<SuggestionResponseModel>(entity);
+    }
+
     private static void Search(ref IQueryable<Suggestion> entities, SuggestionParams param)
     {
         if (!entities.Any()) return;

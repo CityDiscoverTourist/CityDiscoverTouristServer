@@ -113,4 +113,16 @@ public class LocationTypeController : ControllerBase
         var entity = await _locationTypeService.DisableAsync(id);
         return ApiResponse<LocationType>.Ok(entity);
     }
+
+    /// <summary>
+    /// enable location type
+    /// </summary>
+    /// <param name="id"></param>
+    /// <returns></returns>
+    [HttpPut("enable/{id:int}")]
+    public async Task<ActionResult<ApiResponse<LocationTypeResponseModel>>> Enable(int id)
+    {
+        var entity = await _locationTypeService.EnableAsync(id);
+        return ApiResponse<LocationType>.Ok(entity);
+    }
 }

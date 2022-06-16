@@ -127,4 +127,29 @@ public class QuestTypeController : ControllerBase
         var entity = await _questTypeService.DisableAsync(id);
         return ApiResponse<QuestType>.Ok(entity);
     }
+
+    /// <summary>
+    /// Enable quest type
+    /// </summary>
+    /// <param name="id"></param>
+    /// <returns></returns>
+    [HttpPut("enable/{id:int}")]
+    public async Task<ActionResult<ApiResponse<QuestTypeResponseModel>>> Enable(int id)
+    {
+        var entity = await _questTypeService.EnableAsync(id);
+        return ApiResponse<QuestType>.Ok(entity);
+    }
+
+    /// <summary>
+    /// update status of included entity (enable/disable)
+    /// </summary>
+    /// <param name="id"></param>
+    /// <param name="status"></param>
+    /// <returns></returns>
+    [HttpPut("update-status-fk/{id:int}")]
+    public Task<ActionResult<ApiResponse<QuestTypeResponseModel>>> UpdateStatusFkKey(int id, string status)
+    {
+        var entity = _questTypeService.UpdateStatusForeignKey(id, status);
+        return Task.FromResult<ActionResult<ApiResponse<QuestTypeResponseModel>>>(ApiResponse<QuestType>.Ok(entity.Result));
+    }
 }
