@@ -75,6 +75,7 @@ public class LocationTypeService : BaseService, ILocationTypeService
     private static void Search(ref IQueryable<LocationType> entities, LocationTypeParams param)
     {
         if (!entities.Any()) return;
+        param.Validate();
 
         if (param.Name != null)
             entities = entities.Where(r => r.Name!.Contains(param.Name));

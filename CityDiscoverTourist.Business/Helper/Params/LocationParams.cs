@@ -10,4 +10,13 @@ public class LocationParams : QueryStringParams
     public int AreaId { get; set; }
 
     public int LocationTypeId { get; set; }
+
+    public void Validate()
+    {
+        Name = Name?.Trim();
+        Status = Status?.Trim();
+        Address = Address?.Trim();
+        Longitude = Longitude?.Trim();
+        Latitude = Latitude?.Trim();
+    }
 }

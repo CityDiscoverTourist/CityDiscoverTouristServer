@@ -123,6 +123,7 @@ public class LocationService : BaseService, ILocationService
     private static void Search(ref IQueryable<Location> entities, LocationParams param)
     {
         if (!entities.Any()) return;
+        param.Validate();
 
         if (param.Name != null) entities = entities.Where(r => r.Name!.Contains(param.Name));
         if (param.AreaId != 0) entities = entities.Where(r => r.AreaId == param.AreaId);

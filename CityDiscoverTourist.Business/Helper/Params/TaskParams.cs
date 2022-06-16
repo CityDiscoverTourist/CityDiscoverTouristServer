@@ -5,4 +5,9 @@ public class TaskParams : QueryStringParams
     public string? Name { get; set; }
     public int QuestId { get; set; }
     public int QuestItemTypeId { get; set; }
+    public void Validate()
+    {
+        Name = Name?.Trim();
+        Status = Status?.Trim();
+    }
 }

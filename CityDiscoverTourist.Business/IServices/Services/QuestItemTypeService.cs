@@ -76,6 +76,7 @@ public class QuestItemTypeService : BaseService, IQuestItemTypeService
     private static void Search(ref IQueryable<QuestItemType> entities, TaskTypeParams param)
     {
         if (!entities.Any()) return;
+        param.Validate();
 
         if (param.Status != null) entities = entities.Where(x => x.Status == param.Status);
         if (param.Name != null) entities = entities.Where(x => x.Name!.Contains(param.Name));

@@ -81,6 +81,7 @@ public class CityService : BaseService, ICityService
     private static void Search(ref IQueryable<City> entities, CityParams param)
     {
         if (!entities.Any()) return;
+        param.Validate();
 
         if (param.Name != null) entities = entities.Where(r => r.Name!.Contains(param.Name));
         if (param.Status != null) entities = entities.Where(x => x.Status == param.Status);

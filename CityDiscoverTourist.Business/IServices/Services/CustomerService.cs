@@ -65,6 +65,7 @@ public class CustomerService : BaseService, ICustomerService
     private static void Search(ref IQueryable<ApplicationUser> customers, CustomerParams param)
     {
         if (!customers.Any()) return;
+        param.Validate();
 
         if(param.Email != null) customers = customers.Where(x => x.Email.Contains(param.Email));
 

@@ -134,6 +134,7 @@ public class QuestService : BaseService, IQuestService
     private static void Search(ref IQueryable<Quest> entities, QuestParams param)
     {
         if (!entities.Any()) return;
+        param.Validate();
 
         if (param.Name != null) entities = entities.Where(r => r.Title!.Contains(param.Name));
         if (param.Description != null) entities = entities.Where(r => r.Description!.Contains(param.Description));
