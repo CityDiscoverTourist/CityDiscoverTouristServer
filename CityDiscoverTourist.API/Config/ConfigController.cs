@@ -50,6 +50,7 @@ public static class ConfigController
         services.AddScoped<ISuggestionService, SuggestionService>();
         services.AddScoped<ICustomerService, CustomerService>();
         services.AddScoped<IBlobService, BlobService>();
+        services.AddScoped<INotificationService, NotificationService>();
     }
 
     /// <summary>
