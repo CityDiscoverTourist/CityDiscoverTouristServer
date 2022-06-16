@@ -138,7 +138,7 @@ public class AreaController : ControllerBase
     /// </summary>
     /// <param name="id"></param>
     /// <returns></returns>
-    [HttpPut("nable/{id:int}")]
+    [HttpPut("enable/{id:int}")]
     public async Task<ActionResult<ApiResponse<AreaResponseModel>>> Enable(int id)
     {
         var entity = await _areaService.EnableAsync(id);
