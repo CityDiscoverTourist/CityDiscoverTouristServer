@@ -26,5 +26,8 @@ public static class ThirdPartyConfig
         services.AddSingleton(_ =>
             new BlobServiceClient(configuration.GetSection("AzureStorage:ConnectionString").Value));
         services.AddSingleton<IBlobService, BlobService>();
+
+        var notifyConfig = configuration.GetSection("FcmNotification").Get<NotificationSetting>() ?? new NotificationSetting();
+        services.AddSingleton(notifyConfig);
     }
 }
