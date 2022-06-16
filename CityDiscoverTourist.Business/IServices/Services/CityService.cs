@@ -88,7 +88,7 @@ public class CityService : BaseService, ICityService
         return _mapper.Map<CityResponseModel>(city);
     }
 
-    public async void UpdateStatusForeignKey(int cityId, string status)
+    public async Task<CityResponseModel> UpdateStatusForeignKey( int cityId, string status)
     {
         var areaByCityId = _areaRepository.GetByCondition(x => x.CityId == cityId).ToList();
         foreach (var area in areaByCityId)
@@ -96,6 +96,7 @@ public class CityService : BaseService, ICityService
             area.Status = status;
             await _areaRepository.UpdateFields(area, r => r.Status!);
         }
+        return _mapper.Map<CityResponseModel>(Get(cityId).Result);
     }
 
     private static void Search(ref IQueryable<City> entities, CityParams param)

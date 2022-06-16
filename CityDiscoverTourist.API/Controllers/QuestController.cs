@@ -125,4 +125,17 @@ public class QuestController : ControllerBase
         var entity = await _questService.EnableAsync(id);
         return ApiResponse<Quest>.Ok(entity);
     }
+
+    /// <summary>
+    /// update status of included entity (enable/disable)
+    /// </summary>
+    /// <param name="id"></param>
+    /// <param name="status"></param>
+    /// <returns></returns>
+    [HttpPut("update-status-fk/{id:int}")]
+    public Task<ActionResult<ApiResponse<QuestResponseModel>>> UpdateStatusFkKey(int id, string status)
+    {
+        var entity = _questService.UpdateStatusForeignKey(id, status);
+        return Task.FromResult<ActionResult<ApiResponse<QuestResponseModel>>>(ApiResponse<Quest>.Ok(entity.Result));
+    }
 }

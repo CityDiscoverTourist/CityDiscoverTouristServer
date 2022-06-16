@@ -6,6 +6,7 @@ using CityDiscoverTourist.Business.Helper;
 using CityDiscoverTourist.Business.Helper.Params;
 using CityDiscoverTourist.Data.IRepositories;
 using CityDiscoverTourist.Data.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace CityDiscoverTourist.Business.IServices.Services;
 
@@ -13,19 +14,22 @@ public class QuestItemTypeService : BaseService, IQuestItemTypeService
 {
     private readonly IMapper _mapper;
     private readonly IQuestItemTypeRepository _questItemTypeRepository;
+    private readonly IQuestItemRepository _questItemRepository;
     private readonly ISortHelper<QuestItemType> _sortHelper;
 
     public QuestItemTypeService(IQuestItemTypeRepository questItemTypeRepository, IMapper mapper,
-        ISortHelper<QuestItemType> sortHelper)
+        ISortHelper<QuestItemType> sortHelper, IQuestItemRepository questItemRepository)
     {
         _questItemTypeRepository = questItemTypeRepository;
         _mapper = mapper;
         _sortHelper = sortHelper;
+        _questItemRepository = questItemRepository;
     }
 
     public PageList<QuestItemTypeResponseModel> GetAll(TaskTypeParams @params)
     {
-        var listAll = _questItemTypeRepository.GetAll();
+        var listAll = _questItemTypeRepository.GetAll()
+            .Include(x => x.QuestItems).AsNoTracking();
 
         Search(ref listAll, @params);
 
@@ -79,6 +83,17 @@ public class QuestItemTypeService : BaseService, IQuestItemTypeService
         entity.Status = CommonStatus.Active.ToString();
         await _questItemTypeRepository.UpdateFields(entity, r => r.Status!);
         return _mapper.Map<QuestItemTypeResponseModel>(entity);
+    }
+
+    public async Task<QuestItemTypeResponseModel> UpdateStatusForeignKey(int id, string status)
+    {
+        var includedEntity = _questItemRepository.GetByCondition(x => x.QuestItemTypeId == id).ToList();
+        foreach (var area in includedEntity)
+        {
+            area.Status = status;
+            await _questItemRepository.UpdateFields(area, r => r.Status!);
+        }
+        return null!;
     }
 
     private static void Search(ref IQueryable<QuestItemType> entities, TaskTypeParams param)

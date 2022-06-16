@@ -18,15 +18,17 @@ public class QuestService : BaseService, IQuestService
     private readonly IMapper _mapper;
     private readonly IQuestRepository _questRepository;
     private readonly ISortHelper<Quest> _sortHelper;
+    private readonly IQuestItemRepository _questItemRepository;
 
     public QuestService(IQuestRepository questRepository, ISortHelper<Quest> sortHelper, IMapper mapper,
-        IBlobService blobService, ILocationRepository locationRepository)
+        IBlobService blobService, ILocationRepository locationRepository, IQuestItemRepository questItemRepository)
     {
         _questRepository = questRepository;
         _sortHelper = sortHelper;
         _mapper = mapper;
         _blobService = blobService;
         _locationRepository = locationRepository;
+        _questItemRepository = questItemRepository;
     }
 
 
@@ -137,6 +139,17 @@ public class QuestService : BaseService, IQuestService
         entity.Status = CommonStatus.Active.ToString();
         await _questRepository.UpdateFields(entity, r => r.Status!);
         return _mapper.Map<QuestResponseModel>(entity);
+    }
+
+    public async Task<QuestResponseModel> UpdateStatusForeignKey(int questId, string status)
+    {
+        var includedEntity = _questItemRepository.GetByCondition(x => x.QuestId == questId).ToList();
+        foreach (var area in includedEntity)
+        {
+            area.Status = status;
+            await _questItemRepository.UpdateFields(area, r => r.Status!);
+        }
+        return null!;
     }
 
     private static void Search(ref IQueryable<Quest> entities, QuestParams param)
