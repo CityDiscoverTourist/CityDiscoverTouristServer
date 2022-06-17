@@ -32,16 +32,6 @@
         "VaultUri": "https://citytouristserver.vault.azure.net/",
         "AZURE_USERNAME": "ttnhi164096@ump.edu.vn"
       }
-    },
-    "IIS Express": {
-      "commandName": "IISExpress",
-      "launchBrowser": true,
-      "launchUrl": "swagger",
-      "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development",
-        "VaultUri": "https://citytouristserver.vault.azure.net/",
-        "AZURE_USERNAME": "ttnhi164096@ump.edu.vn"
-      }
     }
   }
 }

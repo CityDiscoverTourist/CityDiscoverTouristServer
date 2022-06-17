@@ -4,6 +4,7 @@ using CityDiscoverTourist.API.Controllers;
 using CityDiscoverTourist.Business.Data;
 using CityDiscoverTourist.Business.Exceptions;
 using CityDiscoverTourist.Business.HealthCheck;
+using CityDiscoverTourist.Business.HubConfig;
 using CityDiscoverTourist.Business.IServices.Services;
 using Microsoft.ApplicationInsights.Extensibility;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
@@ -120,6 +121,7 @@ try
     app.UseHsts();
     app.UseCors("EnableCORS");
 
+    app.MapHub<ChartHub>("/chart");
     app.MapHub<AaHub>("/aa");
 
     app.UseAuthentication();
