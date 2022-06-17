@@ -78,6 +78,11 @@ public class AreaService : BaseService, IAreaService
         return _mapper.Map<AreaResponseModel>(area);
     }
 
+    public Task GetMessage(string message)
+    {
+        throw new NotImplementedException();
+    }
+
     private static void Search(ref IQueryable<Area> entities, AreaParams param)
     {
         if (!entities.Any()) return;

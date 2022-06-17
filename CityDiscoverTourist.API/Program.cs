@@ -1,8 +1,10 @@
 using CityDiscoverTourist.API.AzureHelper;
 using CityDiscoverTourist.API.Config;
+using CityDiscoverTourist.API.Controllers;
 using CityDiscoverTourist.Business.Data;
 using CityDiscoverTourist.Business.Exceptions;
 using CityDiscoverTourist.Business.HealthCheck;
+using CityDiscoverTourist.Business.IServices.Services;
 using Microsoft.ApplicationInsights.Extensibility;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.AspNetCore.HttpOverrides;
@@ -12,6 +14,9 @@ using Newtonsoft.Json;
 using Serilog;
 using Serilog.Events;
 using Serilog.Sinks.MSSqlServer;
+using Microsoft.AspNetCore.SignalR;
+using Microsoft.AspNetCore.Builder;
+
 
 var builder = WebApplication.CreateBuilder(args);
 var env = builder.Environment.EnvironmentName;
@@ -63,6 +68,7 @@ try
     builder.Services.SetUpCache(builder.Configuration);
     builder.Services.SetUpHealthCheck(builder.Configuration);
     builder.Services.SetUpApplicationInsight(builder.Configuration);
+    builder.Services.AddSignalR();
 
     builder.Services.AddAutoMapper(typeof(AutoMapperProfile).Assembly);
 
@@ -113,6 +119,9 @@ try
     app.UseHttpsRedirection();
     app.UseHsts();
     app.UseCors("EnableCORS");
+
+    app.MapHub<AaHub>("/aa");
+
     app.UseAuthentication();
     app.UseAuthorization();
 
