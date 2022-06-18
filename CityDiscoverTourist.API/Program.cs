@@ -1,11 +1,9 @@
 using CityDiscoverTourist.API.AzureHelper;
 using CityDiscoverTourist.API.Config;
-using CityDiscoverTourist.API.Controllers;
 using CityDiscoverTourist.Business.Data;
 using CityDiscoverTourist.Business.Exceptions;
 using CityDiscoverTourist.Business.HealthCheck;
 using CityDiscoverTourist.Business.HubConfig;
-using CityDiscoverTourist.Business.IServices.Services;
 using Microsoft.ApplicationInsights.Extensibility;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.AspNetCore.HttpOverrides;
@@ -15,8 +13,6 @@ using Newtonsoft.Json;
 using Serilog;
 using Serilog.Events;
 using Serilog.Sinks.MSSqlServer;
-using Microsoft.AspNetCore.SignalR;
-using Microsoft.AspNetCore.Builder;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -118,14 +114,19 @@ try
     app.UseMiddleware<ErrorHandlerMiddleware>();
     app.HandlerExceptionProduction(app.Environment.IsDevelopment());
     app.UseHttpsRedirection();
+    app.UseRouting();
     app.UseHsts();
     app.UseCors("EnableCORS");
 
-    app.MapHub<ChartHub>("/chart");
-    app.MapHub<AaHub>("/aa");
+    //app.MapHub<ChartHub>("/chart");
 
     app.UseAuthentication();
     app.UseAuthorization();
+    app.UseEndpoints(endpoints =>
+    {
+        endpoints.MapControllers();
+        endpoints.MapHub<ChartHub>("/chart");
+    });
 
     app.MapControllers();
 
