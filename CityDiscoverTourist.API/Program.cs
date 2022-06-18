@@ -77,6 +77,7 @@ try
     var app = builder.Build();
     // Configure the HTTP request pipeline.
     app.UseSerilogRequestLogging(_ => { }); // We want to log all HTTP requests
+    app.UseCors("EnableCORS");
 
     // Configure the HTTP request pipeline.
     app.UseForwardedHeaders();
@@ -116,7 +117,6 @@ try
     app.UseHttpsRedirection();
     app.UseRouting();
     app.UseHsts();
-    app.UseCors("EnableCORS");
 
     //app.MapHub<ChartHub>("/chart");
 
