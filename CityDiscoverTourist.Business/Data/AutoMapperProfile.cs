@@ -20,6 +20,7 @@ public class AutoMapperProfile : Profile
 
         CreateMap<CustomerQuestResponseModel, CustomerQuest>().ReverseMap();
         CreateMap<CustomerQuestRequestModel, CustomerQuest>().ReverseMap();
+        CreateMap<CommentResponseModel, CustomerQuest>().ReverseMap();
 
         CreateMap<QuestItemRequestModel, QuestItem>().ReverseMap();
         CreateMap<QuestItemResponseModel, QuestItem>().ReverseMap();

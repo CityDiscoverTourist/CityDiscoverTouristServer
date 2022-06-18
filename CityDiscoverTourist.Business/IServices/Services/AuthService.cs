@@ -167,7 +167,8 @@ public class AuthService : IAuthService
             EmailConfirmed = true,
             NormalizedEmail = userViewModel.Email?.ToUpper(),
             NormalizedUserName = userViewModel.FullName?.ToUpper(),
-            PhoneNumberConfirmed = false
+            PhoneNumberConfirmed = false,
+            ImagePath = userViewModel.ImagePath,
         };
         var loginInfo = new ExternalLoginInfo(new ClaimsPrincipal(), "Firebase-Email", userViewModel.IdProvider,
             userViewModel.Email);
