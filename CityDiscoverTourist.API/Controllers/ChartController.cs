@@ -11,12 +11,12 @@ namespace CityDiscoverTourist.API.Controllers;
 [Route("api/v{version:apiVersion}/[controller]s")]
 [ApiVersion("1.0")]
 [ApiController]
-public class HubController : ControllerBase
+public class ChartController : ControllerBase
 {
     private IHubContext<ChartHub> _hubContext;
 
 
-    public HubController(IHubContext<ChartHub> hubContext)
+    public ChartController(IHubContext<ChartHub> hubContext)
     {
         _hubContext = hubContext;
     }

@@ -69,6 +69,20 @@ public class CustomerQuestController : ControllerBase
     /// <summary>
     ///
     /// </summary>
+    /// <param name="questId"></param>
+    /// <returns></returns>
+    [HttpGet("show-comments/{questId:int}")]
+    //[Cached(600)]
+    public async Task<ApiResponse<List<CommentResponseModel>>> GetComments(int questId)
+    {
+        var entity = await _customerQuestService.ShowComments(questId);
+
+        return ApiResponse<CommentResponseModel>.Ok(entity);
+    }
+
+    /// <summary>
+    ///
+    /// </summary>
     /// <param name="id"></param>
     /// <returns></returns>
     [HttpGet("get-by-customer-id")]

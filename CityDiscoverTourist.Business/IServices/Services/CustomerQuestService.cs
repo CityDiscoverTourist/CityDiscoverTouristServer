@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Globalization;
 using AutoMapper;
 using CityDiscoverTourist.Business.Data.RequestModel;
@@ -8,6 +9,7 @@ using CityDiscoverTourist.Business.Helper;
 using CityDiscoverTourist.Business.Helper.Params;
 using CityDiscoverTourist.Data.IRepositories;
 using CityDiscoverTourist.Data.Models;
+using Microsoft.AspNetCore.Identity;
 
 namespace CityDiscoverTourist.Business.IServices.Services;
 
@@ -19,16 +21,18 @@ public class CustomerQuestService : BaseService, ICustomerQuestService
     private readonly IMapper _mapper;
     private readonly ISortHelper<CustomerQuest> _sortHelper;
     private readonly IQuestItemRepository _taskRepository;
+    private readonly UserManager<ApplicationUser> _userManager;
 
     public CustomerQuestService(ICustomerQuestRepository customerQuestRepository, IMapper mapper,
         IQuestItemRepository taskRepository, ISortHelper<CustomerQuest> sortHelper,
-        ICustomerTaskService customerTaskService)
+        ICustomerTaskService customerTaskService, UserManager<ApplicationUser> userManager)
     {
         _customerQuestRepository = customerQuestRepository;
         _mapper = mapper;
         _taskRepository = taskRepository;
         _sortHelper = sortHelper;
         _customerTaskService = customerTaskService;
+        _userManager = userManager;
     }
 
     public PageList<CustomerQuestResponseModel> GetAll(CustomerQuestParams @params)
@@ -92,6 +96,32 @@ public class CustomerQuestService : BaseService, ICustomerQuestService
             x => x.IsFinished);
 
         return _mapper.Map<CustomerQuestResponseModel>(entity);
+    }
+
+    public async Task<List<CommentResponseModel>> ShowComments(int questId)
+    {
+        var comments = _customerQuestRepository.GetAll()
+            .Where(x => x.QuestId == questId && x.IsFinished == true);
+
+        //var customerName = _userManager.FindByIdAsync(customerId).Result.UserName;
+        //var imagePath = _userManager.FindByIdAsync(customerId).Result.ImagePath;
+
+        //mappedData.ImagePath = imagePath;
+        //mappedData.Name = customerName;
+
+        var mappedData = _mapper.Map<IEnumerable<CommentResponseModel>>(comments);
+
+        var commentResponseModels = mappedData.ToList();
+        foreach (var comment in commentResponseModels)
+        {
+            var customerName = _userManager.FindByIdAsync(comment.CustomerId).Result.UserName;
+            var imagePath = _userManager.FindByIdAsync(comment.CustomerId).Result.ImagePath;
+
+            comment.ImagePath = imagePath;
+            comment.Name = customerName;
+        }
+
+        return commentResponseModels.ToList();
     }
 
     private static void Search(ref IQueryable<CustomerQuest> entities, CustomerQuestParams param)
