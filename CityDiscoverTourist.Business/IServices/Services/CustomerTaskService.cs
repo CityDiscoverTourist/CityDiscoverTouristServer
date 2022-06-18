@@ -5,9 +5,11 @@ using CityDiscoverTourist.Business.Enums;
 using CityDiscoverTourist.Business.Exceptions;
 using CityDiscoverTourist.Business.Helper;
 using CityDiscoverTourist.Business.Helper.Params;
+using CityDiscoverTourist.Business.HubConfig;
 using CityDiscoverTourist.Business.Settings;
 using CityDiscoverTourist.Data.IRepositories;
 using CityDiscoverTourist.Data.Models;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json.Linq;
 
@@ -27,13 +29,14 @@ public class CustomerTaskService : BaseService, ICustomerTaskService
     private readonly IQuestItemRepository _questItemRepo;
     private readonly ISortHelper<CustomerTask> _sortHelper;
     private readonly ISuggestionRepository _suggestionRepo;
+    private readonly IHubContext<CustomerTaskHub> _hubContext;
 
 
     public CustomerTaskService(ICustomerTaskRepository customerTaskRepository, IMapper mapper,
         ISortHelper<CustomerTask> sortHelper, ICustomerQuestRepository customerQuestRepo,
         IQuestItemRepository questItemRepo, GoongApiSetting? googleApiSettings,
         ICustomerAnswerService customerAnswerService, ILocationRepository locationRepo,
-        ISuggestionRepository suggestionRepo)
+        ISuggestionRepository suggestionRepo, IHubContext<CustomerTaskHub> hubContext)
     {
         _customerTaskRepo = customerTaskRepository;
         _mapper = mapper;
@@ -44,9 +47,10 @@ public class CustomerTaskService : BaseService, ICustomerTaskService
         _customerAnswerService = customerAnswerService;
         _locationRepo = locationRepo;
         _suggestionRepo = suggestionRepo;
+        _hubContext = hubContext;
     }
 
-    public PageList<CustomerTaskResponseModel> GetAll(CustomerTaskParams @params)
+    public async Task<PageList<CustomerTaskResponseModel>> GetAll(CustomerTaskParams @params)
     {
         var listAll = _customerTaskRepo.GetAll();
 
@@ -54,6 +58,7 @@ public class CustomerTaskService : BaseService, ICustomerTaskService
 
         var sortedQuests = _sortHelper.ApplySort(listAll, @params.OrderBy);
         var mappedData = _mapper.Map<IEnumerable<CustomerTaskResponseModel>>(sortedQuests);
+        await _hubContext.Clients.All.SendAsync("demo", mappedData);
         return PageList<CustomerTaskResponseModel>.ToPageList(mappedData, @params.PageNumber, @params.PageSize);
     }
 

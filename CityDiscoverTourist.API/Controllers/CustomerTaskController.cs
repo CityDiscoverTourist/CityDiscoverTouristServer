@@ -37,7 +37,7 @@ public class CustomerTaskController : ControllerBase
     //[Cached(600)]
     public ApiResponse<PageList<CustomerTaskResponseModel>> GetAll([FromQuery] CustomerTaskParams param)
     {
-        var entity = _customerTaskService.GetAll(param);
+        var entity = _customerTaskService.GetAll(param).Result;
 
         var metadata = new
         {
