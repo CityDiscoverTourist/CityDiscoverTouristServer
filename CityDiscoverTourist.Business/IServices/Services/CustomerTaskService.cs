@@ -79,6 +79,7 @@ public class CustomerTaskService : BaseService, ICustomerTaskService
         entity.QuestItemId = GetFirstQuestItemIdOfQuest(questId);
 
         entity = await _customerTaskRepo.Add(entity);
+        await _hubContext.Clients.All.SendAsync("add", entity);
         return _mapper.Map<CustomerTaskResponseModel>(entity);
     }
 
