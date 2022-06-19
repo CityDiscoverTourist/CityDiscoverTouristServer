@@ -43,6 +43,16 @@ public class CustomerAnswerService : BaseService, ICustomerAnswerService
         return _mapper.Map<CustomerAnswerResponseModel>(entity);
     }
 
+    public Task<List<CustomerAnswerResponseModel>> GetByCustomerTaskId(int customerTaskId)
+    {
+        var entity = _answerRepository.GetByCondition(x => x.CustomerTaskId == customerTaskId).ToList();
+
+        CheckDataNotNull("CustomerAnswer", entity);
+        var mappedData = _mapper.Map<IEnumerable<CustomerAnswerResponseModel>>(entity);
+
+        return Task.FromResult(mappedData.ToList());
+    }
+
     public async Task<CustomerAnswerResponseModel> CreateAsync(CustomerAnswerRequestModel request)
     {
         var entity = _mapper.Map<CustomerAnswer>(request);

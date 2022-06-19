@@ -54,7 +54,7 @@ public class CustomerTaskService : BaseService, ICustomerTaskService
     {
         var listAll = _customerTaskRepo.GetAll();
 
-        //Search(ref listAll, @params);
+        Search(ref listAll, @params);
 
         var sortedQuests = _sortHelper.ApplySort(listAll, @params.OrderBy);
         var mappedData = _mapper.Map<IEnumerable<CustomerTaskResponseModel>>(sortedQuests);
@@ -250,6 +250,14 @@ public class CustomerTaskService : BaseService, ICustomerTaskService
         var latLong = GetStartingAddress(questId);
         var distance = CalculateDistance(latLong, latitude + "," + longitude);
         return distance < DistanceThreshold;
+    }
+
+    private static void Search(ref IQueryable<CustomerTask> entities, CustomerTaskParams param)
+    {
+        if (!entities.Any()) return;
+
+        if (param.Status != null)
+            entities = entities.Where(x => x.Status == param.Status);
     }
 
     #region MyRegion

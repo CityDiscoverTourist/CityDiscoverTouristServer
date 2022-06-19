@@ -9,6 +9,7 @@ public interface ICustomerAnswerService
 {
     public PageList<CustomerAnswerResponseModel> GetAll(CustomerAnswerParams @params);
     public Task<CustomerAnswerResponseModel> Get(int id);
+    public Task<List<CustomerAnswerResponseModel>> GetByCustomerTaskId(int customerTaskId);
     public Task<CustomerAnswerResponseModel> CreateAsync(CustomerAnswerRequestModel request);
     public Task<CustomerAnswerResponseModel> UpdateAsync(CustomerAnswerRequestModel request);
     public Task<CustomerAnswerResponseModel> DeleteAsync(int id);

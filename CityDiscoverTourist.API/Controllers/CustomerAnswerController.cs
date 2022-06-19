@@ -67,6 +67,19 @@ public class CustomerAnswerController : ControllerBase
     }
 
     /// <summary>
+    ///
+    /// </summary>
+    /// <param name="customerTaskId"></param>
+    /// <returns></returns>
+    [HttpGet("get-by-customer-task-id/{customerTaskId:int}")]
+    public async Task<ApiResponse<List<CustomerAnswerResponseModel>>> GetByCustomerTaskId(int customerTaskId)
+    {
+        var entity = await _customerAnswerService.GetByCustomerTaskId(customerTaskId);
+
+        return ApiResponse<CustomerAnswer>.Ok(entity);
+    }
+
+    /// <summary>
     ///     Create a new CustomerAnswer
     /// </summary>
     /// <param name="data"></param>
