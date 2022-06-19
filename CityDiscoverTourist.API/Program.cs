@@ -130,7 +130,6 @@ try
         endpoints.MapControllers();
         endpoints.MapHub<ChartHub>("/chart");
         endpoints.MapHub<CustomerTaskHub>("/customer-task");
-        endpoints.MapHub<WebNotificationHub>("/notification");
     });
 
     app.MapControllers();
