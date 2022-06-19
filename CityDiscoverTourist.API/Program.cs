@@ -65,7 +65,10 @@ try
     builder.Services.SetUpCache(builder.Configuration);
     builder.Services.SetUpHealthCheck(builder.Configuration);
     builder.Services.SetUpApplicationInsight(builder.Configuration);
-    builder.Services.AddSignalR();
+    builder.Services.AddSignalR(op =>
+    {
+        op.EnableDetailedErrors = true;
+    });
 
     builder.Services.AddAutoMapper(typeof(AutoMapperProfile).Assembly);
 
@@ -127,6 +130,7 @@ try
         endpoints.MapControllers();
         endpoints.MapHub<ChartHub>("/chart");
         endpoints.MapHub<CustomerTaskHub>("/customer-task");
+        endpoints.MapHub<WebNotificationHub>("/notification");
     });
 
     app.MapControllers();
