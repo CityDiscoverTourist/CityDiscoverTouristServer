@@ -58,7 +58,7 @@ public class CustomerTaskService : BaseService, ICustomerTaskService
 
         var sortedQuests = _sortHelper.ApplySort(listAll, @params.OrderBy);
         var mappedData = _mapper.Map<IEnumerable<CustomerTaskResponseModel>>(sortedQuests);
-        await _hubContext.Clients.All.SendAsync("demo", mappedData);
+       // await _hubContext.Clients.All.SendAsync("demo", mappedData);
         return PageList<CustomerTaskResponseModel>.ToPageList(mappedData, @params.PageNumber, @params.PageSize);
     }
 
@@ -79,7 +79,7 @@ public class CustomerTaskService : BaseService, ICustomerTaskService
         entity.QuestItemId = GetFirstQuestItemIdOfQuest(questId);
 
         entity = await _customerTaskRepo.Add(entity);
-        await _hubContext.Clients.All.SendAsync("demo", _mapper.Map<CustomerTaskResponseModel>(entity));
+        await _hubContext.Clients.All.SendAsync("AddCustomerTask", _mapper.Map<CustomerTaskResponseModel>(entity));
         return _mapper.Map<CustomerTaskResponseModel>(entity);
     }
 
