@@ -101,13 +101,7 @@ public class CustomerQuestService : BaseService, ICustomerQuestService
     public async Task<List<CommentResponseModel>> ShowComments(int questId)
     {
         var comments = _customerQuestRepository.GetAll()
-            .Where(x => x.QuestId == questId && x.IsFinished == true);
-
-        //var customerName = _userManager.FindByIdAsync(customerId).Result.UserName;
-        //var imagePath = _userManager.FindByIdAsync(customerId).Result.ImagePath;
-
-        //mappedData.ImagePath = imagePath;
-        //mappedData.Name = customerName;
+            .Where(x => x.QuestId == questId && x.IsFinished == true).OrderByDescending(x => x.CreatedDate);
 
         var mappedData = _mapper.Map<IEnumerable<CommentResponseModel>>(comments);
 
@@ -122,6 +116,21 @@ public class CustomerQuestService : BaseService, ICustomerQuestService
         }
 
         return commentResponseModels.ToList();
+    }
+
+    public Task<List<CommentResponseModel>> UpdateComment(int questId, string customerId, CommentRequestModel request)
+    {
+        var comments = _customerQuestRepository.GetAll()
+            .Where(x => x.QuestId == questId && x.IsFinished == true && x.CustomerId == customerId);
+
+        var mappedData = _mapper.Map<IEnumerable<CustomerQuest>>(comments).FirstOrDefault();
+
+        mappedData!.FeedBack = request.FeedBack;
+        mappedData.Rating = request.Rating;
+
+        _customerQuestRepository.UpdateFields(mappedData, x => x.FeedBack!, x => x.Rating);
+
+        return ShowComments(questId);
     }
 
     private static void Search(ref IQueryable<CustomerQuest> entities, CustomerQuestParams param)
