@@ -58,7 +58,6 @@ public class CustomerTaskService : BaseService, ICustomerTaskService
 
         var sortedQuests = _sortHelper.ApplySort(listAll, @params.OrderBy);
         var mappedData = _mapper.Map<IEnumerable<CustomerTaskResponseModel>>(sortedQuests);
-       // await _hubContext.Clients.All.SendAsync("demo", mappedData);
         return PageList<CustomerTaskResponseModel>.ToPageList(mappedData, @params.PageNumber, @params.PageSize);
     }
 

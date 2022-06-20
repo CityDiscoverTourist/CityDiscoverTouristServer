@@ -5,7 +5,7 @@ namespace CityDiscoverTourist.Business.HubConfig;
 
 public class CustomerTaskHub : Hub
 {
-    public async Task demo(IEnumerable<CustomerTaskResponseModel> message)
+    public async Task demo(string message)
     {
         await Clients.All.SendAsync("demo", message);
     }

@@ -65,10 +65,7 @@ try
     builder.Services.SetUpCache(builder.Configuration);
     builder.Services.SetUpHealthCheck(builder.Configuration);
     builder.Services.SetUpApplicationInsight(builder.Configuration);
-    builder.Services.AddSignalR(op =>
-    {
-        op.EnableDetailedErrors = true;
-    });
+    builder.Services.SetUpSignalR(builder.Configuration, env);
 
     builder.Services.AddAutoMapper(typeof(AutoMapperProfile).Assembly);
 
