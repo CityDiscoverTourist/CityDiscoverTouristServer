@@ -98,7 +98,7 @@ public class CustomerQuestService : BaseService, ICustomerQuestService
         return _mapper.Map<CustomerQuestResponseModel>(entity);
     }
 
-    public async Task<List<CommentResponseModel>> ShowComments(int questId)
+    public async Task<PageList<CommentResponseModel>> ShowComments(int questId, CustomerQuestParams param)
     {
         var comments = _customerQuestRepository.GetAll()
             .Where(x => x.QuestId == questId && x.IsFinished == true).OrderByDescending(x => x.CreatedDate);
@@ -115,13 +115,12 @@ public class CustomerQuestService : BaseService, ICustomerQuestService
             comment.Name = customerName;
         }
 
-        return commentResponseModels.ToList();
+        return PageList<CommentResponseModel>.ToPageList(commentResponseModels, param.PageNumber, param.PageSize);
     }
 
     public Task<List<CommentResponseModel>> UpdateComment(int questId, string customerId, CommentRequestModel request)
     {
-        var comments = _customerQuestRepository.GetAll()
-            .Where(x => x.QuestId == questId && x.IsFinished == true && x.CustomerId == customerId);
+        var comments = GetComment(questId, customerId);
 
         var mappedData = _mapper.Map<IEnumerable<CustomerQuest>>(comments).FirstOrDefault();
 
@@ -130,7 +129,12 @@ public class CustomerQuestService : BaseService, ICustomerQuestService
 
         _customerQuestRepository.UpdateFields(mappedData, x => x.FeedBack!, x => x.Rating);
 
-        return ShowComments(questId);
+        return null!;
+    }
+
+    public IQueryable<CustomerQuest> GetMyComment( int questId, string customerId)
+    {
+        return GetComment(questId, customerId);
     }
 
     private static void Search(ref IQueryable<CustomerQuest> entities, CustomerQuestParams param)
@@ -150,5 +154,12 @@ public class CustomerQuestService : BaseService, ICustomerQuestService
     private string CalculateBeginPoint(int questId)
     {
         return (CountQuestItemInQuest(questId) * BaseMultiplier).ToString();
+    }
+
+    private IQueryable<CustomerQuest> GetComment(int questId, string customerId)
+    {
+        var comments = _customerQuestRepository.GetAll()
+            .Where(x => x.QuestId == questId && x.IsFinished == true && x.CustomerId == customerId);
+        return comments;
     }
 }

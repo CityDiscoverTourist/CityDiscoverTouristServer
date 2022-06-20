@@ -4,6 +4,7 @@ using CityDiscoverTourist.Business.Data.ResponseModel;
 using CityDiscoverTourist.Business.Helper;
 using CityDiscoverTourist.Business.Helper.Params;
 using CityDiscoverTourist.Business.IServices;
+using CityDiscoverTourist.Data.Models;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 
@@ -73,11 +74,21 @@ public class CustomerQuestController : ControllerBase
     /// <returns></returns>
     [HttpGet("show-comments/{questId:int}")]
     //[Cached(600)]
-    public async Task<ApiResponse<List<CommentResponseModel>>> GetComments(int questId)
+    public async Task<ApiResponse<PageList<CommentResponseModel>>> GetComments(int questId, [FromQuery] CustomerQuestParams param)
     {
-        var entity = await _customerQuestService.ShowComments(questId);
+        var entity = await _customerQuestService.ShowComments(questId, param);
 
-        return ApiResponse<CommentResponseModel>.Ok(entity);
+        var metadata = new
+        {
+            entity.TotalCount,
+            entity.TotalPages,
+            entity.PageSize,
+            entity.CurrentPage,
+            entity.HasNext,
+            entity.HasPrevious
+        };
+
+        return ApiResponse<CommentResponseModel>.Success(entity, metadata);
     }
 
     /// <summary>
@@ -130,6 +141,19 @@ public class CustomerQuestController : ControllerBase
     {
         var entity = await _customerQuestService.UpdateComment(questId, customerId, comment);
         return ApiResponse<CustomerQuestResponseModel>.Created(entity);
+    }
+
+    /// <summary>
+    ///
+    /// </summary>
+    /// <param name="questId"></param>
+    /// <param name="customerId"></param>
+    /// <returns></returns>
+    [HttpGet("get-comment")]
+    public Task<ApiResponse<IQueryable<CustomerQuest>>> GetMyComment(int questId, string customerId)
+    {
+        var entity = _customerQuestService.GetMyComment(questId, customerId);
+        return Task.FromResult(ApiResponse<CustomerQuestResponseModel>.Created(entity));
     }
 
     /// <summary>
