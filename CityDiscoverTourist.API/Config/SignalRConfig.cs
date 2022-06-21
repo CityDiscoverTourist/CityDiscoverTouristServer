@@ -12,7 +12,11 @@ public static class SignalRConfig
             services.AddSignalR(op =>
             {
                 op.EnableDetailedErrors = true;
-            }).AddAzureSignalR(signalRConfig);
+            }).AddAzureSignalR(options =>
+            {
+                options.ConnectionString = signalRConfig;
+                options.ConnectionCount = 10;
+            });
         }
     }
 }
