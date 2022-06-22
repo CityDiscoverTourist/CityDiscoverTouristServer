@@ -60,7 +60,7 @@ try
     builder.Services.SetupRepositories();
     builder.Services.SetupHelper();
     builder.Services.SetupServices();
-    builder.Services.SetupThirdParty(builder.Configuration);
+    builder.Services.SetupThirdParty(builder.Configuration, env);
     builder.Services.SetupSwagger(builder.Configuration);
     builder.Services.SetUpCache(builder.Configuration);
     builder.Services.SetUpHealthCheck(builder.Configuration);

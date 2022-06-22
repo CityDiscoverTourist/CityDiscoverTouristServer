@@ -3,6 +3,7 @@ using CityDiscoverTourist.Business.Helper.EmailHelper;
 using CityDiscoverTourist.Business.IServices;
 using CityDiscoverTourist.Business.IServices.Services;
 using CityDiscoverTourist.Business.Settings;
+using Newtonsoft.Json;
 
 namespace CityDiscoverTourist.API.Config;
 
@@ -14,9 +15,25 @@ public static class ThirdPartyConfig
     /// </summary>
     /// <param name="services"></param>
     /// <param name="configuration"></param>
-    public static void SetupThirdParty(this IServiceCollection services, IConfiguration configuration)
+    public static void SetupThirdParty(this IServiceCollection services, IConfiguration configuration, string envName)
     {
-        var emailConfig = configuration.GetSection("EmailConfiguration").Get<EmailConfiguration>();
+        if (envName == "Production")
+        {
+            var notifyConfig = configuration.GetSection("FcmNotification").Value;
+            var notify = new NotificationSetting
+            {
+                SenderId = notifyConfig.Split(',')[0],
+                ServerKey = notifyConfig.Split(',')[1]
+            };
+            services.AddSingleton(notify);
+        }
+        else
+        {
+            var notifyConfig = configuration.GetSection("FcmNotification").Get<NotificationSetting>() ?? new NotificationSetting();
+            services.AddSingleton(notifyConfig);
+        }
+
+        var emailConfig = configuration.GetSection("EmailConfiguration").Get<EmailConfiguration>() ?? new EmailConfiguration();
         services.AddSingleton(emailConfig);
         services.AddScoped<IEmailSender, EmailSender>();
 
@@ -27,7 +44,6 @@ public static class ThirdPartyConfig
             new BlobServiceClient(configuration.GetSection("AzureStorage:ConnectionString").Value));
         services.AddSingleton<IBlobService, BlobService>();
 
-        var notifyConfig = configuration.GetSection("FcmNotification").Get<NotificationSetting>() ?? new NotificationSetting();
-        services.AddSingleton(notifyConfig);
+
     }
 }
