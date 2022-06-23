@@ -17,8 +17,8 @@ namespace CityDiscoverTourist.Business.IServices.Services;
 
 public class CustomerTaskService : BaseService, ICustomerTaskService
 {
-    private const int PointWhenHitSuggestion = 150;
-    private const int PointWhenWrongAnswer = 100;
+    private const int PointWhenHitSuggestion = 75;
+    private const int PointWhenWrongAnswer = 50;
     private const float DistanceThreshold = 500;
     private static  GoongApiSetting? _googleApiSettings;
     private readonly ICustomerAnswerService _customerAnswerService;
@@ -29,14 +29,14 @@ public class CustomerTaskService : BaseService, ICustomerTaskService
     private readonly IQuestItemRepository _questItemRepo;
     private readonly ISortHelper<CustomerTask> _sortHelper;
     private readonly ISuggestionRepository _suggestionRepo;
-    private readonly IHubContext<CustomerTaskHub> _hubContext;
+    private readonly IHubContext<CustomerTaskHub, ICustomerTaskHub> _hubContext;
 
 
     public CustomerTaskService(ICustomerTaskRepository customerTaskRepository, IMapper mapper,
         ISortHelper<CustomerTask> sortHelper, ICustomerQuestRepository customerQuestRepo,
         IQuestItemRepository questItemRepo, GoongApiSetting? googleApiSettings,
         ICustomerAnswerService customerAnswerService, ILocationRepository locationRepo,
-        ISuggestionRepository suggestionRepo, IHubContext<CustomerTaskHub> hubContext)
+        ISuggestionRepository suggestionRepo, IHubContext<CustomerTaskHub, ICustomerTaskHub> hubContext)
     {
         _customerTaskRepo = customerTaskRepository;
         _mapper = mapper;
@@ -50,7 +50,7 @@ public class CustomerTaskService : BaseService, ICustomerTaskService
         _hubContext = hubContext;
     }
 
-    public async Task<PageList<CustomerTaskResponseModel>> GetAll(CustomerTaskParams @params)
+    public Task<PageList<CustomerTaskResponseModel>> GetAll(CustomerTaskParams @params)
     {
         var listAll = _customerTaskRepo.GetAll();
 
@@ -58,7 +58,7 @@ public class CustomerTaskService : BaseService, ICustomerTaskService
 
         var sortedQuests = _sortHelper.ApplySort(listAll, @params.OrderBy);
         var mappedData = _mapper.Map<IEnumerable<CustomerTaskResponseModel>>(sortedQuests);
-        return PageList<CustomerTaskResponseModel>.ToPageList(mappedData, @params.PageNumber, @params.PageSize);
+        return Task.FromResult(PageList<CustomerTaskResponseModel>.ToPageList(mappedData, @params.PageNumber, @params.PageSize));
     }
 
     public async Task<CustomerTaskResponseModel> Get(int id)
@@ -78,7 +78,7 @@ public class CustomerTaskService : BaseService, ICustomerTaskService
         entity.QuestItemId = GetFirstQuestItemIdOfQuest(questId);
 
         entity = await _customerTaskRepo.Add(entity);
-        await _hubContext.Clients.All.SendAsync("AddCustomerTask", _mapper.Map<CustomerTaskResponseModel>(entity));
+        await _hubContext.Clients.All.AddCustomerTask(_mapper.Map<CustomerTaskResponseModel>(entity));
         return _mapper.Map<CustomerTaskResponseModel>(entity);
     }
 
@@ -113,6 +113,7 @@ public class CustomerTaskService : BaseService, ICustomerTaskService
                 Status = "Progress"
             };
             await _customerTaskRepo.Add(_mapper.Map<CustomerTask>(customerTask));
+            await _hubContext.Clients.All.CustomerStartNextQuestItem(_mapper.Map<CustomerTaskResponseModel>(customerTask));
         }
 
         return nextQuestItemId == 0 ? 0 : nextQuestItemId;
@@ -166,14 +167,8 @@ public class CustomerTaskService : BaseService, ICustomerTaskService
         if (!correctAnswer.RightAnswer!.ToLower().Equals(customerReply.ToLower()))
         {
             // count number of customer answer wrong
-            // throw when it >= 3
-            // show the suggestion
-            // not decrease point
-            // code here:
-
             // if count number of customer answer wrong >= 5
             // show right answer move to next quest item
-            // code here:
             if (customerTask.CountWrongAnswer >= 5)
                 throw new AppException("You have already hit 5 wrong answers, We will show the right answer");
 
@@ -181,6 +176,9 @@ public class CustomerTaskService : BaseService, ICustomerTaskService
             customerTask.CountWrongAnswer++;
             customerTask = await _customerTaskRepo.UpdateFields(customerTask, r => r.CurrentPoint,
                 r => r.CountWrongAnswer);
+
+            await _hubContext.Clients.All.UpdateCustomerTask(customerTask);
+
             isCustomerReplyCorrect = false;
         }
         else
@@ -189,6 +187,8 @@ public class CustomerTaskService : BaseService, ICustomerTaskService
             customerTask.Status = "Finished";
             customerTask.IsFinished = true;
             await _customerTaskRepo.UpdateFields(customerTask, r => r.Status!, r => r.IsFinished);
+
+            await _hubContext.Clients.All.UpdateCustomerTask(customerTask);
         }
 
         //save customer answer for each time customer answer wrong/true
@@ -251,13 +251,7 @@ public class CustomerTaskService : BaseService, ICustomerTaskService
         return distance < DistanceThreshold;
     }
 
-    private static void Search(ref IQueryable<CustomerTask> entities, CustomerTaskParams param)
-    {
-        if (!entities.Any()) return;
 
-        if (param.Status != null)
-            entities = entities.Where(x => x.Status == param.Status);
-    }
 
     #region MyRegion
 
@@ -269,6 +263,14 @@ public class CustomerTaskService : BaseService, ICustomerTaskService
 
         nextQuestItem = questItems[i + 1];
         return NextQuestItem(nextQuestItem, questItems, i + 1);
+    }
+
+    private static void Search(ref IQueryable<CustomerTask> entities, CustomerTaskParams param)
+    {
+        if (!entities.Any()) return;
+
+        if (param.Status != null)
+            entities = entities.Where(x => x.Status == param.Status);
     }
 
     private static float CalculateDistance(string latLongFromLocation, string latLongFromUserDevice)
@@ -308,7 +310,8 @@ public class CustomerTaskService : BaseService, ICustomerTaskService
             Note = note.ToString(),
             CustomerReply = customerReply
         };
-        await _customerAnswerService.CreateAsync(customerAnswer);
+        var customerAnswerResponse = await _customerAnswerService.CreateAsync(customerAnswer);
+        await _hubContext.Clients.All.CustomerAnswer(customerAnswerResponse);
     }
 
     #endregion
