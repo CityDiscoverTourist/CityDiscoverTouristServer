@@ -138,13 +138,15 @@ public class CustomerQuestService : BaseService, ICustomerQuestService
 
     private static void Search(ref IQueryable<CustomerQuest> entities, CustomerQuestParams param)
     {
-        var customerId = _userManager!.FindByEmailAsync(param.CustomerEmail).Result.Id;
         if (!entities.Any()) return;
 
         if (param.QuestId != 0)
             entities = entities.Where(x => x.QuestId == param.QuestId);
         if (param.CustomerEmail != null)
+        {
+            var customerId = _userManager!.FindByEmailAsync(param.CustomerEmail).Result.Id;
             entities = entities.Where(x => x.CustomerId == customerId);
+        }
     }
 
     private int CountQuestItemInQuest(int questId)
