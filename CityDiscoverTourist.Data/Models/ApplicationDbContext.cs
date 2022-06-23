@@ -32,4 +32,6 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     public DbSet<QuestOwner> QuestOwners { get; set; }
     public DbSet<Transaction> Transactions { get; set; }
     public DbSet<Wallet> Wallets { get; set; }
+    public DbSet<QuestReward> QuestRewards { get; set; }
+    public DbSet<UserSubscribed> UserSubscribeds { get; set; }
 }

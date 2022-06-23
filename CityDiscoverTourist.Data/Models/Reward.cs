@@ -12,8 +12,8 @@ public class Reward: BaseEntity
     public ApplicationUser? Customer { get; set; }
     public string? CustomerId { get; set; }
 
-    public Quest? Quest { get; set; }
-    public int QuestId { get; set; }
+    public QuestReward? QuestReward { get; set; }
+    public int QuestRewardId { get; set; }
 
     public string? Status { get; set; }
 }

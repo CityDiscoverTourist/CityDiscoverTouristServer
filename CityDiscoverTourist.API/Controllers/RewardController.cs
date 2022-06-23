@@ -9,6 +9,9 @@ using Newtonsoft.Json;
 
 namespace CityDiscoverTourist.API.Controllers;
 
+/// <summary>
+///
+/// </summary>
 [Route("api/v{version:apiVersion}/[controller]s")]
 [ApiVersion("1.0")]
 [ApiController]
@@ -16,11 +19,20 @@ public class RewardController : ControllerBase
 {
     private readonly IRewardService _rewardService;
 
+    /// <summary>
+    ///
+    /// </summary>
+    /// <param name="taskService"></param>
     public RewardController(IRewardService taskService)
     {
         _rewardService = taskService;
     }
 
+    /// <summary>
+    ///
+    /// </summary>
+    /// <param name="param"></param>
+    /// <returns></returns>
     [HttpGet]
     //[Cached(600)]
     public ApiResponse<PageList<RewardResponseModel>> GetAll([FromQuery] RewardParams param)
@@ -41,6 +53,11 @@ public class RewardController : ControllerBase
         return ApiResponse<List<RewardResponseModel>>.Success(entity, metadata);
     }
 
+    /// <summary>
+    ///
+    /// </summary>
+    /// <param name="id"></param>
+    /// <returns></returns>
     [HttpGet("{id:int}")]
     //[Cached(600)]
     public async Task<ApiResponse<RewardResponseModel>> Get(int id)
@@ -50,6 +67,11 @@ public class RewardController : ControllerBase
         return ApiResponse<Task>.Ok(entity);
     }
 
+    /// <summary>
+    ///
+    /// </summary>
+    /// <param name="data"></param>
+    /// <returns></returns>
     [HttpPost]
     public async Task<ApiResponse<RewardResponseModel>> Post(RewardRequestModel data)
     {
@@ -57,6 +79,11 @@ public class RewardController : ControllerBase
         return ApiResponse<Task>.Created(entity);
     }
 
+    /// <summary>
+    ///
+    /// </summary>
+    /// <param name="data"></param>
+    /// <returns></returns>
     [HttpPut]
     public async Task<ApiResponse<RewardResponseModel>> Put(RewardRequestModel data)
     {
@@ -64,6 +91,11 @@ public class RewardController : ControllerBase
         return ApiResponse<Task>.Created(entity);
     }
 
+    /// <summary>
+    ///
+    /// </summary>
+    /// <param name="id"></param>
+    /// <returns></returns>
     [HttpDelete("{id:int}")]
     public async Task<ActionResult<ApiResponse<RewardResponseModel>>> Delete(int id)
     {

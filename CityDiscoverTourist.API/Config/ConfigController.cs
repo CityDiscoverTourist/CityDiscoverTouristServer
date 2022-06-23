@@ -51,6 +51,7 @@ public static class ConfigController
         services.AddScoped<ICustomerService, CustomerService>();
         services.AddScoped<IBlobService, BlobService>();
         services.AddScoped<INotificationService, NotificationService>();
+        services.AddScoped<IUserSubscribedService, UserSubscribedService>();
     }
 
     /// <summary>
@@ -110,6 +111,7 @@ public static class ConfigController
         services.AddScoped<IWalletRepository, WalletRepository>();
         services.AddScoped<ITransactionRepository, TransactionRepository>();
         services.AddScoped<IOwnerPaymentRepository, OwnerPaymentRepository>();
+        services.AddScoped<IUserSubscribedRepository, UserSubscribedRepository>();
     }
 
     /// <summary>

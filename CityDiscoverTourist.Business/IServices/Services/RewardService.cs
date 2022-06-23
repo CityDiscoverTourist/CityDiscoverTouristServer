@@ -64,7 +64,7 @@ public class RewardService : BaseService, IRewardService
     {
         if (!entities.Any() || string.IsNullOrWhiteSpace(param.Name) && !param.ExpiredDate.HasValue) return;
 
-        if (param.Name != null) entities = entities.Where(x => x.Name.Equals(param.Name));
+        if (param.Name != null) entities = entities.Where(x => x.Name!.Equals(param.Name));
         if (param.ExpiredDate != null) entities = entities.Where(x => x.ExpiredDate >= param.ExpiredDate);
         if (param.ReceivedDate != null) entities = entities.Where(x => x.ReceivedDate >= param.ReceivedDate);
     }
