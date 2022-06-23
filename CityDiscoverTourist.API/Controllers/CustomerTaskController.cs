@@ -53,6 +53,30 @@ public class CustomerTaskController : ControllerBase
     }
 
     /// <summary>
+    /// get customer task by customer quest id for admin
+    /// </summary>
+    /// <param name="param"></param>
+    /// <param name="customerQuestId"></param>
+    /// <returns></returns>
+    [HttpGet("get-by-customer-quest-id/{customerQuestId:int}")]
+    public ApiResponse<PageList<CustomerTaskResponseModel>> GetByCustomerQuestId(int customerQuestId, [FromQuery] CustomerTaskParams param)
+    {
+        var entity = _customerTaskService.GetByCustomerQuestId(customerQuestId, param).Result;
+
+        var metadata = new
+        {
+            entity.TotalCount,
+            entity.TotalPages,
+            entity.PageSize,
+            entity.CurrentPage,
+            entity.HasNext,
+            entity.HasPrevious
+        };
+        Response.Headers.Add("X-Pagination", JsonConvert.SerializeObject(metadata));
+        return ApiResponse<List<CustomerTask>>.Success(entity, metadata);
+    }
+
+    /// <summary>
     ///     get customer task by id
     /// </summary>
     /// <param name="id"></param>
@@ -127,7 +151,7 @@ public class CustomerTaskController : ControllerBase
     }
 
     /// <summary>
-    ///     if customer correct answer then move to next quest item
+    ///     if customer correct or they skip the answer then move to next quest item
     /// </summary>
     /// <param name="questId"></param>
     /// <param name="customerQuestId"></param>

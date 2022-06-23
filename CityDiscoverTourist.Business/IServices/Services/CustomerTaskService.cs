@@ -61,6 +61,15 @@ public class CustomerTaskService : BaseService, ICustomerTaskService
         return Task.FromResult(PageList<CustomerTaskResponseModel>.ToPageList(mappedData, @params.PageNumber, @params.PageSize));
     }
 
+    public Task<PageList<CustomerTaskResponseModel>> GetByCustomerQuestId(int customerQuestId, CustomerTaskParams @params)
+    {
+        var listAll = _customerTaskRepo.GetByCondition(x => x.CustomerQuestId == customerQuestId);
+
+        var sortedQuests = _sortHelper.ApplySort(listAll, @params.OrderBy);
+        var mappedData = _mapper.Map<IEnumerable<CustomerTaskResponseModel>>(sortedQuests);
+        return Task.FromResult(PageList<CustomerTaskResponseModel>.ToPageList(mappedData, @params.PageNumber, @params.PageSize));
+    }
+
     public async Task<CustomerTaskResponseModel> Get(int id)
     {
         var entity = await _customerTaskRepo.Get(id);
@@ -86,8 +95,7 @@ public class CustomerTaskService : BaseService, ICustomerTaskService
     {
         var nextQuestItemId = 0;
         // get last quest item customer has done
-        var lastQuestItemCustomerFinished = _customerTaskRepo.GetAll()
-            .Where(x => x.CustomerQuestId == customerQuestId && x.IsFinished == true).AsEnumerable().LastOrDefault();
+        var lastQuestItemCustomerFinished = LastQuestItemCustomerFinished(customerQuestId);
 
         var questItems = _questItemRepo.GetByCondition(x => x.QuestId == questId).ToList();
 
@@ -263,6 +271,13 @@ public class CustomerTaskService : BaseService, ICustomerTaskService
 
         nextQuestItem = questItems[i + 1];
         return NextQuestItem(nextQuestItem, questItems, i + 1);
+    }
+
+    private CustomerTask? LastQuestItemCustomerFinished(int customerQuestId)
+    {
+        var lastQuestItemCustomerFinished = _customerTaskRepo.GetAll()
+            .Where(x => x.CustomerQuestId == customerQuestId && x.IsFinished == true).AsEnumerable().LastOrDefault();
+        return lastQuestItemCustomerFinished;
     }
 
     private static void Search(ref IQueryable<CustomerTask> entities, CustomerTaskParams param)

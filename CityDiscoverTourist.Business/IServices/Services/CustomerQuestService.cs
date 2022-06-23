@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Globalization;
 using AutoMapper;
 using CityDiscoverTourist.Business.Data.RequestModel;
@@ -16,16 +15,16 @@ namespace CityDiscoverTourist.Business.IServices.Services;
 public class CustomerQuestService : BaseService, ICustomerQuestService
 {
     private const int BaseMultiplier = 300;
+    private static  UserManager<ApplicationUser>? _userManager;
     private readonly ICustomerQuestRepository _customerQuestRepository;
     private readonly ICustomerTaskService _customerTaskService;
     private readonly IMapper _mapper;
     private readonly ISortHelper<CustomerQuest> _sortHelper;
     private readonly IQuestItemRepository _taskRepository;
-    private readonly UserManager<ApplicationUser> _userManager;
 
     public CustomerQuestService(ICustomerQuestRepository customerQuestRepository, IMapper mapper,
         IQuestItemRepository taskRepository, ISortHelper<CustomerQuest> sortHelper,
-        ICustomerTaskService customerTaskService, UserManager<ApplicationUser> userManager)
+        ICustomerTaskService customerTaskService, UserManager<ApplicationUser>? userManager)
     {
         _customerQuestRepository = customerQuestRepository;
         _mapper = mapper;
@@ -54,12 +53,12 @@ public class CustomerQuestService : BaseService, ICustomerQuestService
         return _mapper.Map<CustomerQuestResponseModel>(entity);
     }
 
-    public async Task<List<CustomerQuestResponseModel>> GetByCustomerId(string id)
+    public  Task<List<CustomerQuestResponseModel>> GetByCustomerId(string id)
     {
         var entity = _customerQuestRepository.GetByCondition(x => x.CustomerId == id).ToList();
         CheckDataNotNull("CustomerQuest", entity);
         var mappedData = _mapper.Map<IEnumerable<CustomerQuestResponseModel>>(entity);
-        return mappedData.ToList();
+        return Task.FromResult(mappedData.ToList());
     }
 
     public async Task<CustomerQuestResponseModel> CreateAsync(CustomerQuestRequestModel request)
@@ -98,24 +97,24 @@ public class CustomerQuestService : BaseService, ICustomerQuestService
         return _mapper.Map<CustomerQuestResponseModel>(entity);
     }
 
-    public async Task<PageList<CommentResponseModel>> ShowComments(int questId, CustomerQuestParams param)
+    public Task<PageList<CommentResponseModel>> ShowComments(int questId, CustomerQuestParams param)
     {
-        var comments = _customerQuestRepository.GetAll()
-            .Where(x => x.QuestId == questId && x.IsFinished == true).OrderByDescending(x => x.CreatedDate);
+        var comments = _customerQuestRepository.GetAll().Where(x => x.QuestId == questId && x.IsFinished == true)
+            .OrderByDescending(x => x.CreatedDate);
 
         var mappedData = _mapper.Map<IEnumerable<CommentResponseModel>>(comments);
 
         var commentResponseModels = mappedData.ToList();
         foreach (var comment in commentResponseModels)
         {
-            var customerName = _userManager.FindByIdAsync(comment.CustomerId).Result.UserName;
+            var customerName = _userManager!.FindByIdAsync(comment.CustomerId).Result.UserName;
             var imagePath = _userManager.FindByIdAsync(comment.CustomerId).Result.ImagePath;
 
             comment.ImagePath = imagePath;
             comment.Name = customerName;
         }
 
-        return PageList<CommentResponseModel>.ToPageList(commentResponseModels, param.PageNumber, param.PageSize);
+        return Task.FromResult(PageList<CommentResponseModel>.ToPageList(commentResponseModels, param.PageNumber, param.PageSize));
     }
 
     public Task<List<CommentResponseModel>> UpdateComment(int questId, string customerId, CommentRequestModel request)
@@ -139,10 +138,13 @@ public class CustomerQuestService : BaseService, ICustomerQuestService
 
     private static void Search(ref IQueryable<CustomerQuest> entities, CustomerQuestParams param)
     {
+        var customerId = _userManager!.FindByEmailAsync(param.CustomerEmail).Result.Id;
         if (!entities.Any()) return;
 
         if (param.QuestId != 0)
             entities = entities.Where(x => x.QuestId == param.QuestId);
+        if (param.CustomerEmail != null)
+            entities = entities.Where(x => x.CustomerId == customerId);
     }
 
     private int CountQuestItemInQuest(int questId)
