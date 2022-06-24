@@ -128,6 +128,10 @@ public class QuestService : BaseService, IQuestService
         if (existValue != null) throw new AppException("Quest with this name already exists");
 
         var entity = _mapper.Map<Quest>(request);
+
+        /*entity.Title = JsonHelper.JsonFormat(request.Title);
+        entity.Description = JsonHelper.JsonFormat(request.Description);*/
+
         entity = await _questRepository.Add(entity);
         //return string img from blob, mapped to Quest model and store in db
         var imgPath = await _blobService.UploadQuestImgAndReturnImgPathAsync(request.Image, entity.Id, "quest");
@@ -149,6 +153,9 @@ public class QuestService : BaseService, IQuestService
             entity = await _questRepository.NoneUpdateFields(entity, r => r.CreatedDate!, r => r.ImagePath!);
             return _mapper.Map<QuestResponseModel>(entity);
         }
+
+        /*entity.Title = JsonHelper.JsonFormat(request.Title);
+        entity.Description = JsonHelper.JsonFormat(request.Description);*/
 
         entity = await _questRepository.NoneUpdateFields(entity, r => r.CreatedDate!);
 

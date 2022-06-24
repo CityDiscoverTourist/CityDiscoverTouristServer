@@ -154,6 +154,8 @@ public class CustomerTaskService : BaseService, ICustomerTaskService
 
         customerTask = await _customerTaskRepo.UpdateFields(customerTask, r => r.CurrentPoint, r => r.CountSuggestion);
 
+        await _hubContext.Clients.All.UpdateCustomerTask(customerTask);
+
         return _mapper.Map<CustomerTaskResponseModel>(customerTask);
     }
 

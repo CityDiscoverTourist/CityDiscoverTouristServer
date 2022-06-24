@@ -89,6 +89,11 @@ public class QuestTypeService : BaseService, IQuestTypeService
 
         var imgPath = await _blobService.UploadQuestImgAndReturnImgPathAsync(request.Image, entity.Id, "quest-type");
         entity.ImagePath = imgPath;
+
+        /*
+        entity.Name = JsonHelper.JsonFormat(request.Name);
+        */
+
         await _questTypeRepository.UpdateFields(entity, r => r.ImagePath!);
 
         return _mapper.Map<QuestTypeResponseModel>(entity);
