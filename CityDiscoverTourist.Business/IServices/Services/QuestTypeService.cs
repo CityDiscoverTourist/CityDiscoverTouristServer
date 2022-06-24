@@ -75,6 +75,8 @@ public class QuestTypeService : BaseService, IQuestTypeService
             item.Description = ConvertLanguage(language, item.Description!);
         }
 
+        entity.Name = ConvertLanguage(language, entity.Name!);
+
         return _mapper.Map<QuestTypeResponseModel>(entity);
     }
 
