@@ -29,22 +29,51 @@ public class QuestTypeService : BaseService, IQuestTypeService
         _questRepository = questRepository;
     }
 
-    public PageList<QuestTypeResponseModel> GetAll(QuestTypeParams @params)
+    public PageList<QuestTypeResponseModel> GetAll(QuestTypeParams @params, Language language)
     {
-        var listAll = _questTypeRepository.GetAll().Include(x => x.Quests).AsNoTracking();
+        var listAll = _questTypeRepository.GetAll().AsNoTracking();
 
         Search(ref listAll, @params);
 
         var sortedQuests = _sortHelper.ApplySort(listAll, @params.OrderBy);
-        var mappedData = _mapper.Map<IEnumerable<QuestTypeResponseModel>>(sortedQuests);
+
+        var listQuestTypeIds = sortedQuests.Select(x => x.Id).ToList();
+        var listQuestType = sortedQuests.ToList();
+
+        for (var i = 0; i < listQuestTypeIds.Count; i++)
+        {
+            var questType = listQuestType[i];
+            var quests = _questRepository.GetAll()
+                .AsNoTracking()
+                .Where(x => x.QuestTypeId == questType.Id)
+                .ToList();
+            // convert quest item between vi and en
+            foreach (var questItem in quests)
+            {
+                questItem.Title = ConvertLanguage(language, questItem.Title!);
+                questItem.Description = ConvertLanguage(language, questItem.Description!);
+            }
+            listQuestType[i].Quests = quests;
+        }
+
+        var mappedData = _mapper.Map<IEnumerable<QuestTypeResponseModel>>(listQuestType);
         return PageList<QuestTypeResponseModel>.ToPageList(mappedData, @params.PageNumber, @params.PageSize);
     }
 
-    public async Task<QuestTypeResponseModel> Get(int id)
+    public async Task<QuestTypeResponseModel> Get(int id, Language language)
     {
         var entity = await _questTypeRepository.GetByCondition(x => x.Id == id).Include(x => x.Quests)
             .FirstOrDefaultAsync();
         CheckDataNotNull("QuestType", entity!);
+
+        var quests = entity!.Quests!.ToList();
+        // convert quest item between vi and en
+        foreach (var item in quests)
+        {
+            item.Title = ConvertLanguage(language, item.Title!);
+            item.Description = ConvertLanguage(language, item.Description!);
+        }
+
         return _mapper.Map<QuestTypeResponseModel>(entity);
     }
 

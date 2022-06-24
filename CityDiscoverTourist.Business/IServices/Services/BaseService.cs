@@ -1,3 +1,6 @@
+using CityDiscoverTourist.Business.Enums;
+using Newtonsoft.Json.Linq;
+
 namespace CityDiscoverTourist.Business.IServices.Services;
 
 public class BaseService
@@ -12,5 +15,10 @@ public class BaseService
             case null:
                 throw new KeyNotFoundException($"{name} must be not null");
         }
+    }
+
+    protected static string ConvertLanguage(Language language, string text)
+    {
+        return JObject.Parse(text)[language.ToString()]!.ToString();
     }
 }

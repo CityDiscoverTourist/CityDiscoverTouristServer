@@ -24,20 +24,32 @@ public class QuestItemService : BaseService, IQuestItemService
         _sortHelper = sortHelper;
     }
 
-    public PageList<QuestItemResponseModel> GetAll(TaskParams @params)
+    public PageList<QuestItemResponseModel> GetAll(TaskParams @params, Language language)
     {
         var listAll = _taskRepository.GetAll();
         Search(ref listAll, @params);
         var sortedQuests = _sortHelper.ApplySort(listAll, @params.OrderBy);
-        var mappedData = _mapper.Map<IEnumerable<QuestItemResponseModel>>(sortedQuests);
+        var listQuestItem = sortedQuests.ToList();
+
+        foreach (var item in listQuestItem)
+        {
+            item.Content = ConvertLanguage(language, item.Content!);
+            item.Description = ConvertLanguage(language, item.Description!);
+        }
+
+        var mappedData = _mapper.Map<IEnumerable<QuestItemResponseModel>>(listQuestItem);
 
         return PageList<QuestItemResponseModel>.ToPageList(mappedData, @params.PageNumber, @params.PageSize);
     }
 
-    public async Task<QuestItemResponseModel> Get(int id)
+    public async Task<QuestItemResponseModel> Get(int id, Language language)
     {
         var entity = await _taskRepository.Get(id);
         CheckDataNotNull("QuestItem", entity);
+
+        entity.Content = ConvertLanguage(language, entity.Content!);
+        entity.Description = ConvertLanguage(language, entity.Description!);
+
         return _mapper.Map<QuestItemResponseModel>(entity);
     }
 
@@ -104,11 +116,19 @@ public class QuestItemService : BaseService, IQuestItemService
         return _mapper.Map<QuestItemResponseModel>(entity);
     }
 
-    public Task<QuestItemResponseModel> GetByQuestId(int id)
+    public IEnumerable<QuestItemResponseModel> GetByQuestId( int id, Language language)
     {
         var entity = _taskRepository.GetByCondition(x => x.QuestId == id).ToList();
         CheckDataNotNull("QuestItem", entity);
-        return Task.FromResult(_mapper.Map<QuestItemResponseModel>(entity));
+
+        foreach (var item in entity)
+        {
+            item.Content = ConvertLanguage(language, item.Content!);
+            item.Description = ConvertLanguage(language, item.Description!);
+        }
+        var mappedData = _mapper.Map<IEnumerable<QuestItemResponseModel>>(entity);
+
+        return mappedData;
     }
 
     private static void Search(ref IQueryable<QuestItem> entities, TaskParams param)
