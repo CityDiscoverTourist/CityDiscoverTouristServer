@@ -147,6 +147,9 @@ public class CustomerQuestService : BaseService, ICustomerQuestService
             var customerId = _userManager!.FindByEmailAsync(param.CustomerEmail).Result.Id;
             entities = entities.Where(x => x.CustomerId == customerId);
         }
+        if(param.IsFinished != null)
+            entities = entities.Where(x => x.IsFinished == param.IsFinished);
+
     }
 
     private int CountQuestItemInQuest(int questId)
