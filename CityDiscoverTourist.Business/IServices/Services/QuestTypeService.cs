@@ -54,6 +54,7 @@ public class QuestTypeService : BaseService, IQuestTypeService
                 questItem.Description = ConvertLanguage(language, questItem.Description!);
             }
             listQuestType[i].Quests = quests;
+            listQuestType[i].Name = ConvertLanguage(language, questType.Name!);
         }
 
         var mappedData = _mapper.Map<IEnumerable<QuestTypeResponseModel>>(listQuestType);
