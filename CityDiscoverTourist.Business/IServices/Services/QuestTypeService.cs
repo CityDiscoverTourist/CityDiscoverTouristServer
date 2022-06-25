@@ -92,9 +92,7 @@ public class QuestTypeService : BaseService, IQuestTypeService
         var imgPath = await _blobService.UploadQuestImgAndReturnImgPathAsync(request.Image, entity.Id, "quest-type");
         entity.ImagePath = imgPath;
 
-        /*
         entity.Name = JsonHelper.JsonFormat(request.Name);
-        */
 
         await _questTypeRepository.UpdateFields(entity, r => r.ImagePath!);
 
@@ -115,6 +113,8 @@ public class QuestTypeService : BaseService, IQuestTypeService
             entity = await _questTypeRepository.NoneUpdateFields(entity, r => r.Id, r => r.ImagePath!);
             return _mapper.Map<QuestTypeResponseModel>(entity);
         }
+
+        entity.Name = JsonHelper.JsonFormat(request.Name);
 
         entity = await _questTypeRepository.NoneUpdateFields(entity, r => r.Id);
 

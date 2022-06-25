@@ -129,8 +129,8 @@ public class QuestService : BaseService, IQuestService
 
         var entity = _mapper.Map<Quest>(request);
 
-        /*entity.Title = JsonHelper.JsonFormat(request.Title);
-        entity.Description = JsonHelper.JsonFormat(request.Description);*/
+        entity.Title = JsonHelper.JsonFormat(request.Title);
+        entity.Description = JsonHelper.JsonFormat(request.Description);
 
         entity = await _questRepository.Add(entity);
         //return string img from blob, mapped to Quest model and store in db
@@ -154,8 +154,8 @@ public class QuestService : BaseService, IQuestService
             return _mapper.Map<QuestResponseModel>(entity);
         }
 
-        /*entity.Title = JsonHelper.JsonFormat(request.Title);
-        entity.Description = JsonHelper.JsonFormat(request.Description);*/
+        entity.Title = JsonHelper.JsonFormat(request.Title);
+        entity.Description = JsonHelper.JsonFormat(request.Description);
 
         entity = await _questRepository.NoneUpdateFields(entity, r => r.CreatedDate!);
 
@@ -206,5 +206,6 @@ public class QuestService : BaseService, IQuestService
         if (param.Description != null) entities = entities.Where(r => r.Description!.Contains(param.Description));
         if (param.Status != null) entities = entities.Where(r => r.Status!.Equals(param.Status));
         if (param.QuestTypeId != 0) entities = entities.Where(r => r.QuestTypeId.Equals(param.QuestTypeId));
+        if (param.AreaId != 0) entities = entities.Where(r => r.AreaId.Equals(param.AreaId));
     }
 }
