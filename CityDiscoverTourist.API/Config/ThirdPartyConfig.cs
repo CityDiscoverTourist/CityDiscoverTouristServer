@@ -40,6 +40,9 @@ public static class ThirdPartyConfig
         var googleConfig = configuration.GetSection("GoongApi").Get<GoongApiSetting>() ?? new GoongApiSetting();
         services.AddSingleton(googleConfig);
 
+        var momoConfig = configuration.GetSection("Momo").Get<MomoSetting>() ?? new MomoSetting();
+        services.AddSingleton(momoConfig);
+
         services.AddSingleton(_ =>
             new BlobServiceClient(configuration.GetSection("AzureStorage:ConnectionString").Value));
         services.AddSingleton<IBlobService, BlobService>();
