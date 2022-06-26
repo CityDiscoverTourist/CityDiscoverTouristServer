@@ -1,4 +1,6 @@
-﻿namespace CityDiscoverTourist.API.Response;
+﻿using Microsoft.AspNetCore.Mvc;
+
+namespace CityDiscoverTourist.API.Response;
 
 /// <summary>
 /// </summary>
@@ -23,6 +25,11 @@ public class ApiResponse<T>
         Data = data;
         Pagination = paging;
         Status = status;
+    }
+
+    public static ApiResponse<TData> Error<TData>(ProblemDetails message)
+    {
+        return new ApiResponse<TData>(message.Title, default, null, message.Status.ToString());
     }
 
     public string Message { get; }

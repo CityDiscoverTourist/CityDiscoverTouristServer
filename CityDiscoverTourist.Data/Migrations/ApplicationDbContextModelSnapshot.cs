@@ -52,7 +52,7 @@ namespace CityDiscoverTourist.Data.Migrations
 
                     b.HasIndex("CustomerId");
 
-                    b.ToTable("ActivityLogs");
+                    b.ToTable("ActivityLogs", (string)null);
                 });
 
             modelBuilder.Entity("CityDiscoverTourist.Data.Models.ApplicationUser", b =>
@@ -144,7 +144,7 @@ namespace CityDiscoverTourist.Data.Migrations
 
                     b.HasIndex("CityId");
 
-                    b.ToTable("Areas");
+                    b.ToTable("Areas", (string)null);
                 });
 
             modelBuilder.Entity("CityDiscoverTourist.Data.Models.City", b =>
@@ -163,7 +163,7 @@ namespace CityDiscoverTourist.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Cities");
+                    b.ToTable("Cities", (string)null);
                 });
 
             modelBuilder.Entity("CityDiscoverTourist.Data.Models.Commission", b =>
@@ -196,7 +196,7 @@ namespace CityDiscoverTourist.Data.Migrations
 
                     b.HasIndex("QuestTypeId");
 
-                    b.ToTable("Commissions");
+                    b.ToTable("Commissions", (string)null);
                 });
 
             modelBuilder.Entity("CityDiscoverTourist.Data.Models.Contact", b =>
@@ -224,7 +224,7 @@ namespace CityDiscoverTourist.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Contacts");
+                    b.ToTable("Contacts", (string)null);
                 });
 
             modelBuilder.Entity("CityDiscoverTourist.Data.Models.CustomerAnswer", b =>
@@ -256,7 +256,7 @@ namespace CityDiscoverTourist.Data.Migrations
 
                     b.HasIndex("QuestItemId");
 
-                    b.ToTable("CustomerAnswers");
+                    b.ToTable("CustomerAnswers", (string)null);
                 });
 
             modelBuilder.Entity("CityDiscoverTourist.Data.Models.CustomerQuest", b =>
@@ -300,7 +300,7 @@ namespace CityDiscoverTourist.Data.Migrations
 
                     b.HasIndex("QuestId");
 
-                    b.ToTable("CustomerQuests");
+                    b.ToTable("CustomerQuests", (string)null);
                 });
 
             modelBuilder.Entity("CityDiscoverTourist.Data.Models.CustomerTask", b =>
@@ -341,7 +341,7 @@ namespace CityDiscoverTourist.Data.Migrations
 
                     b.HasIndex("QuestItemId");
 
-                    b.ToTable("CustomerTasks");
+                    b.ToTable("CustomerTasks", (string)null);
                 });
 
             modelBuilder.Entity("CityDiscoverTourist.Data.Models.Location", b =>
@@ -382,7 +382,7 @@ namespace CityDiscoverTourist.Data.Migrations
 
                     b.HasIndex("LocationTypeId");
 
-                    b.ToTable("Locations");
+                    b.ToTable("Locations", (string)null);
                 });
 
             modelBuilder.Entity("CityDiscoverTourist.Data.Models.LocationType", b =>
@@ -401,7 +401,7 @@ namespace CityDiscoverTourist.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("LocationTypes");
+                    b.ToTable("LocationTypes", (string)null);
                 });
 
             modelBuilder.Entity("CityDiscoverTourist.Data.Models.Note", b =>
@@ -425,7 +425,7 @@ namespace CityDiscoverTourist.Data.Migrations
 
                     b.HasIndex("CustomerTaskId");
 
-                    b.ToTable("Notes");
+                    b.ToTable("Notes", (string)null);
                 });
 
             modelBuilder.Entity("CityDiscoverTourist.Data.Models.OwnerPayment", b =>
@@ -474,7 +474,7 @@ namespace CityDiscoverTourist.Data.Migrations
                     b.HasIndex("TransactionId")
                         .IsUnique();
 
-                    b.ToTable("OwnerPayments");
+                    b.ToTable("OwnerPayments", (string)null);
                 });
 
             modelBuilder.Entity("CityDiscoverTourist.Data.Models.OwnerPaymentPeriod", b =>
@@ -493,7 +493,7 @@ namespace CityDiscoverTourist.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("OwnerPaymentPeriods");
+                    b.ToTable("OwnerPaymentPeriods", (string)null);
                 });
 
             modelBuilder.Entity("CityDiscoverTourist.Data.Models.Payment", b =>
@@ -524,7 +524,7 @@ namespace CityDiscoverTourist.Data.Migrations
                     b.HasIndex("CustomerQuestId")
                         .IsUnique();
 
-                    b.ToTable("Payments");
+                    b.ToTable("Payments", (string)null);
                 });
 
             modelBuilder.Entity("CityDiscoverTourist.Data.Models.Quest", b =>
@@ -582,7 +582,7 @@ namespace CityDiscoverTourist.Data.Migrations
 
                     b.HasIndex("QuestTypeId");
 
-                    b.ToTable("Quests");
+                    b.ToTable("Quests", (string)null);
                 });
 
             modelBuilder.Entity("CityDiscoverTourist.Data.Models.QuestItem", b =>
@@ -642,7 +642,7 @@ namespace CityDiscoverTourist.Data.Migrations
 
                     b.HasIndex("QuestItemTypeId");
 
-                    b.ToTable("QuestItems");
+                    b.ToTable("QuestItems", (string)null);
                 });
 
             modelBuilder.Entity("CityDiscoverTourist.Data.Models.QuestItemType", b =>
@@ -661,7 +661,7 @@ namespace CityDiscoverTourist.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("QuestItemTypes");
+                    b.ToTable("QuestItemTypes", (string)null);
                 });
 
             modelBuilder.Entity("CityDiscoverTourist.Data.Models.QuestOwner", b =>
@@ -698,7 +698,7 @@ namespace CityDiscoverTourist.Data.Migrations
                     b.HasIndex("WalletId")
                         .IsUnique();
 
-                    b.ToTable("QuestOwners");
+                    b.ToTable("QuestOwners", (string)null);
                 });
 
             modelBuilder.Entity("CityDiscoverTourist.Data.Models.QuestReward", b =>
@@ -731,7 +731,7 @@ namespace CityDiscoverTourist.Data.Migrations
 
                     b.HasIndex("QuestId");
 
-                    b.ToTable("QuestRewards");
+                    b.ToTable("QuestRewards", (string)null);
                 });
 
             modelBuilder.Entity("CityDiscoverTourist.Data.Models.QuestType", b =>
@@ -759,7 +759,7 @@ namespace CityDiscoverTourist.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("QuestTypes");
+                    b.ToTable("QuestTypes", (string)null);
                 });
 
             modelBuilder.Entity("CityDiscoverTourist.Data.Models.Reward", b =>
@@ -799,7 +799,7 @@ namespace CityDiscoverTourist.Data.Migrations
 
                     b.HasIndex("QuestRewardId");
 
-                    b.ToTable("Rewards");
+                    b.ToTable("Rewards", (string)null);
                 });
 
             modelBuilder.Entity("CityDiscoverTourist.Data.Models.Suggestion", b =>
@@ -823,7 +823,7 @@ namespace CityDiscoverTourist.Data.Migrations
 
                     b.HasIndex("QuestItemId");
 
-                    b.ToTable("Suggestions");
+                    b.ToTable("Suggestions", (string)null);
                 });
 
             modelBuilder.Entity("CityDiscoverTourist.Data.Models.Transaction", b =>
@@ -853,7 +853,7 @@ namespace CityDiscoverTourist.Data.Migrations
 
                     b.HasIndex("WalletId");
 
-                    b.ToTable("Transactions");
+                    b.ToTable("Transactions", (string)null);
                 });
 
             modelBuilder.Entity("CityDiscoverTourist.Data.Models.UserSubscribed", b =>
@@ -875,7 +875,7 @@ namespace CityDiscoverTourist.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("UserSubscribeds");
+                    b.ToTable("UserSubscribeds", (string)null);
                 });
 
             modelBuilder.Entity("CityDiscoverTourist.Data.Models.Wallet", b =>
@@ -894,7 +894,7 @@ namespace CityDiscoverTourist.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Wallets");
+                    b.ToTable("Wallets", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>

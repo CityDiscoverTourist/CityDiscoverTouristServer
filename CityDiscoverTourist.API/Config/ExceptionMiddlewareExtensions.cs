@@ -1,3 +1,4 @@
+using CityDiscoverTourist.API.Response;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 
@@ -34,7 +35,7 @@ public static class ExceptionMiddlewareExtensions
                     };
                     pd.Extensions.Add("RequestId", context.TraceIdentifier);
                     pd.Extensions.Add("UserId", context.User.Identity!.Name ?? "Anonymous");
-                    await context.Response.WriteAsJsonAsync(pd, pd.GetType(), null, "application/problem+json");
+                    await context.Response.WriteAsJsonAsync(ApiResponse<ProblemDetails>.Error<ProblemDetails>(pd), pd.GetType(), null, "application/problem+json");
                 });
             });
     }
