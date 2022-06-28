@@ -1,3 +1,5 @@
+using CityDiscoverTourist.Data.Models;
+
 namespace CityDiscoverTourist.Business.Data.ResponseModel;
 
 public class PaymentResponseModel
@@ -8,5 +10,6 @@ public class PaymentResponseModel
     public double AmountTotal { get; set; }
     public string? Status { get; set; }
 
+    public CustomerQuestResponseModel CustomerQuest { get; set; }
     public int CustomerQuestId { get; set; }
 }

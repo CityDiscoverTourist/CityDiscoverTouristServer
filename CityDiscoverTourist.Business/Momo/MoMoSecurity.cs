@@ -5,7 +5,7 @@ namespace CityDiscoverTourist.Business.Momo;
 
 internal class MoMoSecurity
 {
-    private static RNGCryptoServiceProvider rngCsp = new ();
+    private static RNGCryptoServiceProvider _rngCsp = new ();
 
     public string getHash(string partnerCode, string merchantRefId, string amount, string paymentCode, string storeId,
         string storeName, string publicKeyXML)

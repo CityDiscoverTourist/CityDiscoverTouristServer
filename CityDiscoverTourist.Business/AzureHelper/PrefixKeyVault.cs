@@ -1,7 +1,7 @@
 using Microsoft.Azure.KeyVault.Models;
 using Microsoft.Extensions.Configuration.AzureKeyVault;
 
-namespace CityDiscoverTourist.API.AzureHelper;
+namespace CityDiscoverTourist.Business.AzureHelper;
 
 /// <summary>
 /// </summary>

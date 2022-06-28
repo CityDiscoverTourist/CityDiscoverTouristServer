@@ -45,9 +45,18 @@ public class PaymentController : ControllerBase
 
     [HttpGet("{id:int}")]
     //[Cached(600)]
-    public async Task<ApiResponse<PaymentRequestModel>> Get(int id)
+    public async Task<ApiResponse<PaymentResponseModel>> Get(int id)
     {
         var entity = await _paymentService.Get(id);
+
+        return ApiResponse<Payment>.Ok(entity);
+    }
+
+    [HttpGet("get-by-customer-id")]
+    //[Cached(600)]
+    public async Task<ApiResponse<List<PaymentResponseModel>>> GetByCustomerId(string customerId)
+    {
+        var entity = await _paymentService.GetByCustomerId(customerId);
 
         return ApiResponse<Payment>.Ok(entity);
     }
@@ -67,11 +76,10 @@ public class PaymentController : ControllerBase
     }
 
     [HttpPost("callback")]
-    public async Task<ActionResult> Callback(string partnerCode, string orderId, string resultCode)
+    public async Task<ActionResult> Callback()
     {
         var param = "";
 
-        //var result = objectUrl["a"];
         param = "https://" + HttpContext.Request.Host.Value + HttpContext.Request.Path.Value;
         var result = HttpContext.Request.QueryString.Value;
         var uri = new Uri(param + result);

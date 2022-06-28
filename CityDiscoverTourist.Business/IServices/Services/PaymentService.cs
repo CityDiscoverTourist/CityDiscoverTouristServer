@@ -11,6 +11,7 @@ using CityDiscoverTourist.Business.Momo;
 using CityDiscoverTourist.Business.Settings;
 using CityDiscoverTourist.Data.IRepositories;
 using CityDiscoverTourist.Data.Models;
+using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json.Linq;
 
 namespace CityDiscoverTourist.Business.IServices.Services;
@@ -32,7 +33,7 @@ public class PaymentService : BaseService, IPaymentService
 
     public PageList<PaymentResponseModel> GetAll(PaymentParams @params)
     {
-        var listAll = _paymentRepository.GetAll();
+        var listAll = _paymentRepository.GetAll().Include(x => x.CustomerQuest).AsNoTracking();
 
         Search(ref listAll, @params);
 
@@ -42,11 +43,19 @@ public class PaymentService : BaseService, IPaymentService
         return PageList<PaymentResponseModel>.ToPageList(mappedData, @params.PageNumber, @params.PageSize);
     }
 
-    public async Task<PaymentRequestModel> Get(int id)
+    public async Task<PaymentResponseModel> Get(int id)
     {
         var entity = await _paymentRepository.Get(id);
         CheckDataNotNull("Payment", entity);
-        return _mapper.Map<PaymentRequestModel>(entity);
+        return _mapper.Map<PaymentResponseModel>(entity);
+    }
+
+    public Task<List<PaymentResponseModel>> GetByCustomerId(string customerId)
+    {
+        var entity = _paymentRepository.GetAll().Include(x => x.CustomerQuest)
+            .Where(x => x.CustomerQuest.CustomerId == customerId).ToList();
+        CheckDataNotNull("Payment", entity);
+        return Task.FromResult(_mapper.Map<List<PaymentResponseModel>>(entity));
     }
 
     public async Task<string> CreateAsync(PaymentRequestModel request)
@@ -68,7 +77,7 @@ public class PaymentService : BaseService, IPaymentService
         var accessKey = _momoSettings.AccessKey;
         var secretKey = _momoSettings.SecretKey;
         var orderInfo = DateTime.Now.ToString("yyyyMMddHHmmss") + "-" + request.QuestName;
-        var redirectUrl = "https://www.citydiscovery.tech/";
+        var redirectUrl = "https://www.citydiscovery.tech/thank/";
         var ipnUrl = "https://localhost:7235/api/v1/payments/callback/";
         var requestType = "captureWallet";
 

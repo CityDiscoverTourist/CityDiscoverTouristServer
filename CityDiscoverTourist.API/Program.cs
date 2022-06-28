@@ -1,5 +1,5 @@
-using CityDiscoverTourist.API.AzureHelper;
 using CityDiscoverTourist.API.Config;
+using CityDiscoverTourist.Business.AzureHelper;
 using CityDiscoverTourist.Business.Data;
 using CityDiscoverTourist.Business.Exceptions;
 using CityDiscoverTourist.Business.HealthCheck;
