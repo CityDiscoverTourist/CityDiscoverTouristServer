@@ -11,15 +11,15 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
 
     protected override void OnModelCreating(ModelBuilder builder)
     {
-        /*builder.Entity<CustomerTask>().HasKey(c => new { c.QuestItemId, c.CustomerQuestId });
+        /*builder.Entity<CustomerAnswer>().HasKey(c => new { c.QuestItemId, c.CustomerTaskId });
 
-        builder.Entity<CustomerTask>().HasOne(x => x.QuestItem)
-            .WithMany(x => x.CustomerTasks)
+        builder.Entity<CustomerAnswer>().HasOne(x => x.QuestItem)
+            .WithMany(x => x.CustomerAnswers)
             .HasForeignKey(x => x.QuestItemId);
 
-        builder.Entity<CustomerTask>().HasOne(x => x.CustomerQuest)
-            .WithMany(x => x.CustomerTasks)
-            .HasForeignKey(x => x.CustomerQuestId);*/
+        builder.Entity<CustomerAnswer>().HasOne(x => x.CustomerTask)
+            .WithMany(x => x.CustomerAnswers)
+            .HasForeignKey(x => x.CustomerTaskId);*/
 
 
         /*
