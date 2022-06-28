@@ -9,5 +9,6 @@ public enum CommonStatus
     Error,
     Deleted,
     Inactive,
-    Active
+    Active,
+    Pending
 }
