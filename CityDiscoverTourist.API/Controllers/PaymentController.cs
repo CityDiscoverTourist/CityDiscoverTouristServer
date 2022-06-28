@@ -67,7 +67,7 @@ public class PaymentController : ControllerBase
     }
 
     [HttpPost("callback")]
-    public async Task<ActionResult> Callback(string partnerCode, string orderId, string resultCode, string message)
+    public async Task<ActionResult> Callback(string partnerCode, string orderId, string resultCode)
     {
         var param = "";
 
@@ -75,7 +75,7 @@ public class PaymentController : ControllerBase
         param = "https://" + HttpContext.Request.Host.Value + HttpContext.Request.Path.Value;
         var result = HttpContext.Request.QueryString.Value;
         var uri = new Uri(param + result);
-        var query = HttpUtility.ParseQueryString(uri.Query).Get("partnerCode");
+        var query = HttpUtility.ParseQueryString(uri.Query).Get("resultCode");
         return Ok(new { query, uri });
     }
 

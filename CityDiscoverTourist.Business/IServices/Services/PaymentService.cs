@@ -1,8 +1,10 @@
+using System.Globalization;
 using System.Web;
 using AutoMapper;
 using Azure.Core;
 using CityDiscoverTourist.Business.Data.RequestModel;
 using CityDiscoverTourist.Business.Data.ResponseModel;
+using CityDiscoverTourist.Business.Enums;
 using CityDiscoverTourist.Business.Helper;
 using CityDiscoverTourist.Business.Helper.Params;
 using CityDiscoverTourist.Business.Momo;
@@ -19,7 +21,6 @@ public class PaymentService : BaseService, IPaymentService
     private readonly IPaymentRepository _paymentRepository;
     private readonly ISortHelper<Payment> _sortHelper;
     private readonly MomoSetting _momoSettings;
-    private bool isSuccessful = false;
 
     public PaymentService(IPaymentRepository paymentRepository, IMapper mapper, ISortHelper<Payment> sortHelper, MomoSetting momoSettings)
     {
@@ -51,31 +52,34 @@ public class PaymentService : BaseService, IPaymentService
     public async Task<string> CreateAsync(PaymentRequestModel request)
     {
         var entity = _mapper.Map<Payment>(request);
+        entity.Status = CommonStatus.Pending.ToString();
 
+        var paymentUrl = MomoPayment(request);
+
+        await _paymentRepository.Add(entity);
+
+        return paymentUrl;
+    }
+
+    private string MomoPayment(PaymentRequestModel request)
+    {
         var endpoint = _momoSettings.EndPoint;
         var partnerCode = _momoSettings.PartnerCode;
         var accessKey = _momoSettings.AccessKey;
         var secretKey = _momoSettings.SecretKey;
-        var orderInfo = DateTime.Now.ToString("yyyyMMddHHmmss");
+        var orderInfo = DateTime.Now.ToString("yyyyMMddHHmmss") + "-" + request.QuestName;
         var redirectUrl = "https://www.citydiscovery.tech/";
         var ipnUrl = "https://localhost:7235/api/v1/payments/callback/";
         var requestType = "captureWallet";
 
-        var amount = request.AmountTotal.ToString();
+        var amount = request.AmountTotal.ToString(CultureInfo.InvariantCulture);
         var orderId = Guid.NewGuid();
         var requestId = Guid.NewGuid();
         var extraData = "";
 
-        var rawHash = "accessKey=" + accessKey +
-                      "&amount=" + amount +
-                      "&extraData=" + extraData +
-                      "&ipnUrl=" + ipnUrl +
-                      "&orderId=" + orderId +
-                      "&orderInfo=" + orderInfo +
-                      "&partnerCode=" + partnerCode +
-                      "&redirectUrl=" + redirectUrl +
-                      "&requestId=" + requestId +
-                      "&requestType=" + requestType;
+        var rawHash = "accessKey=" + accessKey + "&amount=" + amount + "&extraData=" + extraData + "&ipnUrl=" + ipnUrl +
+                      "&orderId=" + orderId + "&orderInfo=" + orderInfo + "&partnerCode=" + partnerCode + "&redirectUrl=" +
+                      redirectUrl + "&requestId=" + requestId + "&requestType=" + requestType;
 
         var crypto = new MoMoSecurity();
         var signature = crypto.signSHA256(rawHash, secretKey!);
@@ -83,7 +87,7 @@ public class PaymentService : BaseService, IPaymentService
         var message = new JObject
         {
             { "partnerCode", partnerCode },
-            { "partnerName", "Test" },
+            { "partnerName", "City Tour" },
             { "storeId", "MomoTestStore" },
             { "requestId", requestId },
             { "amount", amount },
@@ -98,11 +102,9 @@ public class PaymentService : BaseService, IPaymentService
         };
 
         var response = PaymentRequest.sendPaymentRequest(endpoint!, message.ToString());
-        var jmessage = JObject.Parse(response);
-        var s = jmessage.GetValue("payUrl").ToString();
-        isSuccessful = true;
-
-        return s;
+        var jMessage = JObject.Parse(response);
+        var paymentUrl = jMessage.GetValue("payUrl")!.ToString();
+        return paymentUrl;
     }
 
     public Task<PaymentResponseModel> UpdateAsync(int id, PaymentRequestModel request)
