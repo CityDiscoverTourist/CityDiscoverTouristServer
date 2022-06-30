@@ -80,7 +80,7 @@ public class PaymentService : BaseService, IPaymentService
         var ipnUrl = "http://localhost:3000/data/";
         var requestType = "captureWallet";
 
-        var amount = request.TotalAmount.ToString(CultureInfo.InvariantCulture);
+        var amount = request.AmountTotal.ToString(CultureInfo.InvariantCulture);
         var orderId = Guid.NewGuid();
         var requestId = Guid.NewGuid();
         var extraData = "";
