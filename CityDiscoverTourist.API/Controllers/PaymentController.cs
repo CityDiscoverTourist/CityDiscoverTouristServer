@@ -11,6 +11,9 @@ using Newtonsoft.Json;
 
 namespace CityDiscoverTourist.API.Controllers;
 
+/// <summary>
+///
+/// </summary>
 [Route("api/v{version:apiVersion}/[controller]s")]
 [ApiVersion("1.0")]
 [ApiController]
@@ -18,11 +21,20 @@ public class PaymentController : ControllerBase
 {
     private readonly IPaymentService _paymentService;
 
+    /// <summary>
+    ///
+    /// </summary>
+    /// <param name="paymentService"></param>
     public PaymentController(IPaymentService paymentService)
     {
         _paymentService = paymentService;
     }
 
+    /// <summary>
+    ///
+    /// </summary>
+    /// <param name="param"></param>
+    /// <returns></returns>
     [HttpGet]
     //[Cached(600)]
     public ApiResponse<PageList<PaymentResponseModel>> GetAll([FromQuery] PaymentParams param)
@@ -43,15 +55,25 @@ public class PaymentController : ControllerBase
         return ApiResponse<List<Payment>>.Success(entity, metadata);
     }
 
-    [HttpGet("{id:int}")]
+    /// <summary>
+    ///
+    /// </summary>
+    /// <param name="id"></param>
+    /// <returns></returns>
+    [HttpGet("{id:Guid}")]
     //[Cached(600)]
-    public async Task<ApiResponse<PaymentResponseModel>> Get(int id)
+    public async Task<ApiResponse<PaymentResponseModel>> Get(Guid id)
     {
         var entity = await _paymentService.Get(id);
 
         return ApiResponse<Payment>.Ok(entity);
     }
 
+    /// <summary>
+    ///
+    /// </summary>
+    /// <param name="customerId"></param>
+    /// <returns></returns>
     [HttpGet("get-by-customer-id")]
     //[Cached(600)]
     public async Task<ApiResponse<List<PaymentResponseModel>>> GetByCustomerId(string customerId)
@@ -61,6 +83,11 @@ public class PaymentController : ControllerBase
         return ApiResponse<Payment>.Ok(entity);
     }
 
+    /// <summary>
+    ///
+    /// </summary>
+    /// <param name="data"></param>
+    /// <returns></returns>
     [HttpPost]
     public async Task<ApiResponse<string>> Post(PaymentRequestModel data)
     {
@@ -68,6 +95,11 @@ public class PaymentController : ControllerBase
         return ApiResponse<Payment>.Created(entity);
     }
 
+    /// <summary>
+    ///
+    /// </summary>
+    /// <param name="data"></param>
+    /// <returns></returns>
     [HttpPut]
     public async Task<ApiResponse<PaymentResponseModel>> Put([FromBody] PaymentRequestModel data)
     {
@@ -75,20 +107,29 @@ public class PaymentController : ControllerBase
         return ApiResponse<Payment>.Created(entity);
     }
 
+    /// <summary>
+    ///
+    /// </summary>
+    /// <returns></returns>
     [HttpPost("callback")]
-    public async Task<ActionResult> Callback()
+    public  Task<ActionResult> Callback()
     {
-        var param = "";
+        string param  ;
 
         param = "https://" + HttpContext.Request.Host.Value + HttpContext.Request.Path.Value;
         var result = HttpContext.Request.QueryString.Value;
         var uri = new Uri(param + result);
         var query = HttpUtility.ParseQueryString(uri.Query).Get("resultCode");
-        return Ok(new { query, uri });
+        return Task.FromResult<ActionResult>(Ok(new { query, uri }));
     }
 
-    [HttpDelete("{id:int}")]
-    public async Task<ActionResult<ApiResponse<PaymentResponseModel>>> Delete(int id)
+    /// <summary>
+    ///
+    /// </summary>
+    /// <param name="id"></param>
+    /// <returns></returns>
+    [HttpDelete("{id:Guid}")]
+    public async Task<ActionResult<ApiResponse<PaymentResponseModel>>> Delete(Guid id)
     {
         var entity = await _paymentService.DeleteAsync(id);
         return ApiResponse<Payment>.Ok(entity);

@@ -11,6 +11,7 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
 
     protected override void OnModelCreating(ModelBuilder builder)
     {
+        builder.Entity<Payment>().Property(x => x.CreatedDate).HasDefaultValueSql("GETDATE()");
         /*builder.Entity<CustomerAnswer>().HasKey(c => new { c.QuestItemId, c.CustomerTaskId });
 
         builder.Entity<CustomerAnswer>().HasOne(x => x.QuestItem)

@@ -13,9 +13,11 @@ public class CustomerQuest: BaseEntity
     public Quest? Quest { get; set; }
     public int QuestId { get; set; }
 
+    public Payment? PaymentMethod { get; set; }
+    public Guid PaymentId { get; set; }
+
     public ApplicationUser? Customer { get; set; }
     public string? CustomerId { get; set; }
 
-    public Payment? PaymentMethod { get; set; }
     public List<CustomerTask>? CustomerTasks { get; set; }
 }

@@ -15,6 +15,7 @@ public class CustomerQuestResponseModel
     public bool IsFinished { get; set; }
 
     public int QuestId { get; set; }
+    public Guid PaymentId { get; set; }
     public string? Status { get; set; }
 
     //public Payment? PaymentMethod { get; set; }

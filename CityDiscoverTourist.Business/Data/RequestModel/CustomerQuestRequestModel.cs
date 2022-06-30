@@ -11,6 +11,7 @@ public class CustomerQuestRequestModel
 
     public string? CustomerId { get; set; }
     public int QuestId { get; set; }
+    public Guid PaymentId { get; set; }
     public string? Status { get; set; }
     public bool IsFinished { get; set; }
 }

@@ -33,6 +33,7 @@ public class Quest: BaseEntity
     public List<QuestItem>? QuestItems { get; set; }
 
     public List<OwnerPayment>? OwnerPayments { get; set; }
+    public List<Payment>? Payments { get; set; }
 
     public List<Reward>? Rewards { get; set; }
 

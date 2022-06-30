@@ -33,7 +33,7 @@ public class PaymentService : BaseService, IPaymentService
 
     public PageList<PaymentResponseModel> GetAll(PaymentParams @params)
     {
-        var listAll = _paymentRepository.GetAll().Include(x => x.CustomerQuest).AsNoTracking();
+        var listAll = _paymentRepository.GetAll().Include(x => x.CustomerQuests).AsNoTracking();
 
         Search(ref listAll, @params);
 
@@ -43,7 +43,7 @@ public class PaymentService : BaseService, IPaymentService
         return PageList<PaymentResponseModel>.ToPageList(mappedData, @params.PageNumber, @params.PageSize);
     }
 
-    public async Task<PaymentResponseModel> Get(int id)
+    public async Task<PaymentResponseModel> Get(Guid id)
     {
         var entity = await _paymentRepository.Get(id);
         CheckDataNotNull("Payment", entity);
@@ -52,8 +52,7 @@ public class PaymentService : BaseService, IPaymentService
 
     public Task<List<PaymentResponseModel>> GetByCustomerId(string customerId)
     {
-        var entity = _paymentRepository.GetAll().Include(x => x.CustomerQuest)
-            .Where(x => x.CustomerQuest.CustomerId == customerId).ToList();
+        var entity = _paymentRepository.GetAll().Include(x => x.CustomerQuests);
         CheckDataNotNull("Payment", entity);
         return Task.FromResult(_mapper.Map<List<PaymentResponseModel>>(entity));
     }
@@ -76,12 +75,12 @@ public class PaymentService : BaseService, IPaymentService
         var partnerCode = _momoSettings.PartnerCode;
         var accessKey = _momoSettings.AccessKey;
         var secretKey = _momoSettings.SecretKey;
-        var orderInfo = DateTime.Now.ToString("yyyyMMddHHmmss") + "-" + request.QuestName;
+        var orderInfo = DateTime.Now.ToString("yyyyMMddHHmmss") + "-" + request.QuestId;
         var redirectUrl = "https://www.citydiscovery.tech/thank/";
-        var ipnUrl = "https://localhost:7235/api/v1/payments/callback/";
+        var ipnUrl = "http://localhost:3000/data/";
         var requestType = "captureWallet";
 
-        var amount = request.AmountTotal.ToString(CultureInfo.InvariantCulture);
+        var amount = request.TotalAmount.ToString(CultureInfo.InvariantCulture);
         var orderId = Guid.NewGuid();
         var requestId = Guid.NewGuid();
         var extraData = "";
@@ -128,7 +127,7 @@ public class PaymentService : BaseService, IPaymentService
         return _mapper.Map<PaymentResponseModel>(entity);
     }
 
-    public async Task<PaymentResponseModel> DeleteAsync(int id)
+    public async Task<PaymentResponseModel> DeleteAsync(Guid id)
     {
         var entity = await _paymentRepository.Delete(id);
         return _mapper.Map<PaymentResponseModel>(entity);
@@ -139,6 +138,10 @@ public class PaymentService : BaseService, IPaymentService
         if (!entities.Any()) return;
 
         if (param.PaymentMethod != null) entities = entities.Where(r => r.PaymentMethod!.Equals(param.PaymentMethod));
-        if (param.CustomerQuestId != 0) entities = entities.Where(r => r.CustomerQuestId == param.CustomerQuestId);
+    }
+
+    public int GetQuantityOfPayment(Guid id)
+    {
+        return _paymentRepository.Get(id).Result.Quantity;
     }
 }

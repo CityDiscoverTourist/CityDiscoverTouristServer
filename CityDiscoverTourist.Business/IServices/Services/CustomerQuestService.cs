@@ -21,10 +21,11 @@ public class CustomerQuestService : BaseService, ICustomerQuestService
     private readonly IMapper _mapper;
     private readonly ISortHelper<CustomerQuest> _sortHelper;
     private readonly IQuestItemRepository _taskRepository;
+    private readonly IPaymentService _paymentService;
 
     public CustomerQuestService(ICustomerQuestRepository customerQuestRepository, IMapper mapper,
         IQuestItemRepository taskRepository, ISortHelper<CustomerQuest> sortHelper,
-        ICustomerTaskService customerTaskService, UserManager<ApplicationUser>? userManager)
+        ICustomerTaskService customerTaskService, UserManager<ApplicationUser>? userManager, IPaymentService paymentService)
     {
         _customerQuestRepository = customerQuestRepository;
         _mapper = mapper;
@@ -32,6 +33,7 @@ public class CustomerQuestService : BaseService, ICustomerQuestService
         _sortHelper = sortHelper;
         _customerTaskService = customerTaskService;
         _userManager = userManager;
+        _paymentService = paymentService;
     }
 
     public PageList<CustomerQuestResponseModel> GetAll(CustomerQuestParams @params)
@@ -64,6 +66,15 @@ public class CustomerQuestService : BaseService, ICustomerQuestService
     public async Task<CustomerQuestResponseModel> CreateAsync(CustomerQuestRequestModel request)
     {
         var entity = _mapper.Map<CustomerQuest>(request);
+
+        // get quantity of the order
+        var ticketQuantity = _paymentService.GetQuantityOfPayment(entity.PaymentId);
+
+        // count number of order show in customer quest
+        var numOfQuantityInCustomerQuest = _customerQuestRepository
+            .GetByCondition(x => x.PaymentId == entity.PaymentId).Count();
+
+        if (numOfQuantityInCustomerQuest >= ticketQuantity) throw new AppException("Ticket quantity is not enough");
 
         entity.IsFinished = false;
         entity.Status = PaymentStatus.Success.ToString();

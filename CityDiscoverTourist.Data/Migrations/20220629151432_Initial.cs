@@ -465,38 +465,6 @@ namespace CityDiscoverTourist.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "CustomerQuests",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    BeginPoint = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    EndPoint = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    Rating = table.Column<int>(type: "int", nullable: false),
-                    FeedBack = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Status = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    IsFinished = table.Column<bool>(type: "bit", nullable: false),
-                    QuestId = table.Column<int>(type: "int", nullable: false),
-                    CustomerId = table.Column<string>(type: "nvarchar(450)", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_CustomerQuests", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_CustomerQuests_AspNetUsers_CustomerId",
-                        column: x => x.CustomerId,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id");
-                    table.ForeignKey(
-                        name: "FK_CustomerQuests_Quests_QuestId",
-                        column: x => x.QuestId,
-                        principalTable: "Quests",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "OwnerPayments",
                 columns: table => new
                 {
@@ -538,6 +506,35 @@ namespace CityDiscoverTourist.Data.Migrations
                         principalTable: "Transactions",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.NoAction);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Payments",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    PaymentMethod = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Status = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Quantity = table.Column<int>(type: "int", nullable: false),
+                    TotalAmount = table.Column<float>(type: "real", nullable: false),
+                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "GETDATE()"),
+                    CustomerId = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    QuestId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Payments", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Payments_AspNetUsers_CustomerId",
+                        column: x => x.CustomerId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_Payments_Quests_QuestId",
+                        column: x => x.QuestId,
+                        principalTable: "Quests",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -613,56 +610,40 @@ namespace CityDiscoverTourist.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Payments",
+                name: "CustomerQuests",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    PaymentMethod = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Status = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Quantity = table.Column<int>(type: "int", nullable: false),
-                    TotalAmount = table.Column<float>(type: "real", nullable: false),
-                    CustomerQuestId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Payments", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Payments_CustomerQuests_CustomerQuestId",
-                        column: x => x.CustomerQuestId,
-                        principalTable: "CustomerQuests",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "CustomerTasks",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    CurrentPoint = table.Column<float>(type: "real", nullable: false),
-                    Status = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    BeginPoint = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    EndPoint = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    CountSuggestion = table.Column<int>(type: "int", nullable: false),
+                    Rating = table.Column<int>(type: "int", nullable: false),
+                    FeedBack = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Status = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     IsFinished = table.Column<bool>(type: "bit", nullable: false),
-                    CountWrongAnswer = table.Column<int>(type: "int", nullable: false),
-                    QuestItemId = table.Column<int>(type: "int", nullable: false),
-                    CustomerQuestId = table.Column<int>(type: "int", nullable: false)
+                    QuestId = table.Column<int>(type: "int", nullable: false),
+                    PaymentId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    CustomerId = table.Column<string>(type: "nvarchar(450)", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_CustomerTasks", x => x.Id);
+                    table.PrimaryKey("PK_CustomerQuests", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_CustomerTasks_CustomerQuests_CustomerQuestId",
-                        column: x => x.CustomerQuestId,
-                        principalTable: "CustomerQuests",
+                        name: "FK_CustomerQuests_AspNetUsers_CustomerId",
+                        column: x => x.CustomerId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_CustomerQuests_Payments_PaymentId",
+                        column: x => x.PaymentId,
+                        principalTable: "Payments",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_CustomerTasks_QuestItems_QuestItemId",
-                        column: x => x.QuestItemId,
-                        principalTable: "QuestItems",
+                        name: "FK_CustomerQuests_Quests_QuestId",
+                        column: x => x.QuestId,
+                        principalTable: "Quests",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.NoAction);
                 });
@@ -724,18 +705,52 @@ namespace CityDiscoverTourist.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "CustomerTasks",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    CurrentPoint = table.Column<float>(type: "real", nullable: false),
+                    Status = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    CountSuggestion = table.Column<int>(type: "int", nullable: false),
+                    IsFinished = table.Column<bool>(type: "bit", nullable: false),
+                    CountWrongAnswer = table.Column<int>(type: "int", nullable: false),
+                    QuestItemId = table.Column<int>(type: "int", nullable: false),
+                    CustomerQuestId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_CustomerTasks", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_CustomerTasks_CustomerQuests_CustomerQuestId",
+                        column: x => x.CustomerQuestId,
+                        principalTable: "CustomerQuests",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_CustomerTasks_QuestItems_QuestItemId",
+                        column: x => x.QuestItemId,
+                        principalTable: "QuestItems",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.NoAction);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "CustomerAnswers",
                 columns: table => new
                 {
-                    CustomerTaskId = table.Column<int>(type: "int", nullable: false),
-                    QuestItemId = table.Column<int>(type: "int", nullable: false),
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     Note = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     CustomerReply = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CustomerTaskId = table.Column<int>(type: "int", nullable: false),
+                    QuestItemId = table.Column<int>(type: "int", nullable: false),
                     AnswerImageUrl = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_CustomerAnswers", x => new { x.QuestItemId, x.CustomerTaskId });
+                    table.PrimaryKey("PK_CustomerAnswers", x => x.Id);
                     table.ForeignKey(
                         name: "FK_CustomerAnswers_CustomerTasks_CustomerTaskId",
                         column: x => x.CustomerTaskId,
@@ -831,9 +846,19 @@ namespace CityDiscoverTourist.Data.Migrations
                 column: "CustomerTaskId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_CustomerAnswers_QuestItemId",
+                table: "CustomerAnswers",
+                column: "QuestItemId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_CustomerQuests_CustomerId",
                 table: "CustomerQuests",
                 column: "CustomerId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_CustomerQuests_PaymentId",
+                table: "CustomerQuests",
+                column: "PaymentId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_CustomerQuests_QuestId",
@@ -887,10 +912,14 @@ namespace CityDiscoverTourist.Data.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_Payments_CustomerQuestId",
+                name: "IX_Payments_CustomerId",
                 table: "Payments",
-                column: "CustomerQuestId",
-                unique: true);
+                column: "CustomerId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Payments_QuestId",
+                table: "Payments",
+                column: "QuestId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_QuestItems_ItemId",
@@ -1000,9 +1029,6 @@ namespace CityDiscoverTourist.Data.Migrations
                 name: "OwnerPayments");
 
             migrationBuilder.DropTable(
-                name: "Payments");
-
-            migrationBuilder.DropTable(
                 name: "Rewards");
 
             migrationBuilder.DropTable(
@@ -1033,13 +1059,16 @@ namespace CityDiscoverTourist.Data.Migrations
                 name: "QuestItems");
 
             migrationBuilder.DropTable(
-                name: "AspNetUsers");
+                name: "Payments");
 
             migrationBuilder.DropTable(
                 name: "Locations");
 
             migrationBuilder.DropTable(
                 name: "QuestItemTypes");
+
+            migrationBuilder.DropTable(
+                name: "AspNetUsers");
 
             migrationBuilder.DropTable(
                 name: "Quests");
