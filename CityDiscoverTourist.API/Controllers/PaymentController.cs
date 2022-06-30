@@ -6,6 +6,7 @@ using CityDiscoverTourist.Business.Helper;
 using CityDiscoverTourist.Business.Helper.Params;
 using CityDiscoverTourist.Business.IServices;
 using CityDiscoverTourist.Data.Models;
+using Hangfire;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 
@@ -20,14 +21,16 @@ namespace CityDiscoverTourist.API.Controllers;
 public class PaymentController : ControllerBase
 {
     private readonly IPaymentService _paymentService;
+    private readonly IRecurringJobManager _recurringJobManager;
 
     /// <summary>
     ///
     /// </summary>
     /// <param name="paymentService"></param>
-    public PaymentController(IPaymentService paymentService)
+    public PaymentController(IPaymentService paymentService, IRecurringJobManager recurringJobManager)
     {
         _paymentService = paymentService;
+        _recurringJobManager = recurringJobManager;
     }
 
     /// <summary>
@@ -98,13 +101,14 @@ public class PaymentController : ControllerBase
     /// <summary>
     ///
     /// </summary>
-    /// <param name="data"></param>
     /// <returns></returns>
     [HttpPut]
-    public async Task<ApiResponse<PaymentResponseModel>> Put([FromBody] PaymentRequestModel data)
+    public async Task<OkObjectResult> Put()
     {
-        var entity = await _paymentService.UpdateAsync(data);
-        return ApiResponse<Payment>.Created(entity);
+        _recurringJobManager.AddOrUpdate(
+            "Payment", () => _paymentService.InvalidOrder(),
+            Cron.Daily());
+        return await Task.FromResult(Ok("RecurringJobManager"));
     }
 
     /// <summary>

@@ -1,7 +1,5 @@
 using System.Globalization;
-using System.Web;
 using AutoMapper;
-using Azure.Core;
 using CityDiscoverTourist.Business.Data.RequestModel;
 using CityDiscoverTourist.Business.Data.ResponseModel;
 using CityDiscoverTourist.Business.Enums;
@@ -11,6 +9,7 @@ using CityDiscoverTourist.Business.Momo;
 using CityDiscoverTourist.Business.Settings;
 using CityDiscoverTourist.Data.IRepositories;
 using CityDiscoverTourist.Data.Models;
+using Hangfire;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json.Linq;
 
@@ -22,13 +21,15 @@ public class PaymentService : BaseService, IPaymentService
     private readonly IPaymentRepository _paymentRepository;
     private readonly ISortHelper<Payment> _sortHelper;
     private readonly MomoSetting _momoSettings;
+    private readonly IRecurringJobManager _recurringJobManager;
 
-    public PaymentService(IPaymentRepository paymentRepository, IMapper mapper, ISortHelper<Payment> sortHelper, MomoSetting momoSettings)
+    public PaymentService(IPaymentRepository paymentRepository, IMapper mapper, ISortHelper<Payment> sortHelper, MomoSetting momoSettings, IRecurringJobManager recurringJobManager)
     {
         _paymentRepository = paymentRepository;
         _mapper = mapper;
         _sortHelper = sortHelper;
         _momoSettings = momoSettings;
+        _recurringJobManager = recurringJobManager;
     }
 
     public PageList<PaymentResponseModel> GetAll(PaymentParams @params)
@@ -115,16 +116,20 @@ public class PaymentService : BaseService, IPaymentService
         return paymentUrl;
     }
 
-    public Task<PaymentResponseModel> UpdateAsync(int id, PaymentRequestModel request)
+    public async Task<PaymentResponseModel> InvalidOrder()
     {
-        throw new NotImplementedException();
-    }
+        var entity = _paymentRepository.GetAll().ToList();
 
-    public async Task<PaymentResponseModel> UpdateAsync(PaymentRequestModel request)
-    {
-        var entity = _mapper.Map<Payment>(request);
-        entity = await _paymentRepository.Update(entity);
-        return _mapper.Map<PaymentResponseModel>(entity);
+        foreach (var item in entity)
+        {
+            //if(item.IsValid) RecurringJob.AddOrUpdate(() => _paymentRepository.UpdateFields(item, x=>x.IsValid == false), Cron.Minutely());
+            if (!item.IsValid) continue;
+            if (item.CreatedDate.AddDays(2) >= DateTime.Now.Date) continue;
+            item.IsValid = false;
+            await _paymentRepository.UpdateFields(item, x => x.IsValid);
+
+        }
+        return null!;
     }
 
     public async Task<PaymentResponseModel> DeleteAsync(Guid id)

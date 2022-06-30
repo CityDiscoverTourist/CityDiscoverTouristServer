@@ -108,7 +108,7 @@ public class FacebookService : IFacebookService
         };
         var loginInfo = new ExternalLoginInfo(new ClaimsPrincipal(), "Facebook", facebookUser.FacebookId, "Facebook");
         var result = await _userManager.CreateAsync(user);
-        await _userManager.AddToRoleAsync(user, Role.User.ToString());
+        await _userManager.AddToRoleAsync(user, Role.Customer.ToString());
         await _userManager.AddLoginAsync(user, loginInfo);
 
         return !result.Succeeded;

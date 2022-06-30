@@ -8,6 +8,7 @@ namespace CityDiscoverTourist.Business.IServices;
 public interface IAuthService
 {
     public Task <LoginResponseModel> LoginFirebase(LoginFirebaseModel model);
+    public Task <LoginResponseModel> LoginMobile(LoginFirebaseModel model);
     public Task<LoginResponseModel> LoginForAdmin(LoginRequestModel model);
     public  Task<bool> Register(LoginRequestModel model);
     public Task<string> ConfirmEmail(string userId, string token);

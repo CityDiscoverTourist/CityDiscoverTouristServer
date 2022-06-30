@@ -3,6 +3,7 @@ using CityDiscoverTourist.Business.Helper.EmailHelper;
 using CityDiscoverTourist.Business.IServices;
 using CityDiscoverTourist.Business.IServices.Services;
 using CityDiscoverTourist.Business.Settings;
+using Hangfire;
 using Newtonsoft.Json;
 
 namespace CityDiscoverTourist.API.Config;
@@ -47,6 +48,7 @@ public static class ThirdPartyConfig
             new BlobServiceClient(configuration.GetSection("AzureStorage:ConnectionString").Value));
         services.AddSingleton<IBlobService, BlobService>();
 
-
+        services.AddHangfire(x => x.UseSqlServerStorage(configuration.GetConnectionString("DefaultConnection")));
+        services.AddHangfireServer();
     }
 }

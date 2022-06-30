@@ -67,6 +67,9 @@ public class CustomerQuestService : BaseService, ICustomerQuestService
     {
         var entity = _mapper.Map<CustomerQuest>(request);
 
+        var payment = _paymentService.Get(entity.PaymentId).Result;
+        if(!payment.IsValid) throw new AppException("Payment is not valid");
+
         // get quantity of the order
         var ticketQuantity = _paymentService.GetQuantityOfPayment(entity.PaymentId);
 

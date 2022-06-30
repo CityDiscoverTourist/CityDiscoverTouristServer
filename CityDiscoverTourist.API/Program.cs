@@ -4,6 +4,7 @@ using CityDiscoverTourist.Business.Data;
 using CityDiscoverTourist.Business.Exceptions;
 using CityDiscoverTourist.Business.HealthCheck;
 using CityDiscoverTourist.Business.HubConfig;
+using Hangfire;
 using Microsoft.ApplicationInsights.Extensibility;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.AspNetCore.HttpOverrides;
@@ -78,6 +79,7 @@ try
     // Configure the HTTP request pipeline.
     app.UseSerilogRequestLogging(_ => { }); // We want to log all HTTP requests
     app.UseCors("EnableCORS");
+    app.UseHangfireDashboard();
 
     // Configure the HTTP request pipeline.
     app.UseForwardedHeaders();

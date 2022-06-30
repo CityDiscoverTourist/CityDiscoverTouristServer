@@ -1,4 +1,3 @@
-using CityDiscoverTourist.Data.Models;
 
 namespace CityDiscoverTourist.Business.Data.ResponseModel;
 
@@ -11,6 +10,7 @@ public class PaymentResponseModel
     public string? Status { get; set; }
     public DateTime CreatedDate { get; set; }
     public string? CustomerId { get; set; }
+    public bool IsValid { get; set; }
 
     public int QuestId { get; set; }
 }
