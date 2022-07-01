@@ -156,7 +156,6 @@ public class AuthService : IAuthService
         {
             await _roleManager.CreateAsync(new IdentityRole(Role.Admin.ToString()));
             await _roleManager.CreateAsync(new IdentityRole(Role.Customer.ToString()));
-            await _roleManager.CreateAsync(new IdentityRole(Role.QuestOwner.ToString()));
         }
     }
 
@@ -178,7 +177,7 @@ public class AuthService : IAuthService
         var loginInfo = new ExternalLoginInfo(new ClaimsPrincipal(), "Firebase-Email", userViewModel.IdProvider,
             userViewModel.Email);
         var result = await _userManager.CreateAsync(user);
-        await _userManager.AddToRoleAsync(user, Role.Customer.ToString());
+        await _userManager.AddToRoleAsync(user, Role.Admin.ToString());
         await _userManager.AddLoginAsync(user, loginInfo);
         return !result.Succeeded;
     }

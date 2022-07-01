@@ -7,6 +7,7 @@ using CityDiscoverTourist.Business.Helper.Params;
 using CityDiscoverTourist.Business.IServices;
 using CityDiscoverTourist.Data.Models;
 using Hangfire;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 
@@ -18,6 +19,7 @@ namespace CityDiscoverTourist.API.Controllers;
 [Route("api/v{version:apiVersion}/[controller]s")]
 [ApiVersion("1.0")]
 [ApiController]
+[Authorize (Roles = "Admin")]
 public class PaymentController : ControllerBase
 {
     private readonly IPaymentService _paymentService;
@@ -27,6 +29,7 @@ public class PaymentController : ControllerBase
     ///
     /// </summary>
     /// <param name="paymentService"></param>
+    /// <param name="recurringJobManager"></param>
     public PaymentController(IPaymentService paymentService, IRecurringJobManager recurringJobManager)
     {
         _paymentService = paymentService;

@@ -1,12 +1,11 @@
 using CityDiscoverTourist.API.Config;
-using CityDiscoverTourist.API.Filter;
 using CityDiscoverTourist.Business.AzureHelper;
 using CityDiscoverTourist.Business.Data;
 using CityDiscoverTourist.Business.Exceptions;
 using CityDiscoverTourist.Business.HealthCheck;
 using CityDiscoverTourist.Business.HubConfig;
 using Hangfire;
-using Hangfire.Dashboard;
+using HangfireBasicAuthenticationFilter;
 using Microsoft.ApplicationInsights.Extensibility;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.AspNetCore.HttpOverrides;
@@ -85,7 +84,16 @@ try
 
     var options = new DashboardOptions
     {
-            Authorization = new[] { new MyAuthenticationFilter() }
+        AppPath = null,
+        DashboardTitle = "Hangfire Dashboard",
+        Authorization = new[]
+        {
+            new HangfireCustomBasicAuthenticationFilter
+            {
+                User = builder.Configuration.GetSection("HangfireCredentials:UserName").Value,
+                Pass = builder.Configuration.GetSection("HangfireCredentials:Password").Value
+            }
+        }
     };
     app.UseHangfireDashboard("/hangfire", options);
     if (app.Environment.IsDevelopment())
