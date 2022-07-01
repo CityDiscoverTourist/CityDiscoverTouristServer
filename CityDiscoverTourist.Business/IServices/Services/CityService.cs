@@ -106,4 +106,10 @@ public class CityService : BaseService, ICityService
         if (param.Name != null) entities = entities.Where(r => r.Name!.Contains(param.Name));
         if (param.Status != null) entities = entities.Where(x => x.Status == param.Status);
     }
+
+    public async Task<bool> CheckExisted(string name)
+    {
+        var result = await _cityRepository.GetByCondition(x => x.Name == name.Trim()).AnyAsync();
+        return result;
+    }
 }
