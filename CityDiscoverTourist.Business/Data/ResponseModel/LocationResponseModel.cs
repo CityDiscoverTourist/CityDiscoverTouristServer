@@ -13,4 +13,6 @@ public class LocationResponseModel
     public int AreaId { get; set; }
 
     public int LocationTypeId { get; set; }
+
+    public List<QuestItemResponseModel>? QuestItems { get; set; }
 }
