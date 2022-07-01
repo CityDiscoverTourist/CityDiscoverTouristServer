@@ -107,7 +107,7 @@ public class PaymentController : ControllerBase
     {
         _recurringJobManager.AddOrUpdate(
             "Payment", () => _paymentService.InvalidOrder(),
-            "0 0 * * *");
+            Cron.Daily(23, 55));
         return await Task.FromResult(Ok("RecurringJobManager"));
     }
 
