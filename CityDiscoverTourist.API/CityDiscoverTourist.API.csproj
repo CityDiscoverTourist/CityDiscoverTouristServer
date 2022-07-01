@@ -23,8 +23,10 @@
         <PackageReference Include="FirebaseAdmin" Version="2.3.0" />
         <PackageReference Include="Hangfire" Version="1.7.30" />
         <PackageReference Include="Hangfire.Core" Version="1.7.30" />
+        <PackageReference Include="Hangfire.Dashboard.BasicAuthorization" Version="1.0.2" />
         <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.20.0" />
         <PackageReference Include="Microsoft.AspNet.WebApi.Versioning" Version="4.1.1" />
+        <PackageReference Include="Microsoft.AspNetCore.Authentication.Cookies" Version="2.2.0" />
         <PackageReference Include="Microsoft.AspNetCore.Authentication.Facebook" Version="6.0.4" />
         <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.3" />
         <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="6.0.5" />

@@ -1,10 +1,13 @@
 using CityDiscoverTourist.API.Config;
+using CityDiscoverTourist.API.Filter;
 using CityDiscoverTourist.Business.AzureHelper;
 using CityDiscoverTourist.Business.Data;
 using CityDiscoverTourist.Business.Exceptions;
 using CityDiscoverTourist.Business.HealthCheck;
 using CityDiscoverTourist.Business.HubConfig;
 using Hangfire;
+using Hangfire.Dashboard;
+using Hangfire.Dashboard.BasicAuthorization;
 using Microsoft.ApplicationInsights.Extensibility;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.AspNetCore.HttpOverrides;
@@ -82,7 +85,26 @@ try
     app.UseHangfireDashboard();
 
     // Configure the HTTP request pipeline.
-    app.UseForwardedHeaders();
+
+    var options = new DashboardOptions
+    {
+        Authorization = new[] { new BasicAuthAuthorizationFilter(new BasicAuthAuthorizationFilterOptions
+        {
+            RequireSsl = false,
+            SslRedirect = false,
+            LoginCaseSensitive = true,
+            Users = new []
+            {
+                new BasicAuthAuthorizationUser
+                {
+                    Login = "admin",
+                    PasswordClear =  "test"
+                }
+            }
+
+        }) }
+    };
+    app.UseHangfireDashboard("/hangfire", options);
     if (app.Environment.IsDevelopment())
     {
         app.UseSwagger();
