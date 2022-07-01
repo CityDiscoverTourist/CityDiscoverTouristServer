@@ -153,4 +153,3 @@ public class CityController : ControllerBase
         return entity;
     }
 }
-add check existed name area
