@@ -144,4 +144,18 @@ public class AreaController : ControllerBase
         var entity = await _areaService.EnableAsync(id);
         return ApiResponse<Area>.Ok(entity);
     }
+
+    /// <summary>
+    /// check area by name
+    /// </summary>
+    /// <param name="name"></param>
+    /// <returns></returns>
+    [HttpGet("check")]
+    //[Cached(600)]
+    public Task<bool> CheckExist(string name)
+    {
+        var entity = _areaService.CheckExisted(name);
+
+        return entity;
+    }
 }

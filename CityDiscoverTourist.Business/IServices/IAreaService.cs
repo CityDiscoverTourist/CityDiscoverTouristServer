@@ -14,4 +14,6 @@ public interface IAreaService
     public Task<AreaResponseModel> DeleteAsync(int id);
     public Task<AreaResponseModel> DisableAsync(int id);
     public Task<AreaResponseModel> EnableAsync(int id);
+
+    public Task<bool> CheckExisted(string name);
 }

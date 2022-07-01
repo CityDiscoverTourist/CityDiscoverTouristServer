@@ -6,6 +6,7 @@ using CityDiscoverTourist.Business.Helper;
 using CityDiscoverTourist.Business.Helper.Params;
 using CityDiscoverTourist.Data.IRepositories;
 using CityDiscoverTourist.Data.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace CityDiscoverTourist.Business.IServices.Services;
 
@@ -92,5 +93,11 @@ public class AreaService : BaseService, IAreaService
         if (param.Name != null) entities = entities.Where(x => x.Name!.Contains(param.Name));
 
         if (param.Status != null) entities = entities.Where(x => x.Status == param.Status);
+    }
+
+    public async Task<bool> CheckExisted(string name)
+    {
+        var result = await _areaRepository.GetByCondition(x => x.Name == name.Trim()).AnyAsync();
+        return result;
     }
 }
