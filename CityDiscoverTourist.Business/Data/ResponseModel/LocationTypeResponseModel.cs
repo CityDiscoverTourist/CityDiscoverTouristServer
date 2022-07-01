@@ -6,5 +6,5 @@ public class LocationTypeResponseModel
     public string? Name { get; set; }
     public string? Status { get; set; }
 
-    public List<LocationResponseModel>? Locations { get; set; }
+    public List<LocationResponseModel> Locations { get; set; }
 }
