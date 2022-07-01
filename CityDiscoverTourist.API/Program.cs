@@ -81,8 +81,6 @@ try
     // Configure the HTTP request pipeline.
     app.UseSerilogRequestLogging(_ => { }); // We want to log all HTTP requests
     app.UseCors("EnableCORS");
-    app.UseHangfireDashboard();
-
     // Configure the HTTP request pipeline.
 
     var options = new DashboardOptions
