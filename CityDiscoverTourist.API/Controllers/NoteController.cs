@@ -10,6 +10,9 @@ using Newtonsoft.Json;
 
 namespace CityDiscoverTourist.API.Controllers;
 
+/// <summary>
+///
+/// </summary>
 [Route("api/v{version:apiVersion}/[controller]s")]
 [ApiVersion("1.0")]
 [ApiController]
@@ -17,11 +20,20 @@ public class NoteController : ControllerBase
 {
     private readonly INoteService _noteService;
 
+    /// <summary>
+    ///
+    /// </summary>
+    /// <param name="noteService"></param>
     public NoteController(INoteService noteService)
     {
         _noteService = noteService;
     }
 
+    /// <summary>
+    ///
+    /// </summary>
+    /// <param name="param"></param>
+    /// <returns></returns>
     [HttpGet]
     //[Cached(600)]
     public ApiResponse<PageList<NoteResponseModel>> GetAll([FromQuery] NoteParams param)
@@ -42,6 +54,11 @@ public class NoteController : ControllerBase
         return ApiResponse<List<Note>>.Success(entity, metadata);
     }
 
+    /// <summary>
+    ///
+    /// </summary>
+    /// <param name="id"></param>
+    /// <returns></returns>
     [HttpGet("{id:int}")]
     //[Cached(600)]
     public async Task<ApiResponse<NoteResponseModel>> Get(int id)
@@ -51,6 +68,11 @@ public class NoteController : ControllerBase
         return ApiResponse<Note>.Ok(entity);
     }
 
+    /// <summary>
+    ///
+    /// </summary>
+    /// <param name="data"></param>
+    /// <returns></returns>
     [HttpPost]
     public async Task<ApiResponse<NoteResponseModel>> Post(NoteRequestModel data)
     {
@@ -58,6 +80,11 @@ public class NoteController : ControllerBase
         return ApiResponse<Note>.Created(entity);
     }
 
+    /// <summary>
+    ///
+    /// </summary>
+    /// <param name="data"></param>
+    /// <returns></returns>
     [HttpPut]
     public async Task<ApiResponse<NoteResponseModel>> Put([FromBody] NoteRequestModel data)
     {
@@ -65,6 +92,11 @@ public class NoteController : ControllerBase
         return ApiResponse<Note>.Created(entity);
     }
 
+    /// <summary>
+    ///
+    /// </summary>
+    /// <param name="id"></param>
+    /// <returns></returns>
     [HttpDelete("{id:int}")]
     public async Task<ActionResult<ApiResponse<NoteResponseModel>>> Delete(int id)
     {

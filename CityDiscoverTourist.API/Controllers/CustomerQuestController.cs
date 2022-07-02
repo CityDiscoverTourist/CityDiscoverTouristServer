@@ -71,6 +71,7 @@ public class CustomerQuestController : ControllerBase
     /// get customer comment by quest id
     /// </summary>
     /// <param name="questId"></param>
+    /// <param name="param"></param>
     /// <returns></returns>
     [HttpGet("show-comments/{questId:int}")]
     //[Cached(600)]

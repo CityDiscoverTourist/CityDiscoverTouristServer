@@ -133,9 +133,9 @@ public class CityController : ControllerBase
     /// <param name="status"></param>
     /// <returns></returns>
     [HttpPut("update-status-fk/{id:int}")]
-    public async Task<ActionResult<ApiResponse<CityResponseModel>>> UpdateStatusFkKey(int id, string status)
+    public Task<ActionResult<ApiResponse<CityResponseModel>>> UpdateStatusFkKey(int id, string status)
     {
         var entity = _cityService.UpdateStatusForeignKey(id, status).Result;
-        return ApiResponse<City>.Ok(entity);
+        return Task.FromResult<ActionResult<ApiResponse<CityResponseModel>>>(ApiResponse<City>.Ok(entity));
     }
 }
