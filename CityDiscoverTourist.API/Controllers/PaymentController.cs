@@ -7,7 +7,6 @@ using CityDiscoverTourist.Business.Helper.Params;
 using CityDiscoverTourist.Business.IServices;
 using CityDiscoverTourist.Data.Models;
 using Hangfire;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 
@@ -19,7 +18,6 @@ namespace CityDiscoverTourist.API.Controllers;
 [Route("api/v{version:apiVersion}/[controller]s")]
 [ApiVersion("1.0")]
 [ApiController]
-[Authorize (Roles = "Admin")]
 public class PaymentController : ControllerBase
 {
     private readonly IPaymentService _paymentService;
@@ -98,6 +96,18 @@ public class PaymentController : ControllerBase
     public async Task<ApiResponse<string>> Post(PaymentRequestModel data)
     {
         var entity = await _paymentService.CreateAsync(data);
+        return ApiResponse<Payment>.Created(entity);
+    }
+
+    /// <summary>
+    ///
+    /// </summary>
+    /// <param name="id"></param>
+    /// <returns></returns>
+    [HttpPut("update-status/{id:Guid}")]
+    public async Task<ApiResponse<PaymentResponseModel>> UpdateStatus(Guid id)
+    {
+        var entity = await _paymentService.UpdateStatusWhenSuccess(id);
         return ApiResponse<Payment>.Created(entity);
     }
 

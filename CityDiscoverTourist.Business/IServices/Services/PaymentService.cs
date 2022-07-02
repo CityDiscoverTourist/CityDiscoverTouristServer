@@ -51,6 +51,15 @@ public class PaymentService : BaseService, IPaymentService
         return _mapper.Map<PaymentResponseModel>(entity);
     }
 
+    public async Task<PaymentResponseModel> UpdateStatusWhenSuccess(Guid id)
+    {
+        var entity = await _paymentRepository.Get(id);
+        CheckDataNotNull("Payment", entity);
+        entity.Status = PaymentStatus.Success.ToString();
+        await _paymentRepository.Update(entity);
+        return _mapper.Map<PaymentResponseModel>(entity);
+    }
+
     public Task<List<PaymentResponseModel>> GetByCustomerId(string customerId)
     {
         var entity = _paymentRepository.GetAll().Include(x => x.CustomerQuests);
@@ -82,7 +91,7 @@ public class PaymentService : BaseService, IPaymentService
         var requestType = "captureWallet";
 
         var amount = request.AmountTotal.ToString(CultureInfo.InvariantCulture);
-        var orderId = Guid.NewGuid();
+        var orderId = request.Id.ToString();
         var requestId = Guid.NewGuid();
         var extraData = "";
 
