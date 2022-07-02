@@ -82,6 +82,7 @@ public class CustomerQuestService : BaseService, ICustomerQuestService
         entity.IsFinished = false;
         entity.Status = PaymentStatus.Success.ToString();
         entity.BeginPoint = CalculateBeginPoint(request.QuestId);
+        entity.QuestId = payment.QuestId;
 
         entity = await _customerQuestRepository.Add(entity);
         return _mapper.Map<CustomerQuestResponseModel>(entity);
