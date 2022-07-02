@@ -52,6 +52,7 @@ public static class ConfigController
         services.AddScoped<IBlobService, BlobService>();
         services.AddScoped<INotificationService, NotificationService>();
         services.AddScoped<IUserSubscribedService, UserSubscribedService>();
+        services.AddScoped<IQuestRewardService, QuestRewardService>();
     }
 
     /// <summary>
@@ -112,6 +113,7 @@ public static class ConfigController
         services.AddScoped<ITransactionRepository, TransactionRepository>();
         services.AddScoped<IOwnerPaymentRepository, OwnerPaymentRepository>();
         services.AddScoped<IUserSubscribedRepository, UserSubscribedRepository>();
+        services.AddScoped<IQuestRewardRepository, QuestRewardRepository>();
     }
 
     /// <summary>

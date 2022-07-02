@@ -16,7 +16,7 @@ internal class MoMoSecurity
                    amount + ",\"paymentCode\":\"" + paymentCode + "\",\"storeId\":\"" + storeId +
                    "\",\"storeName\":\"" + storeName + "\"}";
         var data = Encoding.UTF8.GetBytes(json);
-        string result;
+        string? result = null;
         using (var rsa = new RSACryptoServiceProvider(4096)) //KeySize
         {
             try

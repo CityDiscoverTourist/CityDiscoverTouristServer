@@ -12,7 +12,6 @@ public class QuestRequestModel
     public string? EstimatedDistance { get; set; }
     public IFormFile? Image { get; set; }
     public string? AvailableTime { get; set; }
-    public DateTime? CreatedDate { get; set; }
     public DateTime? UpdatedDate { get; set; }
     public string? Status { get; set; } = "Pending";
     public int QuestTypeId { get; set; }

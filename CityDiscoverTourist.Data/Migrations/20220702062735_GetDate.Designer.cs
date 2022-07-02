@@ -4,6 +4,7 @@ using CityDiscoverTourist.Data.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CityDiscoverTourist.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220702062735_GetDate")]
+    partial class GetDate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -271,9 +273,7 @@ namespace CityDiscoverTourist.Data.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime?>("CreatedDate")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("datetime2")
-                        .HasDefaultValueSql("GETDATE()");
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("CustomerId")
                         .HasColumnType("nvarchar(450)");
@@ -325,9 +325,7 @@ namespace CityDiscoverTourist.Data.Migrations
                         .HasColumnType("int");
 
                     b.Property<DateTime?>("CreatedDate")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("datetime2")
-                        .HasDefaultValueSql("GETDATE()");
+                        .HasColumnType("datetime2");
 
                     b.Property<float>("CurrentPoint")
                         .HasColumnType("real");
@@ -621,9 +619,7 @@ namespace CityDiscoverTourist.Data.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime?>("CreatedDate")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("datetime2")
-                        .HasDefaultValueSql("GETDATE()");
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
@@ -736,9 +732,7 @@ namespace CityDiscoverTourist.Data.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("CreatedDate")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("datetime2")
-                        .HasDefaultValueSql("GETDATE()");
+                        .HasColumnType("datetime2");
 
                     b.Property<int>("PercentDiscount")
                         .HasColumnType("int");
@@ -811,9 +805,7 @@ namespace CityDiscoverTourist.Data.Migrations
                         .HasColumnType("int");
 
                     b.Property<DateTime?>("ReceivedDate")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("datetime2")
-                        .HasDefaultValueSql("GETDATE()");
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Status")
                         .HasColumnType("nvarchar(max)");

@@ -43,6 +43,7 @@ public class RewardService : BaseService, IRewardService
     public async Task<RewardResponseModel> CreateAsync(RewardRequestModel request)
     {
         var entity = _mapper.Map<Reward>(request);
+        entity.ExpiredDate = DateTime.UtcNow.AddDays(7);
         entity = await _rewardRepository.Add(entity);
         return _mapper.Map<RewardResponseModel>(entity);
     }

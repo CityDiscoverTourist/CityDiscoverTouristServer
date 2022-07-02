@@ -12,6 +12,13 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     protected override void OnModelCreating(ModelBuilder builder)
     {
         builder.Entity<Payment>().Property(x => x.CreatedDate).HasDefaultValueSql("GETDATE()");
+        builder.Entity<Quest>().Property(x => x.CreatedDate).HasDefaultValueSql("GETDATE()");
+        builder.Entity<QuestReward>().Property(x => x.CreatedDate).HasDefaultValueSql("GETDATE()");
+        builder.Entity<QuestItem>().Property(x => x.CreatedDate).HasDefaultValueSql("GETDATE()");
+        builder.Entity<CustomerQuest>().Property(x => x.CreatedDate).HasDefaultValueSql("GETDATE()");
+        builder.Entity<CustomerTask>().Property(x => x.CreatedDate).HasDefaultValueSql("GETDATE()");
+        builder.Entity<Reward>().Property(x => x.ReceivedDate).HasDefaultValueSql("GETDATE()");
+
         /*builder.Entity<CustomerAnswer>().HasKey(c => new { c.QuestItemId, c.CustomerTaskId });
 
         builder.Entity<CustomerAnswer>().HasOne(x => x.QuestItem)

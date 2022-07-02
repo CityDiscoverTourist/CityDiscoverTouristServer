@@ -16,7 +16,7 @@ public class Quest: BaseEntity
     public string? EstimatedDistance { get; set; }
     public string? Status { get; set; }
 
-    public DateTime? CreatedDate { get; set; }
+    public DateTime? CreatedDate { get; set; } = DateTime.Now;
     public DateTime? UpdatedDate { get; set; }
 
     public QuestType? QuestType { get; set; }
