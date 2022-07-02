@@ -21,15 +21,13 @@ public class PaymentService : BaseService, IPaymentService
     private readonly IPaymentRepository _paymentRepository;
     private readonly ISortHelper<Payment> _sortHelper;
     private readonly MomoSetting _momoSettings;
-    private readonly IRecurringJobManager _recurringJobManager;
 
-    public PaymentService(IPaymentRepository paymentRepository, IMapper mapper, ISortHelper<Payment> sortHelper, MomoSetting momoSettings, IRecurringJobManager recurringJobManager)
+    public PaymentService(IPaymentRepository paymentRepository, IMapper mapper, ISortHelper<Payment> sortHelper, MomoSetting momoSettings)
     {
         _paymentRepository = paymentRepository;
         _mapper = mapper;
         _sortHelper = sortHelper;
         _momoSettings = momoSettings;
-        _recurringJobManager = recurringJobManager;
     }
 
     public PageList<PaymentResponseModel> GetAll(PaymentParams @params)
@@ -100,7 +98,7 @@ public class PaymentService : BaseService, IPaymentService
                       redirectUrl + "&requestId=" + requestId + "&requestType=" + requestType;
 
         var crypto = new MoMoSecurity();
-        var signature = crypto.signSHA256(rawHash, secretKey!);
+        var signature = crypto.SignSha256(rawHash, secretKey!);
 
         var message = new JObject
         {
@@ -119,7 +117,7 @@ public class PaymentService : BaseService, IPaymentService
             { "signature", signature }
         };
 
-        var response = PaymentRequest.sendPaymentRequest(endpoint!, message.ToString());
+        var response = PaymentRequest.SendPaymentRequest(endpoint!, message.ToString());
         var jMessage = JObject.Parse(response);
         var paymentUrl = jMessage.GetValue("payUrl")!.ToString();
         return paymentUrl;

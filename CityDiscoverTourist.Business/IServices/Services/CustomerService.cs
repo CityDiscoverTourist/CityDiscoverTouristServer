@@ -68,11 +68,6 @@ public class CustomerService : BaseService, ICustomerService
 
         if(param.Email != null) customers = customers.Where(x => x.Email.Contains(param.Email));
 
-        customers = param.IsLock switch
-        {   //true = unlocked, false = locked
-            "true" => customers.Where(x => x.LockoutEnabled == true),
-            "false" => customers.Where(x => x.LockoutEnabled == false),
-            _ => customers
-        };
+        if(param.IsLock != null) customers = customers.Where(x => x.LockoutEnabled == param.IsLock);
     }
 }
