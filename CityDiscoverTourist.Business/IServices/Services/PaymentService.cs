@@ -3,6 +3,7 @@ using AutoMapper;
 using CityDiscoverTourist.Business.Data.RequestModel;
 using CityDiscoverTourist.Business.Data.ResponseModel;
 using CityDiscoverTourist.Business.Enums;
+using CityDiscoverTourist.Business.Exceptions;
 using CityDiscoverTourist.Business.Helper;
 using CityDiscoverTourist.Business.Helper.Params;
 using CityDiscoverTourist.Business.Momo;
@@ -50,12 +51,31 @@ public class PaymentService : BaseService, IPaymentService
         return _mapper.Map<PaymentResponseModel>(entity);
     }
 
-    public async Task<PaymentResponseModel> UpdateStatusWhenSuccess(Guid id)
+    public async Task<PaymentResponseModel> UpdateStatusWhenSuccess(MomoRequestModel request)
     {
-        var entity = await _paymentRepository.Get(id);
+        var secretKey = _momoSettings.SecretKey;
+
+        var entity = await _paymentRepository.Get(request.OrderId);
         CheckDataNotNull("Payment", entity);
+        /*var param = "partnerCode=" + request.PartnerCode + "&orderId=" + request.OrderId + "&requestId=" + request.RequestId +
+                    "&amount=" + request.Amount  + "&orderInfo=" + request.OrderInfo + "&orderType" + request.OrderType +
+                    "&transId=" + request.TransId + "&resultCode=" + request.ResultCode + "&message=" + request.Message +
+                    "&payType=" + request.PayType + "&responseTime=" + request.ResponseTime +
+                    "&extraData=" + request.ExtraData;
+
+
+        var crypto = new MoMoSecurity();
+        var signature = crypto.SignSha256(param, secretKey!);
+
+        if (signature != request.Signature!) throw new AppException("Signature is not valid");*/
+
+        if (request.ResultCode != "0") throw new AppException("Failed when update status");
+        if (request.Amount != entity.TotalAmount.ToString(CultureInfo.InvariantCulture))
+            throw new AppException("Amount is not valid");
+
         entity.Status = PaymentStatus.Success.ToString();
         await _paymentRepository.Update(entity);
+
         return _mapper.Map<PaymentResponseModel>(entity);
     }
 

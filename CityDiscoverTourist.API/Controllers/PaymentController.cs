@@ -102,18 +102,6 @@ public class PaymentController : ControllerBase
     /// <summary>
     ///
     /// </summary>
-    /// <param name="id"></param>
-    /// <returns></returns>
-    [HttpPut("update-status/{id:Guid}")]
-    public async Task<ApiResponse<PaymentResponseModel>> UpdateStatus(Guid id)
-    {
-        var entity = await _paymentService.UpdateStatusWhenSuccess(id);
-        return ApiResponse<Payment>.Created(entity);
-    }
-
-    /// <summary>
-    ///
-    /// </summary>
     /// <returns></returns>
     [HttpPut]
     public async Task<OkObjectResult> Put()
@@ -131,7 +119,7 @@ public class PaymentController : ControllerBase
     [HttpPost("callback")]
     public Task<PaymentResponseModel> Callback([FromBody] MomoRequestModel dto)
     {
-        return _paymentService.UpdateStatusWhenSuccess(dto.OrderId);
+        return _paymentService.UpdateStatusWhenSuccess(dto);
     }
 
     /// <summary>

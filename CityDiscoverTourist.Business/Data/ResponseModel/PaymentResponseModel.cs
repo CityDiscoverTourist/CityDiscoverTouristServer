@@ -6,7 +6,7 @@ public class PaymentResponseModel
     public Guid Id { get; set; }
     public string? PaymentMethod { get; set; }
     public int Quantity { get; set; }
-    public double AmountTotal { get; set; }
+    public double TotalAmount { get; set; }
     public string? Status { get; set; }
     public DateTime CreatedDate { get; set; }
     public string? CustomerId { get; set; }
