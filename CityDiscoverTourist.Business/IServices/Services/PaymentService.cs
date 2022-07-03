@@ -11,6 +11,7 @@ using CityDiscoverTourist.Data.IRepositories;
 using CityDiscoverTourist.Data.Models;
 using Hangfire;
 using Microsoft.EntityFrameworkCore;
+using MoMo;
 using Newtonsoft.Json.Linq;
 
 namespace CityDiscoverTourist.Business.IServices.Services;
@@ -85,10 +86,10 @@ public class PaymentService : BaseService, IPaymentService
         var secretKey = _momoSettings.SecretKey;
         var orderInfo = DateTime.Now.ToString("yyyyMMddHHmmss") + "-" + request.QuestId;
         var redirectUrl = "https://www.citydiscovery.tech/thank/";
-        var ipnUrl = "http://localhost:5235/api/v1/payments/callback";
+        var ipnUrl = "https://citytourist.azurewebsites.net/api/v1/payments/callback";
         var requestType = "captureWallet";
 
-        var amount = request.AmountTotal.ToString(CultureInfo.InvariantCulture);
+        var amount = request.TotalAmount.ToString(CultureInfo.InvariantCulture);
         var orderId = request.Id.ToString();
         var requestId = Guid.NewGuid();
         var extraData = "";

@@ -129,15 +129,9 @@ public class PaymentController : ControllerBase
     /// </summary>
     /// <returns></returns>
     [HttpPost("callback")]
-    public Task<ActionResult> Callback([FromBody] MomoRequestModel dto)
+    public Task<PaymentResponseModel> Callback([FromBody] MomoRequestModel dto)
     {
-        string param  ;
-
-        param = "https://" + HttpContext.Request.Host.Value + HttpContext.Request.Path.Value;
-        var result = HttpContext.Request.QueryString.Value;
-        var uri = new Uri(param + result);
-        var query = HttpUtility.ParseQueryString(uri.Query).Get("resultCode");
-        return Task.FromResult<ActionResult>(Ok(new { query, uri }));
+        return _paymentService.UpdateStatusWhenSuccess(dto.OrderId);
     }
 
     /// <summary>

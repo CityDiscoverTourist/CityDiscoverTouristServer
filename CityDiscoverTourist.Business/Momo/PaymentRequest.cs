@@ -1,48 +1,41 @@
-﻿using System.Net;
+﻿using System;
+using System.Security.Cryptography;
+using System.IO;
 using System.Text;
+using System.Net;
+using System.Net.Http.Headers;
 
-namespace CityDiscoverTourist.Business.Momo;
-
-internal class PaymentRequest
+namespace MoMo
 {
-    public static string sendPaymentRequest(string endpoint, string postJsonString)
+    class PaymentRequest
     {
-        try
-        {
-            var httpWReq = (HttpWebRequest) WebRequest.Create(endpoint);
-
-            var postData = postJsonString;
-
-            var data = Encoding.UTF8.GetBytes(postData);
-
-            httpWReq.ProtocolVersion = HttpVersion.Version11;
-            httpWReq.Method = "POST";
-            httpWReq.ContentType = "application/json";
-
-            httpWReq.ContentLength = data.Length;
-            httpWReq.ReadWriteTimeout = 30000;
-            httpWReq.Timeout = 15000;
-            var stream = httpWReq.GetRequestStream();
-            stream.Write(data, 0, data.Length);
-            stream.Close();
-
-            var response = (HttpWebResponse) httpWReq.GetResponse();
-
-            var jsonresponse = "";
-
-            using (var reader = new StreamReader(response.GetResponseStream()))
-            {
-                string? temp = null;
-                while ((temp = reader.ReadLine()) != null) jsonresponse += temp;
-            }
-
-
-            return jsonresponse;
-            //return new MomoResponse(mtid, jsonresponse);
+        public PaymentRequest() {
         }
-        catch (WebException e)
+        public static string sendPaymentRequest(string endpoint, string postJsonString)
         {
-            return e.Message;
+
+            try
+            {
+                HttpClient client = new HttpClient();
+                client.BaseAddress = new Uri(endpoint);
+                client.DefaultRequestHeaders.Accept.Clear();
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                client.DefaultRequestHeaders.Add("Authorization", "Basic " + Convert.ToBase64String(Encoding.UTF8.GetBytes("momo:momo")));
+                HttpResponseMessage result = client.PostAsync(endpoint, new StringContent(postJsonString, Encoding.UTF8, "application/json")).Result;
+                string resultString = "";
+
+
+                using (var reader = new StreamReader(result.Content.ReadAsStreamAsync().Result))
+                {
+                    resultString = reader.ReadToEnd();
+                }
+                //return new MomoResponse(mtid, jsonresponse);
+                return resultString;
+            }
+            catch (WebException e)
+            {
+                return e.Message;
+            }
         }
     }
 }
