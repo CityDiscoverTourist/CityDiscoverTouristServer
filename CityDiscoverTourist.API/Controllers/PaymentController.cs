@@ -129,7 +129,7 @@ public class PaymentController : ControllerBase
     /// </summary>
     /// <returns></returns>
     [HttpPost("callback")]
-    public  Task<ActionResult> Callback()
+    public Task<ActionResult> Callback([FromBody] MomoRequestModel dto)
     {
         string param  ;
 

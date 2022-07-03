@@ -85,7 +85,7 @@ public class PaymentService : BaseService, IPaymentService
         var secretKey = _momoSettings.SecretKey;
         var orderInfo = DateTime.Now.ToString("yyyyMMddHHmmss") + "-" + request.QuestId;
         var redirectUrl = "https://www.citydiscovery.tech/thank/";
-        var ipnUrl = "http://localhost:3000/data/";
+        var ipnUrl = "http://localhost:5235/api/v1/payments/callback";
         var requestType = "captureWallet";
 
         var amount = request.AmountTotal.ToString(CultureInfo.InvariantCulture);
@@ -117,7 +117,7 @@ public class PaymentService : BaseService, IPaymentService
             { "signature", signature }
         };
 
-        var response = PaymentRequest.SendPaymentRequest(endpoint!, message.ToString());
+        var response = PaymentRequest.sendPaymentRequest(endpoint!, message.ToString());
         var jMessage = JObject.Parse(response);
         var paymentUrl = jMessage.GetValue("payUrl")!.ToString();
         return paymentUrl;

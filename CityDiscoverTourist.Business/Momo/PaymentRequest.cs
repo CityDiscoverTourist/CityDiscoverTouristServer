@@ -5,15 +5,15 @@ namespace CityDiscoverTourist.Business.Momo;
 
 internal class PaymentRequest
 {
-    public static string SendPaymentRequest(string endpoint, string postJsonString)
+    public static string sendPaymentRequest(string endpoint, string postJsonString)
     {
         try
         {
-#pragma warning disable CS0618
             var httpWReq = (HttpWebRequest) WebRequest.Create(endpoint);
-#pragma warning restore CS0618
 
-            var data = Encoding.UTF8.GetBytes(postJsonString);
+            var postData = postJsonString;
+
+            var data = Encoding.UTF8.GetBytes(postData);
 
             httpWReq.ProtocolVersion = HttpVersion.Version11;
             httpWReq.Method = "POST";
@@ -32,11 +32,12 @@ internal class PaymentRequest
 
             using (var reader = new StreamReader(response.GetResponseStream()))
             {
-                string temp;
-                while ((temp = reader.ReadLine()!) != null) jsonresponse += temp;
+                string temp = null;
+                while ((temp = reader.ReadLine()) != null) jsonresponse += temp;
             }
 
 
+            //todo parse it
             return jsonresponse;
             //return new MomoResponse(mtid, jsonresponse);
         }
