@@ -32,12 +32,11 @@ internal class PaymentRequest
 
             using (var reader = new StreamReader(response.GetResponseStream()))
             {
-                string temp = null;
+                string? temp = null;
                 while ((temp = reader.ReadLine()) != null) jsonresponse += temp;
             }
 
 
-            //todo parse it
             return jsonresponse;
             //return new MomoResponse(mtid, jsonresponse);
         }
