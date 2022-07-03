@@ -6,6 +6,7 @@ using CityDiscoverTourist.Business.Helper;
 using CityDiscoverTourist.Business.Helper.Params;
 using CityDiscoverTourist.Data.IRepositories;
 using CityDiscoverTourist.Data.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace CityDiscoverTourist.Business.IServices.Services;
 
@@ -58,10 +59,14 @@ public class LocationTypeService : BaseService, ILocationTypeService
 
     public async Task<LocationTypeResponseModel> DeleteAsync(int id)
     {
-        var entity = await _locationTypeRepository.Get(id);
-        entity.Status = CommonStatus.Deleted.ToString();
-        await _locationTypeRepository.UpdateFields(entity, r => r.Status!);
-        return _mapper.Map<LocationTypeResponseModel>(entity);
+        var locationType = _locationTypeRepository.GetByCondition(x => x.Id == id).
+            Include(data => data.Locations).ToList().FirstOrDefault();
+        if (locationType != null && locationType.Locations!.Count == 0)
+        {
+            locationType.Status = CommonStatus.Deleted.ToString();
+            await _locationTypeRepository.UpdateFields(locationType, r => r.Status!);
+        }
+        return _mapper.Map<LocationTypeResponseModel>(locationType);
     }
 
     public async Task<LocationTypeResponseModel> DisableAsync(int id)
@@ -85,7 +90,13 @@ public class LocationTypeService : BaseService, ILocationTypeService
         if (!entities.Any()) return;
 
         if (param.Name != null)
-            entities = entities.Where(r => r.Name!.Contains(param.Name));
+            entities = entities.Where(r => r.Name!.Contains(param.Name.Trim()));
         if (param.Status != null) entities = entities.Where(x => x.Status == param.Status);
+    }
+
+    public async Task<bool> CheckExisted(string name)
+    {
+        var result = await _locationTypeRepository.GetByCondition(x => x.Name == name.Trim()).AnyAsync();
+        return result;
     }
 }

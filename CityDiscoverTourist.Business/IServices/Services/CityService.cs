@@ -66,9 +66,12 @@ public class CityService : BaseService, ICityService
 
     public async Task<CityResponseModel> DeleteAsync(int id)
     {
-        var city = await _cityRepository.Get(id);
-        city.Status = CommonStatus.Deleted.ToString();
-        await _cityRepository.UpdateFields(city, r => r.Status!);
+        var city = _cityRepository.GetByCondition(x => x.Id == id).Include(data => data.Areas).ToList().FirstOrDefault();
+        if (city != null && city.Areas!.Count==0)
+        {
+            city.Status = CommonStatus.Deleted.ToString();
+            await _cityRepository.UpdateFields(city, r => r.Status!);
+        }
         return _mapper.Map<CityResponseModel>(city);
     }
 
@@ -103,7 +106,13 @@ public class CityService : BaseService, ICityService
     {
         if (!entities.Any()) return;
 
-        if (param.Name != null) entities = entities.Where(r => r.Name!.Contains(param.Name));
+        if (param.Name != null) entities = entities.Where(r => r.Name!.Contains(param.Name.Trim()));
         if (param.Status != null) entities = entities.Where(x => x.Status == param.Status);
+    }
+
+    public async Task<bool> CheckExisted(string name)
+    {
+        var result = await _areaRepository.GetByCondition(x => x.Name == name.Trim()).AnyAsync();
+        return result;
     }
 }

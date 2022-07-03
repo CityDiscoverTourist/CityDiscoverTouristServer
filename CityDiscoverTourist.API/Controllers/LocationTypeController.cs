@@ -125,4 +125,18 @@ public class LocationTypeController : ControllerBase
         var entity = await _locationTypeService.EnableAsync(id);
         return ApiResponse<LocationType>.Ok(entity);
     }
+
+    /// <summary>
+    /// check locationtype by name
+    /// </summary>
+    /// <param name="name"></param>
+    /// <returns></returns>
+    [HttpGet("check")]
+    //[Cached(600)]
+    public Task<bool> CheckExist(string name)
+    {
+        var entity = _locationTypeService.CheckExisted(name);
+
+        return entity;
+    }
 }

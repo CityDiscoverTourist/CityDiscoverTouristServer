@@ -138,4 +138,18 @@ public class CityController : ControllerBase
         var entity = _cityService.UpdateStatusForeignKey(id, status).Result;
         return Task.FromResult<ActionResult<ApiResponse<CityResponseModel>>>(ApiResponse<City>.Ok(entity));
     }
+
+    /// <summary>
+    /// check city by name
+    /// </summary>
+    /// <param name="name"></param>
+    /// <returns></returns>
+    [HttpGet("check")]
+    //[Cached(600)]
+    public Task<bool> CheckExist(string name)
+    {
+        var entity = _cityService.CheckExisted(name);
+
+        return entity;
+    }
 }

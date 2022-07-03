@@ -14,4 +14,5 @@ public interface ILocationTypeService
     public Task<LocationTypeResponseModel> DeleteAsync(int id);
     public Task<LocationTypeResponseModel> DisableAsync(int id);
     public Task<LocationTypeResponseModel> EnableAsync(int id);
+    public Task<bool> CheckExisted(string name);
 }

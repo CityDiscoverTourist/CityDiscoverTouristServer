@@ -7,4 +7,6 @@ public class AreaResponseModel
     public string? Status { get; set; }
 
     public int CityId { get; set; }
+
+    public List<LocationResponseModel> Locations { get; set; }
 }
