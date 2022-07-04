@@ -1,5 +1,9 @@
+using System.Linq.Expressions;
 using Azure.Storage.Blobs;
+using Azure.Storage.Blobs.Models;
 using Microsoft.AspNetCore.Http;
+using Microsoft.WindowsAzure.Storage;
+using Microsoft.WindowsAzure.Storage.Blob;
 
 namespace CityDiscoverTourist.Business.IServices.Services;
 
@@ -14,8 +18,8 @@ public class BlobService : IBlobService
 
     public async Task<Stream> GetBlogAsync(string name)
     {
-        var containerClient = _blobServiceClient.GetBlobContainerClient("quest");
-        var blobClient = containerClient.GetBlobClient(name);
+        var containerClient = _blobServiceClient.GetBlobContainerClient("item");
+        var blobClient = containerClient.GetBlobClient("example/"+name);
         var blobInfo = await blobClient.DownloadAsync();
         return blobInfo.Value.Content;
     }
@@ -44,7 +48,7 @@ public class BlobService : IBlobService
 
 
     // get image from blob storage
-    public async  Task<string> GetImgPathAsync(string name)
+    public async Task<string> GetImgPathAsync(string name)
     {
         var containerClient = _blobServiceClient.GetBlobContainerClient("quest");
         var blobClient = containerClient.GetBlobClient(name);
@@ -62,5 +66,21 @@ public class BlobService : IBlobService
         }
 
         return line!;
+    }
+
+    // get all images from blob storage
+    public async Task<List<string>> GetAllImgPathAsync(string containerName)
+    {
+        var containerClient = _blobServiceClient.GetBlobContainerClient(containerName);
+        var blobClient = containerClient.GetBlobClient("example/");
+
+        var list = new List<string>();
+
+        await  foreach (var blobItem in containerClient.GetBlobsAsync())
+        {
+            list.Add(blobItem.Name);
+        }
+
+        return list;
     }
 }

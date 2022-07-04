@@ -8,4 +8,5 @@ public interface IBlobService
     public Task<bool> UploadBlogAsync(IFormFile file, string containerName);
     public Task<string> UploadQuestImgAndReturnImgPathAsync(IFormFile? file, int questId, string containerName);
     public Task<string> GetImgPathAsync(string name);
+    public Task<List<string>> GetAllImgPathAsync(string containerName);
 }
