@@ -3,9 +3,9 @@ WORKDIR /app
 EXPOSE 80
 EXPOSE 443
 
-
-
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
+RUN apt-get update && apt-get install -y libgdiplus
+
 WORKDIR /src
 COPY ["CityDiscoverTourist.API/CityDiscoverTourist.API.csproj", "CityDiscoverTourist.API/"]
 COPY ["CityDiscoverTourist.Business/CityDiscoverTourist.Business.csproj", "CityDiscoverTourist.Business/"]
@@ -22,10 +22,4 @@ FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
 ENTRYPOINT ["dotnet", "CityDiscoverTourist.API.dll"]
-# install System.Drawing native dependencies
-RUN apt-get update \
-    && apt-get install -y --allow-unauthenticated \
-        libc6-dev \
-        libgdiplus \
-        libx11-dev \
-     && rm -rf /var/lib/apt/lists/* 
+
