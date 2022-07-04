@@ -1,0 +1,212 @@
+using System.Drawing;
+using CityDiscoverTourist.Business.IServices;
+using Emgu.CV;
+using Emgu.CV.Features2D;
+using Emgu.CV.Structure;
+using Emgu.CV.Util;
+using Microsoft.AspNetCore.Mvc;
+
+namespace CityDiscoverTourist.API.Controllers;
+
+[ApiController]
+[Route("[controller]")]
+public class WeatherForecastController : ControllerBase
+{
+    private readonly IBlobService   _blobService;
+
+    private static readonly string[] Summaries =
+    {
+        "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
+    };
+
+    private readonly ILogger<WeatherForecastController> _logger;
+
+    public WeatherForecastController(ILogger<WeatherForecastController> logger, IBlobService blobService)
+    {
+        _logger = logger;
+        _blobService = blobService;
+    }
+
+    [HttpGet(Name = "test")]
+    public async Task<long> Get()
+    {
+        var exampleImage1 = new Image<Gray, byte>("D:\\C#\\CityDiscoverTourist\\CityDiscoverTourist.API\\bin\\Debug\\net6.0\\exampleImg\\a.jpg");
+        var exampleImage2 = new Image<Gray, byte>("D:\\C#\\CityDiscoverTourist\\CityDiscoverTourist.API\\bin\\Debug\\net6.0\\exampleImg\\b.jpg");
+        var exampleImage3 = new Image<Gray, byte>("D:\\C#\\CityDiscoverTourist\\CityDiscoverTourist.API\\bin\\Debug\\net6.0\\exampleImg\\c.jpg");
+        var exampleImage4 = new Image<Gray, byte>("D:\\C#\\CityDiscoverTourist\\CityDiscoverTourist.API\\bin\\Debug\\net6.0\\exampleImg\\d.jpg");
+        var exampleImage5 = new Image<Gray, byte>("D:\\C#\\CityDiscoverTourist\\CityDiscoverTourist.API\\bin\\Debug\\net6.0\\exampleImg\\e.jpg");
+        var exampleImage6 = new Image<Gray, byte>("D:\\C#\\CityDiscoverTourist\\CityDiscoverTourist.API\\bin\\Debug\\net6.0\\exampleImg\\f.jpg");
+
+        var exampleArray = new List<Image<Gray, byte>>
+        {
+            exampleImage1,
+            exampleImage2,
+            exampleImage3,
+            exampleImage4,
+            exampleImage5,
+            exampleImage6
+        };
+
+        //object in scene
+        //Image<Gray, Byte> sceneImage1 = new Image<Gray, Byte>("C:\\\\Users\\\\khang\\\\source\\\\repos\\\\EmguDemo\\\\EmguDemo\\\\bin\\\\Debug\\\\net6.0\\\\scene.jpg");
+        var sceneImage2 =
+            new Image<Gray, byte>(
+                "D:\\C#\\CityDiscoverTourist\\CityDiscoverTourist.API\\bin\\Debug\\net6.0\\exampleImg\\a.jpg");
+        var sceneImage1 =
+            new Image<Gray, byte>(
+                "D:\\C#\\CityDiscoverTourist\\CityDiscoverTourist.API\\bin\\Debug\\net6.0\\exampleImg\\b.jpg");
+        var sceneImage3 =
+            new Image<Gray, byte>(
+                "D:\\C#\\CityDiscoverTourist\\CityDiscoverTourist.API\\bin\\Debug\\net6.0\\exampleImg\\f.jpg");
+
+        var sceneImageArr = new List<Image<Gray, byte>>
+        {
+            sceneImage1,
+            sceneImage2,
+            sceneImage3
+        };
+
+        var sift = new SIFT();
+        var bfMatcher = new BFMatcher(DistanceType.L2Sqr);
+
+        long mostMatches = 0;
+
+        foreach (var exampleImg in exampleArray)
+        {
+            var vectorOfKeypoints = new VectorOfKeyPoint();
+            var originalDescriptor = new Mat();
+
+            sift.DetectAndCompute(exampleImg, null, vectorOfKeypoints, originalDescriptor, false);
+
+            foreach (var image in sceneImageArr)
+            {
+                var vectorOfKeypointsOfScene = new VectorOfKeyPoint();
+                var descriptorsOfScene = new Mat();
+
+                sift.DetectAndCompute(image, null, vectorOfKeypointsOfScene, descriptorsOfScene, false);
+
+                var vectorOfMatches = new VectorOfVectorOfDMatch();
+
+                bfMatcher.KnnMatch(descriptorsOfScene, originalDescriptor, vectorOfMatches, 2);
+
+                //every matches alogirthm found
+                var matches = vectorOfMatches.ToArrayOfArray();
+
+                //matches with distance less than 0.75
+                var goodMatches = matches.Where(x => x[0].Distance < 0.75 * x[1].Distance).ToArray();
+
+                //number of good matches
+                var numberOfGoodMatches = goodMatches.Length;
+
+                //if number of good matches is greater than most matches, then set most matches to number of good matches
+                if (numberOfGoodMatches > mostMatches) mostMatches = numberOfGoodMatches;
+            }
+        }
+        return mostMatches;
+    }
+
+    [HttpGet("demo")]
+    public long Demo()
+    {
+        //load image from url
+        var client = new HttpClient();
+        var image1 = client.GetAsync("https://citytouriststorage.blob.core.windows.net/item/example/a.jpg").Result.Content.ReadAsByteArrayAsync().Result;
+        var image2 = client.GetAsync("https://citytouriststorage.blob.core.windows.net/item/example/b.jpg").Result.Content.ReadAsByteArrayAsync().Result;
+        var image3 = client.GetAsync("https://citytouriststorage.blob.core.windows.net/item/example/c.jpg").Result.Content.ReadAsByteArrayAsync().Result;
+        var image4 = client.GetAsync("https://citytouriststorage.blob.core.windows.net/item/example/d.jpg").Result.Content.ReadAsByteArrayAsync().Result;
+        var image5 = client.GetAsync("https://citytouriststorage.blob.core.windows.net/item/example/e.jpg").Result.Content.ReadAsByteArrayAsync().Result;
+        var image6 = client.GetAsync("https://citytouriststorage.blob.core.windows.net/item/example/f.jpg").Result.Content.ReadAsByteArrayAsync().Result;
+
+        // convert byte array to bitmap
+        var bitmap1 = new Bitmap(new MemoryStream(image1));
+        var bitmap2 = new Bitmap(new MemoryStream(image2));
+        var bitmap3 = new Bitmap(new MemoryStream(image3));
+        var bitmap4 = new Bitmap(new MemoryStream(image4));
+        var bitmap5 = new Bitmap(new MemoryStream(image5));
+        var bitmap6 = new Bitmap(new MemoryStream(image6));
+
+        //example object
+        var exampleImage1 = bitmap1.ToImage<Gray, byte>();
+        var exampleImage2 = bitmap2.ToImage<Gray, byte>();
+        var exampleImage3 = bitmap3.ToImage<Gray, byte>();
+        var exampleImage4 = bitmap4.ToImage<Gray, byte>();
+        var exampleImage5 = bitmap5.ToImage<Gray, byte>();
+        var exampleImage6 = bitmap6.ToImage<Gray, byte>();
+
+        var exampleArray = new List<Image<Gray, byte>>
+        {
+            exampleImage1,
+            exampleImage2,
+            exampleImage3,
+            exampleImage4,
+            exampleImage5,
+            exampleImage6
+        };
+
+        //object in scene
+        var sceneImageArray = new List<Image<Gray, byte>>
+        {
+            exampleImage1,
+            exampleImage2,
+            exampleImage3,
+        };
+
+        var sift = new SIFT();
+        var bfMatcher = new BFMatcher(DistanceType.L2Sqr);
+
+        long mostMatches = 0;
+
+        foreach (var exampleImg in exampleArray)
+        {
+            var vectorOfKeypoints = new VectorOfKeyPoint();
+            var originalDescriptor = new Mat();
+
+            sift.DetectAndCompute(exampleImg, null, vectorOfKeypoints, originalDescriptor, false);
+
+            foreach (var image in sceneImageArray)
+            {
+                var vectorOfKeypointsOfScene = new VectorOfKeyPoint();
+                var descriptorsOfScene = new Mat();
+
+                sift.DetectAndCompute(image, null, vectorOfKeypointsOfScene, descriptorsOfScene, false);
+
+                var vectorOfMatches = new VectorOfVectorOfDMatch();
+
+                bfMatcher.KnnMatch(descriptorsOfScene, originalDescriptor, vectorOfMatches, 2);
+
+                //every matches alogirthm found
+                var matches = vectorOfMatches.ToArrayOfArray();
+
+                //matches with distance less than 0.75
+                var goodMatches = matches.Where(x => x[0].Distance < 0.75 * x[1].Distance).ToArray();
+
+                //number of good matches
+                var numberOfGoodMatches = goodMatches.Length;
+
+                //if number of good matches is greater than most matches, then set most matches to number of good matches
+                if (numberOfGoodMatches > mostMatches) mostMatches = numberOfGoodMatches;
+            }
+        }
+        return mostMatches;
+    }
+
+
+    /*//total good matches has > 75% accuracy
+    long goodMatches = 0;
+    //define accuracy
+    const float accuracy = 0.75f;
+
+    foreach(var match in matches)
+    {
+        if (match[0].Distance < accuracy * match[1].Distance)
+        {
+            goodMatches++;
+        }
+    }
+
+    //update mostMatches
+    if (goodMatches > mostMatches)
+    {
+        mostMatches = goodMatches;
+    }*/
+}

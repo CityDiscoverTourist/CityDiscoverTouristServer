@@ -20,6 +20,9 @@
         <PackageReference Include="Azure.Extensions.AspNetCore.Configuration.Secrets" Version="1.0.0" />
         <PackageReference Include="Azure.Identity" Version="1.4.0" />
         <PackageReference Include="Azure.Storage.Blobs" Version="12.12.0" />
+        <PackageReference Include="Emgu.CV" Version="4.5.5.4823" />
+        <PackageReference Include="Emgu.CV.Bitmap" Version="4.5.5.4823" />
+        <PackageReference Include="Emgu.CV.runtime.windows" Version="4.5.5.4823" />
         <PackageReference Include="FirebaseAdmin" Version="2.3.0" />
         <PackageReference Include="Hangfire" Version="1.7.30" />
         <PackageReference Include="Hangfire.Core" Version="1.7.30" />
@@ -59,6 +62,7 @@
         <PackageReference Include="SerilogTimings" Version="2.3.0" />
         <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
         <PackageReference Include="System.Data.SqlClient" Version="4.8.3" />
+        <PackageReference Include="System.Drawing.Common" Version="6.0.0" />
     </ItemGroup>
 
     <ItemGroup>
