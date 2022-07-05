@@ -22,13 +22,10 @@ WORKDIR /app
 COPY --from=publish /app/publish .
 
 # install System.Drawing native dependencies
-RUN apt-get update \
-    && apt-get install -y --allow-unauthenticated \
-   		libgdiplus \
-#         libc6-dev \
-#         libgdiplus \
-#         libx11-dev \
-     && rm -rf /var/lib/apt/lists/*
+RUN apt-get update
+RUN apt-get install -y libgdiplus libc6-dev
+RUN apt-get install -y libicu-dev libharfbuzz0b libfontconfig1 libfreetype6
+
 
 ENTRYPOINT ["dotnet", "CityDiscoverTourist.API.dll"]
 

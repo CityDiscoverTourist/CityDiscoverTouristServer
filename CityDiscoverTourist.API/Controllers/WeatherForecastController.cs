@@ -5,8 +5,12 @@ using Emgu.CV.Features2D;
 using Emgu.CV.Structure;
 using Emgu.CV.Util;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.VisualBasic;
 using SkiaSharp;
-using System.Drawing.Drawing2D;
+using MozJpegSharp;
+using SixLabors.ImageSharp.PixelFormats;
+using SixLabors.ImageSharp.Processing;
+using Image = SixLabors.ImageSharp.Image;
 
 
 namespace CityDiscoverTourist.API.Controllers;
@@ -109,7 +113,7 @@ public class WeatherForecastController : ControllerBase
     }
 
     [HttpGet("demo")]
-    public long Demo()
+    public async Task<long> Demo()
     {
         //load image from url
         var client = new HttpClient();
@@ -127,6 +131,7 @@ public class WeatherForecastController : ControllerBase
         var bitmap4 = new Bitmap(new MemoryStream(image4));
         var bitmap5 = new Bitmap(new MemoryStream(image5));
         var bitmap6 = new Bitmap(new MemoryStream(image6));
+
 
 
         var backgroundBitmap1 = SKBitmap.Decode(new MemoryStream(image1));
@@ -160,11 +165,13 @@ public class WeatherForecastController : ControllerBase
         };
 
         //object in scene
-        var sceneImageArray = new List<Image<Gray, byte>>
+        var sceneImage2 = SKImage.FromBitmap(backgroundBitmap6);
+
+            var sceneImageArray = new List<SKImage>()
         {
-            exampleImage1,
-            exampleImage2,
-            exampleImage3,
+            sceneImage2,
+            sceneImage2,
+            sceneImage2,
         };
 
         var sift = new SIFT();
@@ -179,10 +186,11 @@ public class WeatherForecastController : ControllerBase
 
             sift.DetectAndCompute(exampleImg, null, vectorOfKeypoints, originalDescriptor, false);
 
-            foreach (var image in sceneImageArray)
+            foreach (IInputArray image in sceneImageArray)
             {
                 var vectorOfKeypointsOfScene = new VectorOfKeyPoint();
                 var descriptorsOfScene = new Mat();
+
 
                 sift.DetectAndCompute(image, null, vectorOfKeypointsOfScene, descriptorsOfScene, false);
 
