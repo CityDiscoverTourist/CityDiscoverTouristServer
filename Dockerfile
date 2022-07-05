@@ -4,14 +4,6 @@ EXPOSE 80
 EXPOSE 443
 
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
-RUN apt-get update \
-    && apt-get install -y --allow-unauthenticated \
-   		libgdiplus \
-#         libc6-dev \
-#         libgdiplus \
-#         libx11-dev \
-     && rm -rf /var/lib/apt/lists/*
-
 
 WORKDIR /src
 COPY ["CityDiscoverTourist.API/CityDiscoverTourist.API.csproj", "CityDiscoverTourist.API/"]
@@ -28,5 +20,15 @@ RUN dotnet publish "CityDiscoverTourist.API.csproj" -c Release -o /app/publish
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
+
+# install System.Drawing native dependencies
+RUN apt-get update \
+    && apt-get install -y --allow-unauthenticated \
+   		libgdiplus \
+#         libc6-dev \
+#         libgdiplus \
+#         libx11-dev \
+     && rm -rf /var/lib/apt/lists/*
+
 ENTRYPOINT ["dotnet", "CityDiscoverTourist.API.dll"]
 
