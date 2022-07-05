@@ -125,7 +125,6 @@ public class WeatherForecastController : ControllerBase
         var bitmap4 = new Bitmap(new MemoryStream(image4));
         var bitmap5 = new Bitmap(new MemoryStream(image5));
         var bitmap6 = new Bitmap(new MemoryStream(image6));
-        var s = new SKBitmap(new SKImageInfo());
 
         //example object
         var exampleImage1 = bitmap1.ToImage<Gray, byte>();
