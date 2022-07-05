@@ -78,4 +78,9 @@
     <ItemGroup>
         <Folder Include="AWS" />
     </ItemGroup>
+
+    <ItemGroup>
+      <Content Include="bin\Debug\net6.0\Emgu.CV.Bitmap.dll" />
+      <Content Include="bin\Debug\net6.0\Emgu.CV.Platform.NetStandard.dll" />
+    </ItemGroup>
 </Project>
