@@ -1,6 +1,8 @@
 using System.Drawing;
+using System.Runtime.Serialization;
 using CityDiscoverTourist.Business.IServices;
 using Emgu.CV;
+using Emgu.CV.CvEnum;
 using Emgu.CV.Features2D;
 using Emgu.CV.Structure;
 using Emgu.CV.Util;
@@ -8,6 +10,9 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.VisualBasic;
 using SkiaSharp;
 using MozJpegSharp;
+using SixLabors.ImageSharp;
+using SixLabors.ImageSharp.Advanced;
+using SixLabors.ImageSharp.Formats.Png;
 using SixLabors.ImageSharp.PixelFormats;
 using SixLabors.ImageSharp.Processing;
 using Image = SixLabors.ImageSharp.Image;
@@ -112,6 +117,8 @@ public class WeatherForecastController : ControllerBase
         return mostMatches;
     }
 
+
+
     [HttpGet("demo")]
     public async Task<long> Demo()
     {
@@ -124,54 +131,52 @@ public class WeatherForecastController : ControllerBase
         var image5 = client.GetAsync("https://citytouriststorage.blob.core.windows.net/item/example/e.jpg").Result.Content.ReadAsByteArrayAsync().Result;
         var image6 = client.GetAsync("https://citytouriststorage.blob.core.windows.net/item/example/f.jpg").Result.Content.ReadAsByteArrayAsync().Result;
 
-        // convert byte array to bitmap
-        var bitmap1 = new Bitmap(new MemoryStream(image1));
+
+        var exampleImage1 = ConvertImage(image1);
+
+        var exampleImage2 = ConvertImage(image2);
+
+        var exampleImage3 = ConvertImage(image3);
+
+        var exampleImage4 = ConvertImage(image4);
+
+
+
+
+        /*Mat invert = new Mat();
+
+        var ex = invert.ToImage<Gray, byte>();*/
+
+
+        // convert byte array to bitmap use image sharp
+        /*var bitmap1 = new Bitmap(new MemoryStream(image1));
         var bitmap2 = new Bitmap(new MemoryStream(image2));
         var bitmap3 = new Bitmap(new MemoryStream(image3));
         var bitmap4 = new Bitmap(new MemoryStream(image4));
         var bitmap5 = new Bitmap(new MemoryStream(image5));
         var bitmap6 = new Bitmap(new MemoryStream(image6));
-
-
-
-        var backgroundBitmap1 = SKBitmap.Decode(new MemoryStream(image1));
-        var backgroundBitmap2 = SKBitmap.Decode(new MemoryStream(image2));
-        var backgroundBitmap3 = SKBitmap.Decode(new MemoryStream(image3));
-        var backgroundBitmap4 = SKBitmap.Decode(new MemoryStream(image4));
-        var backgroundBitmap5 = SKBitmap.Decode(new MemoryStream(image5));
-        var backgroundBitmap6 = SKBitmap.Decode(new MemoryStream(image6));
-
-
-        SKImage skImage = SKImage.FromBitmap(backgroundBitmap1);
-        SKImage skImage2 = SKImage.FromBitmap(backgroundBitmap2);
-        SKImage skImage3 = SKImage.FromBitmap(backgroundBitmap3);
-        SKImage skImage4 = SKImage.FromBitmap(backgroundBitmap4);
-        SKImage skImage5 = SKImage.FromBitmap(backgroundBitmap5);
-        SKImage skImage6 = SKImage.FromBitmap(backgroundBitmap6);
-
-
-
         //example object
         var exampleImage1 = bitmap1.ToImage<Gray, byte>();
         var exampleImage2 = bitmap2.ToImage<Gray, byte>();
         var exampleImage3 = bitmap3.ToImage<Gray, byte>();
         var exampleImage4 = bitmap4.ToImage<Gray, byte>();
         var exampleImage5 = bitmap5.ToImage<Gray, byte>();
-        var exampleImage6 = bitmap6.ToImage<Gray, byte>();
+        var exampleImage6 = bitmap6.ToImage<Gray, byte>();*/
 
-        var exampleArray = new List<SKImage>
+        var exampleArray = new List<Image<Gray, byte>>
         {
-            skImage
+            exampleImage1,
+            exampleImage2,
+            exampleImage3,
+            exampleImage4,
         };
 
         //object in scene
-        var sceneImage2 = SKImage.FromBitmap(backgroundBitmap6);
 
-            var sceneImageArray = new List<SKImage>()
+            var sceneImageArray = new List<Image<Gray, byte>>
         {
-            sceneImage2,
-            sceneImage2,
-            sceneImage2,
+            exampleImage1,
+            exampleImage4
         };
 
         var sift = new SIFT();
@@ -212,6 +217,14 @@ public class WeatherForecastController : ControllerBase
             }
         }
         return mostMatches;
+    }
+
+    private static Image<Gray, byte> ConvertImage(byte[] image1)
+    {
+        var mat = new Mat(4000, 6000, DepthType.Cv8U, 2);
+        CvInvoke.Imdecode(image1, ImreadModes.Grayscale, mat);
+        var exampleImage = mat.ToImage<Gray, byte>();
+        return exampleImage;
     }
 
 
