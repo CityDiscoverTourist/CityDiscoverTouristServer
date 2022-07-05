@@ -6,6 +6,8 @@ using Emgu.CV.Structure;
 using Emgu.CV.Util;
 using Microsoft.AspNetCore.Mvc;
 using SkiaSharp;
+using System.Drawing.Drawing2D;
+
 
 namespace CityDiscoverTourist.API.Controllers;
 
@@ -126,6 +128,24 @@ public class WeatherForecastController : ControllerBase
         var bitmap5 = new Bitmap(new MemoryStream(image5));
         var bitmap6 = new Bitmap(new MemoryStream(image6));
 
+
+        var backgroundBitmap1 = SKBitmap.Decode(new MemoryStream(image1));
+        var backgroundBitmap2 = SKBitmap.Decode(new MemoryStream(image2));
+        var backgroundBitmap3 = SKBitmap.Decode(new MemoryStream(image3));
+        var backgroundBitmap4 = SKBitmap.Decode(new MemoryStream(image4));
+        var backgroundBitmap5 = SKBitmap.Decode(new MemoryStream(image5));
+        var backgroundBitmap6 = SKBitmap.Decode(new MemoryStream(image6));
+
+
+        SKImage skImage = SKImage.FromBitmap(backgroundBitmap1);
+        SKImage skImage2 = SKImage.FromBitmap(backgroundBitmap2);
+        SKImage skImage3 = SKImage.FromBitmap(backgroundBitmap3);
+        SKImage skImage4 = SKImage.FromBitmap(backgroundBitmap4);
+        SKImage skImage5 = SKImage.FromBitmap(backgroundBitmap5);
+        SKImage skImage6 = SKImage.FromBitmap(backgroundBitmap6);
+
+
+
         //example object
         var exampleImage1 = bitmap1.ToImage<Gray, byte>();
         var exampleImage2 = bitmap2.ToImage<Gray, byte>();
@@ -134,14 +154,9 @@ public class WeatherForecastController : ControllerBase
         var exampleImage5 = bitmap5.ToImage<Gray, byte>();
         var exampleImage6 = bitmap6.ToImage<Gray, byte>();
 
-        var exampleArray = new List<Image<Gray, byte>>
+        var exampleArray = new List<SKImage>
         {
-            exampleImage1,
-            exampleImage2,
-            exampleImage3,
-            exampleImage4,
-            exampleImage5,
-            exampleImage6
+            skImage
         };
 
         //object in scene
@@ -157,7 +172,7 @@ public class WeatherForecastController : ControllerBase
 
         long mostMatches = 0;
 
-        foreach (var exampleImg in exampleArray)
+        foreach (IInputArray exampleImg in exampleArray)
         {
             var vectorOfKeypoints = new VectorOfKeyPoint();
             var originalDescriptor = new Mat();
