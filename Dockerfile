@@ -4,7 +4,7 @@ EXPOSE 80
 EXPOSE 443
 
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
-RUN sudo apt-get -f install libgdiplus
+RUN apt-get -f install libgdiplus
 
 
 WORKDIR /src
