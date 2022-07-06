@@ -17,13 +17,13 @@ RUN dotnet build "CityDiscoverTourist.API.csproj" -c Release -o /app/build
 FROM build AS publish
 RUN dotnet publish "CityDiscoverTourist.API.csproj" -c Release -o /app/publish
 
+RUN dotnet add package Emgu.CV.runtime.ubuntu.20.04-x64 --version 4.5.3.4721
+
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
 
 # install System.Drawing native dependencies
-RUN dotnet add package Emgu.CV.runtime.ubuntu.20.04-x64 --version 4.5.3.4721
-
 RUN apt-get update
 RUN apt-get install -y libgdiplus libc6-dev
 RUN apt-get install -y libicu-dev libharfbuzz0b libfontconfig1 libfreetype6
