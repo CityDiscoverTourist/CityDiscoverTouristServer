@@ -7,6 +7,7 @@
         <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
         <SupportedOSPlatform>Linux</SupportedOSPlatform>
         <PackageCertificateThumbprint>099822424207a0cf4eb1882413c031c05c1d91d3</PackageCertificateThumbprint>
+        <Platforms>AnyCPU;x64</Platforms>
     </PropertyGroup>
 
     <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
