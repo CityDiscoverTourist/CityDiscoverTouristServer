@@ -1,4 +1,4 @@
-using AutoMapper;
+﻿using AutoMapper;
 using CityDiscoverTourist.Business.Data.RequestModel;
 using CityDiscoverTourist.Business.Data.ResponseModel;
 using CityDiscoverTourist.Business.Enums;
@@ -8,6 +8,8 @@ using CityDiscoverTourist.Business.Helper.Params;
 using CityDiscoverTourist.Data.IRepositories;
 using CityDiscoverTourist.Data.Models;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace CityDiscoverTourist.Business.IServices.Services;
 
@@ -121,6 +123,34 @@ public class QuestService : BaseService, IQuestService
         return mappedData;
     }
 
+    public async Task<QuestResponseModel> Get(int id)
+    {
+        var entity = await _questRepository.GetByCondition(x => x.Id == id).FirstOrDefaultAsync();
+
+        CheckDataNotNull("Quest", entity!);
+
+        JObject objTitle = JObject.Parse(entity!.Title!);
+        string title = (string)objTitle["vi"]! +" | "+ (string)objTitle["en"]!;
+        JObject objDescription = JObject.Parse(entity!.Description!);
+        string description = (string)objDescription["vi"]! + " | " + (string)objDescription["en"]!;
+
+        entity.Title = title;
+        entity.Description = description;
+
+        var mappedData = _mapper.Map<QuestResponseModel>(entity);
+        foreach (var item in mappedData.QuestItems!)
+        {
+            if (item.ItemId != 0) continue;
+            var locationId = item.LocationId;
+            var location = _locationRepository.Get(locationId).Result;
+            mappedData.Address = location.Address;
+            mappedData.LatLong = location.Latitude + "," + location.Longitude;
+        }
+        mappedData.CountQuestItem = mappedData.QuestItems!.Count;
+
+        return mappedData;
+    }
+
     public async Task<QuestResponseModel> CreateAsync(QuestRequestModel request)
     {
         request.Validate();
@@ -129,8 +159,8 @@ public class QuestService : BaseService, IQuestService
 
         var entity = _mapper.Map<Quest>(request);
 
-        entity.Title = JsonHelper.JsonFormat(request.Title);
-        entity.Description = JsonHelper.JsonFormat(request.Description);
+        entity.Title = JsonHelper.JsonFormat(request!.Title!.Trim());
+        entity.Description = JsonHelper.JsonFormat(request!.Description!.Trim());
 
         entity = await _questRepository.Add(entity);
         //return string img from blob, mapped to Quest model and store in db
@@ -147,16 +177,14 @@ public class QuestService : BaseService, IQuestService
         var imgPath = await _blobService.UploadQuestImgAndReturnImgPathAsync(request.Image, request.Id, "quest");
 
         var entity = _mapper.Map<Quest>(request);
+        entity.Title = JsonHelper.JsonFormat(request.Title);
+        entity.Description = JsonHelper.JsonFormat(request.Description);
         entity.ImagePath = imgPath;
         if (entity.ImagePath == null)
         {
             entity = await _questRepository.NoneUpdateFields(entity, r => r.CreatedDate!, r => r.ImagePath!);
             return _mapper.Map<QuestResponseModel>(entity);
         }
-
-        entity.Title = JsonHelper.JsonFormat(request.Title);
-        entity.Description = JsonHelper.JsonFormat(request.Description);
-
         entity = await _questRepository.NoneUpdateFields(entity, r => r.CreatedDate!);
 
         return _mapper.Map<QuestResponseModel>(entity);
