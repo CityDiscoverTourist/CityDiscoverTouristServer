@@ -25,7 +25,7 @@ COPY --from=publish /app/publish .
 RUN apt-get update
 RUN apt-get install -y libgdiplus libc6-dev
 RUN apt-get install -y libicu-dev libharfbuzz0b libfontconfig1 libfreetype6
-RUN sudo apt-get install -y \
+RUN apt-get install -y \
     build-essential \
 	libgtk-3-dev \
 	libgstreamer1.0-dev \
