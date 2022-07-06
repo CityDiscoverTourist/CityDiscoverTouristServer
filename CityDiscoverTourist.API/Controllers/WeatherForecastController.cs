@@ -142,19 +142,14 @@ public class WeatherForecastController : ControllerBase
 
 
 
-
-        /*Mat invert = new Mat();
-
-        var ex = invert.ToImage<Gray, byte>();*/
-
-
-        // convert byte array to bitmap use image sharp
+        // convert byte array to bitmap
         /*var bitmap1 = new Bitmap(new MemoryStream(image1));
         var bitmap2 = new Bitmap(new MemoryStream(image2));
         var bitmap3 = new Bitmap(new MemoryStream(image3));
         var bitmap4 = new Bitmap(new MemoryStream(image4));
         var bitmap5 = new Bitmap(new MemoryStream(image5));
         var bitmap6 = new Bitmap(new MemoryStream(image6));
+
         //example object
         var exampleImage1 = bitmap1.ToImage<Gray, byte>();
         var exampleImage2 = bitmap2.ToImage<Gray, byte>();

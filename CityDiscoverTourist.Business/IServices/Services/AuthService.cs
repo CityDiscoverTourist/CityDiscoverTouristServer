@@ -165,7 +165,7 @@ public class AuthService : IAuthService
         if (user != null) return false;
         user = new ApplicationUser
         {
-            UserName = userViewModel.Email,
+            UserName = userViewModel.FullName,
             Email = userViewModel.Email,
             SecurityStamp = Guid.NewGuid().ToString(),
             EmailConfirmed = true,
