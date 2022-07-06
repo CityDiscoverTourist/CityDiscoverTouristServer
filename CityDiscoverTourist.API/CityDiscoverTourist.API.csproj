@@ -79,13 +79,5 @@
     <ItemGroup>
         <Folder Include="AWS" />
     </ItemGroup>
-
-    <ItemGroup>
-      <Content Include="bin\Debug\net6.0\Emgu.CV.Bitmap.dll">
-        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      </Content>
-      <Content Include="bin\Debug\net6.0\Emgu.CV.Platform.NetStandard.dll">
-        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      </Content>
-    </ItemGroup>
+    
 </Project>
