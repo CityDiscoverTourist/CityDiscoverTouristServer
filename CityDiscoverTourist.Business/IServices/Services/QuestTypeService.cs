@@ -8,6 +8,7 @@ using CityDiscoverTourist.Business.Helper.Params;
 using CityDiscoverTourist.Data.IRepositories;
 using CityDiscoverTourist.Data.Models;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json.Linq;
 
 namespace CityDiscoverTourist.Business.IServices.Services;
 
@@ -95,6 +96,11 @@ public class QuestTypeService : BaseService, IQuestTypeService
         entity.Name = JsonHelper.JsonFormat(request.Name);
 
         await _questTypeRepository.UpdateFields(entity, r => r.ImagePath!);
+
+        //return quest type name vi
+        JObject objTitle = JObject.Parse(entity!.Name!);
+        string name = (string)objTitle["vi"]!;
+        entity.Name = name;
 
         return _mapper.Map<QuestTypeResponseModel>(entity);
     }
