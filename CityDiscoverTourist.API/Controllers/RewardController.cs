@@ -4,6 +4,7 @@ using CityDiscoverTourist.Business.Data.ResponseModel;
 using CityDiscoverTourist.Business.Helper;
 using CityDiscoverTourist.Business.Helper.Params;
 using CityDiscoverTourist.Business.IServices;
+using Hangfire;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 
@@ -18,14 +19,16 @@ namespace CityDiscoverTourist.API.Controllers;
 public class RewardController : ControllerBase
 {
     private readonly IRewardService _rewardService;
+    private readonly IRecurringJobManager _recurringJobManager;
 
     /// <summary>
     ///
     /// </summary>
     /// <param name="taskService"></param>
-    public RewardController(IRewardService taskService)
+    public RewardController(IRewardService taskService, IRecurringJobManager recurringJobManager)
     {
         _rewardService = taskService;
+        _recurringJobManager = recurringJobManager;
     }
 
     /// <summary>
@@ -85,10 +88,12 @@ public class RewardController : ControllerBase
     /// <param name="data"></param>
     /// <returns></returns>
     [HttpPut]
-    public async Task<ApiResponse<RewardResponseModel>> Put(RewardRequestModel data)
+    public async Task<OkObjectResult> Put()
     {
-        var entity = await _rewardService.UpdateAsync(data);
-        return ApiResponse<Task>.Created(entity);
+        _recurringJobManager.AddOrUpdate(
+            "Reward", () => _rewardService.InvalidReward(),
+            Cron.Daily(23, 55));
+        return await Task.FromResult(Ok("RecurringJobManager"));
     }
 
     /// <summary>

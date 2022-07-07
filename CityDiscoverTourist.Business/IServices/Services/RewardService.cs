@@ -1,6 +1,7 @@
 using AutoMapper;
 using CityDiscoverTourist.Business.Data.RequestModel;
 using CityDiscoverTourist.Business.Data.ResponseModel;
+using CityDiscoverTourist.Business.Enums;
 using CityDiscoverTourist.Business.Helper;
 using CityDiscoverTourist.Business.Helper.Params;
 using CityDiscoverTourist.Data.IRepositories;
@@ -48,11 +49,20 @@ public class RewardService : BaseService, IRewardService
         return _mapper.Map<RewardResponseModel>(entity);
     }
 
-    public async Task<RewardResponseModel> UpdateAsync(RewardRequestModel request)
+    public async Task<RewardResponseModel> InvalidReward()
     {
-        var entity = _mapper.Map<Reward>(request);
-        entity = await _rewardRepository.Update(entity);
-        return _mapper.Map<RewardResponseModel>(entity);
+        var entity = _rewardRepository.GetAll();
+
+        foreach (var item in entity)
+        {
+            if (item.Status == CommonStatus.Inactive.ToString()) continue;
+            if (!(item.ExpiredDate < DateTime.UtcNow)) continue;
+
+            item.Status = CommonStatus.Inactive.ToString();
+            await _rewardRepository.UpdateFields(item, x => x.Status!);
+        }
+
+        return null!;
     }
 
     public async Task<RewardResponseModel> DeleteAsync(int id)

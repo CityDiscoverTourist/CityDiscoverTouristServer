@@ -10,6 +10,6 @@ public interface IRewardService
     public PageList<RewardResponseModel> GetAll(RewardParams @params);
     public Task<RewardResponseModel> Get(int id);
     public Task<RewardResponseModel> CreateAsync(RewardRequestModel request);
-    public Task<RewardResponseModel> UpdateAsync(RewardRequestModel request);
+    public Task<RewardResponseModel> InvalidReward();
     public Task<RewardResponseModel> DeleteAsync(int id);
 }
