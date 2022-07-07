@@ -8,6 +8,7 @@ using CityDiscoverTourist.Business.Helper.Params;
 using CityDiscoverTourist.Data.IRepositories;
 using CityDiscoverTourist.Data.Models;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json.Linq;
 
 namespace CityDiscoverTourist.Business.IServices.Services;
 
@@ -103,6 +104,35 @@ public class QuestService : BaseService, IQuestService
 
         var title = ConvertLanguage(language, entity.Title!);
         var description = ConvertLanguage(language, entity.Description!);
+
+        entity.Title = title;
+        entity.Description = description;
+
+        var mappedData = _mapper.Map<QuestResponseModel>(entity);
+        foreach (var item in mappedData.QuestItems!)
+        {
+            if (item.ItemId != 0) continue;
+            var locationId = item.LocationId;
+            var location = _locationRepository.Get(locationId).Result;
+            mappedData.Address = location.Address;
+            mappedData.LatLong = location.Latitude + "," + location.Longitude;
+        }
+        mappedData.CountQuestItem = mappedData.QuestItems!.Count;
+
+        return mappedData;
+    }
+
+
+    public async Task<QuestResponseModel> Get(int id)
+    {
+        var entity = await _questRepository.GetByCondition(x => x.Id == id).FirstOrDefaultAsync();
+
+        CheckDataNotNull("Quest", entity!);
+
+        JObject objTitle = JObject.Parse(entity!.Title!);
+        string title = (string)objTitle["vi"]! + " | " + (string)objTitle["en"]!;
+        JObject objDescription = JObject.Parse(entity!.Description!);
+        string description = (string)objDescription["vi"]! + " | " + (string)objDescription["en"]!;
 
         entity.Title = title;
         entity.Description = description;

@@ -70,6 +70,20 @@ public class QuestController : ControllerBase
     }
 
     /// <summary>
+    ///     get quest by id
+    /// </summary>
+    /// <param name="id"></param>
+    /// <returns></returns>
+    [HttpGet("{id:int}/not-language")]
+    //[Cached(600)]
+    public async Task<ApiResponse<QuestResponseModel>> Get(int id)
+    {
+        var entity = await _questService.Get(id);
+
+        return ApiResponse<QuestResponseModel>.Ok(entity);
+    }
+
+    /// <summary>
     ///     create a new quest
     /// </summary>
     /// <param name="data"></param>
