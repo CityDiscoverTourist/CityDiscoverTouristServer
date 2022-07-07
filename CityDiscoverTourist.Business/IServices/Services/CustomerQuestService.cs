@@ -48,6 +48,13 @@ public class CustomerQuestService : BaseService, ICustomerQuestService
         var sortedQuests = _sortHelper.ApplySort(listAll, @params.OrderBy);
 
         var mappedData = _mapper.Map<IEnumerable<CustomerQuestResponseModel>>(sortedQuests);
+
+        foreach (var quest in mappedData)
+        {
+            var customerName = _userManager?.FindByIdAsync(quest.CustomerId).Result.UserName;
+            quest.CustomerName = customerName;
+        }
+
         return PageList<CustomerQuestResponseModel>.ToPageList(mappedData, @params.PageNumber, @params.PageSize);
     }
 

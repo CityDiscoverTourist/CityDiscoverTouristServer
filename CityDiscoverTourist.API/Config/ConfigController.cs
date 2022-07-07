@@ -53,6 +53,7 @@ public static class ConfigController
         services.AddScoped<INotificationService, NotificationService>();
         services.AddScoped<IUserSubscribedService, UserSubscribedService>();
         services.AddScoped<IQuestRewardService, QuestRewardService>();
+        services.AddScoped<IDashboardService, DashboardService>();
     }
 
     /// <summary>
@@ -189,6 +190,7 @@ public static class ConfigController
         }).AddNewtonsoftJson(options =>
         {
             options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
+            options.SerializerSettings.NullValueHandling = NullValueHandling.Ignore;
         });
     }
 

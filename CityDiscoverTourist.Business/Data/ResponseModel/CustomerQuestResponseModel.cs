@@ -12,6 +12,7 @@ public class CustomerQuestResponseModel
     public string? FeedBack { get; set; }
 
     public string? CustomerId { get; set; }
+    public string? CustomerName { get; set; }
     public bool IsFinished { get; set; }
 
     public int QuestId { get; set; }
