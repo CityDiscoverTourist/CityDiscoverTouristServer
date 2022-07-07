@@ -20,6 +20,15 @@ public class QuestRewardService : IQuestRewardService
     public async Task<QuestRewardResponseModel> CreateAsync(QuestRewardRequestModel request)
     {
         var entity = _mapper.Map<QuestReward>(request);
+
+        entity.PercentDiscount = entity.PercentPointRemain switch
+        {
+            >= 90 => 30,
+            >= 80 => 20,
+            >= 70 => 10,
+            _ => 0
+        };
+
         var result = await _questRewardRepository.Add(entity);
         return _mapper.Map<QuestRewardResponseModel>(result);
     }

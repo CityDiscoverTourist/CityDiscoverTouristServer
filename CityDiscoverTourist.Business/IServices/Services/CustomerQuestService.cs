@@ -9,6 +9,7 @@ using CityDiscoverTourist.Business.Helper.Params;
 using CityDiscoverTourist.Data.IRepositories;
 using CityDiscoverTourist.Data.Models;
 using Microsoft.AspNetCore.Identity;
+using static System.Double;
 
 namespace CityDiscoverTourist.Business.IServices.Services;
 
@@ -22,10 +23,11 @@ public class CustomerQuestService : BaseService, ICustomerQuestService
     private readonly ISortHelper<CustomerQuest> _sortHelper;
     private readonly IQuestItemRepository _taskRepository;
     private readonly IPaymentService _paymentService;
+    private readonly IRewardRepository _rewardRepository;
 
     public CustomerQuestService(ICustomerQuestRepository customerQuestRepository, IMapper mapper,
         IQuestItemRepository taskRepository, ISortHelper<CustomerQuest> sortHelper,
-        ICustomerTaskService customerTaskService, UserManager<ApplicationUser>? userManager, IPaymentService paymentService)
+        ICustomerTaskService customerTaskService, UserManager<ApplicationUser>? userManager, IPaymentService paymentService, IRewardRepository rewardRepository)
     {
         _customerQuestRepository = customerQuestRepository;
         _mapper = mapper;
@@ -34,6 +36,7 @@ public class CustomerQuestService : BaseService, ICustomerQuestService
         _customerTaskService = customerTaskService;
         _userManager = userManager;
         _paymentService = paymentService;
+        _rewardRepository = rewardRepository;
     }
 
     public PageList<CustomerQuestResponseModel> GetAll(CustomerQuestParams @params)
@@ -67,7 +70,7 @@ public class CustomerQuestService : BaseService, ICustomerQuestService
     {
         var entity = _mapper.Map<CustomerQuest>(request);
 
-        var payment = _paymentService.Get(entity.PaymentId).Result;
+        var payment = _paymentService.Get(entity.PaymentId, Language.vi).Result;
         if(!payment.IsValid) throw new AppException("Payment is not valid");
 
         // get quantity of the order
@@ -108,6 +111,35 @@ public class CustomerQuestService : BaseService, ICustomerQuestService
         entity.IsFinished = true;
         entity = await _customerQuestRepository.UpdateFields(entity, x => x.EndPoint!, x => x.Status!,
             x => x.IsFinished);
+
+        // insert customer reward
+        var customerId = entity.CustomerId;
+
+        TryParse(entity.EndPoint, out var endPoint);
+        TryParse(entity.BeginPoint, out var beginPoint);
+
+        // calculate reward base on final point
+        var percentPointRemain = endPoint/beginPoint * 100;
+
+        var reward = new Reward
+        {
+            CustomerId = customerId,
+            Name = "Reward for finish quest",
+            Code = Guid.NewGuid(),
+            PercentDiscount = 0,
+            Status = CommonStatus.Active.ToString(),
+            ReceivedDate = DateTime.Now,
+            ExpiredDate = DateTime.Now.AddDays(7)
+        };
+
+        reward.PercentDiscount = percentPointRemain switch
+        {
+            >= 90 => 30,
+            >= 80 => 20,
+            >= 70 => 10,
+            _ => reward.PercentDiscount
+        };
+        await _rewardRepository.Add(reward);
 
         return _mapper.Map<CustomerQuestResponseModel>(entity);
     }

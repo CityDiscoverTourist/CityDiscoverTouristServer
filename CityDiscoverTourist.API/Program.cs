@@ -128,7 +128,7 @@ try
         }
     });
     app.UseMiddleware<ErrorHandlerMiddleware>();
-    //  app.HandlerExceptionProduction(app.Environment.IsDevelopment());
+    // app.HandlerExceptionProduction(app.Environment.IsDevelopment());
     app.UseHttpsRedirection();
     app.UseRouting();
     app.UseHsts();

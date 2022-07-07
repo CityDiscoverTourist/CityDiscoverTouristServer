@@ -11,6 +11,7 @@ public class PaymentResponseModel
     public DateTime CreatedDate { get; set; }
     public string? CustomerId { get; set; }
     public bool IsValid { get; set; }
-
     public int QuestId { get; set; }
+    public string? QuestName { get; set; }
+    public string? QuestDescription { get; set; }
 }

@@ -436,7 +436,7 @@ namespace CityDiscoverTourist.Data.Migrations
                     AvailableTime = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     EstimatedDistance = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Status = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: true, defaultValueSql: "GETDATE()"),
                     UpdatedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     QuestTypeId = table.Column<int>(type: "int", nullable: false),
                     AreaId = table.Column<int>(type: "int", nullable: false),
@@ -509,35 +509,6 @@ namespace CityDiscoverTourist.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Payments",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    PaymentMethod = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Status = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Quantity = table.Column<int>(type: "int", nullable: false),
-                    TotalAmount = table.Column<float>(type: "real", nullable: false),
-                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "GETDATE()"),
-                    CustomerId = table.Column<string>(type: "nvarchar(450)", nullable: true),
-                    QuestId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Payments", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Payments_AspNetUsers_CustomerId",
-                        column: x => x.CustomerId,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id");
-                    table.ForeignKey(
-                        name: "FK_Payments_Quests_QuestId",
-                        column: x => x.QuestId,
-                        principalTable: "Quests",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "QuestItems",
                 columns: table => new
                 {
@@ -549,7 +520,7 @@ namespace CityDiscoverTourist.Data.Migrations
                     Content = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Duration = table.Column<int>(type: "int", nullable: false),
-                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: true, defaultValueSql: "GETDATE()"),
                     UpdatedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     QrCode = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     RightAnswer = table.Column<string>(type: "nvarchar(max)", nullable: true),
@@ -589,10 +560,8 @@ namespace CityDiscoverTourist.Data.Migrations
                 name: "QuestRewards",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
                     Code = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "GETDATE()"),
                     Status = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     PercentDiscount = table.Column<int>(type: "int", nullable: false),
                     PercentPointRemain = table.Column<int>(type: "int", nullable: false),
@@ -600,13 +569,100 @@ namespace CityDiscoverTourist.Data.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_QuestRewards", x => x.Id);
+                    table.PrimaryKey("PK_QuestRewards", x => x.Code);
                     table.ForeignKey(
                         name: "FK_QuestRewards_Quests_QuestId",
                         column: x => x.QuestId,
                         principalTable: "Quests",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Suggestions",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Content = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Status = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    QuestItemId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Suggestions", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Suggestions_QuestItems_QuestItemId",
+                        column: x => x.QuestItemId,
+                        principalTable: "QuestItems",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Rewards",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ReceivedDate = table.Column<DateTime>(type: "datetime2", nullable: true, defaultValueSql: "GETDATE()"),
+                    ExpiredDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    CustomerId = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    QuestRewardId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Status = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Rewards", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Rewards_AspNetUsers_CustomerId",
+                        column: x => x.CustomerId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_Rewards_QuestRewards_QuestRewardId",
+                        column: x => x.QuestRewardId,
+                        principalTable: "QuestRewards",
+                        principalColumn: "Code",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Payments",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    PaymentMethod = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Status = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Quantity = table.Column<int>(type: "int", nullable: false),
+                    TotalAmount = table.Column<float>(type: "real", nullable: false),
+                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "GETDATE()"),
+                    CustomerId = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    QuestId = table.Column<int>(type: "int", nullable: false),
+                    RewardId = table.Column<int>(type: "int", nullable: false),
+                    IsValid = table.Column<bool>(type: "bit", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Payments", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Payments_AspNetUsers_CustomerId",
+                        column: x => x.CustomerId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_Payments_Quests_QuestId",
+                        column: x => x.QuestId,
+                        principalTable: "Quests",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Payments_Rewards_RewardId",
+                        column: x => x.RewardId,
+                        principalTable: "Rewards",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.NoAction);
                 });
 
             migrationBuilder.CreateTable(
@@ -617,7 +673,7 @@ namespace CityDiscoverTourist.Data.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     BeginPoint = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     EndPoint = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: true, defaultValueSql: "GETDATE()"),
                     Rating = table.Column<int>(type: "int", nullable: false),
                     FeedBack = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Status = table.Column<string>(type: "nvarchar(max)", nullable: true),
@@ -649,62 +705,6 @@ namespace CityDiscoverTourist.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Suggestions",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Content = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Status = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    QuestItemId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Suggestions", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Suggestions_QuestItems_QuestItemId",
-                        column: x => x.QuestItemId,
-                        principalTable: "QuestItems",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Rewards",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    ReceivedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    ExpiredDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    CustomerId = table.Column<string>(type: "nvarchar(450)", nullable: true),
-                    QuestRewardId = table.Column<int>(type: "int", nullable: false),
-                    Status = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    QuestId = table.Column<int>(type: "int", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Rewards", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Rewards_AspNetUsers_CustomerId",
-                        column: x => x.CustomerId,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id");
-                    table.ForeignKey(
-                        name: "FK_Rewards_QuestRewards_QuestRewardId",
-                        column: x => x.QuestRewardId,
-                        principalTable: "QuestRewards",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Rewards_Quests_QuestId",
-                        column: x => x.QuestId,
-                        principalTable: "Quests",
-                        principalColumn: "Id");
-                });
-
-            migrationBuilder.CreateTable(
                 name: "CustomerTasks",
                 columns: table => new
                 {
@@ -712,7 +712,7 @@ namespace CityDiscoverTourist.Data.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     CurrentPoint = table.Column<float>(type: "real", nullable: false),
                     Status = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: true, defaultValueSql: "GETDATE()"),
                     CountSuggestion = table.Column<int>(type: "int", nullable: false),
                     IsFinished = table.Column<bool>(type: "bit", nullable: false),
                     CountWrongAnswer = table.Column<int>(type: "int", nullable: false),
@@ -922,6 +922,12 @@ namespace CityDiscoverTourist.Data.Migrations
                 column: "QuestId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Payments_RewardId",
+                table: "Payments",
+                column: "RewardId",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
                 name: "IX_QuestItems_ItemId",
                 table: "QuestItems",
                 column: "ItemId");
@@ -971,11 +977,6 @@ namespace CityDiscoverTourist.Data.Migrations
                 name: "IX_Rewards_CustomerId",
                 table: "Rewards",
                 column: "CustomerId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Rewards_QuestId",
-                table: "Rewards",
-                column: "QuestId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Rewards_QuestRewardId",
@@ -1029,9 +1030,6 @@ namespace CityDiscoverTourist.Data.Migrations
                 name: "OwnerPayments");
 
             migrationBuilder.DropTable(
-                name: "Rewards");
-
-            migrationBuilder.DropTable(
                 name: "Suggestions");
 
             migrationBuilder.DropTable(
@@ -1050,9 +1048,6 @@ namespace CityDiscoverTourist.Data.Migrations
                 name: "Transactions");
 
             migrationBuilder.DropTable(
-                name: "QuestRewards");
-
-            migrationBuilder.DropTable(
                 name: "CustomerQuests");
 
             migrationBuilder.DropTable(
@@ -1068,13 +1063,19 @@ namespace CityDiscoverTourist.Data.Migrations
                 name: "QuestItemTypes");
 
             migrationBuilder.DropTable(
-                name: "AspNetUsers");
-
-            migrationBuilder.DropTable(
-                name: "Quests");
+                name: "Rewards");
 
             migrationBuilder.DropTable(
                 name: "LocationTypes");
+
+            migrationBuilder.DropTable(
+                name: "AspNetUsers");
+
+            migrationBuilder.DropTable(
+                name: "QuestRewards");
+
+            migrationBuilder.DropTable(
+                name: "Quests");
 
             migrationBuilder.DropTable(
                 name: "Areas");

@@ -2,6 +2,7 @@ using System.Web;
 using CityDiscoverTourist.API.Response;
 using CityDiscoverTourist.Business.Data.RequestModel;
 using CityDiscoverTourist.Business.Data.ResponseModel;
+using CityDiscoverTourist.Business.Enums;
 using CityDiscoverTourist.Business.Helper;
 using CityDiscoverTourist.Business.Helper.Params;
 using CityDiscoverTourist.Business.IServices;
@@ -63,12 +64,13 @@ public class PaymentController : ControllerBase
     ///
     /// </summary>
     /// <param name="id"></param>
+    /// <param name="language"></param>
     /// <returns></returns>
     [HttpGet("{id:Guid}")]
     //[Cached(600)]
-    public async Task<ApiResponse<PaymentResponseModel>> Get(Guid id)
+    public async Task<ApiResponse<PaymentResponseModel>> Get(Guid id, Language language = Language.vi)
     {
-        var entity = await _paymentService.Get(id);
+        var entity = await _paymentService.Get(id, language);
 
         return ApiResponse<Payment>.Ok(entity);
     }
@@ -91,11 +93,12 @@ public class PaymentController : ControllerBase
     ///
     /// </summary>
     /// <param name="data"></param>
+    /// <param name="discountCode"></param>
     /// <returns></returns>
     [HttpPost]
-    public async Task<ApiResponse<string>> Post(PaymentRequestModel data)
+    public async Task<ApiResponse<string>> Post(PaymentRequestModel data, Guid discountCode)
     {
-        var entity = await _paymentService.CreateAsync(data);
+        var entity = await _paymentService.CreateAsync(data, discountCode);
         return ApiResponse<Payment>.Created(entity);
     }
 

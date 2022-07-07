@@ -18,6 +18,9 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
         builder.Entity<CustomerQuest>().Property(x => x.CreatedDate).HasDefaultValueSql("GETDATE()");
         builder.Entity<CustomerTask>().Property(x => x.CreatedDate).HasDefaultValueSql("GETDATE()");
         builder.Entity<Reward>().Property(x => x.ReceivedDate).HasDefaultValueSql("GETDATE()");
+        builder.Entity<Reward>(entity => {
+            entity.HasIndex(e => e.Code).IsUnique();
+        });
 
         /*builder.Entity<CustomerAnswer>().HasKey(c => new { c.QuestItemId, c.CustomerTaskId });
 
@@ -71,6 +74,6 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     public DbSet<QuestOwner> QuestOwners { get; set; }
     public DbSet<Transaction> Transactions { get; set; }
     public DbSet<Wallet> Wallets { get; set; }
-    public DbSet<QuestReward> QuestRewards { get; set; }
+    //public DbSet<QuestReward> QuestRewards { get; set; }
     public DbSet<UserSubscribed> UserSubscribeds { get; set; }
 }

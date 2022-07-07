@@ -4,6 +4,7 @@ using CityDiscoverTourist.Data.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CityDiscoverTourist.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220707054627_Remove")]
+    partial class Remove
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -748,10 +750,15 @@ namespace CityDiscoverTourist.Data.Migrations
                     b.Property<int>("PercentPointRemain")
                         .HasColumnType("int");
 
+                    b.Property<int>("QuestId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Status")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Code");
+
+                    b.HasIndex("QuestId");
 
                     b.ToTable("QuestReward");
                 });
@@ -792,9 +799,6 @@ namespace CityDiscoverTourist.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<Guid>("Code")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<string>("CustomerId")
                         .HasColumnType("nvarchar(450)");
 
@@ -804,8 +808,8 @@ namespace CityDiscoverTourist.Data.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("PercentDiscount")
-                        .HasColumnType("int");
+                    b.Property<Guid>("QuestRewardId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime?>("ReceivedDate")
                         .ValueGeneratedOnAdd()
@@ -817,10 +821,9 @@ namespace CityDiscoverTourist.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("Code")
-                        .IsUnique();
-
                     b.HasIndex("CustomerId");
+
+                    b.HasIndex("QuestRewardId");
 
                     b.ToTable("Rewards");
                 });
@@ -1302,13 +1305,32 @@ namespace CityDiscoverTourist.Data.Migrations
                     b.Navigation("Wallet");
                 });
 
+            modelBuilder.Entity("CityDiscoverTourist.Data.Models.QuestReward", b =>
+                {
+                    b.HasOne("CityDiscoverTourist.Data.Models.Quest", "Quest")
+                        .WithMany("QuestRewards")
+                        .HasForeignKey("QuestId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Quest");
+                });
+
             modelBuilder.Entity("CityDiscoverTourist.Data.Models.Reward", b =>
                 {
                     b.HasOne("CityDiscoverTourist.Data.Models.ApplicationUser", "Customer")
                         .WithMany("Rewards")
                         .HasForeignKey("CustomerId");
 
+                    b.HasOne("CityDiscoverTourist.Data.Models.QuestReward", "QuestReward")
+                        .WithMany("Rewards")
+                        .HasForeignKey("QuestRewardId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("Customer");
+
+                    b.Navigation("QuestReward");
                 });
 
             modelBuilder.Entity("CityDiscoverTourist.Data.Models.Suggestion", b =>
@@ -1448,6 +1470,8 @@ namespace CityDiscoverTourist.Data.Migrations
                     b.Navigation("Payments");
 
                     b.Navigation("QuestItems");
+
+                    b.Navigation("QuestRewards");
                 });
 
             modelBuilder.Entity("CityDiscoverTourist.Data.Models.QuestItem", b =>
@@ -1465,6 +1489,11 @@ namespace CityDiscoverTourist.Data.Migrations
             modelBuilder.Entity("CityDiscoverTourist.Data.Models.QuestOwner", b =>
                 {
                     b.Navigation("OwnerPayments");
+                });
+
+            modelBuilder.Entity("CityDiscoverTourist.Data.Models.QuestReward", b =>
+                {
+                    b.Navigation("Rewards");
                 });
 
             modelBuilder.Entity("CityDiscoverTourist.Data.Models.QuestType", b =>

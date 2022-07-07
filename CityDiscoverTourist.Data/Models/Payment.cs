@@ -17,5 +17,8 @@ public class Payment
     public string? CustomerId { get; set; }
     public Quest? Quest { get; set; }
     public int QuestId { get; set; }
+
+    public Reward? Reward { get; set; }
+    public int? RewardId { get; set; }
     public bool IsValid { get; set; } = true;
 }

@@ -2,7 +2,7 @@ using CityDiscoverTourist.Data.Models;
 
 namespace CityDiscoverTourist.Data.IRepositories;
 
-public interface IQuestRewardRepository : IGenericRepository<QuestReward, int>
+public interface IQuestRewardRepository : IGenericRepository<QuestReward, Guid>
 {
 
 }
