@@ -1,5 +1,3 @@
-using CityDiscoverTourist.API.Response;
-using CityDiscoverTourist.Business.Enums;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 

@@ -4,7 +4,6 @@ using CityDiscoverTourist.Business.IServices;
 using CityDiscoverTourist.Business.IServices.Services;
 using CityDiscoverTourist.Business.Settings;
 using Hangfire;
-using Newtonsoft.Json;
 
 namespace CityDiscoverTourist.API.Config;
 
@@ -30,11 +29,13 @@ public static class ThirdPartyConfig
         }
         else
         {
-            var notifyConfig = configuration.GetSection("FcmNotification").Get<NotificationSetting>() ?? new NotificationSetting();
+            var notifyConfig = configuration.GetSection("FcmNotification").Get<NotificationSetting>() ??
+                               new NotificationSetting();
             services.AddSingleton(notifyConfig);
         }
 
-        var emailConfig = configuration.GetSection("EmailConfiguration").Get<EmailConfiguration>() ?? new EmailConfiguration();
+        var emailConfig = configuration.GetSection("EmailConfiguration").Get<EmailConfiguration>() ??
+                          new EmailConfiguration();
         services.AddSingleton(emailConfig);
         services.AddScoped<IEmailSender, EmailSender>();
 

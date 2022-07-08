@@ -103,7 +103,7 @@ public class LocationController : ControllerBase
     }
 
     /// <summary>
-    ///  soft   delete location by id
+    ///     soft   delete location by id
     /// </summary>
     /// <param name="id"></param>
     /// <returns></returns>
@@ -115,7 +115,7 @@ public class LocationController : ControllerBase
     }
 
     /// <summary>
-    /// disable location by id
+    ///     disable location by id
     /// </summary>
     /// <param name="id"></param>
     /// <returns></returns>
@@ -127,7 +127,7 @@ public class LocationController : ControllerBase
     }
 
     /// <summary>
-    /// enable location by id
+    ///     enable location by id
     /// </summary>
     /// <param name="id"></param>
     /// <returns></returns>
@@ -139,7 +139,7 @@ public class LocationController : ControllerBase
     }
 
     /// <summary>
-    /// check location by name
+    ///     check location by name
     /// </summary>
     /// <param name="name"></param>
     /// <returns></returns>

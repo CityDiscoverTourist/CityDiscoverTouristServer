@@ -13,12 +13,13 @@ namespace CityDiscoverTourist.Business.IServices.Services;
 
 public class CityService : BaseService, ICityService
 {
-    private readonly ICityRepository _cityRepository;
     private readonly IAreaRepository _areaRepository;
+    private readonly ICityRepository _cityRepository;
     private readonly IMapper _mapper;
     private readonly ISortHelper<City> _sortHelper;
 
-    public CityService(ICityRepository questRepository, IMapper mapper, ISortHelper<City> sortHelper, IAreaRepository areaRepository)
+    public CityService(ICityRepository questRepository, IMapper mapper, ISortHelper<City> sortHelper,
+        IAreaRepository areaRepository)
     {
         _cityRepository = questRepository;
         _mapper = mapper;
@@ -66,12 +67,14 @@ public class CityService : BaseService, ICityService
 
     public async Task<CityResponseModel> DeleteAsync(int id)
     {
-        var city = _cityRepository.GetByCondition(x => x.Id == id).Include(data => data.Areas).ToList().FirstOrDefault();
-        if (city != null && city.Areas!.Count==0)
+        var city = _cityRepository.GetByCondition(x => x.Id == id).Include(data => data.Areas).ToList()
+            .FirstOrDefault();
+        if (city != null && city.Areas!.Count == 0)
         {
             city.Status = CommonStatus.Deleted.ToString();
             await _cityRepository.UpdateFields(city, r => r.Status!);
         }
+
         return _mapper.Map<CityResponseModel>(city);
     }
 
@@ -99,7 +102,14 @@ public class CityService : BaseService, ICityService
             area.Status = status;
             await _areaRepository.UpdateFields(area, r => r.Status!);
         }
+
         return _mapper.Map<CityResponseModel>(Get(cityId).Result);
+    }
+
+    public async Task<bool> CheckExisted(string name)
+    {
+        var result = await _areaRepository.GetByCondition(x => x.Name == name.Trim()).AnyAsync();
+        return result;
     }
 
     private static void Search(ref IQueryable<City> entities, CityParams param)
@@ -108,11 +118,5 @@ public class CityService : BaseService, ICityService
 
         if (param.Name != null) entities = entities.Where(r => r.Name!.Contains(param.Name.Trim()));
         if (param.Status != null) entities = entities.Where(x => x.Status == param.Status);
-    }
-
-    public async Task<bool> CheckExisted(string name)
-    {
-        var result = await _areaRepository.GetByCondition(x => x.Name == name.Trim()).AnyAsync();
-        return result;
     }
 }

@@ -14,7 +14,6 @@ public class CachedAttribute : Attribute, IAsyncActionFilter
 
 
     /// <summary>
-    ///
     /// </summary>
     /// <param name="timeToLiveSeconds"></param>
     public CachedAttribute(int timeToLiveSeconds)

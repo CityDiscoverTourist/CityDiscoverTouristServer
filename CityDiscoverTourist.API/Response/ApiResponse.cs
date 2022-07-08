@@ -30,24 +30,22 @@ public class ApiResponse<T>
     }
 
     /// <summary>
-    ///
     /// </summary>
     public string Message { get; }
+
     /// <summary>
-    ///
     /// </summary>
     public T Data { get; }
+
     /// <summary>
-    ///
     /// </summary>
     public object Pagination { get; }
+
     /// <summary>
-    ///
     /// </summary>
     public string Status { get; }
 
     /// <summary>
-    ///
     /// </summary>
     /// <param name="message"></param>
     /// <typeparam name="TData"></typeparam>
@@ -58,7 +56,6 @@ public class ApiResponse<T>
     }
 
     /// <summary>
-    ///
     /// </summary>
     /// <param name="data"></param>
     /// <typeparam name="TData"></typeparam>
@@ -69,7 +66,6 @@ public class ApiResponse<T>
     }
 
     /// <summary>
-    ///
     /// </summary>
     /// <param name="data"></param>
     /// <param name="paging"></param>
@@ -81,7 +77,6 @@ public class ApiResponse<T>
     }
 
     /// <summary>
-    ///
     /// </summary>
     /// <param name="data"></param>
     /// <typeparam name="TData"></typeparam>

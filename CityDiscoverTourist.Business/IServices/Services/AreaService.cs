@@ -57,14 +57,15 @@ public class AreaService : BaseService, IAreaService
 
     public async Task<AreaResponseModel> DeleteAsync(int id)
     {
-        var area = _areaRepository.GetByCondition(x => x.Id == id).Include(data => data.Locations).ToList().FirstOrDefault();
+        var area = _areaRepository.GetByCondition(x => x.Id == id).Include(data => data.Locations).ToList()
+            .FirstOrDefault();
         if (area != null && area.Locations!.Count == 0)
         {
             area.Status = CommonStatus.Deleted.ToString();
             await _areaRepository.UpdateFields(area, r => r.Status!);
         }
-        return _mapper.Map<AreaResponseModel>(area);
 
+        return _mapper.Map<AreaResponseModel>(area);
     }
 
     public async Task<AreaResponseModel> DisableAsync(int id)
@@ -83,6 +84,12 @@ public class AreaService : BaseService, IAreaService
         return _mapper.Map<AreaResponseModel>(area);
     }
 
+    public async Task<bool> CheckExisted(string name)
+    {
+        var result = await _areaRepository.GetByCondition(x => x.Name == name.Trim()).AnyAsync();
+        return result;
+    }
+
     public Task GetMessage(string message)
     {
         throw new NotImplementedException();
@@ -97,11 +104,5 @@ public class AreaService : BaseService, IAreaService
         if (param.Name != null) entities = entities.Where(x => x.Name!.Contains(param.Name.Trim()));
 
         if (param.Status != null) entities = entities.Where(x => x.Status == param.Status);
-    }
-
-    public async Task<bool> CheckExisted(string name)
-    {
-        var result = await _areaRepository.GetByCondition(x => x.Name == name.Trim()).AnyAsync();
-        return result;
     }
 }

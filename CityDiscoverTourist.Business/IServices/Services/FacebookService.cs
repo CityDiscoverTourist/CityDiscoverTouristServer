@@ -104,7 +104,7 @@ public class FacebookService : IFacebookService
             NormalizedEmail = facebookUser.Email!.ToUpper(new CultureInfo("en-US", false)),
             NormalizedUserName = facebookUser.FullName!.ToUpper(new CultureInfo("en-US", false)),
             PhoneNumberConfirmed = false,
-            ImagePath = facebookUser.ImagePath,
+            ImagePath = facebookUser.ImagePath
         };
         var loginInfo = new ExternalLoginInfo(new ClaimsPrincipal(), "Facebook", facebookUser.FacebookId, "Facebook");
         var result = await _userManager.CreateAsync(user);

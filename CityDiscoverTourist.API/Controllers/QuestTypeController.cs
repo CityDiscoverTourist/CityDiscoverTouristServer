@@ -36,7 +36,8 @@ public class QuestTypeController : ControllerBase
     /// <returns></returns>
     [HttpGet]
     //[Cached(600)]
-    public ApiResponse<PageList<QuestTypeResponseModel>> GetAll([FromQuery] QuestTypeParams param, Language language = Language.vi)
+    public ApiResponse<PageList<QuestTypeResponseModel>> GetAll([FromQuery] QuestTypeParams param,
+        Language language = Language.vi)
     {
         var entity = _questTypeService.GetAll(param, language);
 
@@ -108,7 +109,7 @@ public class QuestTypeController : ControllerBase
     }
 
     /// <summary>
-    ///   soft  delete quest type
+    ///     soft  delete quest type
     /// </summary>
     /// <param name="id"></param>
     /// <returns></returns>
@@ -120,7 +121,7 @@ public class QuestTypeController : ControllerBase
     }
 
     /// <summary>
-    /// disable quest type
+    ///     disable quest type
     /// </summary>
     /// <param name="id"></param>
     /// <returns></returns>
@@ -132,7 +133,7 @@ public class QuestTypeController : ControllerBase
     }
 
     /// <summary>
-    /// Enable quest type
+    ///     Enable quest type
     /// </summary>
     /// <param name="id"></param>
     /// <returns></returns>
@@ -144,7 +145,7 @@ public class QuestTypeController : ControllerBase
     }
 
     /// <summary>
-    /// update status of included entity (enable/disable)
+    ///     update status of included entity (enable/disable)
     /// </summary>
     /// <param name="id"></param>
     /// <param name="status"></param>
@@ -153,6 +154,7 @@ public class QuestTypeController : ControllerBase
     public Task<ActionResult<ApiResponse<QuestTypeResponseModel>>> UpdateStatusFkKey(int id, string status)
     {
         var entity = _questTypeService.UpdateStatusForeignKey(id, status);
-        return Task.FromResult<ActionResult<ApiResponse<QuestTypeResponseModel>>>(ApiResponse<QuestType>.Ok(entity.Result));
+        return Task.FromResult<ActionResult<ApiResponse<QuestTypeResponseModel>>>(
+            ApiResponse<QuestType>.Ok(entity.Result));
     }
 }

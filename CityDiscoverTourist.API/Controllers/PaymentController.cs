@@ -1,4 +1,3 @@
-using System.Web;
 using CityDiscoverTourist.API.Response;
 using CityDiscoverTourist.Business.Data.RequestModel;
 using CityDiscoverTourist.Business.Data.ResponseModel;
@@ -14,7 +13,6 @@ using Newtonsoft.Json;
 namespace CityDiscoverTourist.API.Controllers;
 
 /// <summary>
-///
 /// </summary>
 [Route("api/v{version:apiVersion}/[controller]s")]
 [ApiVersion("1.0")]
@@ -25,7 +23,6 @@ public class PaymentController : ControllerBase
     private readonly IRecurringJobManager _recurringJobManager;
 
     /// <summary>
-    ///
     /// </summary>
     /// <param name="paymentService"></param>
     /// <param name="recurringJobManager"></param>
@@ -36,7 +33,6 @@ public class PaymentController : ControllerBase
     }
 
     /// <summary>
-    ///
     /// </summary>
     /// <param name="param"></param>
     /// <returns></returns>
@@ -61,7 +57,6 @@ public class PaymentController : ControllerBase
     }
 
     /// <summary>
-    ///
     /// </summary>
     /// <param name="id"></param>
     /// <param name="language"></param>
@@ -76,7 +71,6 @@ public class PaymentController : ControllerBase
     }
 
     /// <summary>
-    ///
     /// </summary>
     /// <param name="customerId"></param>
     /// <returns></returns>
@@ -90,7 +84,6 @@ public class PaymentController : ControllerBase
     }
 
     /// <summary>
-    ///
     /// </summary>
     /// <param name="data"></param>
     /// <param name="discountCode"></param>
@@ -103,20 +96,16 @@ public class PaymentController : ControllerBase
     }
 
     /// <summary>
-    ///
     /// </summary>
     /// <returns></returns>
     [HttpPut]
     public async Task<OkObjectResult> Put()
     {
-        _recurringJobManager.AddOrUpdate(
-            "Payment", () => _paymentService.InvalidOrder(),
-            Cron.Daily(23, 55));
+        _recurringJobManager.AddOrUpdate("Payment", () => _paymentService.InvalidOrder(), Cron.Daily(23, 55));
         return await Task.FromResult(Ok("RecurringJobManager"));
     }
 
     /// <summary>
-    ///
     /// </summary>
     /// <returns></returns>
     [HttpPost("callback")]
@@ -126,7 +115,6 @@ public class PaymentController : ControllerBase
     }
 
     /// <summary>
-    ///
     /// </summary>
     /// <param name="id"></param>
     /// <returns></returns>

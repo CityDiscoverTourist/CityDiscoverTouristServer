@@ -53,13 +53,14 @@ public class CustomerTaskController : ControllerBase
     }
 
     /// <summary>
-    /// get customer task by customer quest id for admin
+    ///     get customer task by customer quest id for admin
     /// </summary>
     /// <param name="param"></param>
     /// <param name="customerQuestId"></param>
     /// <returns></returns>
     [HttpGet("get-by-customer-quest-id/{customerQuestId:int}")]
-    public ApiResponse<PageList<CustomerTaskResponseModel>> GetByCustomerQuestId(int customerQuestId, [FromQuery] CustomerTaskParams param)
+    public ApiResponse<PageList<CustomerTaskResponseModel>> GetByCustomerQuestId(int customerQuestId,
+        [FromQuery] CustomerTaskParams param)
     {
         var entity = _customerTaskService.GetByCustomerQuestId(customerQuestId, param).Result;
 

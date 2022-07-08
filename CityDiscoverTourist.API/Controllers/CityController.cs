@@ -91,7 +91,7 @@ public class CityController : ControllerBase
     }
 
     /// <summary>
-    ///   soft  delete city
+    ///     soft  delete city
     /// </summary>
     /// <param name="id"></param>
     /// <returns></returns>
@@ -103,7 +103,7 @@ public class CityController : ControllerBase
     }
 
     /// <summary>
-    /// disable city
+    ///     disable city
     /// </summary>
     /// <param name="id"></param>
     /// <returns></returns>
@@ -115,7 +115,7 @@ public class CityController : ControllerBase
     }
 
     /// <summary>
-    /// enable city
+    ///     enable city
     /// </summary>
     /// <param name="id"></param>
     /// <returns></returns>
@@ -127,7 +127,7 @@ public class CityController : ControllerBase
     }
 
     /// <summary>
-    /// update status of areas in city (enable/disable)
+    ///     update status of areas in city (enable/disable)
     /// </summary>
     /// <param name="id"></param>
     /// <param name="status"></param>
@@ -140,7 +140,7 @@ public class CityController : ControllerBase
     }
 
     /// <summary>
-    /// check city by name
+    ///     check city by name
     /// </summary>
     /// <param name="name"></param>
     /// <returns></returns>

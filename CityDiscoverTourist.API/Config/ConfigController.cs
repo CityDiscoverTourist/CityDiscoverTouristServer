@@ -125,13 +125,11 @@ public static class ConfigController
     {
         services.AddCors(options =>
         {
-            options.AddPolicy("EnableCORS", builder =>
-            {
-                builder.AllowAnyHeader()
-                    .AllowAnyMethod()
-                    .SetIsOriginAllowed(_ => true)
-                    .AllowCredentials();
-            });
+            options.AddPolicy("EnableCORS",
+                builder =>
+                {
+                    builder.AllowAnyHeader().AllowAnyMethod().SetIsOriginAllowed(_ => true).AllowCredentials();
+                });
         });
 
         services.AddSwaggerGen();

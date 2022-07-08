@@ -48,16 +48,14 @@ public class QuestService : BaseService, IQuestService
         for (var i = 0; i < listQuestIds.Count; i++)
         {
             var quest = listQuest[i];
-            var questItems = _questItemRepository.GetAll()
-                .AsNoTracking()
-                .Where(x => x.QuestId == quest.Id)
-                .ToList();
+            var questItems = _questItemRepository.GetAll().AsNoTracking().Where(x => x.QuestId == quest.Id).ToList();
             // convert quest item between vi and en
             foreach (var questItem in questItems)
             {
                 questItem.Content = ConvertLanguage(language, questItem.Content!);
                 questItem.Description = ConvertLanguage(language, questItem.Description!);
             }
+
             listQuest[i].QuestItems = questItems;
         }
 
@@ -90,7 +88,8 @@ public class QuestService : BaseService, IQuestService
 
     public async Task<QuestResponseModel> Get(int id, Language language)
     {
-        var entity = await _questRepository.GetByCondition(x => x.Id == id).Include(x => x.QuestItems).FirstOrDefaultAsync();
+        var entity = await _questRepository.GetByCondition(x => x.Id == id).Include(x => x.QuestItems)
+            .FirstOrDefaultAsync();
 
         CheckDataNotNull("Quest", entity!);
 
@@ -117,6 +116,7 @@ public class QuestService : BaseService, IQuestService
             mappedData.Address = location.Address;
             mappedData.LatLong = location.Latitude + "," + location.Longitude;
         }
+
         mappedData.CountQuestItem = mappedData.QuestItems!.Count;
 
         return mappedData;
@@ -129,10 +129,10 @@ public class QuestService : BaseService, IQuestService
 
         CheckDataNotNull("Quest", entity!);
 
-        JObject objTitle = JObject.Parse(entity!.Title!);
-        string title = (string)objTitle["vi"]! + " | " + (string)objTitle["en"]!;
-        JObject objDescription = JObject.Parse(entity!.Description!);
-        string description = (string)objDescription["vi"]! + " | " + (string)objDescription["en"]!;
+        var objTitle = JObject.Parse(entity!.Title!);
+        var title = (string) objTitle["vi"]! + " | " + (string) objTitle["en"]!;
+        var objDescription = JObject.Parse(entity.Description!);
+        var description = (string) objDescription["vi"]! + " | " + (string) objDescription["en"]!;
 
         entity.Title = title;
         entity.Description = description;
@@ -146,6 +146,7 @@ public class QuestService : BaseService, IQuestService
             mappedData.Address = location.Address;
             mappedData.LatLong = location.Latitude + "," + location.Longitude;
         }
+
         mappedData.CountQuestItem = mappedData.QuestItems!.Count;
 
         return mappedData;

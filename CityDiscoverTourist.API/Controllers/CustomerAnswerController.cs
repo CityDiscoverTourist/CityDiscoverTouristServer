@@ -67,7 +67,6 @@ public class CustomerAnswerController : ControllerBase
     }
 
     /// <summary>
-    ///
     /// </summary>
     /// <param name="customerTaskId"></param>
     /// <returns></returns>

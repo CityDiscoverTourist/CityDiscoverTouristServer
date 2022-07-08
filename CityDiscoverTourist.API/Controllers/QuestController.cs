@@ -36,7 +36,8 @@ public class QuestController : ControllerBase
     /// <returns></returns>
     [HttpGet]
     //[Cached(600)]
-    public ApiResponse<PageList<QuestResponseModel>> GetAll([FromQuery] QuestParams param, Language language = Language.vi)
+    public ApiResponse<PageList<QuestResponseModel>> GetAll([FromQuery] QuestParams param,
+        Language language = Language.vi)
     {
         var entity = _questService.GetAll(param, language);
 
@@ -108,7 +109,7 @@ public class QuestController : ControllerBase
     }
 
     /// <summary>
-    ///   soft  delete quest
+    ///     soft  delete quest
     /// </summary>
     /// <param name="id"></param>
     /// <returns></returns>
@@ -120,7 +121,7 @@ public class QuestController : ControllerBase
     }
 
     /// <summary>
-    /// disable quest
+    ///     disable quest
     /// </summary>
     /// <param name="id"></param>
     /// <returns></returns>
@@ -132,7 +133,7 @@ public class QuestController : ControllerBase
     }
 
     /// <summary>
-    /// Enable quest
+    ///     Enable quest
     /// </summary>
     /// <param name="id"></param>
     /// <returns></returns>
@@ -144,7 +145,7 @@ public class QuestController : ControllerBase
     }
 
     /// <summary>
-    /// update status of included entity (enable/disable)
+    ///     update status of included entity (enable/disable)
     /// </summary>
     /// <param name="id"></param>
     /// <param name="status"></param>

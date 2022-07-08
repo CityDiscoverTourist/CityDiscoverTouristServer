@@ -89,7 +89,7 @@ public class AreaController : ControllerBase
     }
 
     /// <summary>
-    ///   soft  delete area
+    ///     soft  delete area
     /// </summary>
     /// <param name="id"></param>
     /// <returns></returns>
@@ -101,7 +101,7 @@ public class AreaController : ControllerBase
     }
 
     /// <summary>
-    /// disable area
+    ///     disable area
     /// </summary>
     /// <param name="id"></param>
     /// <returns></returns>
@@ -113,7 +113,7 @@ public class AreaController : ControllerBase
     }
 
     /// <summary>
-    /// enable area
+    ///     enable area
     /// </summary>
     /// <param name="id"></param>
     /// <returns></returns>
@@ -125,7 +125,7 @@ public class AreaController : ControllerBase
     }
 
     /// <summary>
-    /// check area by name
+    ///     check area by name
     /// </summary>
     /// <param name="name"></param>
     /// <returns></returns>

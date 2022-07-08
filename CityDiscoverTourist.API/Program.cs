@@ -16,7 +16,6 @@ using Serilog;
 using Serilog.Events;
 using Serilog.Sinks.MSSqlServer;
 
-
 var builder = WebApplication.CreateBuilder(args);
 var env = builder.Environment.EnvironmentName;
 

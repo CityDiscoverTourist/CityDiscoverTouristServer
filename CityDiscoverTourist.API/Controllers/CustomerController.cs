@@ -78,7 +78,7 @@ public class CustomerController : ControllerBase
     }
 
     /// <summary>
-    /// update customer status, false = inactive, true = active
+    ///     update customer status, false = inactive, true = active
     /// </summary>
     /// <param name="id"></param>
     /// <param name="isLock"></param>

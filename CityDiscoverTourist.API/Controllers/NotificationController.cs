@@ -22,7 +22,6 @@ public class NotificationController : ControllerBase
     }
 
     /// <summary>
-    ///
     /// </summary>
     /// <param name="notificationModel"></param>
     /// <returns></returns>

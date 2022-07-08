@@ -68,14 +68,15 @@ public class CustomerQuestController : ControllerBase
     }
 
     /// <summary>
-    /// get customer comment by quest id
+    ///     get customer comment by quest id
     /// </summary>
     /// <param name="questId"></param>
     /// <param name="param"></param>
     /// <returns></returns>
     [HttpGet("show-comments/{questId:int}")]
     //[Cached(600)]
-    public async Task<ApiResponse<PageList<CommentResponseModel>>> GetComments(int questId, [FromQuery] CustomerQuestParams param)
+    public async Task<ApiResponse<PageList<CommentResponseModel>>> GetComments(int questId,
+        [FromQuery] CustomerQuestParams param)
     {
         var entity = await _customerQuestService.ShowComments(questId, param);
 
@@ -93,7 +94,7 @@ public class CustomerQuestController : ControllerBase
     }
 
     /// <summary>
-    /// get customer quest by customer id
+    ///     get customer quest by customer id
     /// </summary>
     /// <param name="id"></param>
     /// <returns></returns>
@@ -131,21 +132,20 @@ public class CustomerQuestController : ControllerBase
     }
 
     /// <summary>
-    ///
     /// </summary>
     /// <param name="questId"></param>
     /// <param name="customerId"></param>
     /// <param name="comment"></param>
     /// <returns></returns>
     [HttpPut("update-comment")]
-    public async Task<ApiResponse<List<CommentResponseModel>>> UpdateComment(int questId, string customerId, CommentRequestModel comment)
+    public async Task<ApiResponse<List<CommentResponseModel>>> UpdateComment(int questId, string customerId,
+        CommentRequestModel comment)
     {
         var entity = await _customerQuestService.UpdateComment(questId, customerId, comment);
         return ApiResponse<CustomerQuestResponseModel>.Created(entity);
     }
 
     /// <summary>
-    ///
     /// </summary>
     /// <param name="questId"></param>
     /// <param name="customerId"></param>

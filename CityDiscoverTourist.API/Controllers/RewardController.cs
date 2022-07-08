@@ -11,18 +11,16 @@ using Newtonsoft.Json;
 namespace CityDiscoverTourist.API.Controllers;
 
 /// <summary>
-///
 /// </summary>
 [Route("api/v{version:apiVersion}/[controller]s")]
 [ApiVersion("1.0")]
 [ApiController]
 public class RewardController : ControllerBase
 {
-    private readonly IRewardService _rewardService;
     private readonly IRecurringJobManager _recurringJobManager;
+    private readonly IRewardService _rewardService;
 
     /// <summary>
-    ///
     /// </summary>
     /// <param name="taskService"></param>
     public RewardController(IRewardService taskService, IRecurringJobManager recurringJobManager)
@@ -32,7 +30,6 @@ public class RewardController : ControllerBase
     }
 
     /// <summary>
-    ///
     /// </summary>
     /// <param name="param"></param>
     /// <returns></returns>
@@ -57,7 +54,6 @@ public class RewardController : ControllerBase
     }
 
     /// <summary>
-    ///
     /// </summary>
     /// <param name="id"></param>
     /// <returns></returns>
@@ -71,7 +67,6 @@ public class RewardController : ControllerBase
     }
 
     /// <summary>
-    ///
     /// </summary>
     /// <param name="data"></param>
     /// <returns></returns>
@@ -83,21 +78,17 @@ public class RewardController : ControllerBase
     }
 
     /// <summary>
-    ///
     /// </summary>
     /// <param name="data"></param>
     /// <returns></returns>
     [HttpPut]
     public async Task<OkObjectResult> Put()
     {
-        _recurringJobManager.AddOrUpdate(
-            "Reward", () => _rewardService.InvalidReward(),
-            Cron.Daily(23, 55));
+        _recurringJobManager.AddOrUpdate("Reward", () => _rewardService.InvalidReward(), Cron.Daily(23, 55));
         return await Task.FromResult(Ok("RecurringJobManager"));
     }
 
     /// <summary>
-    ///
     /// </summary>
     /// <param name="id"></param>
     /// <returns></returns>

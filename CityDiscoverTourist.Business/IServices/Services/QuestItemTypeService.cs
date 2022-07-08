@@ -13,8 +13,8 @@ namespace CityDiscoverTourist.Business.IServices.Services;
 public class QuestItemTypeService : BaseService, IQuestItemTypeService
 {
     private readonly IMapper _mapper;
-    private readonly IQuestItemTypeRepository _questItemTypeRepository;
     private readonly IQuestItemRepository _questItemRepository;
+    private readonly IQuestItemTypeRepository _questItemTypeRepository;
     private readonly ISortHelper<QuestItemType> _sortHelper;
 
     public QuestItemTypeService(IQuestItemTypeRepository questItemTypeRepository, IMapper mapper,
@@ -28,8 +28,7 @@ public class QuestItemTypeService : BaseService, IQuestItemTypeService
 
     public PageList<QuestItemTypeResponseModel> GetAll(TaskTypeParams @params)
     {
-        var listAll = _questItemTypeRepository.GetAll()
-            .Include(x => x.QuestItems).AsNoTracking();
+        var listAll = _questItemTypeRepository.GetAll().Include(x => x.QuestItems).AsNoTracking();
 
         Search(ref listAll, @params);
 
@@ -93,6 +92,7 @@ public class QuestItemTypeService : BaseService, IQuestItemTypeService
             area.Status = status;
             await _questItemRepository.UpdateFields(area, r => r.Status!);
         }
+
         return null!;
     }
 

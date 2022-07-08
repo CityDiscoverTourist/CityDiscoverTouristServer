@@ -5,7 +5,6 @@ using Microsoft.AspNetCore.Mvc;
 namespace CityDiscoverTourist.API.Controllers;
 
 /// <summary>
-///
 /// </summary>
 [Route("api/v{version:apiVersion}/[controller]s")]
 [ApiVersion("1.0")]
@@ -20,7 +19,6 @@ public class UserSubscribedController : ControllerBase
     }
 
     /// <summary>
-    /// 
     /// </summary>
     /// <param name="userSubscribed"></param>
     /// <returns></returns>

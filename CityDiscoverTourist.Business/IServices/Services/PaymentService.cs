@@ -21,9 +21,9 @@ public class PaymentService : BaseService, IPaymentService
     private readonly IMapper _mapper;
     private readonly MomoSetting _momoSettings;
     private readonly IPaymentRepository _paymentRepository;
+    private readonly IQuestRepository _questRepository;
     private readonly IRewardRepository _rewardRepository;
     private readonly ISortHelper<Payment> _sortHelper;
-    private readonly IQuestRepository _questRepository;
 
     public PaymentService(IPaymentRepository paymentRepository, IMapper mapper, ISortHelper<Payment> sortHelper,
         MomoSetting momoSettings, IRewardRepository rewardRepository, IQuestRepository questRepository)

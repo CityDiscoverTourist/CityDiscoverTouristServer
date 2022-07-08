@@ -90,12 +90,12 @@ public class LocationService : BaseService, ILocationService
 
     public async Task<LocationResponseModel> DeleteAsync(int id)
     {
-        var location = _locationRepository.GetByCondition(x => x.Id == id).Include(data => data.QuestItems).ToList().FirstOrDefault();
-        if (location != null && location.QuestItems!.Count == 0)
-        {
-            location.Status = CommonStatus.Deleted.ToString();
-            await _locationRepository.UpdateFields(location, r => r.Status!);
-        }
+        var location = _locationRepository.GetByCondition(x => x.Id == id).Include(data => data.QuestItems).ToList()
+            .FirstOrDefault();
+        if (location == null || location.QuestItems!.Count != 0) return _mapper.Map<LocationResponseModel>(location);
+        location.Status = CommonStatus.Deleted.ToString();
+        await _locationRepository.UpdateFields(location, r => r.Status!);
+
         return _mapper.Map<LocationResponseModel>(location);
     }
 
@@ -131,6 +131,12 @@ public class LocationService : BaseService, ILocationService
         return new [] { latitude ?? string.Empty, longitude, placeId ?? string.Empty };
     }
 
+    public async Task<bool> CheckExisted(string name)
+    {
+        var result = await _locationRepository.GetByCondition(x => x.Name == name.Trim()).AnyAsync();
+        return result;
+    }
+
     private static void Search(ref IQueryable<Location> entities, LocationParams param)
     {
         if (!entities.Any()) return;
@@ -139,11 +145,5 @@ public class LocationService : BaseService, ILocationService
         if (param.AreaId != 0) entities = entities.Where(r => r.AreaId == param.AreaId);
         if (param.LocationTypeId != 0) entities = entities.Where(r => r.LocationTypeId == param.LocationTypeId);
         if (param.Status != null) entities = entities.Where(x => x.Status == param.Status);
-    }
-
-    public async Task<bool> CheckExisted(string name)
-    {
-        var result = await _locationRepository.GetByCondition(x => x.Name == name.Trim()).AnyAsync();
-        return result;
     }
 }

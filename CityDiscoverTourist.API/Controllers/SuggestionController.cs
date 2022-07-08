@@ -91,7 +91,7 @@ public class SuggestionController : ControllerBase
     }
 
     /// <summary>
-    ///    soft  delete suggestion
+    ///     soft  delete suggestion
     /// </summary>
     /// <param name="id"></param>
     /// <returns></returns>
@@ -103,7 +103,7 @@ public class SuggestionController : ControllerBase
     }
 
     /// <summary>
-    /// disable suggestion
+    ///     disable suggestion
     /// </summary>
     /// <param name="id"></param>
     /// <returns></returns>
@@ -115,7 +115,7 @@ public class SuggestionController : ControllerBase
     }
 
     /// <summary>
-    /// Enable suggestion
+    ///     Enable suggestion
     /// </summary>
     /// <param name="id"></param>
     /// <returns></returns>

@@ -91,7 +91,7 @@ public class LocationTypeController : ControllerBase
     }
 
     /// <summary>
-    ///   soft  delete location type
+    ///     soft  delete location type
     /// </summary>
     /// <param name="id"></param>
     /// <returns></returns>
@@ -103,7 +103,7 @@ public class LocationTypeController : ControllerBase
     }
 
     /// <summary>
-    /// disable location type
+    ///     disable location type
     /// </summary>
     /// <param name="id"></param>
     /// <returns></returns>
@@ -115,7 +115,7 @@ public class LocationTypeController : ControllerBase
     }
 
     /// <summary>
-    /// enable location type
+    ///     enable location type
     /// </summary>
     /// <param name="id"></param>
     /// <returns></returns>
@@ -127,7 +127,7 @@ public class LocationTypeController : ControllerBase
     }
 
     /// <summary>
-    /// check locationtype by name
+    ///     check locationtype by name
     /// </summary>
     /// <param name="name"></param>
     /// <returns></returns>

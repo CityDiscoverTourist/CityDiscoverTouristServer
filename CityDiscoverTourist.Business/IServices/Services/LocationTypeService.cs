@@ -59,13 +59,14 @@ public class LocationTypeService : BaseService, ILocationTypeService
 
     public async Task<LocationTypeResponseModel> DeleteAsync(int id)
     {
-        var locationType = _locationTypeRepository.GetByCondition(x => x.Id == id).
-            Include(data => data.Locations).ToList().FirstOrDefault();
+        var locationType = _locationTypeRepository.GetByCondition(x => x.Id == id).Include(data => data.Locations)
+            .ToList().FirstOrDefault();
         if (locationType != null && locationType.Locations!.Count == 0)
         {
             locationType.Status = CommonStatus.Deleted.ToString();
             await _locationTypeRepository.UpdateFields(locationType, r => r.Status!);
         }
+
         return _mapper.Map<LocationTypeResponseModel>(locationType);
     }
 
@@ -85,6 +86,12 @@ public class LocationTypeService : BaseService, ILocationTypeService
         return _mapper.Map<LocationTypeResponseModel>(entity);
     }
 
+    public async Task<bool> CheckExisted(string name)
+    {
+        var result = await _locationTypeRepository.GetByCondition(x => x.Name == name.Trim()).AnyAsync();
+        return result;
+    }
+
     private static void Search(ref IQueryable<LocationType> entities, LocationTypeParams param)
     {
         if (!entities.Any()) return;
@@ -92,11 +99,5 @@ public class LocationTypeService : BaseService, ILocationTypeService
         if (param.Name != null)
             entities = entities.Where(r => r.Name!.Contains(param.Name.Trim()));
         if (param.Status != null) entities = entities.Where(x => x.Status == param.Status);
-    }
-
-    public async Task<bool> CheckExisted(string name)
-    {
-        var result = await _locationTypeRepository.GetByCondition(x => x.Name == name.Trim()).AnyAsync();
-        return result;
     }
 }

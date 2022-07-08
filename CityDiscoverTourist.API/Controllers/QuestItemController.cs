@@ -36,7 +36,8 @@ public class QuestItemController : ControllerBase
     /// <returns></returns>
     [HttpGet]
     //[Cached(600)]
-    public ApiResponse<PageList<QuestItemResponseModel>> GetAll([FromQuery] TaskParams param, Language language = Language.vi)
+    public ApiResponse<PageList<QuestItemResponseModel>> GetAll([FromQuery] TaskParams param,
+        Language language = Language.vi)
     {
         var entity = _taskService.GetAll(param, language);
 
@@ -78,7 +79,8 @@ public class QuestItemController : ControllerBase
     /// <returns></returns>
     [HttpGet("get-by-quest-id/{questId:int}")]
     //[Cached(600)]
-    public Task<ApiResponse<IEnumerable<QuestItemResponseModel>>> GetByQuestId(int questId, Language language = Language.vi)
+    public Task<ApiResponse<IEnumerable<QuestItemResponseModel>>> GetByQuestId(int questId,
+        Language language = Language.vi)
     {
         var entity = _taskService.GetByQuestId(questId, language);
 
@@ -109,7 +111,7 @@ public class QuestItemController : ControllerBase
     }
 
     /// <summary>
-    ///   soft  delete quest item
+    ///     soft  delete quest item
     /// </summary>
     /// <param name="id"></param>
     /// <returns></returns>
@@ -121,7 +123,7 @@ public class QuestItemController : ControllerBase
     }
 
     /// <summary>
-    /// disable quest item
+    ///     disable quest item
     /// </summary>
     /// <param name="id"></param>
     /// <returns></returns>
@@ -133,7 +135,7 @@ public class QuestItemController : ControllerBase
     }
 
     /// <summary>
-    /// Enable quest item
+    ///     Enable quest item
     /// </summary>
     /// <param name="id"></param>
     /// <returns></returns>

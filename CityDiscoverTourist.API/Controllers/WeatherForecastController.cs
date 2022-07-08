@@ -1,5 +1,4 @@
 using System.Drawing;
-using System.Runtime.Serialization;
 using CityDiscoverTourist.Business.IServices;
 using Emgu.CV;
 using Emgu.CV.CvEnum;
@@ -7,17 +6,6 @@ using Emgu.CV.Features2D;
 using Emgu.CV.Structure;
 using Emgu.CV.Util;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.VisualBasic;
-using SkiaSharp;
-using MozJpegSharp;
-using SixLabors.ImageSharp;
-using SixLabors.ImageSharp.Advanced;
-using SixLabors.ImageSharp.Formats.Png;
-using SixLabors.ImageSharp.PixelFormats;
-using SixLabors.ImageSharp.Processing;
-using Image = SixLabors.ImageSharp.Image;
-using Size = System.Drawing.Size;
-
 
 namespace CityDiscoverTourist.API.Controllers;
 
@@ -25,12 +13,12 @@ namespace CityDiscoverTourist.API.Controllers;
 [Route("[controller]")]
 public class WeatherForecastController : ControllerBase
 {
-    private readonly IBlobService   _blobService;
-
     private static readonly string[] Summaries =
     {
         "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
     };
+
+    private readonly IBlobService   _blobService;
 
     private readonly ILogger<WeatherForecastController> _logger;
 
@@ -43,12 +31,24 @@ public class WeatherForecastController : ControllerBase
     [HttpGet(Name = "test")]
     public async Task<long> Get()
     {
-        var exampleImage1 = new Image<Gray, byte>("D:\\C#\\CityDiscoverTourist\\CityDiscoverTourist.API\\bin\\Debug\\net6.0\\exampleImg\\a.jpg");
-        var exampleImage2 = new Image<Gray, byte>("D:\\C#\\CityDiscoverTourist\\CityDiscoverTourist.API\\bin\\Debug\\net6.0\\exampleImg\\b.jpg");
-        var exampleImage3 = new Image<Gray, byte>("D:\\C#\\CityDiscoverTourist\\CityDiscoverTourist.API\\bin\\Debug\\net6.0\\exampleImg\\c.jpg");
-        var exampleImage4 = new Image<Gray, byte>("D:\\C#\\CityDiscoverTourist\\CityDiscoverTourist.API\\bin\\Debug\\net6.0\\exampleImg\\d.jpg");
-        var exampleImage5 = new Image<Gray, byte>("D:\\C#\\CityDiscoverTourist\\CityDiscoverTourist.API\\bin\\Debug\\net6.0\\exampleImg\\e.jpg");
-        var exampleImage6 = new Image<Gray, byte>("D:\\C#\\CityDiscoverTourist\\CityDiscoverTourist.API\\bin\\Debug\\net6.0\\exampleImg\\f.jpg");
+        var exampleImage1 =
+            new Image<Gray, byte>(
+                "D:\\C#\\CityDiscoverTourist\\CityDiscoverTourist.API\\bin\\Debug\\net6.0\\exampleImg\\a.jpg");
+        var exampleImage2 =
+            new Image<Gray, byte>(
+                "D:\\C#\\CityDiscoverTourist\\CityDiscoverTourist.API\\bin\\Debug\\net6.0\\exampleImg\\b.jpg");
+        var exampleImage3 =
+            new Image<Gray, byte>(
+                "D:\\C#\\CityDiscoverTourist\\CityDiscoverTourist.API\\bin\\Debug\\net6.0\\exampleImg\\c.jpg");
+        var exampleImage4 =
+            new Image<Gray, byte>(
+                "D:\\C#\\CityDiscoverTourist\\CityDiscoverTourist.API\\bin\\Debug\\net6.0\\exampleImg\\d.jpg");
+        var exampleImage5 =
+            new Image<Gray, byte>(
+                "D:\\C#\\CityDiscoverTourist\\CityDiscoverTourist.API\\bin\\Debug\\net6.0\\exampleImg\\e.jpg");
+        var exampleImage6 =
+            new Image<Gray, byte>(
+                "D:\\C#\\CityDiscoverTourist\\CityDiscoverTourist.API\\bin\\Debug\\net6.0\\exampleImg\\f.jpg");
 
         var exampleArray = new List<Image<Gray, byte>>
         {
@@ -115,9 +115,9 @@ public class WeatherForecastController : ControllerBase
                 if (numberOfGoodMatches > mostMatches) mostMatches = numberOfGoodMatches;
             }
         }
+
         return mostMatches;
     }
-
 
 
     [HttpGet("demo")]
@@ -125,12 +125,18 @@ public class WeatherForecastController : ControllerBase
     {
         //load image from url
         var client = new HttpClient();
-        var image1 = client.GetAsync("https://citytouriststorage.blob.core.windows.net/item/example/a.jpg").Result.Content.ReadAsByteArrayAsync().Result;
-        var image2 = client.GetAsync("https://citytouriststorage.blob.core.windows.net/item/example/b.jpg").Result.Content.ReadAsByteArrayAsync().Result;
-        var image3 = client.GetAsync("https://citytouriststorage.blob.core.windows.net/item/example/c.jpg").Result.Content.ReadAsByteArrayAsync().Result;
-        var image4 = client.GetAsync("https://citytouriststorage.blob.core.windows.net/item/example/d.jpg").Result.Content.ReadAsByteArrayAsync().Result;
-        var image5 = client.GetAsync("https://citytouriststorage.blob.core.windows.net/item/example/e.jpg").Result.Content.ReadAsByteArrayAsync().Result;
-        var image6 = client.GetAsync("https://citytouriststorage.blob.core.windows.net/item/example/f.jpg").Result.Content.ReadAsByteArrayAsync().Result;
+        var image1 = client.GetAsync("https://citytouriststorage.blob.core.windows.net/item/example/a.jpg").Result
+            .Content.ReadAsByteArrayAsync().Result;
+        var image2 = client.GetAsync("https://citytouriststorage.blob.core.windows.net/item/example/b.jpg").Result
+            .Content.ReadAsByteArrayAsync().Result;
+        var image3 = client.GetAsync("https://citytouriststorage.blob.core.windows.net/item/example/c.jpg").Result
+            .Content.ReadAsByteArrayAsync().Result;
+        var image4 = client.GetAsync("https://citytouriststorage.blob.core.windows.net/item/example/d.jpg").Result
+            .Content.ReadAsByteArrayAsync().Result;
+        var image5 = client.GetAsync("https://citytouriststorage.blob.core.windows.net/item/example/e.jpg").Result
+            .Content.ReadAsByteArrayAsync().Result;
+        var image6 = client.GetAsync("https://citytouriststorage.blob.core.windows.net/item/example/f.jpg").Result
+            .Content.ReadAsByteArrayAsync().Result;
 
 
         var exampleImage1 = ConvertImage(image1);
@@ -140,7 +146,6 @@ public class WeatherForecastController : ControllerBase
         var exampleImage3 = ConvertImage(image3);
 
         var exampleImage4 = ConvertImage(image4);
-
 
 
         // convert byte array to bitmap
@@ -164,12 +169,12 @@ public class WeatherForecastController : ControllerBase
             exampleImage1,
             exampleImage2,
             exampleImage3,
-            exampleImage4,
+            exampleImage4
         };
 
         //object in scene
 
-            var sceneImageArray = new List<Image<Gray, byte>>
+        var sceneImageArray = new List<Image<Gray, byte>>
         {
             exampleImage1,
             exampleImage4
@@ -212,6 +217,7 @@ public class WeatherForecastController : ControllerBase
                 if (numberOfGoodMatches > mostMatches) mostMatches = numberOfGoodMatches;
             }
         }
+
         return mostMatches;
     }
 

@@ -126,6 +126,7 @@ public class QuestItemService : BaseService, IQuestItemService
             item.Content = ConvertLanguage(language, item.Content!);
             item.Description = ConvertLanguage(language, item.Description!);
         }
+
         var mappedData = _mapper.Map<IEnumerable<QuestItemResponseModel>>(entity);
 
         return mappedData;

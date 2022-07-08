@@ -11,7 +11,6 @@ using Newtonsoft.Json;
 namespace CityDiscoverTourist.API.Controllers;
 
 /// <summary>
-///
 /// </summary>
 [Route("api/v{version:apiVersion}/[controller]s")]
 [ApiVersion("1.0")]
@@ -21,7 +20,6 @@ public class NoteController : ControllerBase
     private readonly INoteService _noteService;
 
     /// <summary>
-    ///
     /// </summary>
     /// <param name="noteService"></param>
     public NoteController(INoteService noteService)
@@ -30,7 +28,6 @@ public class NoteController : ControllerBase
     }
 
     /// <summary>
-    ///
     /// </summary>
     /// <param name="param"></param>
     /// <returns></returns>
@@ -55,7 +52,6 @@ public class NoteController : ControllerBase
     }
 
     /// <summary>
-    ///
     /// </summary>
     /// <param name="id"></param>
     /// <returns></returns>
@@ -69,7 +65,6 @@ public class NoteController : ControllerBase
     }
 
     /// <summary>
-    ///
     /// </summary>
     /// <param name="data"></param>
     /// <returns></returns>
@@ -81,7 +76,6 @@ public class NoteController : ControllerBase
     }
 
     /// <summary>
-    ///
     /// </summary>
     /// <param name="data"></param>
     /// <returns></returns>
@@ -93,7 +87,6 @@ public class NoteController : ControllerBase
     }
 
     /// <summary>
-    ///
     /// </summary>
     /// <param name="id"></param>
     /// <returns></returns>

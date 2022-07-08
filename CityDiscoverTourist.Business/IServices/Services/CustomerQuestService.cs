@@ -20,14 +20,15 @@ public class CustomerQuestService : BaseService, ICustomerQuestService
     private readonly ICustomerQuestRepository _customerQuestRepository;
     private readonly ICustomerTaskService _customerTaskService;
     private readonly IMapper _mapper;
-    private readonly ISortHelper<CustomerQuest> _sortHelper;
-    private readonly IQuestItemRepository _taskRepository;
     private readonly IPaymentService _paymentService;
     private readonly IRewardRepository _rewardRepository;
+    private readonly ISortHelper<CustomerQuest> _sortHelper;
+    private readonly IQuestItemRepository _taskRepository;
 
     public CustomerQuestService(ICustomerQuestRepository customerQuestRepository, IMapper mapper,
         IQuestItemRepository taskRepository, ISortHelper<CustomerQuest> sortHelper,
-        ICustomerTaskService customerTaskService, UserManager<ApplicationUser>? userManager, IPaymentService paymentService, IRewardRepository rewardRepository)
+        ICustomerTaskService customerTaskService, UserManager<ApplicationUser>? userManager,
+        IPaymentService paymentService, IRewardRepository rewardRepository)
     {
         _customerQuestRepository = customerQuestRepository;
         _mapper = mapper;
@@ -78,7 +79,7 @@ public class CustomerQuestService : BaseService, ICustomerQuestService
         var entity = _mapper.Map<CustomerQuest>(request);
 
         var payment = _paymentService.Get(entity.PaymentId, Language.vi).Result;
-        if(!payment.IsValid) throw new AppException("Payment is not valid");
+        if (!payment.IsValid) throw new AppException("Payment is not valid");
 
         // get quantity of the order
         var ticketQuantity = _paymentService.GetQuantityOfPayment(entity.PaymentId);
@@ -126,7 +127,7 @@ public class CustomerQuestService : BaseService, ICustomerQuestService
         TryParse(entity.BeginPoint, out var beginPoint);
 
         // calculate reward base on final point
-        var percentPointRemain = endPoint/beginPoint * 100;
+        var percentPointRemain = endPoint / beginPoint * 100;
 
         var reward = new Reward
         {
@@ -168,7 +169,8 @@ public class CustomerQuestService : BaseService, ICustomerQuestService
             comment.Name = customerName;
         }
 
-        return Task.FromResult(PageList<CommentResponseModel>.ToPageList(commentResponseModels, param.PageNumber, param.PageSize));
+        return Task.FromResult(
+            PageList<CommentResponseModel>.ToPageList(commentResponseModels, param.PageNumber, param.PageSize));
     }
 
     public Task<List<CommentResponseModel>> UpdateComment(int questId, string customerId, CommentRequestModel request)
@@ -201,9 +203,9 @@ public class CustomerQuestService : BaseService, ICustomerQuestService
             var customerId = _userManager!.FindByEmailAsync(param.CustomerEmail).Result.Id;
             entities = entities.Where(x => x.CustomerId == customerId);
         }
-        if(param.IsFinished != null)
-            entities = entities.Where(x => x.IsFinished == param.IsFinished);
 
+        if (param.IsFinished != null)
+            entities = entities.Where(x => x.IsFinished == param.IsFinished);
     }
 
     private int CountQuestItemInQuest(int questId)

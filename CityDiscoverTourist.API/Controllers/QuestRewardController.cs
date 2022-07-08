@@ -21,6 +21,7 @@ public class QuestRewardController : ControllerBase
     {
         _questRewardService = questRewardService;
     }
+
     /// <summary>
     ///     create area
     /// </summary>

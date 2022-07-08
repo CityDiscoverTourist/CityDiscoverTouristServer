@@ -24,12 +24,12 @@ public class CustomerTaskService : BaseService, ICustomerTaskService
     private readonly ICustomerAnswerService _customerAnswerService;
     private readonly ICustomerQuestRepository _customerQuestRepo;
     private readonly ICustomerTaskRepository _customerTaskRepo;
+    private readonly IHubContext<CustomerTaskHub, ICustomerTaskHub> _hubContext;
     private readonly ILocationRepository _locationRepo;
     private readonly IMapper _mapper;
     private readonly IQuestItemRepository _questItemRepo;
     private readonly ISortHelper<CustomerTask> _sortHelper;
     private readonly ISuggestionRepository _suggestionRepo;
-    private readonly IHubContext<CustomerTaskHub, ICustomerTaskHub> _hubContext;
 
 
     public CustomerTaskService(ICustomerTaskRepository customerTaskRepository, IMapper mapper,
@@ -58,16 +58,19 @@ public class CustomerTaskService : BaseService, ICustomerTaskService
 
         var sortedQuests = _sortHelper.ApplySort(listAll, @params.OrderBy);
         var mappedData = _mapper.Map<IEnumerable<CustomerTaskResponseModel>>(sortedQuests);
-        return Task.FromResult(PageList<CustomerTaskResponseModel>.ToPageList(mappedData, @params.PageNumber, @params.PageSize));
+        return Task.FromResult(
+            PageList<CustomerTaskResponseModel>.ToPageList(mappedData, @params.PageNumber, @params.PageSize));
     }
 
-    public Task<PageList<CustomerTaskResponseModel>> GetByCustomerQuestId(int customerQuestId, CustomerTaskParams @params)
+    public Task<PageList<CustomerTaskResponseModel>> GetByCustomerQuestId(int customerQuestId,
+        CustomerTaskParams @params)
     {
         var listAll = _customerTaskRepo.GetByCondition(x => x.CustomerQuestId == customerQuestId);
 
         var sortedQuests = _sortHelper.ApplySort(listAll, @params.OrderBy);
         var mappedData = _mapper.Map<IEnumerable<CustomerTaskResponseModel>>(sortedQuests);
-        return Task.FromResult(PageList<CustomerTaskResponseModel>.ToPageList(mappedData, @params.PageNumber, @params.PageSize));
+        return Task.FromResult(
+            PageList<CustomerTaskResponseModel>.ToPageList(mappedData, @params.PageNumber, @params.PageSize));
     }
 
     public async Task<CustomerTaskResponseModel> Get(int id)
@@ -121,7 +124,8 @@ public class CustomerTaskService : BaseService, ICustomerTaskService
                 Status = "Progress"
             };
             await _customerTaskRepo.Add(_mapper.Map<CustomerTask>(customerTask));
-            await _hubContext.Clients.All.CustomerStartNextQuestItem(_mapper.Map<CustomerTaskResponseModel>(customerTask));
+            await _hubContext.Clients.All.CustomerStartNextQuestItem(
+                _mapper.Map<CustomerTaskResponseModel>(customerTask));
         }
 
         return nextQuestItemId == 0 ? 0 : nextQuestItemId;
@@ -262,14 +266,13 @@ public class CustomerTaskService : BaseService, ICustomerTaskService
     }
 
 
-
     #region MyRegion
 
     private static QuestItem NextQuestItem(QuestItem? nextQuestItem, List<QuestItem> questItems, int i)
     {
         if (nextQuestItem!.Status != "Deleted") return nextQuestItem;
 
-        if(i >= questItems.Count - 1) throw new AppException("This quest is finished");
+        if (i >= questItems.Count - 1) throw new AppException("This quest is finished");
 
         nextQuestItem = questItems[i + 1];
         return NextQuestItem(nextQuestItem, questItems, i + 1);
