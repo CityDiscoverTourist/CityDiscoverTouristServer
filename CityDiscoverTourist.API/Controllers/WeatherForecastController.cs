@@ -223,9 +223,7 @@ public class WeatherForecastController : ControllerBase
 
     private static Image<Gray, byte> ConvertImage(byte[] image1)
     {
-        var size = new Size(640, 480);
-
-        var mat = new Mat(size, DepthType.Cv8U, 2);
+        var mat = new Mat();
         CvInvoke.Imdecode(image1, ImreadModes.Grayscale, mat);
         var exampleImage = mat.ToImage<Gray, byte>();
         return exampleImage;
