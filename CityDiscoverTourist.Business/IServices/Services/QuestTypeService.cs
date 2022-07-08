@@ -129,9 +129,12 @@ public class QuestTypeService : BaseService, IQuestTypeService
 
     public async Task<QuestTypeResponseModel> DeleteAsync(int id)
     {
-        var entity = await _questTypeRepository.Get(id);
-        entity.Status = CommonStatus.Deleted.ToString();
-        await _questTypeRepository.UpdateFields(entity, r => r.Status!);
+          var entity = _questTypeRepository.GetByCondition(x => x.Id == id).Include(data => data.Quests).ToList().FirstOrDefault();
+        if (entity != null && entity.Quests!.Count == 0)
+        {
+            entity.Status = CommonStatus.Deleted.ToString();
+            await _questTypeRepository.UpdateFields(entity, r => r.Status!);
+        }
         return _mapper.Map<QuestTypeResponseModel>(entity);
     }
 
