@@ -8,6 +8,7 @@ using CityDiscoverTourist.Business.Helper.Params;
 using CityDiscoverTourist.Data.IRepositories;
 using CityDiscoverTourist.Data.Models;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json.Linq;
 
 namespace CityDiscoverTourist.Business.IServices.Services;
 
@@ -96,6 +97,11 @@ public class QuestTypeService : BaseService, IQuestTypeService
 
         await _questTypeRepository.UpdateFields(entity, r => r.ImagePath!);
 
+        //return quest type name vi
+        JObject objTitle = JObject.Parse(entity!.Name!);
+        string name = (string)objTitle["vi"]!;
+        entity.Name = name;
+
         return _mapper.Map<QuestTypeResponseModel>(entity);
     }
 
@@ -123,9 +129,12 @@ public class QuestTypeService : BaseService, IQuestTypeService
 
     public async Task<QuestTypeResponseModel> DeleteAsync(int id)
     {
-        var entity = await _questTypeRepository.Get(id);
-        entity.Status = CommonStatus.Deleted.ToString();
-        await _questTypeRepository.UpdateFields(entity, r => r.Status!);
+          var entity = _questTypeRepository.GetByCondition(x => x.Id == id).Include(data => data.Quests).ToList().FirstOrDefault();
+        if (entity != null && entity.Quests!.Count == 0)
+        {
+            entity.Status = CommonStatus.Deleted.ToString();
+            await _questTypeRepository.UpdateFields(entity, r => r.Status!);
+        }
         return _mapper.Map<QuestTypeResponseModel>(entity);
     }
 
