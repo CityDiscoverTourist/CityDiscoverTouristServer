@@ -16,6 +16,7 @@ using SixLabors.ImageSharp.Formats.Png;
 using SixLabors.ImageSharp.PixelFormats;
 using SixLabors.ImageSharp.Processing;
 using Image = SixLabors.ImageSharp.Image;
+using Size = System.Drawing.Size;
 
 
 namespace CityDiscoverTourist.API.Controllers;
@@ -216,7 +217,9 @@ public class WeatherForecastController : ControllerBase
 
     private static Image<Gray, byte> ConvertImage(byte[] image1)
     {
-        var mat = new Mat(4000, 6000, DepthType.Cv8U, 2);
+        var size = new Size(640, 480);
+
+        var mat = new Mat(size, DepthType.Cv8U, 2);
         CvInvoke.Imdecode(image1, ImreadModes.Grayscale, mat);
         var exampleImage = mat.ToImage<Gray, byte>();
         return exampleImage;
