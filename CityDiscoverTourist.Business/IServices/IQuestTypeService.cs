@@ -17,4 +17,6 @@ public interface IQuestTypeService
     public Task<QuestTypeResponseModel> EnableAsync(int id);
     public Task<QuestTypeResponseModel> UpdateStatusForeignKey(int id, string status);
     public Task<int> CountQuestInQuestType(int questTypeId);
+
+    public Task<QuestTypeResponseModel> Get(int id);
 }

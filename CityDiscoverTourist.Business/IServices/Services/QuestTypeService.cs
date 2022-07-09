@@ -81,6 +81,20 @@ public class QuestTypeService : BaseService, IQuestTypeService
         return _mapper.Map<QuestTypeResponseModel>(entity);
     }
 
+    public async Task<QuestTypeResponseModel> Get(int id)
+    {
+        var entity = await _questTypeRepository.GetByCondition(x => x.Id == id)
+            .FirstOrDefaultAsync();
+        CheckDataNotNull("QuestType", entity!);
+
+        var objName = JObject.Parse(entity!.Name!);
+        var name = (string)objName["vi"]! + " | " + (string)objName["en"]!;
+
+        entity.Name = name;
+
+        return _mapper.Map<QuestTypeResponseModel>(entity);
+    }
+
     public async Task<QuestTypeResponseModel> CreateAsync(QuestTypeRequestModel request)
     {
         request.Validate();
@@ -112,15 +126,14 @@ public class QuestTypeService : BaseService, IQuestTypeService
         var imgPath = await _blobService.UploadQuestImgAndReturnImgPathAsync(request.Image, request.Id, "quest-type");
 
         var entity = _mapper.Map<QuestType>(request);
+        entity.Name = JsonHelper.JsonFormat(request.Name);
 
         entity.ImagePath = imgPath;
         if (entity.ImagePath == null)
         {
             entity = await _questTypeRepository.NoneUpdateFields(entity, r => r.Id, r => r.ImagePath!);
             return _mapper.Map<QuestTypeResponseModel>(entity);
-        }
-
-        entity.Name = JsonHelper.JsonFormat(request.Name);
+        }  
 
         entity = await _questTypeRepository.NoneUpdateFields(entity, r => r.Id);
 
