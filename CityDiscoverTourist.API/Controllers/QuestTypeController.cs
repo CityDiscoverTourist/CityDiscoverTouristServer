@@ -71,6 +71,20 @@ public class QuestTypeController : ControllerBase
     }
 
     /// <summary>
+    ///   get quest type by id
+    /// </summary>
+    /// <param name="id"></param>
+    /// <returns></returns>
+    [HttpGet("{id:int}/not-language")]
+    //[Cached(600)]
+    public async Task<ApiResponse<QuestTypeResponseModel>> Get(int id)
+    {
+        var entity = await _questTypeService.Get(id);
+
+        return ApiResponse<QuestTypeResponseModel>.Ok(entity);
+    }
+
+    /// <summary>
     ///     count all quest in quest type
     /// </summary>
     /// <param name="id"></param>
