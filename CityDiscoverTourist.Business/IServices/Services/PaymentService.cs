@@ -217,5 +217,6 @@ public class PaymentService : BaseService, IPaymentService
         if (!entities.Any()) return;
 
         if (param.PaymentMethod != null) entities = entities.Where(r => r.PaymentMethod!.Equals(param.PaymentMethod));
+        if (param.CustomerId != null) entities = entities.Where(r => r.CustomerId!.Equals(param.CustomerId));
     }
 }
