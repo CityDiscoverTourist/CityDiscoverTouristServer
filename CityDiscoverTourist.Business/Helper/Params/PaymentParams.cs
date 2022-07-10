@@ -4,4 +4,5 @@ public class PaymentParams : QueryStringParams
 {
     public string? PaymentMethod { get; set; }
     public int CustomerQuestId { get; set; }
+    public string? CustomerId { get; set; }
 }
