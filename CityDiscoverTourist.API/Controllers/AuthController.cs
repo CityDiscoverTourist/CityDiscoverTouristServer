@@ -37,14 +37,14 @@ public class AuthController : ControllerBase
     }
 
     /// <summary>
-    ///     login with username and password for admin
+    ///     login with username and password for user
     /// </summary>
     /// <param name="model"></param>
     /// <returns></returns>
-    [HttpPost("login-admin")]
+    [HttpPost("login")]
     public async Task<ActionResult<LoginResponseModel>> LoginAdmin(LoginRequestModel model)
     {
-        return Ok(await _authService.LoginForAdmin(model));
+        return Ok(await _authService.Login(model));
     }
 
     //register user
@@ -53,7 +53,7 @@ public class AuthController : ControllerBase
     /// </summary>
     /// <param name="model"></param>
     /// <returns></returns>
-    [HttpPost("register-admin-account")]
+    [HttpPost("register-account")]
     public async Task<ActionResult> Register(LoginRequestModel model)
     {
         return Ok(await _authService.Register(model));

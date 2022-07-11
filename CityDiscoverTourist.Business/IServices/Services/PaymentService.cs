@@ -202,6 +202,7 @@ public class PaymentService : BaseService, IPaymentService
             { "ipnUrl", ipnUrl },
             { "lang", "en" },
             { "extraData", extraData },
+            { "autoCapture", false},
             { "requestType", requestType },
             { "signature", signature }
         };

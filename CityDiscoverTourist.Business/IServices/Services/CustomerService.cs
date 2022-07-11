@@ -35,11 +35,6 @@ public class CustomerService : BaseService, ICustomerService
         return _mapper.Map<CustomerResponseModel>(entity);
     }
 
-    public Task<CustomerResponseModel> CreateAsync(ApplicationUser request)
-    {
-        throw new NotImplementedException();
-    }
-
     public async Task<CustomerResponseModel> UpdateLockUser(string id, bool isLock)
     {
         var entity = await _userManager.FindByIdAsync(id);
@@ -55,11 +50,6 @@ public class CustomerService : BaseService, ICustomerService
     {
         var entity = await _userManager.UpdateAsync(request);
         return _mapper.Map<CustomerResponseModel>(entity);
-    }
-
-    public Task<CustomerResponseModel> DeleteAsync(int id)
-    {
-        throw new NotImplementedException();
     }
 
     private static void Search(ref IQueryable<ApplicationUser> customers, CustomerParams param)
