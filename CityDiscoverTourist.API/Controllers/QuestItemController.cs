@@ -70,6 +70,21 @@ public class QuestItemController : ControllerBase
         return ApiResponse<QuestItem>.Ok(entity);
     }
 
+    /// <summary>
+    ///     get quest item by id
+    /// </summary>
+    /// <param name="id"></param>
+    /// <param name="language"></param>
+    /// <returns></returns>
+    [HttpGet("{id:int}/not-language")]
+    //[Cached(600)]
+    public async Task<ApiResponse<QuestItemResponseModel>> Get(int id)
+    {
+        var entity = await _taskService.Get(id);
+
+        return ApiResponse<QuestItem>.Ok(entity);
+    }
+
 
     /// <summary>
     ///     get quest item by quest id

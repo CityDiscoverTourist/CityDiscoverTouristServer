@@ -8,6 +8,7 @@ using CityDiscoverTourist.Business.Helper.Params;
 using CityDiscoverTourist.Data.IRepositories;
 using CityDiscoverTourist.Data.Models;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json.Linq;
 
 namespace CityDiscoverTourist.Business.IServices.Services;
 
@@ -49,6 +50,22 @@ public class QuestItemService : BaseService, IQuestItemService
 
         entity.Content = ConvertLanguage(language, entity.Content!);
         entity.Description = ConvertLanguage(language, entity.Description!);
+
+        return _mapper.Map<QuestItemResponseModel>(entity);
+    }
+
+    public async Task<QuestItemResponseModel> Get(int id)
+    {
+        var entity = await _taskRepository.Get(id);
+        CheckDataNotNull("QuestItem", entity);
+
+        var objContent = JObject.Parse(entity!.Content!);
+        var content = (string)objContent["vi"]! + " | " + (string)objContent["en"]!;
+        var objDescription = JObject.Parse(entity.Description!);
+        var description = (string)objDescription["vi"]! + " | " + (string)objDescription["en"]!;
+
+        entity.Content = content;
+        entity.Description = description;
 
         return _mapper.Map<QuestItemResponseModel>(entity);
     }
