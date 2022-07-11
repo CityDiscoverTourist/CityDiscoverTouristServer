@@ -82,4 +82,16 @@ public class AuthController : ControllerBase
         var authorizationTokens = await _facebookService.LoginFacebookAsync(resource);
         return Ok(authorizationTokens);
     }
+
+    /// <summary>
+    ///
+    /// </summary>
+    /// <param name="email"></param>
+    /// <returns></returns>
+    [HttpPost("forgot-password")]
+    public async Task<ActionResult> ForgotPassword(string email)
+    {
+        await _authService.ForgotPassword(email);
+        return Ok();
+    }
 }

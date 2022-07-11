@@ -165,6 +165,31 @@ public class AuthService : IAuthService
         }
     }
 
+    public async Task ForgotPassword(string email)
+    {
+        var user = await _userManager.FindByEmailAsync(email);
+        if (user is null) throw new AppException("User not found");
+
+        var newPassword = GeneratePassword();
+
+        var message = "<h1>Dear " + email + "</h1> <br/>" +
+                      "Your new password is: " + newPassword
+                      + "<br/>" + "Please change your password after login"
+                      + "<br/>" + "Thank you";
+
+        await _userManager.AddPasswordAsync(user, newPassword);
+
+        await _emailSender.SendMailConfirmAsync(email, "Forgot password", message);
+    }
+
+    private static string GeneratePassword()
+    {
+        var randomNumber = new byte[32];
+        using var rng = RandomNumberGenerator.Create();
+        rng.GetBytes(randomNumber);
+        return Convert.ToBase64String(randomNumber);
+    }
+
     private async Task<bool> CreateUserIfNotExits(ApplicationUser user, LoginResponseModel userViewModel)
     {
         // ReSharper disable once ConditionIsAlwaysTrueOrFalse

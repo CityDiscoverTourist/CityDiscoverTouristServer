@@ -20,9 +20,11 @@ public class QuestService : BaseService, IQuestService
     private readonly IQuestItemRepository _questItemRepository;
     private readonly IQuestRepository _questRepository;
     private readonly ISortHelper<Quest> _sortHelper;
+    private readonly ICustomerQuestRepository _customerQuestRepository;
 
     public QuestService(IQuestRepository questRepository, ISortHelper<Quest> sortHelper, IMapper mapper,
-        IBlobService blobService, ILocationRepository locationRepository, IQuestItemRepository questItemRepository)
+        IBlobService blobService, ILocationRepository locationRepository, IQuestItemRepository questItemRepository,
+        ICustomerQuestRepository customerQuestRepository)
     {
         _questRepository = questRepository;
         _sortHelper = sortHelper;
@@ -30,6 +32,7 @@ public class QuestService : BaseService, IQuestService
         _blobService = blobService;
         _locationRepository = locationRepository;
         _questItemRepository = questItemRepository;
+        _customerQuestRepository = customerQuestRepository;
     }
 
 
@@ -49,6 +52,7 @@ public class QuestService : BaseService, IQuestService
         {
             var quest = listQuest[i];
             var questItems = _questItemRepository.GetAll().AsNoTracking().Where(x => x.QuestId == quest.Id).ToList();
+
             // convert quest item between vi and en
             foreach (var questItem in questItems)
             {
@@ -62,9 +66,32 @@ public class QuestService : BaseService, IQuestService
         var mappedData = _mapper.Map<IEnumerable<QuestResponseModel>>(listQuest);
 
         var questResponseModels = mappedData as QuestResponseModel[] ?? mappedData.ToArray();
-        // count quest item for each quest
+
+        /*var customerQuests = _customerQuestRepository.GetAll().AsNoTracking().ToList();
+
+        foreach (var customerQuest in customerQuests)
+        {
+            questResponseModels
+        }*/
+
         for (var i = 0; i < questResponseModels.Length; i++)
         {
+            //get total feed back and average rate for each quest
+            var i1 = i;
+            var customerQuest = _customerQuestRepository.GetByCondition(x => x.QuestId == questResponseModels[i1].Id);
+
+            if (customerQuest.Any())
+            {
+                questResponseModels[i].AverageStart = (long?) customerQuest.Average(x => x.Rating);
+                questResponseModels[i].TotalFeedback = customerQuest.Count();
+            }
+            else
+            {
+                questResponseModels[i].AverageStart = 0;
+                questResponseModels[i].TotalFeedback = 0;
+            }
+
+            // count quest item for each quest
             for (var j = 0; j < questResponseModels[i].QuestItems!.Count; j++)
             {
                 var questItem = questResponseModels[i].QuestItems![j];
@@ -108,6 +135,22 @@ public class QuestService : BaseService, IQuestService
         entity.Description = description;
 
         var mappedData = _mapper.Map<QuestResponseModel>(entity);
+
+        var customerQuests = _customerQuestRepository.GetByCondition(x => x.QuestId == id);
+
+        if (customerQuests.Any())
+        {
+            var averageRating = customerQuests.Average(x => x.Rating);
+
+            mappedData.AverageStart = (long) averageRating;
+            mappedData.TotalFeedback = customerQuests.Count();
+        }
+        else
+        {
+            mappedData.AverageStart = 0;
+            mappedData.TotalFeedback = 0;
+        }
+
         foreach (var item in mappedData.QuestItems!)
         {
             if (item.ItemId != 0) continue;

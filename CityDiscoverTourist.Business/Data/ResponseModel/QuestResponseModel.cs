@@ -19,6 +19,7 @@ public class QuestResponseModel
     public int CountQuestItem { get; set; }
     public string? Address { get; set; }
     public string? LatLong { get; set; }
-
+    public int? TotalFeedback { get; set; }
+    public long? AverageStart { get; set; }
     public List<QuestItemResponseModel>? QuestItems { get; set; }
 }
