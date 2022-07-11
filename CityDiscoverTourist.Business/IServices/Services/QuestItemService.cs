@@ -8,6 +8,7 @@ using CityDiscoverTourist.Business.Helper.Params;
 using CityDiscoverTourist.Data.IRepositories;
 using CityDiscoverTourist.Data.Models;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json.Linq;
 
 namespace CityDiscoverTourist.Business.IServices.Services;
 
@@ -53,6 +54,22 @@ public class QuestItemService : BaseService, IQuestItemService
         return _mapper.Map<QuestItemResponseModel>(entity);
     }
 
+    public async Task<QuestItemResponseModel> Get(int id)
+    {
+        var entity = await _taskRepository.Get(id);
+        CheckDataNotNull("QuestItem", entity);
+
+        var objContent = JObject.Parse(entity!.Content!);
+        var content = (string)objContent["vi"]! + " | " + (string)objContent["en"]!;
+        var objDescription = JObject.Parse(entity.Description!);
+        var description = (string)objDescription["vi"]! + " | " + (string)objDescription["en"]!;
+
+        entity.Content = content;
+        entity.Description = description;
+
+        return _mapper.Map<QuestItemResponseModel>(entity);
+    }
+
     public async Task<QuestItemResponseModel> CreateAsync(QuestItemRequestModel request)
     {
         request.Validate();
@@ -77,6 +94,10 @@ public class QuestItemService : BaseService, IQuestItemService
         if (request.QuestItemTypeId == 3) request.Content = ReverseQuestion(request.Content!);
 
         var entity = _mapper.Map<QuestItem>(request);
+
+
+        entity.Content = JsonHelper.JsonFormat(request.Content);
+        entity.Description = JsonHelper.JsonFormat(request.Description);
 
         entity = await _taskRepository.Add(entity);
         return _mapper.Map<QuestItemResponseModel>(entity);
@@ -145,6 +166,6 @@ public class QuestItemService : BaseService, IQuestItemService
     {
         var reversed = "";
         for (var i = question.Length - 1; i >= 0; i--) reversed += question[i];
-        return reversed;
+        return reversed.Replace(")(", "()");
     }
 }
