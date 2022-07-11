@@ -78,6 +78,10 @@ public class QuestItemService : BaseService, IQuestItemService
 
         var entity = _mapper.Map<QuestItem>(request);
 
+
+        entity.Content = JsonHelper.JsonFormat(request.Content);
+        entity.Description = JsonHelper.JsonFormat(request.Description);
+
         entity = await _taskRepository.Add(entity);
         return _mapper.Map<QuestItemResponseModel>(entity);
     }
@@ -145,6 +149,6 @@ public class QuestItemService : BaseService, IQuestItemService
     {
         var reversed = "";
         for (var i = question.Length - 1; i >= 0; i--) reversed += question[i];
-        return reversed;
+        return reversed.Replace(")(", "()");
     }
 }
