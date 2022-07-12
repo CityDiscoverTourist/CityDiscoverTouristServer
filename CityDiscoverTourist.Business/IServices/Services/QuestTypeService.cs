@@ -19,15 +19,17 @@ public class QuestTypeService : BaseService, IQuestTypeService
     private readonly IQuestRepository _questRepository;
     private readonly IQuestTypeRepository _questTypeRepository;
     private readonly ISortHelper<QuestType> _sortHelper;
+    private readonly ICustomerQuestRepository _customerQuestRepository;
 
     public QuestTypeService(IMapper mapper, ISortHelper<QuestType> sortHelper, IQuestTypeRepository questTypeRepository,
-        IBlobService blobService, IQuestRepository questRepository)
+        IBlobService blobService, IQuestRepository questRepository, ICustomerQuestRepository customerQuestRepository)
     {
         _mapper = mapper;
         _sortHelper = sortHelper;
         _questTypeRepository = questTypeRepository;
         _blobService = blobService;
         _questRepository = questRepository;
+        _customerQuestRepository = customerQuestRepository;
     }
 
     public PageList<QuestTypeResponseModel> GetAll(QuestTypeParams @params, Language language)
@@ -39,7 +41,7 @@ public class QuestTypeService : BaseService, IQuestTypeService
         var sortedQuests = _sortHelper.ApplySort(listAll, @params.OrderBy);
 
         var listQuestTypeIds = sortedQuests.Select(x => x.Id).ToList();
-        var listQuestType = sortedQuests.ToList();
+        var listQuestType = _mapper.Map<List<QuestTypeResponseModel>>(sortedQuests);
 
         for (var i = 0; i < listQuestTypeIds.Count; i++)
         {
@@ -48,17 +50,38 @@ public class QuestTypeService : BaseService, IQuestTypeService
                 .AsNoTracking()
                 .Where(x => x.QuestTypeId == questType.Id)
                 .ToList();
+
+            var mappedQuest = _mapper.Map<List<QuestResponseModel>>(quests);
+
             // convert quest item between vi and en
-            foreach (var questItem in quests)
+            foreach (var item in mappedQuest)
             {
-                questItem.Title = ConvertLanguage(language, questItem.Title!);
-                questItem.Description = ConvertLanguage(language, questItem.Description!);
+                //get total feed back and average rate for each quest
+                var customerQuests = _customerQuestRepository.GetAll()
+                    .AsNoTracking()
+                    .Where(x => x.QuestId == item.Id)
+                    .ToList();
+
+                if (customerQuests.Any())
+                {
+                    item.TotalFeedback = customerQuests.Count;
+                    item.AverageStar = (long?) customerQuests.Average(x => x.Rating);
+                }
+                else
+                {
+                    item.TotalFeedback = 0;
+                    item.AverageStar = 0;
+                }
+
+                item.Title = ConvertLanguage(language, item.Title!);
+                item.Description = ConvertLanguage(language, item.Description!);
             }
-            listQuestType[i].Quests = quests;
+            listQuestType[i].Quests = mappedQuest;
             listQuestType[i].Name = ConvertLanguage(language, questType.Name!);
         }
 
         var mappedData = _mapper.Map<IEnumerable<QuestTypeResponseModel>>(listQuestType);
+
         return PageList<QuestTypeResponseModel>.ToPageList(mappedData, @params.PageNumber, @params.PageSize);
     }
 
@@ -69,16 +92,34 @@ public class QuestTypeService : BaseService, IQuestTypeService
         CheckDataNotNull("QuestType", entity!);
 
         var quests = entity!.Quests!.ToList();
+        var mappedQuest = _mapper.Map<List<QuestResponseModel>>(quests);
+
         // convert quest item between vi and en
-        foreach (var item in quests)
+        foreach (var item in mappedQuest)
         {
+            //get total feed back and average rate for each quest
+            var customerQuests = _customerQuestRepository.GetByCondition(x => x.QuestId == item.Id);
+
+            if (customerQuests.Any())
+            {
+                item.TotalFeedback = customerQuests.Count();
+                item.AverageStar = (long?) customerQuests.Average(x => x.Rating);
+            }
+            else
+            {
+                item.TotalFeedback = 0;
+                item.AverageStar = 0;
+            }
+
             item.Title = ConvertLanguage(language, item.Title!);
             item.Description = ConvertLanguage(language, item.Description!);
         }
+        var mappedData = _mapper.Map<QuestTypeResponseModel>(entity);
 
-        entity.Name = ConvertLanguage(language, entity.Name!);
+        mappedData.Name = ConvertLanguage(language, entity.Name!);
+        mappedData.Quests = mappedQuest;
 
-        return _mapper.Map<QuestTypeResponseModel>(entity);
+        return mappedData;
     }
 
     public async Task<QuestTypeResponseModel> Get(int id)
@@ -133,7 +174,7 @@ public class QuestTypeService : BaseService, IQuestTypeService
         {
             entity = await _questTypeRepository.NoneUpdateFields(entity, r => r.Id, r => r.ImagePath!);
             return _mapper.Map<QuestTypeResponseModel>(entity);
-        }  
+        }
 
         entity = await _questTypeRepository.NoneUpdateFields(entity, r => r.Id);
 

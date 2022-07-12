@@ -136,6 +136,7 @@ public class QuestService : BaseService, IQuestService
 
         var mappedData = _mapper.Map<QuestResponseModel>(entity);
 
+        //get total feed back and average rate for each quest
         var customerQuests = _customerQuestRepository.GetByCondition(x => x.QuestId == id);
 
         if (customerQuests.Any())
