@@ -63,7 +63,7 @@ public class LocationTypeService : BaseService, ILocationTypeService
             .ToList().FirstOrDefault();
         if (locationType != null && locationType.Locations!.Count == 0)
         {
-            locationType.Status = CommonStatus.Deleted.ToString();
+            locationType.Status = CommonStatus.Inactive.ToString();
             await _locationTypeRepository.UpdateFields(locationType, r => r.Status!);
         }
 

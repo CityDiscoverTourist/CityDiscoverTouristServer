@@ -60,7 +60,7 @@ public class SuggestionService : BaseService, ISuggestionService
     public async Task<SuggestionResponseModel> DeleteAsync(int id)
     {
         var entity = await _suggestionRepository.Get(id);
-        entity.Status = CommonStatus.Deleted.ToString();
+        entity.Status = CommonStatus.Inactive.ToString();
         await _suggestionRepository.UpdateFields(entity, r => r.Status!);
         return _mapper.Map<SuggestionResponseModel>(entity);
     }

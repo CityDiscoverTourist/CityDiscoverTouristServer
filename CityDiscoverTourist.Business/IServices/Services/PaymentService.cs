@@ -158,13 +158,14 @@ public class PaymentService : BaseService, IPaymentService
         var message = "<h1>Payment Success</h1> <br/>"
                       + "<h3>Dear " + customerEmail + "</h3>"
                       + "<p>Your payment has been success</p>"
-            + "<p>Your order is: " + entity.Id + "</p>"
-            + "<p>Your order quest name is: " + ConvertLanguage(Language.vi, questName!) + "/ "
+                      + "<p>Your order is: " + entity.Id + "</p>"
+                      + "<p>Your order quest name is: " + ConvertLanguage(Language.vi, questName!) + "/ "
                       + ConvertLanguage(Language.en, questName!) + "</p>"
-            + "<p>Quantity is: " + entity.Quantity + "</p>"
-            + "<p>Your order total amount is: " + entity.TotalAmount + "</p>"
-            + "<p>Your order ticket will be invalid at " + entity.CreatedDate.AddDays(2) + "</p>"
-            + "<p>Thank you for using our service</p>";
+                      + "<p>Quantity is: " + entity.Quantity + "</p>"
+                      + "<p>Your order total amount is: " + entity.TotalAmount + "</p>"
+                      + "<p>Your playing code is: " + entity.Id + "</p>"
+                      + "<p>Your order ticket will be invalid at " + entity.CreatedDate.AddDays(2) + "</p>"
+                      + "<p>Thank you for using our service</p>";
 
         await _emailSender.SendMailConfirmAsync(customerEmail, "Payment Information", message);
 
@@ -178,7 +179,7 @@ public class PaymentService : BaseService, IPaymentService
         return Task.FromResult(_mapper.Map<List<PaymentResponseModel>>(entity));
     }
 
-    public async Task<string> CreateAsync(PaymentRequestModel request, Guid discountCode)
+    public async Task<string[]> CreateAsync(PaymentRequestModel request, Guid discountCode)
     {
         //need to check customer id or not?
         if (discountCode != Guid.Empty)
@@ -193,7 +194,7 @@ public class PaymentService : BaseService, IPaymentService
 
             var entity = _mapper.Map<Payment>(request);
             entity.RewardId = reward.Id;
-            entity.Status = CommonStatus.Pending.ToString();
+            entity.Status = PaymentStatus.Pending.ToString();
             entity.TotalAmount = request.totalAmount * (100 - percentage) / 100;
 
             var paymentUrl = MomoPayment(request, entity.TotalAmount);
@@ -204,19 +205,19 @@ public class PaymentService : BaseService, IPaymentService
             reward.Status = CommonStatus.Inactive.ToString();
             await _rewardRepository.UpdateFields(reward, x => x.Status!);
 
-            return paymentUrl;
+            return new[] { paymentUrl, entity.Id.ToString() };
         }
         else
         {
             var entity = _mapper.Map<Payment>(request);
-            entity.Status = CommonStatus.Pending.ToString();
+            entity.Status = PaymentStatus.Pending.ToString();
             entity.RewardId = null;
 
             var paymentUrl = MomoPayment(request, entity.TotalAmount);
 
             await _paymentRepository.Add(entity);
 
-            return paymentUrl;
+            return new[] { paymentUrl, entity.Id.ToString() };
         }
     }
 

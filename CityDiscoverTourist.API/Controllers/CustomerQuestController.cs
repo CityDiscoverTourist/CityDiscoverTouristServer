@@ -62,6 +62,7 @@ public class CustomerQuestController : ControllerBase
     /// <param name="id"></param>
     /// <returns></returns>
     [HttpGet("{id:int}")]
+    [AllowAnonymous]
     //[Cached(600)]
     public async Task<ApiResponse<CustomerQuestResponseModel>> Get(int id)
     {

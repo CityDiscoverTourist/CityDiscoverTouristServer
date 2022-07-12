@@ -240,7 +240,7 @@ public class QuestService : BaseService, IQuestService
         var entity = _questRepository.GetByCondition(x => x.Id == questId).Include(data => data.QuestItems).ToList().FirstOrDefault();
         if (entity != null && entity.QuestItems!.Count == 0)
         {
-            entity.Status = CommonStatus.Deleted.ToString();
+            entity.Status = CommonStatus.Inactive.ToString();
             await _questRepository.UpdateFields(entity, r => r.Status!);
         }
         return _mapper.Map<QuestResponseModel>(entity);

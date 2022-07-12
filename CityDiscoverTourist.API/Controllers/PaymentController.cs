@@ -92,7 +92,7 @@ public class PaymentController : ControllerBase
     /// <param name="discountCode"></param>
     /// <returns></returns>
     [HttpPost]
-    public async Task<ApiResponse<string>> Post(PaymentRequestModel data, Guid discountCode)
+    public async Task<ApiResponse<string[]>> Post(PaymentRequestModel data, Guid discountCode)
     {
         var entity = await _paymentService.CreateAsync(data, discountCode);
         return ApiResponse<Payment>.Created(entity);

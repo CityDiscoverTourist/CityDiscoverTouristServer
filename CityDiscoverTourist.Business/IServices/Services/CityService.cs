@@ -71,7 +71,7 @@ public class CityService : BaseService, ICityService
             .FirstOrDefault();
         if (city != null && city.Areas!.Count == 0)
         {
-            city.Status = CommonStatus.Deleted.ToString();
+            city.Status = CommonStatus.Inactive.ToString();
             await _cityRepository.UpdateFields(city, r => r.Status!);
         }
 

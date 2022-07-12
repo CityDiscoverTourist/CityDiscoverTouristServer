@@ -61,7 +61,7 @@ public class AreaService : BaseService, IAreaService
             .FirstOrDefault();
         if (area != null && area.Locations!.Count == 0)
         {
-            area.Status = CommonStatus.Deleted.ToString();
+            area.Status = CommonStatus.Inactive.ToString();
             await _areaRepository.UpdateFields(area, r => r.Status!);
         }
 
