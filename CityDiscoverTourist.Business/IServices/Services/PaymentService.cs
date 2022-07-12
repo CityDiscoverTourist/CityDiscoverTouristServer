@@ -36,16 +36,31 @@ public class PaymentService : BaseService, IPaymentService
         _questRepository = questRepository;
     }
 
-    public PageList<PaymentResponseModel> GetAll(PaymentParams @params)
+    public PageList<PaymentResponseModel> GetAll(PaymentParams @params, Language language)
     {
         var listAll = _paymentRepository.GetAll().Include(x => x.CustomerQuests).AsNoTracking();
 
         Search(ref listAll, @params);
 
         var sortedQuests = _sortHelper.ApplySort(listAll, @params.OrderBy);
-        //var shapedData = _dataShaper.ShapeData(sortedQuests, param.Fields);
+
         var mappedData = _mapper.Map<IEnumerable<PaymentResponseModel>>(sortedQuests);
-        return PageList<PaymentResponseModel>.ToPageList(mappedData, @params.PageNumber, @params.PageSize);
+
+        var paymentResponseModels = mappedData as PaymentResponseModel[] ?? mappedData.ToArray();
+
+        //return quest name and description in payment
+        foreach (var item in paymentResponseModels)
+        {
+            var listQuest = _questRepository.GetByCondition(x => x.Id == item.QuestId);
+
+            foreach (var quest in listQuest)
+            {
+                item.QuestName = ConvertLanguage(language, quest.Title!);
+                item.QuestDescription = ConvertLanguage(language, quest.Description!);
+            }
+        }
+
+        return PageList<PaymentResponseModel>.ToPageList(paymentResponseModels, @params.PageNumber, @params.PageSize);
     }
 
     public async Task<PaymentResponseModel> Get(Guid id, Language language)
