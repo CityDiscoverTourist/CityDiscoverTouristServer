@@ -1,4 +1,5 @@
 using System.Globalization;
+using System.Text;
 using AutoMapper;
 using CityDiscoverTourist.Business.Data.RequestModel;
 using CityDiscoverTourist.Business.Data.ResponseModel;
@@ -87,6 +88,47 @@ public class PaymentService : BaseService, IPaymentService
 
     public async Task<PaymentResponseModel> UpdateStatusWhenSuccess(MomoRequestModel request)
     {
+        /*if (request.ResultCode == "9000")
+        {
+            //https://www.citydiscovery.tech/thank?partnerCode=MOMOXOUE20220626&orderId=
+            //f953f791-a640-43e4-9b35-f8fa04bfc3c1477&requestId=ea386e9a-835d-49e6-826d-889cbd494ad2&amount=333333
+            //&orderInfo=20220712081152-9&orderType=momo_wallet&transId=2699324911&resultCode=9000
+            //&message=Transaction%20is%20authorized%20successfully.
+            //&payType=qr&responseTime=1657613595326&extraData=
+            //&signature=3edd7e07da00bd061e412b86c6c40e60b5c76a0954a5cbced4cb24209a228d51
+
+            var partnerCode = request.PartnerCode;
+            var orderId = request.OrderId;
+            var requestId = request.RequestId;
+            var amount = request.Amount;
+            var requestType = "capture";
+            var accessKey = _momoSettings.AccessKey;
+            var secretKey = _momoSettings.SecretKey;
+            var description = "";
+
+            var param = "accessKey=" + accessKey + "&amount=" + amount + "&description=" + description +
+                        "&orderId=" + orderId + "&partnerCode=" + partnerCode + "&requestId=" + requestId +
+                        "&requestType=" + requestType;
+
+            var crypto = new MoMoSecurity();
+            var signature = crypto.SignSha256(param, secretKey!);
+
+            var a = signature;
+
+            var url = "https://test-payment.momo.vn/v2/gateway/api/confirm";
+            var content = new StringContent(param, Encoding.UTF8, "application/x-www-form-urlencoded");
+            var client = new HttpClient();
+            var response = await client.PostAsync(url, content);
+            var responseContent = await response.Content.ReadAsStringAsync();
+            var responseJson = JObject.Parse(responseContent);
+            var resultCode = responseJson["resultCode"].ToString();
+            var msg = responseJson["message"].ToString();
+            var signatureMoMo = responseJson["signature"].ToString();
+            var signatureMoMoCheck = crypto.SignSha256(param, secretKey!);
+
+
+
+        }*/
         var entity = await _paymentRepository.Get(request.OrderId);
         CheckDataNotNull("Payment", entity);
         /*var param = "partnerCode=" + request.PartnerCode + "&orderId=" + request.OrderId + "&requestId=" + request.RequestId +
@@ -239,7 +281,6 @@ public class PaymentService : BaseService, IPaymentService
             { "ipnUrl", ipnUrl },
             { "lang", "en" },
             { "extraData", extraData },
-            { "autoCapture", false},
             { "requestType", requestType },
             { "signature", signature }
         };
