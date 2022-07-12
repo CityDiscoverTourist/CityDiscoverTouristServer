@@ -109,6 +109,8 @@ public class QuestItemService : BaseService, IQuestItemService
 
         request.ItemId ??= null;
         var entity = _mapper.Map<QuestItem>(request);
+        entity.Content = JsonHelper.JsonFormat(request.Content);
+        entity.Description = JsonHelper.JsonFormat(request.Description);
         entity = await _taskRepository.Update(entity);
         return _mapper.Map<QuestItemResponseModel>(entity);
     }
