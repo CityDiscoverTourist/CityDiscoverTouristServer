@@ -82,12 +82,12 @@ public class QuestService : BaseService, IQuestService
 
             if (customerQuest.Any())
             {
-                questResponseModels[i].AverageStart = (long?) customerQuest.Average(x => x.Rating);
+                questResponseModels[i].AverageStar = (long?) customerQuest.Average(x => x.Rating);
                 questResponseModels[i].TotalFeedback = customerQuest.Count();
             }
             else
             {
-                questResponseModels[i].AverageStart = 0;
+                questResponseModels[i].AverageStar = 0;
                 questResponseModels[i].TotalFeedback = 0;
             }
 
@@ -142,12 +142,12 @@ public class QuestService : BaseService, IQuestService
         {
             var averageRating = customerQuests.Average(x => x.Rating);
 
-            mappedData.AverageStart = (long) averageRating;
+            mappedData.AverageStar = (long) averageRating;
             mappedData.TotalFeedback = customerQuests.Count();
         }
         else
         {
-            mappedData.AverageStart = 0;
+            mappedData.AverageStar = 0;
             mappedData.TotalFeedback = 0;
         }
 
