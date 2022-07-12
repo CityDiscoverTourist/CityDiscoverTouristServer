@@ -6,6 +6,7 @@ using CityDiscoverTourist.Business.Helper;
 using CityDiscoverTourist.Business.Helper.Params;
 using CityDiscoverTourist.Business.IServices;
 using CityDiscoverTourist.Data.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 
@@ -16,6 +17,7 @@ namespace CityDiscoverTourist.API.Controllers;
 [Route("api/v{version:apiVersion}/[controller]s")]
 [ApiVersion("1.0")]
 [ApiController]
+[Authorize]
 public class QuestController : ControllerBase
 {
     private readonly IQuestService _questService;
@@ -35,6 +37,7 @@ public class QuestController : ControllerBase
     /// <param name="language"></param>
     /// <returns></returns>
     [HttpGet]
+    [AllowAnonymous]
     //[Cached(600)]
     public ApiResponse<PageList<QuestResponseModel>> GetAll([FromQuery] QuestParams param,
         Language language = Language.vi)
@@ -62,6 +65,7 @@ public class QuestController : ControllerBase
     /// <param name="language"></param>
     /// <returns></returns>
     [HttpGet("{id:int}")]
+    [AllowAnonymous]
     //[Cached(600)]
     public async Task<ApiResponse<QuestResponseModel>> Get(int id, Language language = Language.vi)
     {
