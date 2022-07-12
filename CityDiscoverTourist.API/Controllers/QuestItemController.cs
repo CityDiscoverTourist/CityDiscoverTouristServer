@@ -37,6 +37,7 @@ public class QuestItemController : ControllerBase
     /// <param name="language"></param>
     /// <returns></returns>
     [HttpGet]
+    [AllowAnonymous]
     //[Cached(600)]
     public ApiResponse<PageList<QuestItemResponseModel>> GetAll([FromQuery] TaskParams param,
         Language language = Language.vi)
@@ -64,6 +65,7 @@ public class QuestItemController : ControllerBase
     /// <param name="language"></param>
     /// <returns></returns>
     [HttpGet("{id:int}")]
+    [AllowAnonymous]
     //[Cached(600)]
     public async Task<ApiResponse<QuestItemResponseModel>> Get(int id, Language language = Language.vi)
     {

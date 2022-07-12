@@ -65,6 +65,7 @@ public class QuestTypeController : ControllerBase
     /// <param name="language"></param>
     /// <returns></returns>
     [HttpGet("{id:int}")]
+    [AllowAnonymous]
     //[Cached(600)]
     public async Task<ApiResponse<QuestTypeResponseModel>> Get(int id, Language language = Language.vi)
     {

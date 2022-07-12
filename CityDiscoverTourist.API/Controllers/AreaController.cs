@@ -33,6 +33,7 @@ public class AreaController : ControllerBase
     /// <param name="param"></param>
     /// <returns></returns>
     [HttpGet]
+    [AllowAnonymous]
     //[Cached(600)]
     public ApiResponse<PageList<AreaResponseModel>> GetAll([FromQuery] AreaParams param)
     {
@@ -58,6 +59,7 @@ public class AreaController : ControllerBase
     /// <param name="id"></param>
     /// <returns></returns>
     [HttpGet("{id:int}")]
+    [AllowAnonymous]
     //[Cached(600)]
     public async Task<ApiResponse<AreaResponseModel>> Get(int id)
     {

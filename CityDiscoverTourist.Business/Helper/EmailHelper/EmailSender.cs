@@ -27,7 +27,7 @@ public class EmailSender : IEmailSender
         emailMessage.To.Add(new MailboxAddress("", email));
         var bodyBuilder = new BodyBuilder
         {
-            HtmlBody = string.Format(htmlMessage)
+            HtmlBody = string.Format("<html>{0}</html>", htmlMessage)
         };
 
         emailMessage.Body = bodyBuilder.ToMessageBody();

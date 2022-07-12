@@ -35,6 +35,7 @@ public class LocationController : ControllerBase
     /// <param name="param"></param>
     /// <returns></returns>
     [HttpGet]
+    [AllowAnonymous]
     //[Cached(600)]
     public ApiResponse<PageList<LocationResponseModel>> GetAll([FromQuery] LocationParams param)
     {
@@ -60,6 +61,7 @@ public class LocationController : ControllerBase
     /// <param name="id"></param>
     /// <returns></returns>
     [HttpGet("{id:int}")]
+    [AllowAnonymous]
     //[Cached(600)]
     public async Task<ApiResponse<LocationResponseModel>> Get(int id)
     {

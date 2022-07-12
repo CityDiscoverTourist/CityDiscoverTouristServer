@@ -37,12 +37,13 @@ public class PaymentController : ControllerBase
     /// <summary>
     /// </summary>
     /// <param name="param"></param>
+    /// <param name="language"></param>
     /// <returns></returns>
     [HttpGet]
     //[Cached(600)]
-    public ApiResponse<PageList<PaymentResponseModel>> GetAll([FromQuery] PaymentParams param)
+    public ApiResponse<PageList<PaymentResponseModel>> GetAll([FromQuery] PaymentParams param, Language language = Language.vi)
     {
-        var entity = _paymentService.GetAll(param);
+        var entity = _paymentService.GetAll(param, language);
 
         var metadata = new
         {

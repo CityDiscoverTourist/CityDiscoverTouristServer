@@ -36,6 +36,7 @@ public class RewardController : ControllerBase
     /// <param name="param"></param>
     /// <returns></returns>
     [HttpGet]
+    [AllowAnonymous]
     //[Cached(600)]
     public ApiResponse<PageList<RewardResponseModel>> GetAll([FromQuery] RewardParams param)
     {
@@ -60,6 +61,7 @@ public class RewardController : ControllerBase
     /// <param name="id"></param>
     /// <returns></returns>
     [HttpGet("{id:int}")]
+    [AllowAnonymous]
     //[Cached(600)]
     public async Task<ApiResponse<RewardResponseModel>> Get(int id)
     {

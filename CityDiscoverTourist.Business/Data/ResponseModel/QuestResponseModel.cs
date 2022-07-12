@@ -20,6 +20,6 @@ public class QuestResponseModel
     public string? Address { get; set; }
     public string? LatLong { get; set; }
     public int? TotalFeedback { get; set; }
-    public long? AverageStart { get; set; }
+    public long? AverageStar { get; set; }
     public List<QuestItemResponseModel>? QuestItems { get; set; }
 }
