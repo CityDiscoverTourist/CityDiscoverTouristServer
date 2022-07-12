@@ -126,22 +126,23 @@ public class PaymentService : BaseService, IPaymentService
             var signatureMoMo = responseJson["signature"].ToString();
             var signatureMoMoCheck = crypto.SignSha256(param, secretKey!);
 
-
-
         }*/
         var entity = await _paymentRepository.Get(request.OrderId);
         CheckDataNotNull("Payment", entity);
-        /*var param = "partnerCode=" + request.PartnerCode + "&orderId=" + request.OrderId + "&requestId=" + request.RequestId +
-                    "&amount=" + request.Amount  + "&orderInfo=" + request.OrderInfo + "&orderType" + request.OrderType +
-                    "&transId=" + request.TransId + "&resultCode=" + request.ResultCode + "&message=" + request.Message +
-                    "&payType=" + request.PayType + "&responseTime=" + request.ResponseTime +
-                    "&extraData=" + request.ExtraData;
 
+        var accessKey = _momoSettings.AccessKey;
+        var secretKey = _momoSettings.SecretKey;
+
+        var rawHash = "accessKey=" + accessKey + "&amount=" + request.Amount
+                    + "&extraData=" + request.ExtraData + "&message=" + request.Message + "&orderId=" + request.OrderId
+                    + "&orderInfo=" + request.OrderInfo + "&orderType=" + request.OrderType + "&partnerCode=" + request.PartnerCode
+                    + "&payType=" + request.PayType + "&requestId=" + request.RequestId + "&responseTime=" + request.ResponseTime
+                    + "&resultCode=" + request.ResultCode + "&transId=" + request.TransId;
 
         var crypto = new MoMoSecurity();
-        var signature = crypto.SignSha256(param, secretKey!);
+        var signature = crypto.SignSha256(rawHash, secretKey!);
 
-        if (signature != request.Signature!) throw new AppException("Signature is not valid");*/
+        if (signature != request.Signature!) throw new AppException("Signature is not valid");
 
         if (request.ResultCode != "0") throw new AppException("Failed when update status");
         if (request.Amount != entity.TotalAmount.ToString(CultureInfo.InvariantCulture))
@@ -154,17 +155,18 @@ public class PaymentService : BaseService, IPaymentService
         var questName = _questRepository.Get(entity.QuestId).Result.Title;
         var customerEmail = _userManager.FindByIdAsync(entity.CustomerId).Result.Email;
 
-        var message = "<h1>Payment Success</h1>"
+        var message = "<h1>Payment Success</h1> <br/>"
                       + "<h3>Dear " + customerEmail + "</h3>"
                       + "<p>Your payment has been success</p>"
-            + "<p>Your order id is: " + entity.Id + "</p>"
-            + "<p>Your order quest name is: " + questName + "</p>"
+            + "<p>Your order is: " + entity.Id + "</p>"
+            + "<p>Your order quest name is: " + ConvertLanguage(Language.vi, questName!) + "/ "
+                      + ConvertLanguage(Language.en, questName!) + "</p>"
             + "<p>Quantity is: " + entity.Quantity + "</p>"
             + "<p>Your order total amount is: " + entity.TotalAmount + "</p>"
             + "<p>Your order ticket will be invalid at " + entity.CreatedDate.AddDays(2) + "</p>"
             + "<p>Thank you for using our service</p>";
 
-        await _emailSender.SendMailConfirmAsync(customerEmail, "Payment Infomation", message);
+        await _emailSender.SendMailConfirmAsync(customerEmail, "Payment Information", message);
 
         return _mapper.Map<PaymentResponseModel>(entity);
     }
@@ -257,7 +259,7 @@ public class PaymentService : BaseService, IPaymentService
         var requestType = "captureWallet";
 
         var amount = totalAmount.ToString(CultureInfo.InvariantCulture);
-        var orderId = request.Id.ToString() + DateTime.Now.Millisecond;
+        var orderId = request.Id.ToString();
         var requestId = Guid.NewGuid();
         var extraData = "";
 
