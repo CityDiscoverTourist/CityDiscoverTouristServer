@@ -5,11 +5,13 @@ using CityDiscoverTourist.Business.Data.ResponseModel;
 using CityDiscoverTourist.Business.Enums;
 using CityDiscoverTourist.Business.Exceptions;
 using CityDiscoverTourist.Business.Helper;
+using CityDiscoverTourist.Business.Helper.EmailHelper;
 using CityDiscoverTourist.Business.Helper.Params;
 using CityDiscoverTourist.Business.Momo;
 using CityDiscoverTourist.Business.Settings;
 using CityDiscoverTourist.Data.IRepositories;
 using CityDiscoverTourist.Data.Models;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using MoMo;
 using Newtonsoft.Json.Linq;
@@ -24,9 +26,11 @@ public class PaymentService : BaseService, IPaymentService
     private readonly IQuestRepository _questRepository;
     private readonly IRewardRepository _rewardRepository;
     private readonly ISortHelper<Payment> _sortHelper;
+    private readonly UserManager<ApplicationUser> _userManager;
+    private readonly IEmailSender _emailSender;
 
     public PaymentService(IPaymentRepository paymentRepository, IMapper mapper, ISortHelper<Payment> sortHelper,
-        MomoSetting momoSettings, IRewardRepository rewardRepository, IQuestRepository questRepository)
+        MomoSetting momoSettings, IRewardRepository rewardRepository, IQuestRepository questRepository, UserManager<ApplicationUser> userManager, IEmailSender emailSender)
     {
         _paymentRepository = paymentRepository;
         _mapper = mapper;
@@ -34,6 +38,8 @@ public class PaymentService : BaseService, IPaymentService
         _momoSettings = momoSettings;
         _rewardRepository = rewardRepository;
         _questRepository = questRepository;
+        _userManager = userManager;
+        _emailSender = emailSender;
     }
 
     public PageList<PaymentResponseModel> GetAll(PaymentParams @params, Language language)
@@ -101,6 +107,22 @@ public class PaymentService : BaseService, IPaymentService
 
         entity.Status = PaymentStatus.Success.ToString();
         await _paymentRepository.Update(entity);
+
+        //send mail to customer when payment success
+        var questName = _questRepository.Get(entity.QuestId).Result.Title;
+        var customerEmail = _userManager.FindByIdAsync(entity.CustomerId).Result.Email;
+
+        var message = "<h1>Payment Success</h1>"
+                      + "<h3>Dear " + customerEmail + "</h3>"
+                      + "<p>Your payment has been success</p>"
+            + "<p>Your order id is: " + entity.Id + "</p>"
+            + "<p>Your order quest name is: " + questName + "</p>"
+            + "<p>Quantity is: " + entity.Quantity + "</p>"
+            + "<p>Your order total amount is: " + entity.TotalAmount + "</p>"
+            + "<p>Your order ticket will be invalid at " + entity.CreatedDate.AddDays(2) + "</p>"
+            + "<p>Thank you for using our service</p>";
+
+        await _emailSender.SendMailConfirmAsync(customerEmail, "Payment Infomation", message);
 
         return _mapper.Map<PaymentResponseModel>(entity);
     }
