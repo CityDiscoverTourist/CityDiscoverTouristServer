@@ -88,64 +88,28 @@ public class PaymentService : BaseService, IPaymentService
 
     public async Task<PaymentResponseModel> UpdateStatusWhenSuccess(MomoRequestModel request)
     {
-        /*if (request.ResultCode == "9000")
-        {
-            //https://www.citydiscovery.tech/thank?partnerCode=MOMOXOUE20220626&orderId=
-            //f953f791-a640-43e4-9b35-f8fa04bfc3c1477&requestId=ea386e9a-835d-49e6-826d-889cbd494ad2&amount=333333
-            //&orderInfo=20220712081152-9&orderType=momo_wallet&transId=2699324911&resultCode=9000
-            //&message=Transaction%20is%20authorized%20successfully.
-            //&payType=qr&responseTime=1657613595326&extraData=
-            //&signature=3edd7e07da00bd061e412b86c6c40e60b5c76a0954a5cbced4cb24209a228d51
+        if (request.ResultCode != "9000") throw new AppException("Something went wrong when processing payment");
 
-            var partnerCode = request.PartnerCode;
-            var orderId = request.OrderId;
-            var requestId = request.RequestId;
-            var amount = request.Amount;
-            var requestType = "capture";
-            var accessKey = _momoSettings.AccessKey;
-            var secretKey = _momoSettings.SecretKey;
-            var description = "";
-
-            var param = "accessKey=" + accessKey + "&amount=" + amount + "&description=" + description +
-                        "&orderId=" + orderId + "&partnerCode=" + partnerCode + "&requestId=" + requestId +
-                        "&requestType=" + requestType;
-
-            var crypto = new MoMoSecurity();
-            var signature = crypto.SignSha256(param, secretKey!);
-
-            var a = signature;
-
-            var url = "https://test-payment.momo.vn/v2/gateway/api/confirm";
-            var content = new StringContent(param, Encoding.UTF8, "application/x-www-form-urlencoded");
-            var client = new HttpClient();
-            var response = await client.PostAsync(url, content);
-            var responseContent = await response.Content.ReadAsStringAsync();
-            var responseJson = JObject.Parse(responseContent);
-            var resultCode = responseJson["resultCode"].ToString();
-            var msg = responseJson["message"].ToString();
-            var signatureMoMo = responseJson["signature"].ToString();
-            var signatureMoMoCheck = crypto.SignSha256(param, secretKey!);
-
-        }*/
         var entity = await _paymentRepository.Get(request.OrderId);
         CheckDataNotNull("Payment", entity);
 
         var accessKey = _momoSettings.AccessKey;
         var secretKey = _momoSettings.SecretKey;
+        var description = "";
+        var requestType = "capture";
+        var momoResponse = ConfirmPayment(request);
 
-        var rawHash = "accessKey=" + accessKey + "&amount=" + request.Amount
-                    + "&extraData=" + request.ExtraData + "&message=" + request.Message + "&orderId=" + request.OrderId
-                    + "&orderInfo=" + request.OrderInfo + "&orderType=" + request.OrderType + "&partnerCode=" + request.PartnerCode
-                    + "&payType=" + request.PayType + "&requestId=" + request.RequestId + "&responseTime=" + request.ResponseTime
-                    + "&resultCode=" + request.ResultCode + "&transId=" + request.TransId;
+        var rawHash = "accessKey=" + accessKey + "&amount=" + request.Amount + "&description=" + description + "&orderId=" +
+                      request.OrderId + "&partnerCode=" + request.PartnerCode + "&requestId=" + request.RequestId + "&requestType=" + requestType;
 
         var crypto = new MoMoSecurity();
         var signature = crypto.SignSha256(rawHash, secretKey!);
 
-        if (signature != request.Signature!) throw new AppException("Signature is not valid");
+        if (signature != momoResponse!.Signature) throw new AppException("Signature is not valid");
 
-        if (request.ResultCode != "0") throw new AppException("Failed when update status");
-        if (request.Amount != entity.TotalAmount.ToString(CultureInfo.InvariantCulture))
+        if (momoResponse.ResultCode != "0") throw new AppException("Failed when update status");
+
+        if (momoResponse.Amount != entity.TotalAmount.ToString(CultureInfo.InvariantCulture))
             throw new AppException("Amount is not valid");
 
         entity.Status = PaymentStatus.Success.ToString();
@@ -155,21 +119,70 @@ public class PaymentService : BaseService, IPaymentService
         var questName = _questRepository.Get(entity.QuestId).Result.Title;
         var customerEmail = _userManager.FindByIdAsync(entity.CustomerId).Result.Email;
 
-        var message = "<h1>Payment Success</h1> <br/>"
+        var message = "<h1>Payment Success</h1>"
                       + "<h3>Dear " + customerEmail + "</h3>"
-                      + "<p>Your payment has been success</p>"
+                      + "<p>Your payment has been succeeded</p>"
                       + "<p>Your order is: " + entity.Id + "</p>"
-                      + "<p>Your order quest name is: " + ConvertLanguage(Language.vi, questName!) + "/ "
+                      + "<p>Your quest name is: " + ConvertLanguage(Language.vi, questName!) + "/ "
                       + ConvertLanguage(Language.en, questName!) + "</p>"
                       + "<p>Quantity is: " + entity.Quantity + "</p>"
                       + "<p>Your order total amount is: " + entity.TotalAmount + "</p>"
                       + "<p>Your playing code is: " + entity.Id + "</p>"
-                      + "<p>Your order ticket will be invalid at " + entity.CreatedDate.AddDays(2) + "</p>"
+                      + "<p>Your order ticket will be invalid at " + entity.CreatedDate.AddDays(2).ToString("dd/MM/yyyy HH:mm:ss") + "</p>"
                       + "<p>Thank you for using our service</p>";
 
         await _emailSender.SendMailConfirmAsync(customerEmail, "Payment Information", message);
 
         return _mapper.Map<PaymentResponseModel>(entity);
+    }
+
+    private MomoResponseModel? ConfirmPayment(MomoRequestModel request)
+    {
+        var partnerCode = request.PartnerCode;
+        var orderId = request.OrderId;
+        var requestId = request.RequestId;
+        var amount = request.Amount;
+        var requestType = "capture";
+        var accessKey = _momoSettings.AccessKey;
+        var secretKey = _momoSettings.SecretKey;
+        var description = "";
+
+        var param = "accessKey=" + accessKey + "&amount=" + amount + "&description=" + description + "&orderId=" +
+                    orderId + "&partnerCode=" + partnerCode + "&requestId=" + requestId + "&requestType=" + requestType;
+
+        var crypto = new MoMoSecurity();
+        var signature = crypto.SignSha256(param, secretKey!);
+
+        var url = "https://test-payment.momo.vn/v2/gateway/api/confirm";
+
+        var message = new JObject
+        {
+            { "partnerCode", partnerCode },
+            { "requestId", requestId },
+            { "orderId", orderId },
+            { "requestType", requestType },
+            { "amount", amount },
+            { "lang", "en" },
+            { "description", description },
+            { "signature", signature}
+        };
+
+        var response = PaymentRequest.sendConfirmPaymentRequest(url!, message.ToString());
+        var jMessage = JObject.Parse(response);
+
+        return new MomoResponseModel
+        {
+            Amount = jMessage["amount"]!.ToString(),
+            Message = jMessage["message"]!.ToString(),
+            OrderId = (Guid) jMessage["orderId"]!,
+            PartnerCode = jMessage["partnerCode"]!.ToString(),
+            RequestId = jMessage["requestId"]!.ToString(),
+            ResponseTime = jMessage["responseTime"]!.ToString(),
+            RequestType = jMessage["requestType"]!.ToString(),
+            TransId = jMessage["transId"]!.ToString(),
+            ResultCode = jMessage["resultCode"]!.ToString(),
+            Signature = signature
+        };
     }
 
     public Task<List<PaymentResponseModel>> GetByCustomerId(string customerId)
@@ -283,6 +296,7 @@ public class PaymentService : BaseService, IPaymentService
             { "redirectUrl", redirectUrl },
             { "ipnUrl", ipnUrl },
             { "lang", "en" },
+            { "autoCapture", false},
             { "extraData", extraData },
             { "requestType", requestType },
             { "signature", signature }
