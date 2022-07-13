@@ -1,4 +1,5 @@
 using AutoMapper;
+using CityDiscoverTourist.Business.Data.RequestModel;
 using CityDiscoverTourist.Business.Data.ResponseModel;
 using CityDiscoverTourist.Business.Helper;
 using CityDiscoverTourist.Business.Helper.Params;
@@ -46,10 +47,18 @@ public class CustomerService : BaseService, ICustomerService
         return _mapper.Map<CustomerResponseModel>(entity);
     }
 
-    public async Task<CustomerResponseModel> UpdateAsync(ApplicationUser request)
+    public async Task<CustomerResponseModel> UpdateAsync(CustomerRequestModel request)
     {
-        var entity = await _userManager.UpdateAsync(request);
-        return _mapper.Map<CustomerResponseModel>(entity);
+        var mappedData = _mapper.Map<ApplicationUser>(request);
+
+        var user = await _userManager.FindByIdAsync(request.Id);
+
+        user.Address = mappedData.Address;
+        user.Gender = mappedData.Gender;
+        user.PhoneNumber = mappedData.PhoneNumber;
+
+        var entity = await _userManager.UpdateAsync(user);
+        return _mapper.Map<CustomerResponseModel>(user);
     }
 
     private static void Search(ref IQueryable<ApplicationUser> customers, CustomerParams param)

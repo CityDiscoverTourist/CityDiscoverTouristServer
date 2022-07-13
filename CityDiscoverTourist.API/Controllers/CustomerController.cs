@@ -1,4 +1,5 @@
 using CityDiscoverTourist.API.Response;
+using CityDiscoverTourist.Business.Data.RequestModel;
 using CityDiscoverTourist.Business.Data.ResponseModel;
 using CityDiscoverTourist.Business.Helper;
 using CityDiscoverTourist.Business.Helper.Params;
@@ -15,7 +16,7 @@ namespace CityDiscoverTourist.API.Controllers;
 [Route("api/v{version:apiVersion}/[controller]s")]
 [ApiVersion("1.0")]
 [ApiController]
-[Authorize]
+//[Authorize]
 public class CustomerController : ControllerBase
 {
     private readonly ICustomerService _customerService;
@@ -73,7 +74,7 @@ public class CustomerController : ControllerBase
     /// <param name="data"></param>
     /// <returns></returns>
     [HttpPut]
-    public async Task<ApiResponse<CustomerResponseModel>> Put([FromBody] ApplicationUser data)
+    public async Task<ApiResponse<CustomerResponseModel>> Put([FromBody] CustomerRequestModel data)
     {
         var entity = await _customerService.UpdateAsync(data);
         return ApiResponse<ApplicationUser>.Created(entity);
