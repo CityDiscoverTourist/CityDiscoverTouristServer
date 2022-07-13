@@ -83,7 +83,6 @@ public class RewardController : ControllerBase
 
     /// <summary>
     /// </summary>
-    /// <param name="data"></param>
     /// <returns></returns>
     [HttpPut]
     public async Task<OkObjectResult> Put()

@@ -10,6 +10,7 @@ public interface ICustomerQuestService
 {
     public PageList<CustomerQuestResponseModel> GetAll(CustomerQuestParams @params);
     public Task<CustomerQuestResponseModel> Get(int id);
+    public Task<CustomerQuestResponseModel> InvalidCustomerQuest();
     public Task<List<CustomerQuestResponseModel>> GetByCustomerId(string id);
     public Task<CustomerQuestResponseModel> CreateAsync(CustomerQuestRequestModel request);
     public Task<CustomerQuestResponseModel> DeleteAsync(int id);

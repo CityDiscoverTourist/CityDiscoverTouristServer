@@ -139,7 +139,6 @@ try
     app.UseEndpoints(endpoints =>
     {
         endpoints.MapControllers();
-        endpoints.MapHub<ChartHub>("/chart");
         endpoints.MapHub<CustomerTaskHub>("/customer-task");
     });
 

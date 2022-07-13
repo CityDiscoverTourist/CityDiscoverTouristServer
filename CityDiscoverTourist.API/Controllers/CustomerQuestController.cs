@@ -1,11 +1,11 @@
 using CityDiscoverTourist.API.Response;
 using CityDiscoverTourist.Business.Data.RequestModel;
 using CityDiscoverTourist.Business.Data.ResponseModel;
-using CityDiscoverTourist.Business.Enums;
 using CityDiscoverTourist.Business.Helper;
 using CityDiscoverTourist.Business.Helper.Params;
 using CityDiscoverTourist.Business.IServices;
 using CityDiscoverTourist.Data.Models;
+using Hangfire;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
@@ -17,17 +17,19 @@ namespace CityDiscoverTourist.API.Controllers;
 [Route("api/v{version:apiVersion}/[controller]s")]
 [ApiVersion("1.0")]
 [ApiController]
-[Authorize]
+//[Authorize]
 public class CustomerQuestController : ControllerBase
 {
     private readonly ICustomerQuestService _customerQuestService;
+    private readonly IRecurringJobManager _recurringJobManager;
 
     /// <summary>
     /// </summary>
     /// <param name="customerQuestService"></param>
-    public CustomerQuestController(ICustomerQuestService customerQuestService)
+    public CustomerQuestController(ICustomerQuestService customerQuestService, IRecurringJobManager recurringJobManager)
     {
         _customerQuestService = customerQuestService;
+        _recurringJobManager = recurringJobManager;
     }
 
     /// <summary>
@@ -55,7 +57,6 @@ public class CustomerQuestController : ControllerBase
 
         return ApiResponse<List<CustomerQuestResponseModel>>.Success(entity, metadata);
     }
-
 
     /// <summary>
     ///     get customer quest by id
@@ -134,6 +135,17 @@ public class CustomerQuestController : ControllerBase
     {
         var entity = await _customerQuestService.UpdateEndPointAndStatusWhenFinishQuestAsync(customerQuestId);
         return ApiResponse<CustomerQuestResponseModel>.Created(entity);
+    }
+
+    /// <summary>
+    /// back ground job to update status
+    /// </summary>
+    /// <returns></returns>
+    [HttpPut]
+    public async Task<OkObjectResult> Put()
+    {
+        _recurringJobManager.AddOrUpdate("CustomerQuest", () => _customerQuestService.InvalidCustomerQuest(), Cron.Daily(23, 55));
+        return await Task.FromResult(Ok("RecurringJobManager"));
     }
 
     /// <summary>

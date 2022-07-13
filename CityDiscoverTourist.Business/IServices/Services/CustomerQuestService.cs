@@ -50,13 +50,15 @@ public class CustomerQuestService : BaseService, ICustomerQuestService
 
         var mappedData = _mapper.Map<IEnumerable<CustomerQuestResponseModel>>(sortedQuests);
 
-        foreach (var quest in mappedData)
+        var customerQuestResponseModels = mappedData as CustomerQuestResponseModel[] ?? mappedData.ToArray();
+
+        foreach (var quest in customerQuestResponseModels)
         {
             var customerName = _userManager?.FindByIdAsync(quest.CustomerId).Result.UserName;
             quest.CustomerName = customerName;
         }
 
-        return PageList<CustomerQuestResponseModel>.ToPageList(mappedData, @params.PageNumber, @params.PageSize);
+        return PageList<CustomerQuestResponseModel>.ToPageList(customerQuestResponseModels, @params.PageNumber, @params.PageSize);
     }
 
     public async Task<CustomerQuestResponseModel> Get(int id)
@@ -64,6 +66,22 @@ public class CustomerQuestService : BaseService, ICustomerQuestService
         var entity = await _customerQuestRepository.Get(id);
         CheckDataNotNull("CustomerQuest", entity);
         return _mapper.Map<CustomerQuestResponseModel>(entity);
+    }
+
+    public async Task<CustomerQuestResponseModel> InvalidCustomerQuest()
+    {
+        var entity = _customerQuestRepository.GetAll();
+
+        foreach (var item in entity)
+        {
+            if(item.IsFinished) continue;
+            if (!(item.CreatedDate < DateTime.Now)) continue;
+
+            item.IsFinished = true;
+            item.Status = CommonStatus.Inactive.ToString();
+            await _customerQuestRepository.UpdateFields(item, x => x.IsFinished, x => x.Status!);
+        }
+        return null!;
     }
 
     public  Task<List<CustomerQuestResponseModel>> GetByCustomerId(string id)
@@ -79,6 +97,8 @@ public class CustomerQuestService : BaseService, ICustomerQuestService
         var entity = _mapper.Map<CustomerQuest>(request);
 
         var payment = _paymentService.Get(entity.PaymentId, Language.vi).Result;
+
+        if(payment.Status == PaymentStatus.Pending.ToString()) throw new AppException("This transaction is not completed yet");
         if (!payment.IsValid) throw new AppException("Payment is not valid");
 
         // get quantity of the order
@@ -86,13 +106,18 @@ public class CustomerQuestService : BaseService, ICustomerQuestService
 
         // count number of order show in customer quest
         var numOfQuantityInCustomerQuest = _customerQuestRepository
-            .GetByCondition(x => x.PaymentId == entity.PaymentId).Count();
+            .GetByCondition(x => x.PaymentId == request.PaymentId).Count();
 
         if (numOfQuantityInCustomerQuest >= ticketQuantity) throw new AppException("Ticket quantity is not enough");
 
+        //check is previous quest is completed
+        var previousQuest = _customerQuestRepository
+            .GetByCondition(x => x.CustomerId == request.CustomerId && x.IsFinished == false);
+        if (previousQuest.Any()) throw new AppException("Previous quest is not finished");
+
         entity.IsFinished = false;
-        entity.Status = PaymentStatus.Success.ToString();
-        entity.BeginPoint = CalculateBeginPoint(request.QuestId);
+        entity.Status = CommonStatus.Active.ToString();
+        entity.BeginPoint = CalculateBeginPoint(payment.QuestId);
         entity.QuestId = payment.QuestId;
 
         entity = await _customerQuestRepository.Add(entity);
