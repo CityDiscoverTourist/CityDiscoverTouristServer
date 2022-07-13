@@ -25,6 +25,7 @@ public class RewardController : ControllerBase
     /// <summary>
     /// </summary>
     /// <param name="taskService"></param>
+    /// <param name="recurringJobManager"></param>
     public RewardController(IRewardService taskService, IRecurringJobManager recurringJobManager)
     {
         _rewardService = taskService;
@@ -87,7 +88,7 @@ public class RewardController : ControllerBase
     [HttpPut]
     public async Task<OkObjectResult> Put()
     {
-        _recurringJobManager.AddOrUpdate("Reward", () => _rewardService.InvalidReward(), Cron.Daily(23, 55));
+        _recurringJobManager.AddOrUpdate("Reward", () => _rewardService.InvalidReward(), "0 0 * * *", TimeZoneInfo.Local);
         return await Task.FromResult(Ok("RecurringJobManager"));
     }
 

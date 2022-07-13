@@ -104,7 +104,7 @@ public class PaymentController : ControllerBase
     [HttpPut]
     public async Task<OkObjectResult> Put()
     {
-        _recurringJobManager.AddOrUpdate("Payment", () => _paymentService.InvalidOrder(), Cron.Daily(23, 55));
+        _recurringJobManager.AddOrUpdate("Payment", () => _paymentService.InvalidOrder(), "0 0 * * *", TimeZoneInfo.Local);
         return await Task.FromResult(Ok("RecurringJobManager"));
     }
 

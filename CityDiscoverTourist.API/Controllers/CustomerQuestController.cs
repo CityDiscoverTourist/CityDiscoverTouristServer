@@ -144,7 +144,7 @@ public class CustomerQuestController : ControllerBase
     [HttpPut]
     public async Task<OkObjectResult> Put()
     {
-        _recurringJobManager.AddOrUpdate("CustomerQuest", () => _customerQuestService.InvalidCustomerQuest(), Cron.Daily(23, 55));
+        _recurringJobManager.AddOrUpdate("CustomerQuest", () => _customerQuestService.InvalidCustomerQuest(), "0 0 * * *", TimeZoneInfo.Local);
         return await Task.FromResult(Ok("RecurringJobManager"));
     }
 
