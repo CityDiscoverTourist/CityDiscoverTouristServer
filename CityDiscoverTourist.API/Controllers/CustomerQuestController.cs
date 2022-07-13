@@ -36,6 +36,7 @@ public class CustomerQuestController : ControllerBase
     /// <param name="param"></param>
     /// <returns></returns>
     [HttpGet]
+    [AllowAnonymous]
     //[Cached(600)]
     public ApiResponse<PageList<CustomerQuestResponseModel>> GetAll([FromQuery] CustomerQuestParams param)
     {
