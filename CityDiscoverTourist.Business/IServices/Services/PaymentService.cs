@@ -187,7 +187,7 @@ public class PaymentService : BaseService, IPaymentService
 
     public Task<List<PaymentResponseModel>> GetByCustomerId(string customerId)
     {
-        var entity = _paymentRepository.GetAll().Include(x => x.CustomerQuests);
+        var entity = _paymentRepository.GetAll().Include(x => x.CustomerQuests).OrderByDescending(x => x.CreatedDate);
         CheckDataNotNull("Payment", entity);
         return Task.FromResult(_mapper.Map<List<PaymentResponseModel>>(entity));
     }
