@@ -157,7 +157,7 @@ public class CustomerQuestService : BaseService, ICustomerQuestService
         var reward = new Reward
         {
             CustomerId = customerId,
-            Name = "Reward for finish quest",
+            Name = "Reward " + DateTime.Now.ToString("dd/MM/yyyy"),
             Code = Guid.NewGuid(),
             PercentDiscount = 0,
             Status = CommonStatus.Active.ToString(),

@@ -63,14 +63,14 @@ public class AuthService : IAuthService
     public async Task<LoginResponseModel> Login(LoginRequestModel model)
     {
         var user = await _userManager.FindByEmailAsync(model.Email);
-        if (user is null) throw new AppException("Admin not found");
+        if (user is null) throw new AppException("Customer not found");
 
         if (!await _userManager.CheckPasswordAsync(user, model.Password))
             throw new UnauthorizedAccessException("Invalid credentials");
 
-        if (!user.LockoutEnabled) throw new AppException("Admin is locked");
+        if (!user.LockoutEnabled) throw new AppException("Customer is locked");
 
-        if (!user.EmailConfirmed) throw new AppException("Admin is not confirmed");
+        if (!user.EmailConfirmed) throw new AppException("Customer is not confirmed");
 
         var authClaims = new List<Claim>
         {
@@ -119,8 +119,11 @@ public class AuthService : IAuthService
 
         var confirmationLink =
             $"{_configuration!["AppUrl"]}/api/v1/auths/confirm-email?userId={user.Id}&token={urlEncode}";
+
         var message = "<h1>Welcome to City Discover Tourist</h1> <br/>" +
                       $"<p>Please confirm your account by clicking <a href='{confirmationLink}'>here</a></p>";
+
+        //await _emailSender.SendMailConfirmAsync(user.Email!, "Confirm your account", message);
 
         await _emailSender.SendMailConfirmAsync(user.Email!, "Confirm your account", message);
 
