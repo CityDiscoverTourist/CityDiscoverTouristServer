@@ -12,6 +12,7 @@ using CityDiscoverTourist.Business.Momo;
 using CityDiscoverTourist.Business.Settings;
 using CityDiscoverTourist.Data.IRepositories;
 using CityDiscoverTourist.Data.Models;
+using Hangfire;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using MoMo;
@@ -131,7 +132,7 @@ public class PaymentService : BaseService, IPaymentService
                       + "<p>Your order ticket will be invalid at " + entity.CreatedDate.AddDays(2).ToString("dd/MM/yyyy HH:mm:ss") + "</p>"
                       + "<p>Thank you for using our service</p>";
 
-        await _emailSender.SendMailConfirmAsync(customerEmail, "Payment Information", message);
+        BackgroundJob.Enqueue( () => _emailSender.SendMailConfirmAsync(customerEmail, "Payment Information", message));
 
         return _mapper.Map<PaymentResponseModel>(entity);
     }

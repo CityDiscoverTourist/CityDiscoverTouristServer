@@ -11,6 +11,7 @@ using CityDiscoverTourist.Business.Exceptions;
 using CityDiscoverTourist.Business.Helper.EmailHelper;
 using CityDiscoverTourist.Data.Models;
 using FirebaseAdmin.Auth;
+using Hangfire;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
@@ -125,7 +126,7 @@ public class AuthService : IAuthService
 
         //await _emailSender.SendMailConfirmAsync(user.Email!, "Confirm your account", message);
 
-        await _emailSender.SendMailConfirmAsync(user.Email!, "Confirm your account", message);
+        BackgroundJob.Enqueue( () => _emailSender.SendMailConfirmAsync(user.Email!, "Confirm your account", message));
 
         return result.Succeeded;
     }
