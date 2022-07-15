@@ -75,7 +75,7 @@ public class CustomerQuestService : BaseService, ICustomerQuestService
         foreach (var item in entity)
         {
             if(item.IsFinished) continue;
-            if (!(item.CreatedDate < DateTime.Now)) continue;
+            if (!(item.CreatedDate < CurrentDateTime())) continue;
 
             item.IsFinished = true;
             item.Status = CommonStatus.Inactive.ToString();
@@ -161,8 +161,8 @@ public class CustomerQuestService : BaseService, ICustomerQuestService
             Code = Guid.NewGuid(),
             PercentDiscount = 0,
             Status = CommonStatus.Active.ToString(),
-            ReceivedDate = DateTime.Now,
-            ExpiredDate = DateTime.Now.AddDays(7)
+            ReceivedDate = CurrentDateTime(),
+            ExpiredDate = CurrentDateTime().AddDays(7),
         };
 
         reward.PercentDiscount = percentPointRemain switch
@@ -172,7 +172,9 @@ public class CustomerQuestService : BaseService, ICustomerQuestService
             >= 70 => 10,
             _ => reward.PercentDiscount
         };
-        await _rewardRepository.Add(reward);
+        //save reward if percent discount is greater than 0
+        if(reward.PercentDiscount != 0)
+            await _rewardRepository.Add(reward);
 
         return _mapper.Map<CustomerQuestResponseModel>(entity);
     }

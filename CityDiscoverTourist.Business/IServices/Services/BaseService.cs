@@ -21,4 +21,9 @@ public class BaseService
     {
         return JObject.Parse(text)[language.ToString()]!.ToString();
     }
+
+    protected static DateTime CurrentDateTime()
+    {
+        return TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById("SE Asia Standard Time"));
+    }
 }

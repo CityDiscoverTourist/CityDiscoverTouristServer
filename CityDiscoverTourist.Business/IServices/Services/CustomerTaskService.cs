@@ -271,7 +271,7 @@ public class CustomerTaskService : BaseService, ICustomerTaskService
 
     private static QuestItem NextQuestItem(QuestItem? nextQuestItem, List<QuestItem> questItems, int i)
     {
-        if (nextQuestItem!.Status != "Deleted") return nextQuestItem;
+        if (nextQuestItem!.Status != CommonStatus.Inactive.ToString()) return nextQuestItem;
 
         if (i >= questItems.Count - 1) throw new AppException("This quest is finished");
 

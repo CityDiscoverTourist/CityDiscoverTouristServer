@@ -34,9 +34,10 @@ public class PaymentService : BaseService, IPaymentService
     private readonly UserManager<ApplicationUser> _userManager;
     private readonly IEmailSender _emailSender;
     private readonly IHubContext<PaymentHub, IPaymentHub> _hubContext;
+    private readonly IBackgroundJobClient _backgroundJobClient;
 
     public PaymentService(IPaymentRepository paymentRepository, IMapper mapper, ISortHelper<Payment> sortHelper,
-        MomoSetting momoSettings, IRewardRepository rewardRepository, IQuestRepository questRepository, UserManager<ApplicationUser> userManager, IEmailSender emailSender, IHubContext<PaymentHub, IPaymentHub> hubContext)
+        MomoSetting momoSettings, IRewardRepository rewardRepository, IQuestRepository questRepository, UserManager<ApplicationUser> userManager, IEmailSender emailSender, IHubContext<PaymentHub, IPaymentHub> hubContext, IBackgroundJobClient backgroundJobClient)
     {
         _paymentRepository = paymentRepository;
         _mapper = mapper;
@@ -47,6 +48,7 @@ public class PaymentService : BaseService, IPaymentService
         _userManager = userManager;
         _emailSender = emailSender;
         _hubContext = hubContext;
+        _backgroundJobClient = backgroundJobClient;
     }
 
     public PageList<PaymentResponseModel> GetAll(PaymentParams @params, Language language)
@@ -137,7 +139,7 @@ public class PaymentService : BaseService, IPaymentService
                       + "<p>Your order ticket will be invalid at " + entity.CreatedDate.AddDays(2).ToString("dd/MM/yyyy HH:mm:ss") + "</p>"
                       + "<p>Thank you for using our service</p>";
 
-        BackgroundJob.Enqueue( () => _emailSender.SendMailConfirmAsync(customerEmail, "Payment Information", message));
+        _backgroundJobClient.Enqueue( () => _emailSender.SendMailConfirmAsync(customerEmail, "Payment Information", message));
 
         var mappedData = _mapper.Map<PaymentResponseModel>(entity);
 
@@ -219,7 +221,8 @@ public class PaymentService : BaseService, IPaymentService
             var entity = _mapper.Map<Payment>(request);
             entity.RewardId = reward.Id;
             entity.Status = PaymentStatus.Pending.ToString();
-            entity.TotalAmount = request.totalAmount * (100 - percentage) / 100;
+            entity.TotalAmount = request.TotalAmount * (100 - percentage) / 100;
+            entity.CreatedDate = CurrentDateTime();
 
             var paymentUrl = MomoPayment(request, entity.TotalAmount);
 
@@ -236,6 +239,7 @@ public class PaymentService : BaseService, IPaymentService
             var entity = _mapper.Map<Payment>(request);
             entity.Status = PaymentStatus.Pending.ToString();
             entity.RewardId = null;
+            entity.CreatedDate = CurrentDateTime();
 
             var paymentUrl = MomoPayment(request, entity.TotalAmount);
 
