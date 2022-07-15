@@ -22,4 +22,28 @@ public class DashboardController : ControllerBase
     {
         return Task.FromResult(_dashBoardService.GetTopCustomer());
     }
+
+    [HttpGet("total-revenue")]
+    public Task<float> GetRevenue()
+    {
+        return Task.FromResult(_dashBoardService.GetTotalRevenue());
+    }
+
+    [HttpGet("total-user")]
+    public Task<int> GetCountUser()
+    {
+        return Task.FromResult(_dashBoardService.TotalAccount());
+    }
+
+    [HttpGet("total-quest")]
+    public Task<int> GetTotalQuest()
+    {
+        return Task.FromResult(_dashBoardService.TotalQuest());
+    }
+
+    [HttpGet("top-play")]
+    public Task<string[]> GetTopPlayQuest()
+    {
+        return Task.FromResult(_dashBoardService.GetTopQuests());
+    }
 }
