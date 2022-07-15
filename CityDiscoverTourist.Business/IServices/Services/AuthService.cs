@@ -136,6 +136,8 @@ public class AuthService : IAuthService
         var user = await _userManager.FindByIdAsync(userId);
         if (user is null) throw new AppException("User not found");
 
+        if(user.EmailConfirmed) throw new AppException("User already confirmed");
+
         var result = await _userManager.ConfirmEmailAsync(user, token);
 
         return result.Succeeded ? "Confirm success" : "Invalid token";
