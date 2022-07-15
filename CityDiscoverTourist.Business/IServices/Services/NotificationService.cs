@@ -26,25 +26,24 @@ public class NotificationService : INotificationService
         var httpClient = new HttpClient();
 
         var authorizationKey = string.Format("key={0}", settings.ServerKey);
-        var deviceToken =notificationRequestModel.DeviceId;
+        var deviceToken = notificationRequestModel.DeviceId;
 
         httpClient.DefaultRequestHeaders.TryAddWithoutValidation("Authorization", authorizationKey);
-        httpClient.DefaultRequestHeaders.Accept
-            .Add(new MediaTypeWithQualityHeaderValue("application/json"));
+        httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
-            var dataPayload = new NotificationRequestModel.GoogleNotification.DataPayload
-            {
-                Title = notificationRequestModel.Title,
-                Body = notificationRequestModel.Body
-            };
+        var dataPayload = new NotificationRequestModel.GoogleNotification.DataPayload
+        {
+            Title = notificationRequestModel.Title,
+            Body = notificationRequestModel.Body
+        };
 
-            var notification = new NotificationRequestModel.GoogleNotification
-            {
-                Data = dataPayload,
-                Notification = dataPayload
-            };
+        var notification = new NotificationRequestModel.GoogleNotification
+        {
+            Data = dataPayload,
+            Notification = dataPayload
+        };
 
-            var fcm = new FcmSender(settings, httpClient);
+        var fcm = new FcmSender(settings, httpClient);
 
         var response = await fcm.SendAsync(deviceToken, notification);
 

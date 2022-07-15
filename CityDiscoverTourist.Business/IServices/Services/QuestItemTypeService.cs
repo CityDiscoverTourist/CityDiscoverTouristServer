@@ -63,12 +63,13 @@ public class QuestItemTypeService : BaseService, IQuestItemTypeService
     public async Task<QuestItemTypeResponseModel> DeleteAsync(int id)
     {
         var city = _questItemTypeRepository.GetByCondition(x => x.Id == id).Include(data => data.QuestItems).ToList()
-           .FirstOrDefault();
+            .FirstOrDefault();
         if (city != null && city.QuestItems!.Count == 0)
         {
             city.Status = CommonStatus.Inactive.ToString();
             await _questItemTypeRepository.UpdateFields(city, r => r.Status!);
         }
+
         return _mapper.Map<QuestItemTypeResponseModel>(city);
     }
 

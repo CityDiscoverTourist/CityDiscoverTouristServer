@@ -7,27 +7,27 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\CityDiscoverTourist.Data\CityDiscoverTourist.Data.csproj" />
+        <ProjectReference Include="..\CityDiscoverTourist.Data\CityDiscoverTourist.Data.csproj"/>
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="11.0.0" />
-        <PackageReference Include="Azure.Storage.Blobs" Version="12.12.0" />
-        <PackageReference Include="CorePush" Version="3.0.12" />
-        <PackageReference Include="FirebaseAdmin" Version="2.3.0" />
-        <PackageReference Include="Hangfire.RecurringJobExtensions" Version="1.1.6" />
-        <PackageReference Include="MailKit" Version="3.2.0" />
-        <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.2.0" />
-        <PackageReference Include="Microsoft.AspNetCore.Mvc.Core" Version="2.2.5" />
-        <PackageReference Include="Microsoft.AspNetCore.SignalR" Version="1.1.0" />
-        <PackageReference Include="Microsoft.AspNetCore.SignalR.Core" Version="1.1.0" />
-        <PackageReference Include="Microsoft.Extensions.Configuration.AzureKeyVault" Version="3.1.24" />
-        <PackageReference Include="Microsoft.Extensions.Diagnostics.HealthChecks.Abstractions" Version="6.0.5" />
-        <PackageReference Include="Microsoft.SqlServer.DacFx" Version="160.6161.0" />
-        <PackageReference Include="StackExchange.Redis" Version="2.0.593" />
-        <PackageReference Include="System.Linq.Dynamic" Version="1.0.8" />
-        <PackageReference Include="System.Linq.Dynamic.Core" Version="1.2.18" />
-        <PackageReference Include="WindowsAzure.Storage" Version="9.3.3" />
+        <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="11.0.0"/>
+        <PackageReference Include="Azure.Storage.Blobs" Version="12.12.0"/>
+        <PackageReference Include="CorePush" Version="3.0.12"/>
+        <PackageReference Include="FirebaseAdmin" Version="2.3.0"/>
+        <PackageReference Include="Hangfire.RecurringJobExtensions" Version="1.1.6"/>
+        <PackageReference Include="MailKit" Version="3.2.0"/>
+        <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.2.0"/>
+        <PackageReference Include="Microsoft.AspNetCore.Mvc.Core" Version="2.2.5"/>
+        <PackageReference Include="Microsoft.AspNetCore.SignalR" Version="1.1.0"/>
+        <PackageReference Include="Microsoft.AspNetCore.SignalR.Core" Version="1.1.0"/>
+        <PackageReference Include="Microsoft.Extensions.Configuration.AzureKeyVault" Version="3.1.24"/>
+        <PackageReference Include="Microsoft.Extensions.Diagnostics.HealthChecks.Abstractions" Version="6.0.5"/>
+        <PackageReference Include="Microsoft.SqlServer.DacFx" Version="160.6161.0"/>
+        <PackageReference Include="StackExchange.Redis" Version="2.0.593"/>
+        <PackageReference Include="System.Linq.Dynamic" Version="1.0.8"/>
+        <PackageReference Include="System.Linq.Dynamic.Core" Version="1.2.18"/>
+        <PackageReference Include="WindowsAzure.Storage" Version="9.3.3"/>
     </ItemGroup>
 
     <ItemGroup>

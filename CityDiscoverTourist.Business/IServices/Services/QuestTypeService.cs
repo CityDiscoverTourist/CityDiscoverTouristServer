@@ -15,11 +15,11 @@ namespace CityDiscoverTourist.Business.IServices.Services;
 public class QuestTypeService : BaseService, IQuestTypeService
 {
     private readonly IBlobService _blobService;
+    private readonly ICustomerQuestRepository _customerQuestRepository;
     private readonly IMapper _mapper;
     private readonly IQuestRepository _questRepository;
     private readonly IQuestTypeRepository _questTypeRepository;
     private readonly ISortHelper<QuestType> _sortHelper;
-    private readonly ICustomerQuestRepository _customerQuestRepository;
 
     public QuestTypeService(IMapper mapper, ISortHelper<QuestType> sortHelper, IQuestTypeRepository questTypeRepository,
         IBlobService blobService, IQuestRepository questRepository, ICustomerQuestRepository customerQuestRepository)
@@ -46,10 +46,7 @@ public class QuestTypeService : BaseService, IQuestTypeService
         for (var i = 0; i < listQuestTypeIds.Count; i++)
         {
             var questType = listQuestType[i];
-            var quests = _questRepository.GetAll()
-                .AsNoTracking()
-                .Where(x => x.QuestTypeId == questType.Id)
-                .ToList();
+            var quests = _questRepository.GetAll().AsNoTracking().Where(x => x.QuestTypeId == questType.Id).ToList();
 
             var mappedQuest = _mapper.Map<List<QuestResponseModel>>(quests);
 
@@ -57,9 +54,7 @@ public class QuestTypeService : BaseService, IQuestTypeService
             foreach (var item in mappedQuest)
             {
                 //get total feed back and average rate for each quest
-                var customerQuests = _customerQuestRepository.GetAll()
-                    .AsNoTracking()
-                    .Where(x => x.QuestId == item.Id)
+                var customerQuests = _customerQuestRepository.GetAll().AsNoTracking().Where(x => x.QuestId == item.Id)
                     .ToList();
 
                 if (customerQuests.Any())
@@ -76,6 +71,7 @@ public class QuestTypeService : BaseService, IQuestTypeService
                 item.Title = ConvertLanguage(language, item.Title!);
                 item.Description = ConvertLanguage(language, item.Description!);
             }
+
             listQuestType[i].Quests = mappedQuest;
             listQuestType[i].Name = ConvertLanguage(language, questType.Name!);
         }
@@ -114,6 +110,7 @@ public class QuestTypeService : BaseService, IQuestTypeService
             item.Title = ConvertLanguage(language, item.Title!);
             item.Description = ConvertLanguage(language, item.Description!);
         }
+
         var mappedData = _mapper.Map<QuestTypeResponseModel>(entity);
 
         mappedData.Name = ConvertLanguage(language, entity.Name!);
@@ -124,12 +121,11 @@ public class QuestTypeService : BaseService, IQuestTypeService
 
     public async Task<QuestTypeResponseModel> Get(int id)
     {
-        var entity = await _questTypeRepository.GetByCondition(x => x.Id == id)
-            .FirstOrDefaultAsync();
+        var entity = await _questTypeRepository.GetByCondition(x => x.Id == id).FirstOrDefaultAsync();
         CheckDataNotNull("QuestType", entity!);
 
         var objName = JObject.Parse(entity!.Name!);
-        var name = (string)objName["vi"]! + " | " + (string)objName["en"]!;
+        var name = (string) objName["vi"]! + " | " + (string) objName["en"]!;
 
         entity.Name = name;
 
@@ -153,8 +149,8 @@ public class QuestTypeService : BaseService, IQuestTypeService
         await _questTypeRepository.UpdateFields(entity, r => r.ImagePath!);
 
         //return quest type name vi
-        JObject objTitle = JObject.Parse(entity!.Name!);
-        string name = (string)objTitle["vi"]!;
+        var objTitle = JObject.Parse(entity!.Name!);
+        var name = (string) objTitle["vi"]!;
         entity.Name = name;
 
         return _mapper.Map<QuestTypeResponseModel>(entity);
@@ -183,12 +179,14 @@ public class QuestTypeService : BaseService, IQuestTypeService
 
     public async Task<QuestTypeResponseModel> DeleteAsync(int id)
     {
-          var entity = _questTypeRepository.GetByCondition(x => x.Id == id).Include(data => data.Quests).ToList().FirstOrDefault();
+        var entity = _questTypeRepository.GetByCondition(x => x.Id == id).Include(data => data.Quests).ToList()
+            .FirstOrDefault();
         if (entity != null && entity.Quests!.Count == 0)
         {
             entity.Status = CommonStatus.Inactive.ToString();
             await _questTypeRepository.UpdateFields(entity, r => r.Status!);
         }
+
         return _mapper.Map<QuestTypeResponseModel>(entity);
     }
 
@@ -216,6 +214,7 @@ public class QuestTypeService : BaseService, IQuestTypeService
             area.Status = status;
             await _questRepository.UpdateFields(area, r => r.Status!);
         }
+
         return null!;
     }
 

@@ -97,7 +97,7 @@ public class FacebookService : IFacebookService
         if (user != null) return false;
         user = new ApplicationUser
         {
-            UserName = facebookUser.Email,
+            UserName = facebookUser.FullName,
             Email = facebookUser.Email,
             SecurityStamp = Guid.NewGuid().ToString(),
             EmailConfirmed = true,
@@ -108,7 +108,9 @@ public class FacebookService : IFacebookService
         };
         var loginInfo = new ExternalLoginInfo(new ClaimsPrincipal(), "Facebook", facebookUser.FacebookId, "Facebook");
         var result = await _userManager.CreateAsync(user);
+
         await _userManager.AddToRoleAsync(user, Role.Customer.ToString());
+
         await _userManager.AddLoginAsync(user, loginInfo);
 
         return !result.Succeeded;

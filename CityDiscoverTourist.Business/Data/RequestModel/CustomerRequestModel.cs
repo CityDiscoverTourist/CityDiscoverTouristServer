@@ -1,5 +1,3 @@
-using Microsoft.AspNetCore.Identity;
-
 namespace CityDiscoverTourist.Business.Data.RequestModel;
 
 public class CustomerRequestModel

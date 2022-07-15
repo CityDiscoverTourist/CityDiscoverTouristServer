@@ -1,4 +1,3 @@
-
 namespace CityDiscoverTourist.Business.Data.ResponseModel;
 
 public class PaymentResponseModel

@@ -58,7 +58,8 @@ public class CustomerQuestService : BaseService, ICustomerQuestService
             quest.CustomerName = customerName;
         }
 
-        return PageList<CustomerQuestResponseModel>.ToPageList(customerQuestResponseModels, @params.PageNumber, @params.PageSize);
+        return PageList<CustomerQuestResponseModel>.ToPageList(customerQuestResponseModels, @params.PageNumber,
+            @params.PageSize);
     }
 
     public async Task<CustomerQuestResponseModel> Get(int id)
@@ -74,13 +75,14 @@ public class CustomerQuestService : BaseService, ICustomerQuestService
 
         foreach (var item in entity)
         {
-            if(item.IsFinished) continue;
+            if (item.IsFinished) continue;
             if (!(item.CreatedDate < CurrentDateTime())) continue;
 
             item.IsFinished = true;
             item.Status = CommonStatus.Inactive.ToString();
             await _customerQuestRepository.UpdateFields(item, x => x.IsFinished, x => x.Status!);
         }
+
         return null!;
     }
 
@@ -98,7 +100,8 @@ public class CustomerQuestService : BaseService, ICustomerQuestService
 
         var payment = _paymentService.Get(entity.PaymentId, Language.vi).Result;
 
-        if(payment.Status == PaymentStatus.Pending.ToString()) throw new AppException("This transaction is not completed yet");
+        if (payment.Status == PaymentStatus.Pending.ToString())
+            throw new AppException("This transaction is not completed yet");
         if (!payment.IsValid) throw new AppException("Payment is not valid");
 
         // get quantity of the order
@@ -111,8 +114,8 @@ public class CustomerQuestService : BaseService, ICustomerQuestService
         if (numOfQuantityInCustomerQuest >= ticketQuantity) throw new AppException("Ticket quantity is not enough");
 
         //check is previous quest is completed
-        var previousQuest = _customerQuestRepository
-            .GetByCondition(x => x.CustomerId == request.CustomerId && x.IsFinished == false);
+        var previousQuest =
+            _customerQuestRepository.GetByCondition(x => x.CustomerId == request.CustomerId && x.IsFinished == false);
         if (previousQuest.Any()) throw new AppException("Previous quest is not finished");
 
         entity.IsFinished = false;
@@ -162,7 +165,7 @@ public class CustomerQuestService : BaseService, ICustomerQuestService
             PercentDiscount = 0,
             Status = CommonStatus.Active.ToString(),
             ReceivedDate = CurrentDateTime(),
-            ExpiredDate = CurrentDateTime().AddDays(7),
+            ExpiredDate = CurrentDateTime().AddDays(7)
         };
 
         reward.PercentDiscount = percentPointRemain switch
@@ -173,7 +176,7 @@ public class CustomerQuestService : BaseService, ICustomerQuestService
             _ => reward.PercentDiscount
         };
         //save reward if percent discount is greater than 0
-        if(reward.PercentDiscount != 0)
+        if (reward.PercentDiscount != 0)
             await _rewardRepository.Add(reward);
 
         return _mapper.Map<CustomerQuestResponseModel>(entity);

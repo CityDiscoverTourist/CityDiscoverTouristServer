@@ -1,5 +1,3 @@
-using System.Collections.Specialized;
-using System.Linq;
 using CityDiscoverTourist.Business.Enums;
 using CityDiscoverTourist.Data.IRepositories;
 using CityDiscoverTourist.Data.Models;
@@ -9,12 +7,13 @@ namespace CityDiscoverTourist.Business.IServices.Services;
 
 public class DashboardService : BaseService, IDashboardService
 {
-    private readonly IPaymentRepository _paymentRepository;
-    private readonly UserManager<ApplicationUser> _userManager;
-    private readonly IQuestRepository _questRepository;
     private readonly ICustomerQuestRepository _customerQuestRepository;
+    private readonly IPaymentRepository _paymentRepository;
+    private readonly IQuestRepository _questRepository;
+    private readonly UserManager<ApplicationUser> _userManager;
 
-    public DashboardService(IPaymentRepository paymentRepository, UserManager<ApplicationUser> userManager, IQuestRepository questRepository, ICustomerQuestRepository customerQuestRepository)
+    public DashboardService(IPaymentRepository paymentRepository, UserManager<ApplicationUser> userManager,
+        IQuestRepository questRepository, ICustomerQuestRepository customerQuestRepository)
     {
         _paymentRepository = paymentRepository;
         _userManager = userManager;
@@ -37,7 +36,9 @@ public class DashboardService : BaseService, IDashboardService
 
         }*/
         // get top 3 customers by total amount of payments
-        var topCustomers = _paymentRepository.GetAll().Where(x => x.Status == PaymentStatus.Success.ToString()).GroupBy(x => x.CustomerId).Select(x => new { CustomerId = x.Key, TotalAmount = x.Sum(y => y.TotalAmount) }).OrderByDescending(x => x.TotalAmount).Take(3);
+        var topCustomers = _paymentRepository.GetAll().Where(x => x.Status == PaymentStatus.Success.ToString())
+            .GroupBy(x => x.CustomerId).Select(x => new { CustomerId = x.Key, TotalAmount = x.Sum(y => y.TotalAmount) })
+            .OrderByDescending(x => x.TotalAmount).Take(3);
         var list = new List<string>();
         foreach (var customer in topCustomers)
         {
@@ -48,6 +49,7 @@ public class DashboardService : BaseService, IDashboardService
                 list.Add(customer.TotalAmount.ToString());
             }
         }
+
         return list.ToArray();
     }
 
@@ -70,14 +72,16 @@ public class DashboardService : BaseService, IDashboardService
 
     public string[] GetTopQuests()
     {
-         // get top quest play most
-        var topQuests = _customerQuestRepository.GetAll().GroupBy(x => x.QuestId).Select(x => new { QuestId = x.Key, TotalPlay = x.Count() }).OrderByDescending(x => x.TotalPlay).Take(3);
+        // get top quest play most
+        var topQuests = _customerQuestRepository.GetAll().GroupBy(x => x.QuestId)
+            .Select(x => new { QuestId = x.Key, TotalPlay = x.Count() }).OrderByDescending(x => x.TotalPlay).Take(3);
         var list = new List<string>();
         foreach (var quest in topQuests)
         {
             var questName = ConvertLanguage(Language.vi, _questRepository.Get(quest.QuestId).Result.Title!);
             list.Add(questName);
         }
+
         return list.ToArray();
     }
 }

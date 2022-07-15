@@ -24,13 +24,14 @@ namespace CityDiscoverTourist.Business.IServices.Services;
 public class AuthService : IAuthService
 {
     private static  IConfiguration? _configuration;
+    private readonly IHubContext<CustomerHub, ICustomerHub> _customerHub;
     private readonly IEmailSender _emailSender;
     private  readonly RoleManager<IdentityRole> _roleManager;
     private readonly UserManager<ApplicationUser> _userManager;
-    private readonly IHubContext<CustomerHub, ICustomerHub> _customerHub;
 
     public AuthService(UserManager<ApplicationUser> userManager, IConfiguration? configuration,
-        RoleManager<IdentityRole> roleManager, IEmailSender emailSender, IHubContext<CustomerHub, ICustomerHub> customerHub)
+        RoleManager<IdentityRole> roleManager, IEmailSender emailSender,
+        IHubContext<CustomerHub, ICustomerHub> customerHub)
     {
         _userManager = userManager;
         _configuration = configuration;
@@ -111,7 +112,7 @@ public class AuthService : IAuthService
             UserName = model.Email,
             Email = model.Email,
             EmailConfirmed = false,
-            LockoutEnabled = false,
+            LockoutEnabled = false
         };
         var result = await _userManager.CreateAsync(user, model.Password);
         if (!result.Succeeded) throw new AppException(result.Errors.First().Description);
@@ -147,7 +148,7 @@ public class AuthService : IAuthService
         var user = await _userManager.FindByIdAsync(userId);
         if (user is null) throw new AppException("User not found");
 
-        if(user.EmailConfirmed) throw new AppException("User already confirmed");
+        if (user.EmailConfirmed) throw new AppException("User already confirmed");
 
         if (user.ConfirmToken != token) throw new AppException("Invalid token");
 
@@ -192,10 +193,8 @@ public class AuthService : IAuthService
 
         var newPassword = GeneratePassword();
 
-        var message = "<h1>Dear " + email + "</h1> <br/>" +
-                      "Your new password is: " + newPassword
-                      + "<br/>" + "Please change your password after login"
-                      + "<br/>" + "Thank you";
+        var message = "<h1>Dear " + email + "</h1> <br/>" + "Your new password is: " + newPassword + "<br/>" +
+                      "Please change your password after login" + "<br/>" + "Thank you";
 
         await _userManager.AddPasswordAsync(user, newPassword);
 
@@ -228,8 +227,11 @@ public class AuthService : IAuthService
         var loginInfo = new ExternalLoginInfo(new ClaimsPrincipal(), "Firebase-Email", userViewModel.IdProvider,
             userViewModel.Email);
         var result = await _userManager.CreateAsync(user);
-        await _userManager.AddToRoleAsync(user, Role.Admin.ToString());
+
+        await _userManager.AddToRoleAsync(user, Role.Customer.ToString());
+
         await _userManager.AddLoginAsync(user, loginInfo);
+
         return !result.Succeeded;
     }
 

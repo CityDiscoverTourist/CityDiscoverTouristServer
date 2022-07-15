@@ -15,12 +15,12 @@ namespace CityDiscoverTourist.Business.IServices.Services;
 public class QuestService : BaseService, IQuestService
 {
     private readonly IBlobService _blobService;
+    private readonly ICustomerQuestRepository _customerQuestRepository;
     private readonly ILocationRepository _locationRepository;
     private readonly IMapper _mapper;
     private readonly IQuestItemRepository _questItemRepository;
     private readonly IQuestRepository _questRepository;
     private readonly ISortHelper<Quest> _sortHelper;
-    private readonly ICustomerQuestRepository _customerQuestRepository;
 
     public QuestService(IQuestRepository questRepository, ISortHelper<Quest> sortHelper, IMapper mapper,
         IBlobService blobService, ILocationRepository locationRepository, IQuestItemRepository questItemRepository,
@@ -226,9 +226,7 @@ public class QuestService : BaseService, IQuestService
         entity.Description = JsonHelper.JsonFormat(request.Description);
         entity.ImagePath = imgPath;
         if (entity.ImagePath == null)
-        {
             entity = await _questRepository.NoneUpdateFields(entity, r => r.CreatedDate!, r => r.ImagePath!);
-        }
 
         entity = await _questRepository.NoneUpdateFields(entity, r => r.CreatedDate!);
 
@@ -237,12 +235,14 @@ public class QuestService : BaseService, IQuestService
 
     public async Task<QuestResponseModel> DeleteAsync(int questId)
     {
-        var entity = _questRepository.GetByCondition(x => x.Id == questId).Include(data => data.QuestItems).ToList().FirstOrDefault();
+        var entity = _questRepository.GetByCondition(x => x.Id == questId).Include(data => data.QuestItems).ToList()
+            .FirstOrDefault();
         if (entity != null && entity.QuestItems!.Count == 0)
         {
             entity.Status = CommonStatus.Inactive.ToString();
             await _questRepository.UpdateFields(entity, r => r.Status!);
         }
+
         return _mapper.Map<QuestResponseModel>(entity);
     }
 

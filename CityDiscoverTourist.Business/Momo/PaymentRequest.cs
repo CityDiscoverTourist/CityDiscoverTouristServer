@@ -1,68 +1,66 @@
-﻿using System;
-using System.Security.Cryptography;
-using System.IO;
-using System.Text;
-using System.Net;
+﻿using System.Net;
 using System.Net.Http.Headers;
+using System.Text;
 
-namespace MoMo
+namespace MoMo;
+
+internal class PaymentRequest
 {
-    class PaymentRequest
+    public static string sendPaymentRequest(string endpoint, string postJsonString)
     {
-        public PaymentRequest() {
-        }
-        public static string sendPaymentRequest(string endpoint, string postJsonString)
+        try
         {
+            var client = new HttpClient();
+            client.BaseAddress = new Uri(endpoint);
+            client.DefaultRequestHeaders.Accept.Clear();
+            client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+            client.DefaultRequestHeaders.Add("Authorization",
+                "Basic " + Convert.ToBase64String(Encoding.UTF8.GetBytes("momo:momo")));
+            var result = client
+                .PostAsync(endpoint, new StringContent(postJsonString, Encoding.UTF8, "application/json")).Result;
+            var resultString = "";
 
-            try
+
+            using (var reader = new StreamReader(result.Content.ReadAsStreamAsync().Result))
             {
-                HttpClient client = new HttpClient();
-                client.BaseAddress = new Uri(endpoint);
-                client.DefaultRequestHeaders.Accept.Clear();
-                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-                client.DefaultRequestHeaders.Add("Authorization", "Basic " + Convert.ToBase64String(Encoding.UTF8.GetBytes("momo:momo")));
-                HttpResponseMessage result = client.PostAsync(endpoint, new StringContent(postJsonString, Encoding.UTF8, "application/json")).Result;
-                string resultString = "";
-
-
-                using (var reader = new StreamReader(result.Content.ReadAsStreamAsync().Result))
-                {
-                    resultString = reader.ReadToEnd();
-                }
-                //return new MomoResponse(mtid, jsonresponse);
-                return resultString;
+                resultString = reader.ReadToEnd();
             }
-            catch (WebException e)
-            {
-                return e.Message;
-            }
+
+            //return new MomoResponse(mtid, jsonresponse);
+            return resultString;
         }
-
-        public static string sendConfirmPaymentRequest(string endpoint, string postJsonString)
+        catch (WebException e)
         {
+            return e.Message;
+        }
+    }
 
-            try
+    public static string sendConfirmPaymentRequest(string endpoint, string postJsonString)
+    {
+        try
+        {
+            var client = new HttpClient();
+            client.BaseAddress = new Uri(endpoint);
+            client.DefaultRequestHeaders.Accept.Clear();
+            client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+            client.DefaultRequestHeaders.Add("Authorization",
+                "Basic " + Convert.ToBase64String(Encoding.UTF8.GetBytes("momo:momo")));
+            var result = client
+                .PostAsync(endpoint, new StringContent(postJsonString, Encoding.UTF8, "application/json")).Result;
+            var resultString = "";
+
+
+            using (var reader = new StreamReader(result.Content.ReadAsStreamAsync().Result))
             {
-                HttpClient client = new HttpClient();
-                client.BaseAddress = new Uri(endpoint);
-                client.DefaultRequestHeaders.Accept.Clear();
-                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-                client.DefaultRequestHeaders.Add("Authorization", "Basic " + Convert.ToBase64String(Encoding.UTF8.GetBytes("momo:momo")));
-                HttpResponseMessage result = client.PostAsync(endpoint, new StringContent(postJsonString, Encoding.UTF8, "application/json")).Result;
-                string resultString = "";
-
-
-                using (var reader = new StreamReader(result.Content.ReadAsStreamAsync().Result))
-                {
-                    resultString = reader.ReadToEnd();
-                }
-                //return new MomoResponse(mtid, jsonresponse);
-                return resultString;
+                resultString = reader.ReadToEnd();
             }
-            catch (WebException e)
-            {
-                return e.Message;
-            }
+
+            //return new MomoResponse(mtid, jsonresponse);
+            return resultString;
+        }
+        catch (WebException e)
+        {
+            return e.Message;
         }
     }
 }

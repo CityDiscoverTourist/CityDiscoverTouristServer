@@ -1,5 +1,4 @@
 using System.Globalization;
-using System.Text;
 using AutoMapper;
 using CityDiscoverTourist.Business.Data.RequestModel;
 using CityDiscoverTourist.Business.Data.ResponseModel;
@@ -25,6 +24,9 @@ namespace CityDiscoverTourist.Business.IServices.Services;
 
 public class PaymentService : BaseService, IPaymentService
 {
+    private readonly IBackgroundJobClient _backgroundJobClient;
+    private readonly IEmailSender _emailSender;
+    private readonly IHubContext<PaymentHub, IPaymentHub> _hubContext;
     private readonly IMapper _mapper;
     private readonly MomoSetting _momoSettings;
     private readonly IPaymentRepository _paymentRepository;
@@ -32,12 +34,11 @@ public class PaymentService : BaseService, IPaymentService
     private readonly IRewardRepository _rewardRepository;
     private readonly ISortHelper<Payment> _sortHelper;
     private readonly UserManager<ApplicationUser> _userManager;
-    private readonly IEmailSender _emailSender;
-    private readonly IHubContext<PaymentHub, IPaymentHub> _hubContext;
-    private readonly IBackgroundJobClient _backgroundJobClient;
 
     public PaymentService(IPaymentRepository paymentRepository, IMapper mapper, ISortHelper<Payment> sortHelper,
-        MomoSetting momoSettings, IRewardRepository rewardRepository, IQuestRepository questRepository, UserManager<ApplicationUser> userManager, IEmailSender emailSender, IHubContext<PaymentHub, IPaymentHub> hubContext, IBackgroundJobClient backgroundJobClient)
+        MomoSetting momoSettings, IRewardRepository rewardRepository, IQuestRepository questRepository,
+        UserManager<ApplicationUser> userManager, IEmailSender emailSender,
+        IHubContext<PaymentHub, IPaymentHub> hubContext, IBackgroundJobClient backgroundJobClient)
     {
         _paymentRepository = paymentRepository;
         _mapper = mapper;
@@ -107,8 +108,9 @@ public class PaymentService : BaseService, IPaymentService
         var requestType = "capture";
         var momoResponse = ConfirmPayment(request);
 
-        var rawHash = "accessKey=" + accessKey + "&amount=" + request.Amount + "&description=" + description + "&orderId=" +
-                      request.OrderId + "&partnerCode=" + request.PartnerCode + "&requestId=" + request.RequestId + "&requestType=" + requestType;
+        var rawHash = "accessKey=" + accessKey + "&amount=" + request.Amount + "&description=" + description +
+                      "&orderId=" + request.OrderId + "&partnerCode=" + request.PartnerCode + "&requestId=" +
+                      request.RequestId + "&requestType=" + requestType;
 
         var crypto = new MoMoSecurity();
         var signature = crypto.SignSha256(rawHash, secretKey!);
@@ -127,19 +129,17 @@ public class PaymentService : BaseService, IPaymentService
         var questName = _questRepository.Get(entity.QuestId).Result.Title;
         var customerEmail = _userManager.FindByIdAsync(entity.CustomerId).Result.Email;
 
-        var message = "<h1>Payment Success</h1>"
-                      + "<h3>Dear " + customerEmail + "</h3>"
-                      + "<p>Your payment has been succeeded</p>"
-                      + "<p>Your order is: " + entity.Id + "</p>"
-                      + "<p>Your quest name is: " + ConvertLanguage(Language.vi, questName!) + "/ "
-                      + ConvertLanguage(Language.en, questName!) + "</p>"
-                      + "<p>Quantity is: " + entity.Quantity + "</p>"
-                      + "<p>Your order total amount is: " + entity.TotalAmount + "</p>"
-                      + "<p>Your playing code is: " + entity.Id + "</p>"
-                      + "<p>Your order ticket will be invalid at " + entity.CreatedDate.AddDays(2).ToString("dd/MM/yyyy HH:mm:ss") + "</p>"
-                      + "<p>Thank you for using our service</p>";
+        var message = "<h1>Payment Success</h1>" + "<h3>Dear " + customerEmail + "</h3>" +
+                      "<p>Your payment has been succeeded</p>" + "<p>Your order is: " + entity.Id + "</p>" +
+                      "<p>Your quest name is: " + ConvertLanguage(Language.vi, questName!) + "/ " +
+                      ConvertLanguage(Language.en, questName!) + "</p>" + "<p>Quantity is: " + entity.Quantity +
+                      "</p>" + "<p>Your order total amount is: " + entity.TotalAmount + "</p>" +
+                      "<p>Your playing code is: " + entity.Id + "</p>" + "<p>Your order ticket will be invalid at " +
+                      entity.CreatedDate.AddDays(2).ToString("dd/MM/yyyy HH:mm:ss") + "</p>" +
+                      "<p>Thank you for using our service</p>";
 
-        _backgroundJobClient.Enqueue( () => _emailSender.SendMailConfirmAsync(customerEmail, "Payment Information", message));
+        _backgroundJobClient.Enqueue( () =>
+            _emailSender.SendMailConfirmAsync(customerEmail, "Payment Information", message));
 
         var mappedData = _mapper.Map<PaymentResponseModel>(entity);
 
@@ -147,55 +147,6 @@ public class PaymentService : BaseService, IPaymentService
         await _hubContext.Clients.All.GetPayment(mappedData);
 
         return mappedData;
-    }
-
-    private MomoResponseModel? ConfirmPayment(MomoRequestModel request)
-    {
-        var partnerCode = request.PartnerCode;
-        var orderId = request.OrderId;
-        var requestId = request.RequestId;
-        var amount = request.Amount;
-        var requestType = "capture";
-        var accessKey = _momoSettings.AccessKey;
-        var secretKey = _momoSettings.SecretKey;
-        var description = "";
-
-        var param = "accessKey=" + accessKey + "&amount=" + amount + "&description=" + description + "&orderId=" +
-                    orderId + "&partnerCode=" + partnerCode + "&requestId=" + requestId + "&requestType=" + requestType;
-
-        var crypto = new MoMoSecurity();
-        var signature = crypto.SignSha256(param, secretKey!);
-
-        var url = "https://test-payment.momo.vn/v2/gateway/api/confirm";
-
-        var message = new JObject
-        {
-            { "partnerCode", partnerCode },
-            { "requestId", requestId },
-            { "orderId", orderId },
-            { "requestType", requestType },
-            { "amount", amount },
-            { "lang", "en" },
-            { "description", description },
-            { "signature", signature}
-        };
-
-        var response = PaymentRequest.sendConfirmPaymentRequest(url!, message.ToString());
-        var jMessage = JObject.Parse(response);
-
-        return new MomoResponseModel
-        {
-            Amount = jMessage["amount"]!.ToString(),
-            Message = jMessage["message"]!.ToString(),
-            OrderId = (Guid) jMessage["orderId"]!,
-            PartnerCode = jMessage["partnerCode"]!.ToString(),
-            RequestId = jMessage["requestId"]!.ToString(),
-            ResponseTime = jMessage["responseTime"]!.ToString(),
-            RequestType = jMessage["requestType"]!.ToString(),
-            TransId = jMessage["transId"]!.ToString(),
-            ResultCode = jMessage["resultCode"]!.ToString(),
-            Signature = signature
-        };
     }
 
     public Task<List<PaymentResponseModel>> GetByCustomerId(string customerId)
@@ -274,6 +225,55 @@ public class PaymentService : BaseService, IPaymentService
     public int GetQuantityOfPayment(Guid id)
     {
         return _paymentRepository.Get(id).Result.Quantity;
+    }
+
+    private MomoResponseModel? ConfirmPayment(MomoRequestModel request)
+    {
+        var partnerCode = request.PartnerCode;
+        var orderId = request.OrderId;
+        var requestId = request.RequestId;
+        var amount = request.Amount;
+        var requestType = "capture";
+        var accessKey = _momoSettings.AccessKey;
+        var secretKey = _momoSettings.SecretKey;
+        var description = "";
+
+        var param = "accessKey=" + accessKey + "&amount=" + amount + "&description=" + description + "&orderId=" +
+                    orderId + "&partnerCode=" + partnerCode + "&requestId=" + requestId + "&requestType=" + requestType;
+
+        var crypto = new MoMoSecurity();
+        var signature = crypto.SignSha256(param, secretKey!);
+
+        var url = "https://test-payment.momo.vn/v2/gateway/api/confirm";
+
+        var message = new JObject
+        {
+            { "partnerCode", partnerCode },
+            { "requestId", requestId },
+            { "orderId", orderId },
+            { "requestType", requestType },
+            { "amount", amount },
+            { "lang", "en" },
+            { "description", description },
+            { "signature", signature}
+        };
+
+        var response = PaymentRequest.sendConfirmPaymentRequest(url!, message.ToString());
+        var jMessage = JObject.Parse(response);
+
+        return new MomoResponseModel
+        {
+            Amount = jMessage["amount"]!.ToString(),
+            Message = jMessage["message"]!.ToString(),
+            OrderId = (Guid) jMessage["orderId"]!,
+            PartnerCode = jMessage["partnerCode"]!.ToString(),
+            RequestId = jMessage["requestId"]!.ToString(),
+            ResponseTime = jMessage["responseTime"]!.ToString(),
+            RequestType = jMessage["requestType"]!.ToString(),
+            TransId = jMessage["transId"]!.ToString(),
+            ResultCode = jMessage["resultCode"]!.ToString(),
+            Signature = signature
+        };
     }
 
     private string MomoPayment(PaymentRequestModel request, float totalAmount)

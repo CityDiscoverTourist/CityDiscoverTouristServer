@@ -60,9 +60,9 @@ public class QuestItemService : BaseService, IQuestItemService
         CheckDataNotNull("QuestItem", entity);
 
         var objContent = JObject.Parse(entity!.Content!);
-        var content = (string)objContent["vi"]! + " | " + (string)objContent["en"]!;
+        var content = (string) objContent["vi"]! + " | " + (string) objContent["en"]!;
         var objDescription = JObject.Parse(entity.Description!);
-        var description = (string)objDescription["vi"]! + " | " + (string)objDescription["en"]!;
+        var description = (string) objDescription["vi"]! + " | " + (string) objDescription["en"]!;
 
         entity.Content = content;
         entity.Description = description;
@@ -109,10 +109,10 @@ public class QuestItemService : BaseService, IQuestItemService
 
         request.ItemId ??= null;
         var entity = _mapper.Map<QuestItem>(request);
-        
+
         entity.Content = JsonHelper.JsonFormat(request.Content);
         entity.Description = JsonHelper.JsonFormat(request.Description);
-        
+
         entity = await _taskRepository.Update(entity);
         return _mapper.Map<QuestItemResponseModel>(entity);
     }
