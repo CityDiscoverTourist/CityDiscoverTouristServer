@@ -6,6 +6,7 @@ public class ApplicationUser: IdentityUser
 {
      public string? Address { get; set; }
      public bool Gender { get; set; }
+     public string? ConfirmToken { get; set; }
      public string? ImagePath { get; set; }
      public List<CustomerQuest>? CustomerQuests { get; set; }
      public List<Payment>? Payments { get; set; }

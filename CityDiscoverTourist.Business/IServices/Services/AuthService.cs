@@ -128,6 +128,9 @@ public class AuthService : IAuthService
 
         BackgroundJob.Enqueue( () => _emailSender.SendMailConfirmAsync(user.Email!, "Confirm your account", message));
 
+        user.ConfirmToken = token;
+        await _userManager.UpdateAsync(user);
+
         return result.Succeeded;
     }
 
@@ -138,9 +141,12 @@ public class AuthService : IAuthService
 
         if(user.EmailConfirmed) throw new AppException("User already confirmed");
 
-        var result = await _userManager.ConfirmEmailAsync(user, token);
+        if (user.ConfirmToken != token) throw new AppException("Invalid token");
 
-        return result.Succeeded ? "Confirm success" : "Invalid token";
+        user.EmailConfirmed = true;
+        user.ConfirmToken = null;
+        await _userManager.UpdateAsync(user);
+        return "Email confirmed";
     }
 
     public JwtSecurityToken GetJwtToken(IEnumerable<Claim> claims)
