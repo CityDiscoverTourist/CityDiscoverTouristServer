@@ -1,4 +1,5 @@
 using CityDiscoverTourist.Business.Data.ResponseModel;
+using CityDiscoverTourist.Business.HubConfig.IHub;
 using CityDiscoverTourist.Data.Models;
 using Microsoft.AspNetCore.SignalR;
 

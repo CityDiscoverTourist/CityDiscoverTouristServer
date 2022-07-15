@@ -1,7 +1,7 @@
 using CityDiscoverTourist.Business.Data.ResponseModel;
 using CityDiscoverTourist.Data.Models;
 
-namespace CityDiscoverTourist.Business.HubConfig;
+namespace CityDiscoverTourist.Business.HubConfig.IHub;
 
 public interface ICustomerTaskHub
 {

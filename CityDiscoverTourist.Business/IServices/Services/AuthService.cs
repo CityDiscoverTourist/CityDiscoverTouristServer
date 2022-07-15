@@ -9,10 +9,13 @@ using CityDiscoverTourist.Business.Data.ResponseModel;
 using CityDiscoverTourist.Business.Enums;
 using CityDiscoverTourist.Business.Exceptions;
 using CityDiscoverTourist.Business.Helper.EmailHelper;
+using CityDiscoverTourist.Business.HubConfig;
+using CityDiscoverTourist.Business.HubConfig.IHub;
 using CityDiscoverTourist.Data.Models;
 using FirebaseAdmin.Auth;
 using Hangfire;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 
@@ -24,14 +27,16 @@ public class AuthService : IAuthService
     private readonly IEmailSender _emailSender;
     private  readonly RoleManager<IdentityRole> _roleManager;
     private readonly UserManager<ApplicationUser> _userManager;
+    private readonly IHubContext<CustomerHub, ICustomerHub> _customerHub;
 
     public AuthService(UserManager<ApplicationUser> userManager, IConfiguration? configuration,
-        RoleManager<IdentityRole> roleManager, IEmailSender emailSender)
+        RoleManager<IdentityRole> roleManager, IEmailSender emailSender, IHubContext<CustomerHub, ICustomerHub> customerHub)
     {
         _userManager = userManager;
         _configuration = configuration;
         _roleManager = roleManager;
         _emailSender = emailSender;
+        _customerHub = customerHub;
     }
 
     public async Task<LoginResponseModel> LoginFirebase(LoginFirebaseModel model)
@@ -130,6 +135,9 @@ public class AuthService : IAuthService
 
         user.ConfirmToken = token;
         await _userManager.UpdateAsync(user);
+
+        //send hub notification to client
+        await _customerHub.Clients.All.NewCustomerCreated(user.Email!);
 
         return result.Succeeded;
     }

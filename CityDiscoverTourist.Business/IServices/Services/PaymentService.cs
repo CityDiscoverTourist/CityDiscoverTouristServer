@@ -8,12 +8,15 @@ using CityDiscoverTourist.Business.Exceptions;
 using CityDiscoverTourist.Business.Helper;
 using CityDiscoverTourist.Business.Helper.EmailHelper;
 using CityDiscoverTourist.Business.Helper.Params;
+using CityDiscoverTourist.Business.HubConfig;
+using CityDiscoverTourist.Business.HubConfig.IHub;
 using CityDiscoverTourist.Business.Momo;
 using CityDiscoverTourist.Business.Settings;
 using CityDiscoverTourist.Data.IRepositories;
 using CityDiscoverTourist.Data.Models;
 using Hangfire;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
 using MoMo;
 using Newtonsoft.Json.Linq;
@@ -30,9 +33,10 @@ public class PaymentService : BaseService, IPaymentService
     private readonly ISortHelper<Payment> _sortHelper;
     private readonly UserManager<ApplicationUser> _userManager;
     private readonly IEmailSender _emailSender;
+    private readonly IHubContext<PaymentHub, IPaymentHub> _hubContext;
 
     public PaymentService(IPaymentRepository paymentRepository, IMapper mapper, ISortHelper<Payment> sortHelper,
-        MomoSetting momoSettings, IRewardRepository rewardRepository, IQuestRepository questRepository, UserManager<ApplicationUser> userManager, IEmailSender emailSender)
+        MomoSetting momoSettings, IRewardRepository rewardRepository, IQuestRepository questRepository, UserManager<ApplicationUser> userManager, IEmailSender emailSender, IHubContext<PaymentHub, IPaymentHub> hubContext)
     {
         _paymentRepository = paymentRepository;
         _mapper = mapper;
@@ -42,6 +46,7 @@ public class PaymentService : BaseService, IPaymentService
         _questRepository = questRepository;
         _userManager = userManager;
         _emailSender = emailSender;
+        _hubContext = hubContext;
     }
 
     public PageList<PaymentResponseModel> GetAll(PaymentParams @params, Language language)
@@ -134,7 +139,12 @@ public class PaymentService : BaseService, IPaymentService
 
         BackgroundJob.Enqueue( () => _emailSender.SendMailConfirmAsync(customerEmail, "Payment Information", message));
 
-        return _mapper.Map<PaymentResponseModel>(entity);
+        var mappedData = _mapper.Map<PaymentResponseModel>(entity);
+
+        //send hub to client when payment success
+        await _hubContext.Clients.All.GetPayment(mappedData);
+
+        return mappedData;
     }
 
     private MomoResponseModel? ConfirmPayment(MomoRequestModel request)

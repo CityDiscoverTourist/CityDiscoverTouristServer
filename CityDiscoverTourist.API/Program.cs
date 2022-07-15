@@ -140,6 +140,8 @@ try
     {
         endpoints.MapControllers();
         endpoints.MapHub<CustomerTaskHub>("/customer-task");
+        endpoints.MapHub<PaymentHub>("/payment");
+        endpoints.MapHub<CustomerHub>("/customer");
     });
 
     app.MapControllers();
