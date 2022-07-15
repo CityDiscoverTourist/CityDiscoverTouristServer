@@ -16,7 +16,6 @@ namespace CityDiscoverTourist.API.Controllers;
 [Route("api/v{version:apiVersion}/[controller]s")]
 [ApiVersion("1.0")]
 [ApiController]
-[Authorize]
 public class RewardController : ControllerBase
 {
     private readonly IRecurringJobManager _recurringJobManager;
@@ -88,7 +87,7 @@ public class RewardController : ControllerBase
     [HttpPut]
     public async Task<OkObjectResult> Put()
     {
-        _recurringJobManager.AddOrUpdate("Reward", () => _rewardService.InvalidReward(), "0 0 * * *", TimeZoneInfo.Local);
+        _recurringJobManager.AddOrUpdate("Reward", () => _rewardService.InvalidReward(), "0 0 * * *", TimeZoneInfo.FindSystemTimeZoneById("SE Asia Standard Time"));
         return await Task.FromResult(Ok("RecurringJobManager"));
     }
 
