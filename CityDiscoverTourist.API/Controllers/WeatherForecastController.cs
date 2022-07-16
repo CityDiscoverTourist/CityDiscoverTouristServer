@@ -225,7 +225,8 @@ public class WeatherForecastController : ControllerBase
     {
         var mat = new Mat();
         CvInvoke.Imdecode(image1, ImreadModes.Grayscale, mat);
-        var exampleImage = mat.ToImage<Gray, byte>();
+        var exampleImage = new Image<Gray, byte>(400, 600);
+        exampleImage.Bytes = image1;
         return exampleImage;
     }
 
