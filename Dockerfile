@@ -25,22 +25,20 @@ WORKDIR /app
 
 RUN apt-get update \
     && apt-get install -y --no-install-recommends \
-        curl \
-        git \
-        wget \
+    curl \
+    git \
+    wget \
     && rm -rf /var/lib/apt/lists/*
-
-RUN apt-get install -y ca-certificates 
 
 RUN wget https://packages.microsoft.com/config/ubuntu/20.04/packages-microsoft-prod.deb -O packages-microsoft-prod.deb --no-check-certificate
 RUN dpkg -i packages-microsoft-prod.deb
 RUN rm packages-microsoft-prod.deb
 
 RUN apt-get update; \
-   apt-get install -y apt-transport-https && \
-   
-   apt-get install -y dotnet-sdk-6.0 && \
-   apt-get install -y aspnetcore-runtime-6.0
+    apt-get install -y ca-certificates && \
+    apt-get install -y apt-transport-https && \
+    apt-get install -y dotnet-sdk-6.0 && \
+    apt-get install -y aspnetcore-runtime-6.0
 
 RUN apt-get install -y ffmpeg libgtk-3-dev libgstreamer1.0-dev libavcodec-dev libswscale-dev libavformat-dev libdc1394-22-dev libv4l-dev ocl-icd-dev freeglut3-dev libgeotiff-dev libusb-1.0-0-dev
 
