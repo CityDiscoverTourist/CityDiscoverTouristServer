@@ -7,28 +7,14 @@ FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 
 # install System.Drawing native dependencies
 RUN apt-get update
-RUN apt-get install -y libgdiplus libc6-dev
 RUN apt-get install -y libicu-dev libharfbuzz0b libfontconfig1 libfreetype6
-RUN apt-get install -y \
-    build-essential \
-	libgtk-3-dev \
-	libgstreamer1.0-dev \
-	libavcodec-dev \
-	libswscale-dev \
-	libavformat-dev \
-	libdc1394-22-dev \
-	libv4l-dev \
-	cmake-curses-gui \
-	ocl-icd-dev \
-	freeglut3-dev \
-	libgeotiff-dev \
-	libusb-1.0-0-dev  
+RUN apt-get install -y libgdiplus libx11-dev libgeotiff-dev  libxt-dev libopengl-dev libglx-dev libusb-1.0-0
 
 WORKDIR /src
 COPY ["CityDiscoverTourist.API/CityDiscoverTourist.API.csproj", "CityDiscoverTourist.API/"]
 COPY ["CityDiscoverTourist.Business/CityDiscoverTourist.Business.csproj", "CityDiscoverTourist.Business/"]
 COPY ["CityDiscoverTourist.Data/CityDiscoverTourist.Data.csproj", "CityDiscoverTourist.Data/"]
-RUN dotnet add "CityDiscoverTourist.API/CityDiscoverTourist.API.csproj"  package Emgu.CV.runtime.ubuntu.20.04-x64 --version 4.5.3.4721
+RUN dotnet add "CityDiscoverTourist.API/CityDiscoverTourist.API.csproj"  package Emgu.CV.runtime.linux-arm --version 4.5.5.4823
 RUN dotnet restore "CityDiscoverTourist.API/CityDiscoverTourist.API.csproj"
 COPY . .
 WORKDIR "/src/CityDiscoverTourist.API"
