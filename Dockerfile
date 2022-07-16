@@ -1,4 +1,4 @@
-﻿ARG REPO=mcr.microsoft.com/dotnet/runtime
+ARG REPO=mcr.microsoft.com/dotnet/runtime
 
 
 #FROM mcr.microsoft.com/dotnet/aspnet:6.0 AS base
@@ -8,9 +8,6 @@
 
 FROM $REPO:6.0.7-focal-amd64 AS build
 
-WORKDIR /app
-EXPOSE 80
-EXPOSE 443
 
 ENV \
     # Unset ASPNETCORE_URLS from aspnet base image
@@ -29,6 +26,10 @@ ENV \
     POWERSHELL_DISTRIBUTION_CHANNEL=PSDocker-DotnetSDK-Ubuntu-20.04
 
 # FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
+
+WORKDIR /app
+EXPOSE 80
+EXPOSE 443
 
 RUN apt-get update \
     && apt-get install -y --no-install-recommends \
