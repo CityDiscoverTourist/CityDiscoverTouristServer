@@ -51,7 +51,7 @@ WORKDIR /src
 COPY ["CityDiscoverTourist.API/CityDiscoverTourist.API.csproj", "CityDiscoverTourist.API/"]
 COPY ["CityDiscoverTourist.Business/CityDiscoverTourist.Business.csproj", "CityDiscoverTourist.Business/"]
 COPY ["CityDiscoverTourist.Data/CityDiscoverTourist.Data.csproj", "CityDiscoverTourist.Data/"]
-RUN dotnet add "CityDiscoverTourist.API/CityDiscoverTourist.API.csproj"  package Emgu.CV.runtime.linux-arm --version 4.5.5.4823
+RUN dotnet add "CityDiscoverTourist.API/CityDiscoverTourist.API.csproj"  package Emgu.CV.runtime.ubuntu.20.04-x64 --version 4.5.5.4823
 RUN dotnet restore "CityDiscoverTourist.API/CityDiscoverTourist.API.csproj"
 COPY . .
 WORKDIR "/src/CityDiscoverTourist.API"
@@ -60,7 +60,7 @@ RUN dotnet build "CityDiscoverTourist.API.csproj" -c Release -o /app/build
 FROM build AS publish
 RUN dotnet publish "CityDiscoverTourist.API.csproj" -c Release -o /app/publish
 
-FROM base AS final
+FROM build AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
 
