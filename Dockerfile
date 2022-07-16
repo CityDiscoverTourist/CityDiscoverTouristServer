@@ -6,7 +6,7 @@ ARG REPO=mcr.microsoft.com/dotnet/runtime
 #EXPOSE 80
 #EXPOSE 443
 
-FROM $REPO:6.0.7-focal-amd64 AS build
+FROM ubuntu:20.04 AS build
 
 
 ENV \
@@ -30,15 +30,17 @@ RUN apt-get update \
         wget \
     && rm -rf /var/lib/apt/lists/*
 
-RUN wget https://packages.microsoft.com/config/ubuntu/20.04/packages-microsoft-prod.deb -O packages-microsoft-prod.deb
+RUN wget https://packages.microsoft.com/config/ubuntu/20.04/packages-microsoft-prod.deb -O packages-microsoft-prod.deb --no-check-certificate
 RUN dpkg -i packages-microsoft-prod.deb
 RUN rm packages-microsoft-prod.deb
 
 RUN apt-get update; \
    apt-get install -y apt-transport-https && \
-   apt-get update && \
+   apt-get install -y ca-certificates && \
    apt-get install -y dotnet-sdk-6.0 && \
    apt-get install -y aspnetcore-runtime-6.0
+
+RUN apt-get install -y ffmpeg libgtk-3-dev libgstreamer1.0-dev libavcodec-dev libswscale-dev libavformat-dev libdc1394-22-dev libv4l-dev ocl-icd-dev freeglut3-dev libgeotiff-dev libusb-1.0-0-dev
 
 WORKDIR /src
 COPY ["CityDiscoverTourist.API/CityDiscoverTourist.API.csproj", "CityDiscoverTourist.API/"]
@@ -61,5 +63,5 @@ EXPOSE 443
 
 COPY --from=publish /app/publish .
 
-ENTRYPOINT ["dotnet", "CityDiscoverTourist.API.dll", "--server.urls", "http://+:80;https://+:443"]
+ENTRYPOINT ["dotnet", "CityDiscoverTourist.API.dll","--server.urls", "http://+:80;https://+:443"]
 
