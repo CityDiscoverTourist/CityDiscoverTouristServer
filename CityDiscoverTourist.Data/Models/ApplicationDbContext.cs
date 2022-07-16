@@ -76,4 +76,5 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     public DbSet<Wallet> Wallets { get; set; }
     //public DbSet<QuestReward> QuestRewards { get; set; }
     public DbSet<UserSubscribed> UserSubscribeds { get; set; }
+    public DbSet<Notification> Notifications { get; set; }
 }

@@ -21,10 +21,11 @@ public class QuestService : BaseService, IQuestService
     private readonly IQuestItemRepository _questItemRepository;
     private readonly IQuestRepository _questRepository;
     private readonly ISortHelper<Quest> _sortHelper;
+    private readonly INotificationService _notificationService;
 
     public QuestService(IQuestRepository questRepository, ISortHelper<Quest> sortHelper, IMapper mapper,
         IBlobService blobService, ILocationRepository locationRepository, IQuestItemRepository questItemRepository,
-        ICustomerQuestRepository customerQuestRepository)
+        ICustomerQuestRepository customerQuestRepository, INotificationService notificationService)
     {
         _questRepository = questRepository;
         _sortHelper = sortHelper;
@@ -33,6 +34,7 @@ public class QuestService : BaseService, IQuestService
         _locationRepository = locationRepository;
         _questItemRepository = questItemRepository;
         _customerQuestRepository = customerQuestRepository;
+        _notificationService = notificationService;
     }
 
 
@@ -208,6 +210,14 @@ public class QuestService : BaseService, IQuestService
         entity.Description = JsonHelper.JsonFormat(request.Description);
 
         entity = await _questRepository.Add(entity);
+
+        //create notification for quest created and push to hub
+        await _notificationService.CreateAsync(new Notification
+        {
+            Content = "New quest " + entity.Title + " has been created",
+            CreatedDate = CurrentDateTime()
+        });
+
         //return string img from blob, mapped to Quest model and store in db
         var imgPath = await _blobService.UploadQuestImgAndReturnImgPathAsync(request.Image, entity.Id, "quest");
         entity.ImagePath = imgPath;
