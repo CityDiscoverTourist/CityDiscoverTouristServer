@@ -1,5 +1,7 @@
+using CityDiscoverTourist.API.Response;
 using CityDiscoverTourist.Business.Data.ResponseModel;
 using CityDiscoverTourist.Business.IServices;
+using CityDiscoverTourist.Data.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CityDiscoverTourist.API.Controllers;
@@ -30,5 +32,15 @@ public class NotificationController : ControllerBase
     {
         var result = await _notificationService.SendNotification(notificationModel);
         return Ok(result);
+    }
+
+    /// <summary>
+    ///
+    /// </summary>
+    /// <returns></returns>
+    [HttpGet]
+    public IQueryable<Notification> GetAllNotifications()
+    {
+        return _notificationService.GetAllAsync();
     }
 }

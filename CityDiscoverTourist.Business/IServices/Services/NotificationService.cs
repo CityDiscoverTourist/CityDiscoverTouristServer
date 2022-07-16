@@ -68,7 +68,7 @@ public class NotificationService : INotificationService
 
     public IQueryable<Notification> GetAllAsync()
     {
-        var entity = _notificationRepository.GetAll();
+        var entity = _notificationRepository.GetAll().OrderByDescending(x => x.CreatedDate);
         _hubContext.Clients.All.GetNotifications(entity);
         return entity;
     }

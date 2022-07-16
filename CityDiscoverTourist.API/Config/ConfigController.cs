@@ -115,6 +115,7 @@ public static class ConfigController
         services.AddScoped<IOwnerPaymentRepository, OwnerPaymentRepository>();
         services.AddScoped<IUserSubscribedRepository, UserSubscribedRepository>();
         services.AddScoped<IQuestRewardRepository, QuestRewardRepository>();
+        services.AddScoped<INotificationRepository, NotificationRepository>();
     }
 
     /// <summary>
