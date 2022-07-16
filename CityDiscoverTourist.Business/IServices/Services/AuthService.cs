@@ -193,7 +193,7 @@ public class AuthService : IAuthService
 
         var newPassword = GeneratePassword();
 
-        var message = "<h1>Dear " + email + "</h1> <br/>" + "Your new password is: " + newPassword + "<br/>" +
+        var message = "<h1>Dear " + user.UserName + "</h1> <br/>" + "Your new password is: " + newPassword + "<br/>" +
                       "Please change your password after login" + "<br/>" + "Thank you";
 
         await _userManager.AddPasswordAsync(user, newPassword);
@@ -215,7 +215,7 @@ public class AuthService : IAuthService
         if (user != null) return false;
         user = new ApplicationUser
         {
-            UserName = userViewModel.FullName,
+            UserName = userViewModel.Email,
             Email = userViewModel.Email,
             SecurityStamp = Guid.NewGuid().ToString(),
             EmailConfirmed = true,

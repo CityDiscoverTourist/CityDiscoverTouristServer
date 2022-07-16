@@ -97,7 +97,7 @@ public class FacebookService : IFacebookService
         if (user != null) return false;
         user = new ApplicationUser
         {
-            UserName = facebookUser.FullName,
+            UserName = facebookUser.Email,
             Email = facebookUser.Email,
             SecurityStamp = Guid.NewGuid().ToString(),
             EmailConfirmed = true,
