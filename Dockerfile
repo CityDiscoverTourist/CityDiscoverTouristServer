@@ -6,7 +6,7 @@ ARG REPO=mcr.microsoft.com/dotnet/runtime
 #EXPOSE 80
 #EXPOSE 443
 
-FROM ubuntu:20.04 AS build
+FROM ubuntu:22.04 AS build
 
 
 ENV \
