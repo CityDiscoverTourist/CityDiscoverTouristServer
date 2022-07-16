@@ -11,7 +11,7 @@ FROM $REPO:6.0.7-focal-amd64 AS build
 
 ENV \
     # Unset ASPNETCORE_URLS from aspnet base image
-    ASPNETCORE_URLS= \
+    ASPNETCORE_URLS=http://+:80   \
     # Do not generate certificate
     DOTNET_GENERATE_ASPNET_CERTIFICATE=false \
     # Do not show first run text
@@ -28,8 +28,6 @@ ENV \
 # FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 
 WORKDIR /app
-EXPOSE 80
-EXPOSE 443
 
 RUN apt-get update \
     && apt-get install -y --no-install-recommends \
@@ -37,11 +35,6 @@ RUN apt-get update \
         git \
         wget \
     && rm -rf /var/lib/apt/lists/*
-
-# install System.Drawing native dependencies
-RUN apt-get update
-RUN apt-get install -y libicu-dev libharfbuzz0b libfontconfig1 libfreetype6
-RUN apt-get install -y libgdiplus libx11-dev libgeotiff-dev  libxt-dev libopengl-dev libglx-dev libusb-1.0-0
 
 RUN wget https://packages.microsoft.com/config/ubuntu/20.04/packages-microsoft-prod.deb -O packages-microsoft-prod.deb
 RUN dpkg -i packages-microsoft-prod.deb
@@ -67,10 +60,12 @@ FROM build AS publish
 RUN dotnet publish "CityDiscoverTourist.API.csproj" -c Release -o /app/publish
 
 FROM build AS final
+
 WORKDIR /app
+EXPOSE 80
+EXPOSE 443
+
 COPY --from=publish /app/publish .
-
-
 
 ENTRYPOINT ["dotnet", "CityDiscoverTourist.API.dll"]
 
