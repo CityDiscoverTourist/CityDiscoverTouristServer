@@ -1,12 +1,16 @@
 ﻿ARG REPO=mcr.microsoft.com/dotnet/runtime
 
 
-FROM mcr.microsoft.com/dotnet/aspnet:6.0 AS base
+#FROM mcr.microsoft.com/dotnet/aspnet:6.0 AS base
+#WORKDIR /app
+#EXPOSE 80
+#EXPOSE 443
+
+FROM $REPO:6.0.7-focal-amd64 AS build
+
 WORKDIR /app
 EXPOSE 80
 EXPOSE 443
-
-FROM $REPO:6.0.7-focal-amd64 AS build
 
 ENV \
     # Unset ASPNETCORE_URLS from aspnet base image

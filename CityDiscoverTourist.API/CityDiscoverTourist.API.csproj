@@ -25,8 +25,6 @@
         <PackageReference Include="Azure.Storage.Blobs" Version="12.12.0" />
         <PackageReference Include="Emgu.CV" Version="4.5.5.4823" />
         <PackageReference Include="Emgu.CV.Bitmap" Version="4.5.5.4823" />
-        <PackageReference Include="Emgu.CV.runtime.linux-arm" Version="4.5.5.4823" />
-        <PackageReference Include="Emgu.CV.runtime.windows" Version="4.5.5.4823" />
         <PackageReference Include="FirebaseAdmin" Version="2.3.0" />
         <PackageReference Include="Hangfire" Version="1.7.30" />
         <PackageReference Include="Hangfire.Core" Version="1.7.30" />
