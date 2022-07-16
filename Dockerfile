@@ -30,13 +30,15 @@ RUN apt-get update \
         wget \
     && rm -rf /var/lib/apt/lists/*
 
+RUN apt-get install -y ca-certificates 
+
 RUN wget https://packages.microsoft.com/config/ubuntu/20.04/packages-microsoft-prod.deb -O packages-microsoft-prod.deb --no-check-certificate
 RUN dpkg -i packages-microsoft-prod.deb
 RUN rm packages-microsoft-prod.deb
 
 RUN apt-get update; \
    apt-get install -y apt-transport-https && \
-   apt-get install -y ca-certificates && \
+   
    apt-get install -y dotnet-sdk-6.0 && \
    apt-get install -y aspnetcore-runtime-6.0
 
