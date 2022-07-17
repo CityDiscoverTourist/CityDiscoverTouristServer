@@ -71,5 +71,5 @@ EXPOSE 443
 
 COPY --from=publish /app/publish .
 
-ENTRYPOINT ["dotnet", "CityDiscoverTourist.API.dll"]
+ENTRYPOINT ["dotnet", "CityDiscoverTourist.API.dll","--server.urls", "http://+:80;https://+:443"]
 
