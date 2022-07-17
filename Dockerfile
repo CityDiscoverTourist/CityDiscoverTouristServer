@@ -12,6 +12,7 @@ ENV TZ=Asia/Ho_Chi_Minh
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
 ENV \
+    ASPNETCORE_URLS=http://+:80,https://+:443  \
     # SDK version
     DOTNET_SDK_VERSION=6.0.302 \
     # Enable correct mode for dotnet watch (only mode supported in a container)
@@ -70,5 +71,5 @@ EXPOSE 443
 
 COPY --from=publish /app/publish .
 
-ENTRYPOINT ["dotnet", "CityDiscoverTourist.API.dll","--server.urls", "http://+:80;https://+:443"]
+ENTRYPOINT ["dotnet", "CityDiscoverTourist.API.dll"]
 
