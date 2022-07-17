@@ -6,8 +6,8 @@ ARG REPO=mcr.microsoft.com/dotnet/runtime
 #EXPOSE 80
 #EXPOSE 443
 
-FROM ubuntu:20.04 AS build
-
+ FROM $REPO:6.0.7-focal-amd64 AS build
+ 
 ENV TZ=Asia/Ho_Chi_Minh
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
