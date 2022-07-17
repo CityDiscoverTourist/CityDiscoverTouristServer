@@ -8,6 +8,8 @@ ARG REPO=mcr.microsoft.com/dotnet/runtime
 
 FROM ubuntu:20.04 AS build
 
+ENV TZ=Asia/Ho_Chi_Minh
+RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
 ENV \
     # Do not generate certificate
