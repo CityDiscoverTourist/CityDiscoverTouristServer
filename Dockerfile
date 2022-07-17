@@ -6,10 +6,14 @@ ARG REPO=mcr.microsoft.com/dotnet/runtime
 #EXPOSE 80
 #EXPOSE 443
 
-FROM ubuntu:22.04 AS build
+FROM ubuntu:20.04 AS build
 
 
 ENV \
+    # Do not generate certificate
+    DOTNET_GENERATE_ASPNET_CERTIFICATE=false \
+    # Do not show first run text
+    DOTNET_NOLOGO=true \
     # SDK version
     DOTNET_SDK_VERSION=6.0.302 \
     # Enable correct mode for dotnet watch (only mode supported in a container)
@@ -27,10 +31,16 @@ RUN apt-get update \
     && apt-get install -y --no-install-recommends \
     curl \
     git \
-    wget \
+    wget \ 
+    openssl \
     && rm -rf /var/lib/apt/lists/*
 
-RUN wget https://packages.microsoft.com/config/ubuntu/22.04/packages-microsoft-prod.deb -O packages-microsoft-prod.deb
+RUN wget --no-check-certificate http://security.ubuntu.com/ubuntu/pool/main/c/ca-certificates/ca-certificates_20211016~20.04.1_all.deb
+RUN dpkg -r --force-depends ca-certificates
+RUN dpkg -i ca-certificates_20211016~20.04.1_all.deb
+
+
+RUN wget https://packages.microsoft.com/config/ubuntu/20.04/packages-microsoft-prod.deb -O packages-microsoft-prod.deb
 RUN dpkg -i packages-microsoft-prod.deb
 RUN rm packages-microsoft-prod.deb
 
