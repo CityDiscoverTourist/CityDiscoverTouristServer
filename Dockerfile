@@ -12,10 +12,6 @@ ENV TZ=Asia/Ho_Chi_Minh
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
 ENV \
-    # Do not generate certificate
-    DOTNET_GENERATE_ASPNET_CERTIFICATE=false \
-    # Do not show first run text
-    DOTNET_NOLOGO=true \
     # SDK version
     DOTNET_SDK_VERSION=6.0.302 \
     # Enable correct mode for dotnet watch (only mode supported in a container)
@@ -47,7 +43,6 @@ RUN dpkg -i packages-microsoft-prod.deb
 RUN rm packages-microsoft-prod.deb
 
 RUN apt-get update; \
-    apt-get install -y ca-certificates && \
     apt-get install -y apt-transport-https && \
     apt-get install -y dotnet-sdk-6.0 && \
     apt-get install -y aspnetcore-runtime-6.0
