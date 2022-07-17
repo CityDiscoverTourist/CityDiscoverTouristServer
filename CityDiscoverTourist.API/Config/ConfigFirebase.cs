@@ -37,7 +37,7 @@ public static class ConfigFirebase
 
         if (webHostEnvironment.IsDevelopment())
         {
-            var fireBaseCredential = new FirestoreCredentialInitializer(configuration);
+            /*var fireBaseCredential = new FirestoreCredentialInitializer(configuration);
             var serializerSettings = new JsonSerializerSettings
             {
                 ContractResolver = new DefaultContractResolver
@@ -49,6 +49,11 @@ public static class ConfigFirebase
             {
                 Credential =
                     GoogleCredential.FromJson(JsonConvert.SerializeObject(fireBaseCredential, serializerSettings))
+            });*/
+            //var fireBaseCredential = configuration.GetSection("Firebase").Get<string>();
+            FirebaseApp.Create(new AppOptions
+            {
+                Credential = GoogleCredential.FromFile("citytourist-cea6c-firebase-adminsdk-oucj8-968da22eb0.json")
             });
         }
         else

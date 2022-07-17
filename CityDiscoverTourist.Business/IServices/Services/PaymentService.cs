@@ -162,7 +162,7 @@ public class PaymentService : BaseService, IPaymentService
         if (discountCode != Guid.Empty)
         {
             var reward = _rewardRepository.GetByCondition(x => x.Code == discountCode).FirstOrDefault();
-            if (reward == null) throw new AppException("Discount code is not valid");
+            if (reward == null || reward.CustomerId != request.CustomerId) throw new AppException("Discount code is not valid");
 
             if (reward.Status == CommonStatus.Inactive.ToString())
                 throw new AppException("Discount code is used");
@@ -174,6 +174,7 @@ public class PaymentService : BaseService, IPaymentService
             entity.Status = PaymentStatus.Pending.ToString();
             entity.TotalAmount = request.TotalAmount * (100 - percentage) / 100;
             entity.CreatedDate = CurrentDateTime();
+            entity.PaymentMethod = "MomoWallet";
 
             var paymentUrl = MomoPayment(request, entity.TotalAmount);
 
