@@ -30,7 +30,7 @@ RUN apt-get -y install build-essential libgtk-3-dev libgstreamer1.0-dev libavcod
 WORKDIR /app
 
 #check emguCV depens
-RUN ldd runtimes/ubuntu.20.04-x64/native/libcvextern.so
+RUN ldd /app/publish/runtimes/ubuntu.20.04-x64/native/libcvextern.so
 
 COPY --from=publish /app/publish .
 
