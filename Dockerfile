@@ -30,6 +30,7 @@ RUN apt-get -y install build-essential libgtk-3-dev libgstreamer1.0-dev libavcod
 WORKDIR /app
 
 #check emguCV depens
+RUN ls
 
 COPY --from=publish /app/publish .
 
