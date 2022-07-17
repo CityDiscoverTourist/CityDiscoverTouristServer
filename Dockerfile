@@ -7,12 +7,8 @@ EXPOSE 443
 
 FROM mcr.microsoft.com/dotnet/sdk:6.0-focal-amd64 AS build
 
-# FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
-
-# install System.Drawing native dependencies
 RUN apt-get update
-RUN apt-get install -y libicu-dev libharfbuzz0b libfontconfig1 libfreetype6
-RUN apt-get install -y libgdiplus libx11-dev libgeotiff-dev  libxt-dev libopengl-dev libglx-dev libusb-1.0-0
+RUN apt-get -y install libgtk-3-dev libgstreamer1.0-dev libavcodec-dev libswscale-dev libavformat-dev libv4l-dev libdc1394-dev ocl-icd-dev freeglut3-dev libgeotiff-dev libusb-1.0-0-dev 
 
 WORKDIR /src
 COPY ["CityDiscoverTourist.API/CityDiscoverTourist.API.csproj", "CityDiscoverTourist.API/"]
@@ -28,6 +24,10 @@ FROM build AS publish
 RUN dotnet publish "CityDiscoverTourist.API.csproj" -c Release -o /app/publish
 
 FROM base AS final
+
+RUN apt-get update
+RUN apt-get -y install libgtk-3-dev libgstreamer1.0-dev libavcodec-dev libswscale-dev libavformat-dev libv4l-dev libdc1394-dev ocl-icd-dev freeglut3-dev libgeotiff-dev libusb-1.0-0-dev 
+
 WORKDIR /app
 COPY --from=publish /app/publish .
 
