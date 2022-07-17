@@ -8,7 +8,7 @@ EXPOSE 443
 FROM mcr.microsoft.com/dotnet/sdk:6.0-focal-amd64 AS build
 
 RUN apt-get update
-RUN apt-get -y install libgtk-3-dev libgstreamer1.0-dev libavcodec-dev libswscale-dev libavformat-dev libv4l-dev libdc1394-dev ocl-icd-dev freeglut3-dev libgeotiff-dev libusb-1.0-0-dev 
+RUN apt-get -y install build-essential libgtk-3-dev libgstreamer1.0-dev libavcodec-dev libswscale-dev libavformat-dev libdc1394-22-dev libv4l-dev cmake-curses-gui ocl-icd-dev freeglut3-dev 
 
 WORKDIR /src
 COPY ["CityDiscoverTourist.API/CityDiscoverTourist.API.csproj", "CityDiscoverTourist.API/"]
@@ -26,7 +26,7 @@ RUN dotnet publish "CityDiscoverTourist.API.csproj" -c Release -o /app/publish
 FROM base AS final
 
 RUN apt-get update
-RUN apt-get -y install libgtk-3-dev libgstreamer1.0-dev libavcodec-dev libswscale-dev libavformat-dev libv4l-dev libdc1394-dev ocl-icd-dev freeglut3-dev libgeotiff-dev libusb-1.0-0-dev 
+RUN apt-get -y install build-essential libgtk-3-dev libgstreamer1.0-dev libavcodec-dev libswscale-dev libavformat-dev libdc1394-22-dev libv4l-dev cmake-curses-gui ocl-icd-dev freeglut3-dev 
 
 WORKDIR /app
 COPY --from=publish /app/publish .
