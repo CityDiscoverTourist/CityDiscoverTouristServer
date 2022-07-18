@@ -54,6 +54,7 @@ public static class ConfigController
         services.AddScoped<IUserSubscribedService, UserSubscribedService>();
         services.AddScoped<IQuestRewardService, QuestRewardService>();
         services.AddScoped<IDashboardService, DashboardService>();
+        services.AddScoped<IImageComparison, ImageComparison>();
     }
 
     /// <summary>

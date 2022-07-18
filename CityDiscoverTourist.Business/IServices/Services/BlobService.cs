@@ -42,38 +42,41 @@ public class BlobService : IBlobService
         return blobClient.Uri.AbsoluteUri;
     }
 
-
-    // get image from blob storage
-    public async Task<string> GetImgPathAsync(string name)
+    public async Task<string> UploadQuestItemImgAsync(IFormFile?[]? file, int questItemId, string containerName)
     {
-        var containerClient = _blobServiceClient.GetBlobContainerClient("quest");
-        var blobClient = containerClient.GetBlobClient(name);
-        //var blobInfo = await blobClient.DownloadAsync();
-        var line = "";
-        if (!await blobClient.ExistsAsync()) return line;
+        var imageUrl = "";
+        if (file == null) return null!;
 
-        var response = await blobClient.DownloadAsync();
-
-        using var streamReader = new StreamReader(response.Value.Content);
-        while (!streamReader.EndOfStream)
+        for (var i = 0; i < file.Length; i++)
         {
-            line = await streamReader.ReadLineAsync();
-            Console.WriteLine(line);
+            var renameFile = file[i]!.FileName.Replace(file[i]!.FileName, containerName);
+
+            var containerClient = _blobServiceClient.GetBlobContainerClient(containerName);
+            var blobClient = containerClient.GetBlobClient(questItemId + "/" + renameFile + i);
+            await blobClient.UploadAsync(file[i]!.OpenReadStream(), true);
+
+            imageUrl = blobClient.Uri.AbsoluteUri.Split(renameFile + i)[0];
         }
 
-        return line!;
+        return imageUrl!;
     }
 
-    // get all images from blob storage
-    public async Task<List<string>> GetAllImgPathAsync(string containerName)
+    // get all list images url from blob storage
+    public async Task<List<string>> GetBaseUrl(string containerName, int questItemId)
     {
         var containerClient = _blobServiceClient.GetBlobContainerClient(containerName);
-        var blobClient = containerClient.GetBlobClient("example/");
+        var blobClient = containerClient.GetBlobClient(questItemId + "/");
+
+        var blobInfo = blobClient.Name;
+
+        var baseUrl = containerClient.Uri.AbsoluteUri + "/";
 
         var list = new List<string>();
 
-        await  foreach (var blobItem in containerClient.GetBlobsAsync()) list.Add(blobItem.Name);
-
+        await foreach (var blob in containerClient.GetBlobsAsync(prefix: blobInfo))
+        {
+            list.Add(baseUrl + blob.Name);
+        }
         return list;
     }
 }

@@ -7,6 +7,7 @@ using CityDiscoverTourist.Business.Helper;
 using CityDiscoverTourist.Business.Helper.Params;
 using CityDiscoverTourist.Data.IRepositories;
 using CityDiscoverTourist.Data.Models;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json.Linq;
 
@@ -17,12 +18,14 @@ public class QuestItemService : BaseService, IQuestItemService
     private readonly IMapper _mapper;
     private readonly ISortHelper<QuestItem> _sortHelper;
     private readonly IQuestItemRepository _taskRepository;
+    private readonly IBlobService _blobService;
 
-    public QuestItemService(IQuestItemRepository taskRepository, IMapper mapper, ISortHelper<QuestItem> sortHelper)
+    public QuestItemService(IQuestItemRepository taskRepository, IMapper mapper, ISortHelper<QuestItem> sortHelper, IBlobService blobService)
     {
         _taskRepository = taskRepository;
         _mapper = mapper;
         _sortHelper = sortHelper;
+        _blobService = blobService;
     }
 
     public PageList<QuestItemResponseModel> GetAll(TaskParams @params, Language language)
@@ -93,11 +96,20 @@ public class QuestItemService : BaseService, IQuestItemService
         // quest item type 3 is ReverseQuestion
         if (request.QuestItemTypeId == 3) request.Content = ReverseQuestion(request.Content!);
 
+
+
         var entity = _mapper.Map<QuestItem>(request);
 
+        // quest item type compare image
+        if (request.QuestItemTypeId == 2)
+        {
+            var imageUrl = await _blobService.UploadQuestItemImgAsync(request.Image, entity.Id, "quest-item");
+            entity.AnswerImageUrl = imageUrl;
+        }
 
-        entity.Content = JsonHelper.JsonFormat(request.Content);
-        entity.Description = JsonHelper.JsonFormat(request.Description);
+
+        /*entity.Content = JsonHelper.JsonFormat(request.Content);
+        entity.Description = JsonHelper.JsonFormat(request.Description);*/
 
         entity = await _taskRepository.Add(entity);
         return _mapper.Map<QuestItemResponseModel>(entity);

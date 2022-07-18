@@ -3,6 +3,7 @@ using CityDiscoverTourist.Business.Data.ResponseModel;
 using CityDiscoverTourist.Business.Enums;
 using CityDiscoverTourist.Business.Helper;
 using CityDiscoverTourist.Business.Helper.Params;
+using Microsoft.AspNetCore.Http;
 
 namespace CityDiscoverTourist.Business.IServices;
 

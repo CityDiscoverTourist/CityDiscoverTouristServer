@@ -1,5 +1,6 @@
 using System.Drawing;
 using CityDiscoverTourist.Business.IServices;
+using CityDiscoverTourist.Business.IServices.Services;
 using Emgu.CV;
 using Emgu.CV.CvEnum;
 using Emgu.CV.Features2D;
@@ -19,13 +20,14 @@ public class WeatherForecastController : ControllerBase
     };
 
     private readonly IBlobService   _blobService;
-
+    private readonly IImageComparison _imageComparison;
     private readonly ILogger<WeatherForecastController> _logger;
 
-    public WeatherForecastController(ILogger<WeatherForecastController> logger, IBlobService blobService)
+    public WeatherForecastController(ILogger<WeatherForecastController> logger, IBlobService blobService, IImageComparison imageComparison)
     {
         _logger = logger;
         _blobService = blobService;
+        _imageComparison = imageComparison;
     }
 
     [HttpGet(Name = "test")]
@@ -59,7 +61,7 @@ public class WeatherForecastController : ControllerBase
             exampleImage5,
             exampleImage6
         };
-
+        var s = await _imageComparison.CompareImages(0, null);
         //object in scene
         //Image<Gray, Byte> sceneImage1 = new Image<Gray, Byte>("C:\\\\Users\\\\khang\\\\source\\\\repos\\\\EmguDemo\\\\EmguDemo\\\\bin\\\\Debug\\\\net6.0\\\\scene.jpg");
         var sceneImage2 =
@@ -123,19 +125,21 @@ public class WeatherForecastController : ControllerBase
     [HttpGet("demo")]
     public async Task<long> Demo()
     {
+        var s = await _blobService.GetBaseUrl("quest-item", 1);
+        var baseUrl = s.ToString();
         //load image from url
         var client = new HttpClient();
-        var image1 = client.GetAsync("https://citytouriststorage.blob.core.windows.net/item/example/a.jpg").Result
+        var image1 = client.GetAsync("https://citytouriststorage.blob.core.windows.net/quest-item/0/quest-item0").Result
             .Content.ReadAsByteArrayAsync().Result;
-        var image2 = client.GetAsync("https://citytouriststorage.blob.core.windows.net/item/example/b.jpg").Result
+        var image2 = client.GetAsync("https://citytouriststorage.blob.core.windows.net/quest-item/0/quest-item1").Result
             .Content.ReadAsByteArrayAsync().Result;
-        var image3 = client.GetAsync("https://citytouriststorage.blob.core.windows.net/item/example/c.jpg").Result
+        var image3 = client.GetAsync("https://citytouriststorage.blob.core.windows.net/quest-item/0/quest-item2").Result
             .Content.ReadAsByteArrayAsync().Result;
-        var image4 = client.GetAsync("https://citytouriststorage.blob.core.windows.net/item/example/d.jpg").Result
+        var image4 = client.GetAsync("https://citytouriststorage.blob.core.windows.net/quest-item/0/quest-item3").Result
             .Content.ReadAsByteArrayAsync().Result;
-        var image5 = client.GetAsync("https://citytouriststorage.blob.core.windows.net/item/example/e.jpg").Result
+        var image5 = client.GetAsync("https://citytouriststorage.blob.core.windows.net/quest-item/0/quest-item4").Result
             .Content.ReadAsByteArrayAsync().Result;
-        var image6 = client.GetAsync("https://citytouriststorage.blob.core.windows.net/item/example/f.jpg").Result
+        var image6 = client.GetAsync("https://citytouriststorage.blob.core.windows.net/quest-item/0/quest-item0").Result
             .Content.ReadAsByteArrayAsync().Result;
 
 
@@ -221,12 +225,18 @@ public class WeatherForecastController : ControllerBase
         return mostMatches;
     }
 
+    [HttpGet("demo2")]
+    public Task<long> Demo2()
+    {
+        return _imageComparison.CompareImages(0, null);
+    }
+
     private static Image<Gray, byte> ConvertImage(byte[] image1)
     {
         var mat = new Mat();
         CvInvoke.Imdecode(image1, ImreadModes.Grayscale, mat);
-        var exampleImage = new Image<Gray, byte>(400, 600);
-        exampleImage.Bytes = image1;
+        var exampleImage = mat.ToImage<Gray, byte>();
+        //exampleImage.Bytes = image1;
         return exampleImage;
     }
 

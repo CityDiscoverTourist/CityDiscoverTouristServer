@@ -26,6 +26,7 @@
         <PackageReference Include="Emgu.CV" Version="4.5.5.4823" />
         <PackageReference Include="Emgu.CV.Bitmap" Version="4.5.5.4823" />
         <PackageReference Include="Emgu.CV.runtime.ubuntu.20.04-x64" Version="4.5.5.4823" />
+        <PackageReference Include="Emgu.CV.runtime.windows" Version="4.5.5.4823" />
         <PackageReference Include="FirebaseAdmin" Version="2.3.0" />
         <PackageReference Include="Hangfire" Version="1.7.30" />
         <PackageReference Include="Hangfire.Core" Version="1.7.30" />

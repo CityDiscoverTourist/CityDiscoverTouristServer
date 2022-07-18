@@ -1,9 +1,12 @@
+using Microsoft.AspNetCore.Http;
+
 namespace CityDiscoverTourist.Business.Data.RequestModel;
 
 public class QuestItemRequestModel
 {
     public int Id { get; set; }
     public int QuestItemTypeId { get; set; }
+    public IFormFile[] Image { get; set; }
 
     public int LocationId { get; set; }
 
