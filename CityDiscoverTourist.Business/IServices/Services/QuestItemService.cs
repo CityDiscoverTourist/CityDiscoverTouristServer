@@ -96,22 +96,21 @@ public class QuestItemService : BaseService, IQuestItemService
         // quest item type 3 is ReverseQuestion
         if (request.QuestItemTypeId == 3) request.Content = ReverseQuestion(request.Content!);
 
-
-
         var entity = _mapper.Map<QuestItem>(request);
+
+        entity.Content = JsonHelper.JsonFormat(request.Content);
+        entity.Description = JsonHelper.JsonFormat(request.Description);
+
+        entity = await _taskRepository.Add(entity);
 
         // quest item type compare image
         if (request.QuestItemTypeId == 2)
         {
             var imageUrl = await _blobService.UploadQuestItemImgAsync(request.Image, entity.Id, "quest-item");
             entity.AnswerImageUrl = imageUrl;
+            await _taskRepository.UpdateFields(entity, x => x.AnswerImageUrl!);
         }
 
-
-        /*entity.Content = JsonHelper.JsonFormat(request.Content);
-        entity.Description = JsonHelper.JsonFormat(request.Description);*/
-
-        entity = await _taskRepository.Add(entity);
         return _mapper.Map<QuestItemResponseModel>(entity);
     }
 
