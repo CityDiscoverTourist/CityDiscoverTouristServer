@@ -54,7 +54,8 @@ public class PaymentService : BaseService, IPaymentService
 
     public PageList<PaymentResponseModel> GetAll(PaymentParams @params, Language language)
     {
-        var listAll = _paymentRepository.GetAll().Include(x => x.CustomerQuests).AsNoTracking();
+        var listAll = _paymentRepository.GetAll().Include(x => x.CustomerQuests).OrderByDescending(x => x.CreatedDate)
+            .AsNoTracking();
 
         Search(ref listAll, @params);
 
@@ -67,6 +68,9 @@ public class PaymentService : BaseService, IPaymentService
         //return quest name and description in payment
         foreach (var item in paymentResponseModels)
         {
+            var listCustomer = _userManager.FindByIdAsync(item.CustomerId).Result;
+            item.CustomerEmail = listCustomer.UserName;
+
             var listQuest = _questRepository.GetByCondition(x => x.Id == item.QuestId);
 
             foreach (var quest in listQuest)
