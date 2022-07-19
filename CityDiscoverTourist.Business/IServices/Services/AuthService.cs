@@ -18,6 +18,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
+using PasswordGenerator;
 
 namespace CityDiscoverTourist.Business.IServices.Services;
 
@@ -206,14 +207,8 @@ public class AuthService : IAuthService
 
     private static string GeneratePassword()
     {
-        // Generate a password of length 8 with at least one lowercase letter, one uppercase letter and one digit and one special character
-        var password = "";
-        var random = new Random();
-        const string chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()";
-        for (var i = 0; i < 8; i++)
-        {
-            password += chars[random.Next(chars.Length)];
-        }
+        var pwd = new Password(8).IncludeLowercase().IncludeUppercase().IncludeSpecial().IncludeNumeric();
+        var password = pwd.Next();
         return password;
     }
 
