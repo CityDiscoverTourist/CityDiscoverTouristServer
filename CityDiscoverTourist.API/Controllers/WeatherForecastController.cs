@@ -225,10 +225,10 @@ public class WeatherForecastController : ControllerBase
         return mostMatches;
     }
 
-    [HttpGet("demo2")]
-    public Task<long> Demo2()
+    [HttpPost("demo2")]
+    public Task<long> Demo2([FromForm]List<IFormFile> file)
     {
-        return _imageComparison.CompareImages(96, null);
+        return _imageComparison.CompareImages(96, file);
     }
 
     private static Image<Gray, byte> ConvertImage(byte[] image1)
@@ -236,7 +236,6 @@ public class WeatherForecastController : ControllerBase
         var mat = new Mat();
         CvInvoke.Imdecode(image1, ImreadModes.Grayscale, mat);
         var exampleImage = mat.ToImage<Gray, byte>();
-        //exampleImage.Bytes = image1;
         return exampleImage;
     }
 

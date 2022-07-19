@@ -3,6 +3,7 @@ using Emgu.CV.CvEnum;
 using Emgu.CV.Features2D;
 using Emgu.CV.Structure;
 using Emgu.CV.Util;
+using Microsoft.AspNetCore.Http;
 
 namespace CityDiscoverTourist.Business.IServices.Services;
 
@@ -15,9 +16,9 @@ public class ImageComparison : IImageComparison
         _blobService = blobService;
     }
 
-    public async Task<long> CompareImages(int questItemId, List<byte[]> sceneByte)
+    public async Task<long> CompareImages(int questItemId, List<IFormFile> sceneImage)
     {
-        var baseUrl = await _blobService.GetBaseUrl("quest-item", 0);
+        var baseUrl = await _blobService.GetBaseUrl("quest-item", questItemId);
         var listBytes = new List<byte[]>();
 
         var client = new HttpClient();
@@ -31,37 +32,11 @@ public class ImageComparison : IImageComparison
 
         var listImageBase = ConvertImage(listBytes);
 
-        // get the image from device to compare with the base image
-        //var listImageScene = ConvertImage(sceneByte);
+        //get the image from device to compare with the base image
+        var listByteScene = ConvertImageFromUser(sceneImage);
+        var listImageScene = ConvertImage(listByteScene);
 
-
-        var exampleImage1 =
-            new Image<Gray, byte>(
-                "D:\\C#\\CityDiscoverTourist\\CityDiscoverTourist.API\\bin\\Debug\\net6.0\\exampleImg\\a.jpg");
-        var exampleImage2 =
-            new Image<Gray, byte>(
-                "D:\\C#\\CityDiscoverTourist\\CityDiscoverTourist.API\\bin\\Debug\\net6.0\\exampleImg\\b.jpg");
-        var exampleImage3 =
-            new Image<Gray, byte>(
-                "D:\\C#\\CityDiscoverTourist\\CityDiscoverTourist.API\\bin\\Debug\\net6.0\\exampleImg\\c.jpg");
-        var exampleImage4 =
-            new Image<Gray, byte>(
-                "D:\\C#\\CityDiscoverTourist\\CityDiscoverTourist.API\\bin\\Debug\\net6.0\\exampleImg\\d.jpg");
-        var exampleImage5 =
-            new Image<Gray, byte>(
-                "D:\\C#\\CityDiscoverTourist\\CityDiscoverTourist.API\\bin\\Debug\\net6.0\\exampleImg\\e.jpg");
-        var exampleImage6 =
-            new Image<Gray, byte>(
-                "D:\\C#\\CityDiscoverTourist\\CityDiscoverTourist.API\\bin\\Debug\\net6.0\\exampleImg\\f.jpg");
-
-        var sceneImageArr = new List<Image<Gray, byte>>
-        {
-            exampleImage6,
-            exampleImage5,
-            exampleImage4
-        };
-
-        return CompareImages(listImageBase, sceneImageArr);
+        return CompareImages(listImageBase, listImageScene);
     }
 
     private static long CompareImages(List<Image<Gray, byte>> listImageBase, List<Image<Gray, byte>> listImageScene)
@@ -116,6 +91,20 @@ public class ImageComparison : IImageComparison
             CvInvoke.Imdecode(item, ImreadModes.Grayscale, mat);
             var exampleImage = mat.ToImage<Gray, byte>();
             listImage.Add(exampleImage);
+        }
+        return listImage;
+    }
+
+    // convert image from file to byte array
+    private static List<byte[]> ConvertImageFromUser(List<IFormFile> file)
+    {
+        var listImage = new List<byte[]>();
+        foreach (var item in file)
+        {
+            var image = item.OpenReadStream();
+            var bytes = new byte[image.Length];
+            image.Read(bytes, 0, bytes.Length);
+            listImage.Add(bytes);
         }
         return listImage;
     }
