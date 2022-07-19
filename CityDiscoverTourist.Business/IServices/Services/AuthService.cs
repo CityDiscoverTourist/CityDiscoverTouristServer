@@ -189,24 +189,32 @@ public class AuthService : IAuthService
     public async Task ForgotPassword(string email)
     {
         var user = await _userManager.FindByEmailAsync(email);
+        await _userManager.RemovePasswordAsync(user);
+
         if (user is null) throw new AppException("User not found");
 
         var newPassword = GeneratePassword();
+        var passwordToken = await _userManager.GeneratePasswordResetTokenAsync(user);
 
         var message = "<h1>Dear " + user.UserName + "</h1> <br/>" + "Your new password is: " + newPassword + "<br/>" +
                       "Please change your password after login" + "<br/>" + "Thank you";
 
-        await _userManager.AddPasswordAsync(user, newPassword);
+        await _userManager.ResetPasswordAsync(user, passwordToken, newPassword);
 
         await _emailSender.SendMailConfirmAsync(email, "Forgot password", message);
     }
 
     private static string GeneratePassword()
     {
-        var randomNumber = new byte[32];
-        using var rng = RandomNumberGenerator.Create();
-        rng.GetBytes(randomNumber);
-        return Convert.ToBase64String(randomNumber);
+        // Generate a password of length 8 with at least one lowercase letter, one uppercase letter and one digit and one special character
+        var password = "";
+        var random = new Random();
+        const string chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()";
+        for (var i = 0; i < 8; i++)
+        {
+            password += chars[random.Next(chars.Length)];
+        }
+        return password;
     }
 
     private async Task<bool> CreateUserIfNotExits(ApplicationUser user, LoginResponseModel userViewModel)
