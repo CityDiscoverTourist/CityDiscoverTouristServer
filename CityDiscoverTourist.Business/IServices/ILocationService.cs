@@ -16,6 +16,5 @@ public interface ILocationService
     public Task<LocationResponseModel> DisableAsync(int id);
     public Task<LocationResponseModel> EnableAsync(int id);
     public string[] GetLatLongAndPlaceIdFromAddress(string address);
-
     public Task<bool> CheckExisted(string name);
 }

@@ -36,7 +36,7 @@ public class CustomerService : BaseService, ICustomerService
         return _mapper.Map<CustomerResponseModel>(entity);
     }
 
-    public async Task<CustomerResponseModel> UpdateLockUser(string id, bool isLock)
+    public async Task<CustomerResponseModel> UpdateUser(string id, bool isLock)
     {
         var entity = await _userManager.FindByIdAsync(id);
         CheckDataNotNull("Customer", entity);
