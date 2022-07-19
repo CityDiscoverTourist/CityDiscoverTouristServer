@@ -35,7 +35,7 @@ public class ImageComparison : IImageComparison
         //var listImageScene = ConvertImage(sceneByte);
 
 
-        /*var exampleImage1 =
+        var exampleImage1 =
             new Image<Gray, byte>(
                 "D:\\C#\\CityDiscoverTourist\\CityDiscoverTourist.API\\bin\\Debug\\net6.0\\exampleImg\\a.jpg");
         var exampleImage2 =
@@ -52,16 +52,16 @@ public class ImageComparison : IImageComparison
                 "D:\\C#\\CityDiscoverTourist\\CityDiscoverTourist.API\\bin\\Debug\\net6.0\\exampleImg\\e.jpg");
         var exampleImage6 =
             new Image<Gray, byte>(
-                "D:\\C#\\CityDiscoverTourist\\CityDiscoverTourist.API\\bin\\Debug\\net6.0\\exampleImg\\f.jpg");*/
+                "D:\\C#\\CityDiscoverTourist\\CityDiscoverTourist.API\\bin\\Debug\\net6.0\\exampleImg\\f.jpg");
 
-        /*var sceneImageArr = new List<Image<Gray, byte>>
+        var sceneImageArr = new List<Image<Gray, byte>>
         {
             exampleImage6,
             exampleImage5,
             exampleImage4
-        };*/
+        };
 
-        return CompareImages(listImageBase, listImageBase);
+        return CompareImages(listImageBase, sceneImageArr);
     }
 
     private static long CompareImages(List<Image<Gray, byte>> listImageBase, List<Image<Gray, byte>> listImageScene)
@@ -71,14 +71,14 @@ public class ImageComparison : IImageComparison
 
         long mostMatches = 0;
 
-        foreach (IInputArray exampleImg in listImageBase)
+        foreach (var exampleImg in listImageBase)
         {
             var vectorOfKeypoints = new VectorOfKeyPoint();
             var originalDescriptor = new Mat();
 
             sift.DetectAndCompute(exampleImg, null, vectorOfKeypoints, originalDescriptor, false);
 
-            foreach (IInputArray image in listImageScene)
+            foreach (var image in listImageScene)
             {
                 var vectorOfKeypointsOfScene = new VectorOfKeyPoint();
                 var descriptorsOfScene = new Mat();

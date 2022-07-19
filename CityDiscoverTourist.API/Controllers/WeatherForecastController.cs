@@ -228,7 +228,7 @@ public class WeatherForecastController : ControllerBase
     [HttpGet("demo2")]
     public Task<long> Demo2()
     {
-        return _imageComparison.CompareImages(0, null);
+        return _imageComparison.CompareImages(96, null);
     }
 
     private static Image<Gray, byte> ConvertImage(byte[] image1)

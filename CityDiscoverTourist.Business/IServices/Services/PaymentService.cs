@@ -201,6 +201,51 @@ public class PaymentService : BaseService, IPaymentService
         }
     }
 
+    public async Task<string[]> PaymentMobile(PaymentRequestModel request, Guid discountCode)
+    {
+        //need to check customer id or not?
+        if (discountCode != Guid.Empty)
+        {
+            var reward = _rewardRepository.GetByCondition(x => x.Code == discountCode).FirstOrDefault();
+            if (reward == null || reward.CustomerId != request.CustomerId) throw new AppException("Discount code is not valid");
+
+            if (reward.Status == CommonStatus.Inactive.ToString())
+                throw new AppException("Discount code is used");
+
+            var percentage = reward.PercentDiscount;
+
+            var entity = _mapper.Map<Payment>(request);
+            entity.RewardId = reward.Id;
+            entity.Status = PaymentStatus.Pending.ToString();
+            entity.TotalAmount = request.TotalAmount * (100 - percentage) / 100;
+            entity.CreatedDate = CurrentDateTime();
+            entity.PaymentMethod = "MomoWallet";
+
+            var paymentUrl = MomoPaymentMobile(request, entity.TotalAmount);
+
+            await _paymentRepository.Add(entity);
+
+            // invalid reward when payment is success
+            reward.Status = CommonStatus.Inactive.ToString();
+            await _rewardRepository.UpdateFields(reward, x => x.Status!);
+
+            return new[] { paymentUrl, entity.Id.ToString() };
+        }
+        else
+        {
+            var entity = _mapper.Map<Payment>(request);
+            entity.Status = PaymentStatus.Pending.ToString();
+            entity.RewardId = null;
+            entity.CreatedDate = CurrentDateTime();
+
+            var paymentUrl = MomoPaymentMobile(request, entity.TotalAmount);
+
+            await _paymentRepository.Add(entity);
+
+            return new[] { paymentUrl, entity.Id.ToString() };
+        }
+    }
+
     public async Task<PaymentResponseModel> InvalidOrder()
     {
         var entity = _paymentRepository.GetAll().ToList();
@@ -279,12 +324,64 @@ public class PaymentService : BaseService, IPaymentService
 
     private string MomoPayment(PaymentRequestModel request, float totalAmount)
     {
+
         var endpoint = _momoSettings.EndPoint;
         var partnerCode = _momoSettings.PartnerCode;
         var accessKey = _momoSettings.AccessKey;
         var secretKey = _momoSettings.SecretKey;
         var orderInfo = DateTime.Now.ToString("yyyyMMddHHmmss") + "-" + request.QuestId;
         var redirectUrl = "https://www.citydiscovery.tech/thank/";
+        var ipnUrl = "https://citytourist.azurewebsites.net/api/v1/payments/callback";
+        var requestType = "captureWallet";
+
+        // if mobile then change redirectUrl to open mobile app
+        if (request.IsMobile) redirectUrl = "https://citydiscovertourist.page.link/homepage";
+
+        var amount = totalAmount.ToString(CultureInfo.InvariantCulture);
+        var orderId = request.Id.ToString();
+        var requestId = Guid.NewGuid();
+        var extraData = "";
+
+        var rawHash = "accessKey=" + accessKey + "&amount=" + amount + "&extraData=" + extraData + "&ipnUrl=" + ipnUrl +
+                      "&orderId=" + orderId + "&orderInfo=" + orderInfo + "&partnerCode=" + partnerCode +
+                      "&redirectUrl=" + redirectUrl + "&requestId=" + requestId + "&requestType=" + requestType;
+
+        var crypto = new MoMoSecurity();
+        var signature = crypto.SignSha256(rawHash, secretKey!);
+
+        var message = new JObject
+        {
+            { "partnerCode", partnerCode },
+            { "partnerName", "City Tour" },
+            { "storeId", "MomoTestStore" },
+            { "requestId", requestId },
+            { "amount", amount },
+            { "orderId", orderId },
+            { "orderInfo", orderInfo },
+            { "redirectUrl", redirectUrl },
+            { "ipnUrl", ipnUrl },
+            { "lang", "en" },
+            { "autoCapture", false},
+            { "extraData", extraData },
+            { "requestType", requestType },
+            { "signature", signature }
+        };
+
+        var response = PaymentRequest.sendPaymentRequest(endpoint!, message.ToString());
+        var jMessage = JObject.Parse(response);
+        var paymentUrl = jMessage.GetValue("payUrl")!.ToString();
+        return paymentUrl;
+    }
+
+    private string MomoPaymentMobile(PaymentRequestModel request, float totalAmount)
+    {
+
+        var endpoint = _momoSettings.EndPoint;
+        var partnerCode = _momoSettings.PartnerCode;
+        var accessKey = _momoSettings.AccessKey;
+        var secretKey = _momoSettings.SecretKey;
+        var orderInfo = DateTime.Now.ToString("yyyyMMddHHmmss") + "-" + request.QuestId;
+        var redirectUrl = "a";
         var ipnUrl = "https://citytourist.azurewebsites.net/api/v1/payments/callback";
         var requestType = "captureWallet";
 

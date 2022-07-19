@@ -99,6 +99,19 @@ public class PaymentController : ControllerBase
     }
 
     /// <summary>
+    ///
+    /// </summary>
+    /// <param name="data"></param>
+    /// <param name="discountCode"></param>
+    /// <returns></returns>
+    [HttpPost("payment-mobile")]
+    public async Task<ApiResponse<string[]>> PaymentMobile(PaymentRequestModel data, Guid discountCode)
+    {
+        var entity = await _paymentService.PaymentMobile(data, discountCode);
+        return ApiResponse<Payment>.Created(entity);
+    }
+
+    /// <summary>
     /// </summary>
     /// <returns></returns>
     [HttpPut]

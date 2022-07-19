@@ -15,6 +15,7 @@
         <PackageReference Include="Azure.Storage.Blobs" Version="12.12.0" />
         <PackageReference Include="CorePush" Version="3.0.12" />
         <PackageReference Include="Emgu.CV" Version="4.5.5.4823" />
+        <PackageReference Include="EmguCV" Version="3.1.0.1" />
         <PackageReference Include="FirebaseAdmin" Version="2.3.0" />
         <PackageReference Include="Hangfire.RecurringJobExtensions" Version="1.1.6" />
         <PackageReference Include="MailKit" Version="3.2.0" />

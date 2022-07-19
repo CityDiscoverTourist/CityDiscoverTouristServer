@@ -13,6 +13,7 @@ public interface IPaymentService
     public Task<PaymentResponseModel> UpdateStatusWhenSuccess(MomoRequestModel request);
     public Task<List<PaymentResponseModel>> GetByCustomerId(string customerId);
     public Task<string[]> CreateAsync(PaymentRequestModel request, Guid discountCode = default);
+    public Task<string[]> PaymentMobile(PaymentRequestModel request, Guid discountCode = default);
     public Task<PaymentResponseModel> InvalidOrder();
     public Task<PaymentResponseModel> DeleteAsync(Guid id);
     public int GetQuantityOfPayment(Guid id);
