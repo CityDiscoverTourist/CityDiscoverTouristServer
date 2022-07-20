@@ -70,7 +70,13 @@ public class QuestItemService : BaseService, IQuestItemService
         entity.Content = content;
         entity.Description = description;
 
-        return _mapper.Map<QuestItemResponseModel>(entity);
+        var images = await _blobService.GetBaseUrl("quest-item", entity.Id);
+
+        var mappedData = _mapper.Map<QuestItemResponseModel>(entity);
+
+        mappedData.ListImages = images;
+
+        return mappedData;
     }
 
     public async Task<QuestItemResponseModel> CreateAsync(QuestItemRequestModel request)
