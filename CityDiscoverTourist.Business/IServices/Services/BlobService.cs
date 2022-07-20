@@ -1,5 +1,6 @@
 using Azure.Storage.Blobs;
 using Microsoft.AspNetCore.Http;
+using System;
 
 namespace CityDiscoverTourist.Business.IServices.Services;
 
@@ -49,13 +50,13 @@ public class BlobService : IBlobService
 
         for (var i = 0; i < file.Length; i++)
         {
-            var renameFile = file[i]!.FileName.Replace(file[i]!.FileName, containerName);
-
             var containerClient = _blobServiceClient.GetBlobContainerClient(containerName);
-            var blobClient = containerClient.GetBlobClient(questItemId + "/" + renameFile + i);
+            var blobClient = containerClient.GetBlobClient(questItemId + "/" + file[i]!.FileName);
+
             await blobClient.UploadAsync(file[i]!.OpenReadStream(), true);
 
-            imageUrl = blobClient.Uri.AbsoluteUri.Split(renameFile + i)[0];
+            // get the url not get the file name
+            imageUrl = blobClient.Uri.ToString().Replace(file[i]!.FileName, "");
         }
 
         return imageUrl!;
@@ -78,5 +79,14 @@ public class BlobService : IBlobService
             list.Add(baseUrl + blob.Name);
         }
         return list;
+    }
+
+    //delete file from blob storage
+    public async Task<bool> DeleteBlogAsync(string name, string containerName, int questItemId)
+    {
+        var containerClient = _blobServiceClient.GetBlobContainerClient(containerName);
+        var blobClient = containerClient.GetBlobClient(questItemId + "/" + name);
+        var a = await blobClient.DeleteIfExistsAsync();
+        return true;
     }
 }

@@ -123,7 +123,7 @@ public class QuestItemController : ControllerBase
     /// <param name="data"></param>
     /// <returns></returns>
     [HttpPut]
-    public async Task<ApiResponse<QuestItemResponseModel>> Put(QuestItemRequestModel data)
+    public async Task<ApiResponse<QuestItemResponseModel>> Put([FromForm]QuestItemRequestModel data)
     {
         var entity = await _taskService.UpdateAsync(data);
         return ApiResponse<QuestItem>.Created(entity);

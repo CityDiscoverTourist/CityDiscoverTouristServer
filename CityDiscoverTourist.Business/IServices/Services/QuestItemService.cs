@@ -7,6 +7,7 @@ using CityDiscoverTourist.Business.Helper;
 using CityDiscoverTourist.Business.Helper.Params;
 using CityDiscoverTourist.Data.IRepositories;
 using CityDiscoverTourist.Data.Models;
+using Hangfire.Dashboard.Resources;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json.Linq;
@@ -19,6 +20,7 @@ public class QuestItemService : BaseService, IQuestItemService
     private readonly ISortHelper<QuestItem> _sortHelper;
     private readonly IQuestItemRepository _taskRepository;
     private readonly IBlobService _blobService;
+    private const string ContainerName = "quest-item";
 
     public QuestItemService(IQuestItemRepository taskRepository, IMapper mapper, ISortHelper<QuestItem> sortHelper, IBlobService blobService)
     {
@@ -70,7 +72,7 @@ public class QuestItemService : BaseService, IQuestItemService
         entity.Content = content;
         entity.Description = description;
 
-        var images = await _blobService.GetBaseUrl("quest-item", entity.Id);
+        var images = await _blobService.GetBaseUrl(ContainerName, entity.Id);
 
         var mappedData = _mapper.Map<QuestItemResponseModel>(entity);
 
@@ -110,12 +112,11 @@ public class QuestItemService : BaseService, IQuestItemService
         entity = await _taskRepository.Add(entity);
 
         // quest item type compare image
-        if (request.QuestItemTypeId == 2)
-        {
-            var imageUrl = await _blobService.UploadQuestItemImgAsync(request.Image, entity.Id, "quest-item");
-            entity.AnswerImageUrl = imageUrl;
-            await _taskRepository.UpdateFields(entity, x => x.AnswerImageUrl!);
-        }
+        if (request.QuestItemTypeId != 2) return _mapper.Map<QuestItemResponseModel>(entity);
+
+        var imageUrl = await _blobService.UploadQuestItemImgAsync(request.Image, entity.Id, ContainerName);
+        entity.AnswerImageUrl = imageUrl;
+        await _taskRepository.UpdateFields(entity, x => x.AnswerImageUrl!);
 
         return _mapper.Map<QuestItemResponseModel>(entity);
     }
@@ -129,6 +130,22 @@ public class QuestItemService : BaseService, IQuestItemService
 
         entity.Content = JsonHelper.JsonFormat(request.Content);
         entity.Description = JsonHelper.JsonFormat(request.Description);
+
+        if(request.QuestItemTypeId == 2)
+        {
+            var baseUrlImages = await _blobService.GetBaseUrl(ContainerName, entity.Id);
+
+            var expectedList = baseUrlImages.Except(request.ListImages!).ToList();
+
+            foreach (var questItemName in expectedList.Select(image => image.Split("/").Last()))
+            {
+                await _blobService.DeleteBlogAsync(questItemName, ContainerName, entity.Id);
+            }
+
+            var imageUrl = await _blobService.UploadQuestItemImgAsync(request.Image, entity.Id, ContainerName);
+            entity.AnswerImageUrl = imageUrl;
+            await _taskRepository.UpdateFields(entity, x => x.AnswerImageUrl!);
+        }
 
         entity = await _taskRepository.Update(entity);
         return _mapper.Map<QuestItemResponseModel>(entity);

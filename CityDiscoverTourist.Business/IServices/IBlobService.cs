@@ -9,4 +9,5 @@ public interface IBlobService
     public Task<string> UploadQuestImgAndReturnImgPathAsync(IFormFile? file, int questId, string containerName);
     public Task<string> UploadQuestItemImgAsync(IFormFile?[]? file, int questItemId, string containerName);
     public Task<List<string>> GetBaseUrl(string containerName, int questItemId);
+    public Task<bool> DeleteBlogAsync(string name, string containerName, int questItemId);
 }
