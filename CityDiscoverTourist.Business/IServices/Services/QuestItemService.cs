@@ -175,18 +175,21 @@ public class QuestItemService : BaseService, IQuestItemService
         return _mapper.Map<QuestItemResponseModel>(entity);
     }
 
-    public IEnumerable<QuestItemResponseModel> GetByQuestId( int id, Language language)
+    public async Task<List<QuestItemResponseModel>> GetByQuestId(   int id, Language language)
     {
-        var entity = _taskRepository.GetByCondition(x => x.QuestId == id).ToList();
+        var entity = _taskRepository.GetByCondition(x => x.QuestId == id).Include(x => x.Suggestions).ToList();
         CheckDataNotNull("QuestItem", entity);
+        var mappedData = _mapper.Map<List<QuestItemResponseModel>>(entity);
 
-        foreach (var item in entity)
+        foreach (var item in mappedData)
         {
+            var baseUrlImages = await _blobService.GetBaseUrl(ContainerName, item.Id);
+
+            item.ListImages = baseUrlImages;
             item.Content = ConvertLanguage(language, item.Content!);
             item.Description = ConvertLanguage(language, item.Description!);
         }
 
-        var mappedData = _mapper.Map<IEnumerable<QuestItemResponseModel>>(entity);
 
         return mappedData;
     }

@@ -16,6 +16,6 @@ public interface IQuestItemService
     public Task<QuestItemResponseModel> DeleteAsync(int id);
     public Task<QuestItemResponseModel> DisableAsync(int id);
     public Task<QuestItemResponseModel> EnableAsync(int id);
-    public IEnumerable<QuestItemResponseModel> GetByQuestId( int id, Language language);
+    public Task<List<QuestItemResponseModel>> GetByQuestId(   int id, Language language);
     public Task<QuestItemResponseModel> Get(int id);
 }

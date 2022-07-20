@@ -78,7 +78,6 @@ public class QuestItemController : ControllerBase
     ///     get quest item by id
     /// </summary>
     /// <param name="id"></param>
-    /// <param name="language"></param>
     /// <returns></returns>
     [HttpGet("{id:int}/not-language")]
     //[Cached(600)]
@@ -98,12 +97,12 @@ public class QuestItemController : ControllerBase
     /// <returns></returns>
     [HttpGet("get-by-quest-id/{questId:int}")]
     //[Cached(600)]
-    public Task<ApiResponse<IEnumerable<QuestItemResponseModel>>> GetByQuestId(int questId,
+    public async Task<ApiResponse<List<QuestItemResponseModel>>> GetByQuestId(int questId,
         Language language = Language.vi)
     {
-        var entity = _taskService.GetByQuestId(questId, language);
+        var entity = await _taskService.GetByQuestId(questId, language);
 
-        return Task.FromResult(ApiResponse<QuestItem>.Ok(entity));
+        return ApiResponse<QuestItemResponseModel>.Ok(entity);
     }
 
     /// <summary>

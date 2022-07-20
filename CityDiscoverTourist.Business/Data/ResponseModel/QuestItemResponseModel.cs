@@ -19,5 +19,6 @@ public class QuestItemResponseModel
     public string AnswerImageUrl { get; set; }
     public string? Status { get; set; }
     public List<string>? ListImages { get; set; }
+    public List<SuggestionResponseModel>? Suggestions { get; set; }
     public int ItemId { get; set; }
 }
