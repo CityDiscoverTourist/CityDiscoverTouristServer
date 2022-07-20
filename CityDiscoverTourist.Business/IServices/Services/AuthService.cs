@@ -102,6 +102,40 @@ public class AuthService : IAuthService
         return userViewModel;
     }
 
+    public async Task<LoginResponseModel> LoginAdmin(LoginRequestModel model)
+    {
+        var user = await _userManager.FindByEmailAsync(model.Email);
+        if (user is null) throw new AppException("Admin not found");
+
+        if (!await _userManager.CheckPasswordAsync(user, model.Password))
+            throw new UnauthorizedAccessException("Invalid credentials");
+
+        // check if user is admin
+        if (!await _userManager.IsInRoleAsync(user, Role.Admin.ToString()))
+            throw new UnauthorizedAccessException("Account not allowed to login");
+
+        var authClaims = new List<Claim>
+        {
+            new (ClaimTypes.Name, user.Email ?? string.Empty),
+            new (JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+            new (ClaimTypes.Email, user.Email ?? string.Empty),
+            new (ClaimTypes.Expiration, DateTime.Now.AddHours(3).ToString(CultureInfo.CurrentCulture))
+        };
+
+        var accessToken = GetJwtToken(authClaims);
+
+        var userViewModel = new LoginResponseModel
+        {
+            JwtToken = new JwtSecurityTokenHandler().WriteToken(accessToken),
+            RefreshToken = GenerateRefreshToken(),
+            RefreshTokenExpiryTime = DateTime.Now.AddSeconds(7),
+            Email = user.Email,
+            AccountId = user.Id,
+            FullName = user.UserName
+        };
+        return userViewModel;
+    }
+
     // register new user
     public async Task<bool> Register(LoginRequestModel model)
     {

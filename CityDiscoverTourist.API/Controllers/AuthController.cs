@@ -42,9 +42,20 @@ public class AuthController : ControllerBase
     /// <param name="model"></param>
     /// <returns></returns>
     [HttpPost("login")]
-    public async Task<ActionResult<LoginResponseModel>> LoginAdmin(LoginRequestModel model)
+    public async Task<ActionResult<LoginResponseModel>> Login(LoginRequestModel model)
     {
         return Ok(await _authService.Login(model));
+    }
+
+    /// <summary>
+    /// login for admin
+    /// </summary>
+    /// <param name="model"></param>
+    /// <returns></returns>
+    [HttpPost("login-admin")]
+    public async Task<ActionResult<LoginResponseModel>> LoginAdmin(LoginRequestModel model)
+    {
+        return Ok(await _authService.LoginAdmin(model));
     }
 
     //register user
