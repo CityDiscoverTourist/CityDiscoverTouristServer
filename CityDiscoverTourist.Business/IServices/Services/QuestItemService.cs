@@ -54,10 +54,13 @@ public class QuestItemService : BaseService, IQuestItemService
         var entity = await _taskRepository.Get(id);
         CheckDataNotNull("QuestItem", entity);
 
-        entity.Content = ConvertLanguage(language, entity.Content!);
-        entity.Description = ConvertLanguage(language, entity.Description!);
+        var mappedData = _mapper.Map<QuestItemResponseModel>(entity);
 
-        return _mapper.Map<QuestItemResponseModel>(entity);
+        mappedData.Content = ConvertLanguage(language, entity.Content!);
+        mappedData.Description = ConvertLanguage(language, entity.Description!);
+        mappedData.ListImages = await _blobService.GetBaseUrl(ContainerName, mappedData.Id);
+
+        return mappedData;
     }
 
     public async Task<QuestItemResponseModel> Get(int id)
