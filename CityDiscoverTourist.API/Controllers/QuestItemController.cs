@@ -39,10 +39,10 @@ public class QuestItemController : ControllerBase
     [HttpGet]
     [AllowAnonymous]
     //[Cached(600)]
-    public ApiResponse<PageList<QuestItemResponseModel>> GetAll([FromQuery] TaskParams param,
+    public async Task<ApiResponse<PageList<QuestItemResponseModel>>> GetAll([FromQuery] TaskParams param,
         Language language = Language.vi)
     {
-        var entity = _taskService.GetAll(param, language);
+        var entity = await _taskService.GetAll(param, language);
 
         var metadata = new
         {

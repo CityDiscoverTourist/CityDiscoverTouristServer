@@ -30,20 +30,22 @@ public class QuestItemService : BaseService, IQuestItemService
         _blobService = blobService;
     }
 
-    public PageList<QuestItemResponseModel> GetAll(TaskParams @params, Language language)
+    public async Task<PageList<QuestItemResponseModel>> GetAll( TaskParams @params, Language language)
     {
-        var listAll = _taskRepository.GetAll();
+        var listAll = _taskRepository.GetAll().Include(x => x.Suggestions)
+            .AsNoTracking();
         Search(ref listAll, @params);
         var sortedQuests = _sortHelper.ApplySort(listAll, @params.OrderBy);
         var listQuestItem = sortedQuests.ToList();
 
-        foreach (var item in listQuestItem)
+        var mappedData = _mapper.Map<IEnumerable<QuestItemResponseModel>>(listQuestItem);
+
+        foreach (var item in mappedData)
         {
+            item.ListImages = await _blobService.GetBaseUrl(ContainerName, item.Id);
             item.Content = ConvertLanguage(language, item.Content!);
             item.Description = ConvertLanguage(language, item.Description!);
         }
-
-        var mappedData = _mapper.Map<IEnumerable<QuestItemResponseModel>>(listQuestItem);
 
         return PageList<QuestItemResponseModel>.ToPageList(mappedData, @params.PageNumber, @params.PageSize);
     }
@@ -175,7 +177,7 @@ public class QuestItemService : BaseService, IQuestItemService
         return _mapper.Map<QuestItemResponseModel>(entity);
     }
 
-    public async Task<List<QuestItemResponseModel>> GetByQuestId(   int id, Language language)
+    public async Task<List<QuestItemResponseModel>> GetByQuestId(int id, Language language)
     {
         var entity = _taskRepository.GetByCondition(x => x.QuestId == id).Include(x => x.Suggestions).ToList();
         CheckDataNotNull("QuestItem", entity);
