@@ -53,7 +53,6 @@ public class QuestTypeController : ControllerBase
             entity.HasNext,
             entity.HasPrevious
         };
-        Response.Headers.Add("X-Pagination", JsonConvert.SerializeObject(metadata));
 
         return ApiResponse<List<QuestTypeResponseModel>>.Success(entity, metadata);
     }

@@ -54,7 +54,6 @@ public class PaymentController : ControllerBase
             entity.HasNext,
             entity.HasPrevious
         };
-        Response.Headers.Add("X-Pagination", JsonConvert.SerializeObject(metadata));
 
         return ApiResponse<List<Payment>>.Success(entity, metadata);
     }

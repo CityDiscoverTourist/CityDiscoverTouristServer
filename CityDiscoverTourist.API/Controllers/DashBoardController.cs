@@ -12,35 +12,59 @@ public class DashboardController : ControllerBase
 {
     private readonly IDashboardService _dashBoardService;
 
+    /// <summary>
+    ///
+    /// </summary>
+    /// <param name="dashBoardService"></param>
     public DashboardController(IDashboardService dashBoardService)
     {
         _dashBoardService = dashBoardService;
     }
 
+    /// <summary>
+    ///
+    /// </summary>
+    /// <returns></returns>
     [HttpGet]
     public Task<string?[]> GetTopCustomer()
     {
         return Task.FromResult(_dashBoardService.GetTopCustomer());
     }
 
+    /// <summary>
+    ///
+    /// </summary>
+    /// <returns></returns>
     [HttpGet("total-revenue")]
     public Task<float> GetRevenue()
     {
         return Task.FromResult(_dashBoardService.GetTotalRevenue());
     }
 
+    /// <summary>
+    ///
+    /// </summary>
+    /// <returns></returns>
     [HttpGet("total-user")]
     public Task<int> GetCountUser()
     {
         return Task.FromResult(_dashBoardService.TotalAccount());
     }
 
+    /// <summary>
+    ///
+    /// </summary>
+    /// <returns></returns>
     [HttpGet("total-quest")]
     public Task<int> GetTotalQuest()
     {
         return Task.FromResult(_dashBoardService.TotalQuest());
     }
 
+    /// <summary>
+    ///
+    /// </summary>
+    /// <returns></returns>
     [HttpGet("top-play")]
     public Task<string[]> GetTopPlayQuest()
     {

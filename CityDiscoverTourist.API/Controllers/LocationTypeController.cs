@@ -49,7 +49,6 @@ public class LocationTypeController : ControllerBase
             entity.HasNext,
             entity.HasPrevious
         };
-        Response.Headers.Add("X-Pagination", JsonConvert.SerializeObject(metadata));
 
         return ApiResponse<List<LocationType>>.Success(entity, metadata);
     }

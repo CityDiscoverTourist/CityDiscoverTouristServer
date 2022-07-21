@@ -46,7 +46,6 @@ public class NoteController : ControllerBase
             entity.HasNext,
             entity.HasPrevious
         };
-        Response.Headers.Add("X-Pagination", JsonConvert.SerializeObject(metadata));
 
         return ApiResponse<List<Note>>.Success(entity, metadata);
     }

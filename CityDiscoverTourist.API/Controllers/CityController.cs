@@ -50,7 +50,6 @@ public class CityController : ControllerBase
             entity.HasNext,
             entity.HasPrevious
         };
-        Response.Headers.Add("X-Pagination", JsonConvert.SerializeObject(metadata));
 
         return ApiResponse<List<City>>.Success(entity, metadata);
     }
