@@ -7,8 +7,6 @@ using CityDiscoverTourist.Business.Helper;
 using CityDiscoverTourist.Business.Helper.Params;
 using CityDiscoverTourist.Data.IRepositories;
 using CityDiscoverTourist.Data.Models;
-using Hangfire.Dashboard.Resources;
-using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json.Linq;
 
@@ -40,14 +38,15 @@ public class QuestItemService : BaseService, IQuestItemService
 
         var mappedData = _mapper.Map<IEnumerable<QuestItemResponseModel>>(listQuestItem);
 
-        foreach (var item in mappedData)
+        var questItemResponseModels = mappedData as QuestItemResponseModel[] ?? mappedData.ToArray();
+        foreach (var item in questItemResponseModels)
         {
             item.ListImages = await _blobService.GetBaseUrl(ContainerName, item.Id);
             item.Content = ConvertLanguage(language, item.Content!);
             item.Description = ConvertLanguage(language, item.Description!);
         }
 
-        return PageList<QuestItemResponseModel>.ToPageList(mappedData, @params.PageNumber, @params.PageSize);
+        return PageList<QuestItemResponseModel>.ToPageList(questItemResponseModels, @params.PageNumber, @params.PageSize);
     }
 
     public async Task<QuestItemResponseModel> Get(int id, Language language)
@@ -66,7 +65,7 @@ public class QuestItemService : BaseService, IQuestItemService
         var entity = await _taskRepository.Get(id);
         CheckDataNotNull("QuestItem", entity);
 
-        var objContent = JObject.Parse(entity!.Content!);
+        var objContent = JObject.Parse(entity.Content!);
         var content = (string) objContent["vi"]! + " | " + (string) objContent["en"]!;
         var objDescription = JObject.Parse(entity.Description!);
         var description = (string) objDescription["vi"]! + " | " + (string) objDescription["en"]!;
@@ -209,6 +208,17 @@ public class QuestItemService : BaseService, IQuestItemService
     {
         var reversed = "";
         for (var i = question.Length - 1; i >= 0; i--) reversed += question[i];
-        return reversed.Replace(")(", "()");
+
+        reversed = reversed.Replace(")(", "()");
+
+
+        var parts = reversed.Split("()");
+        // swap the first and last parts
+        var first = parts[0];
+        var last = parts[parts.Length - 1];
+        reversed = last + " () " + first;
+
+        return reversed;
+
     }
 }
