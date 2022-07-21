@@ -171,12 +171,10 @@ public class PaymentService : BaseService, IPaymentService
             if (reward.Status == CommonStatus.Inactive.ToString())
                 throw new AppException("Discount code is used");
 
-            var percentage = reward.PercentDiscount;
-
             var entity = _mapper.Map<Payment>(request);
             entity.RewardId = reward.Id;
             entity.Status = PaymentStatus.Pending.ToString();
-            entity.TotalAmount = request.TotalAmount * (100 - percentage) / 100;
+            entity.TotalAmount = request.TotalAmount;
             entity.CreatedDate = CurrentDateTime();
             entity.PaymentMethod = "MomoWallet";
 
@@ -205,49 +203,18 @@ public class PaymentService : BaseService, IPaymentService
         }
     }
 
-    public async Task<string[]> PaymentMobile(PaymentRequestModel request, Guid discountCode)
+    public Task<string[]> CheckCoupon(Guid couponCode, string customerId, float total)
     {
-        //need to check customer id or not?
-        if (discountCode != Guid.Empty)
-        {
-            var reward = _rewardRepository.GetByCondition(x => x.Code == discountCode).FirstOrDefault();
-            if (reward == null || reward.CustomerId != request.CustomerId) throw new AppException("Discount code is not valid");
+        var reward = _rewardRepository.GetByCondition(x => x.Code == couponCode).FirstOrDefault();
+        if (reward == null || reward.CustomerId != customerId) throw new AppException("Discount code is not valid");
 
-            if (reward.Status == CommonStatus.Inactive.ToString())
-                throw new AppException("Discount code is used");
+        if (reward.Status == CommonStatus.Inactive.ToString())
+            throw new AppException("Discount code is used");
 
-            var percentage = reward.PercentDiscount;
+        var percentage = reward.PercentDiscount;
+        var discountAmount = total * (100 - percentage) / 100;
 
-            var entity = _mapper.Map<Payment>(request);
-            entity.RewardId = reward.Id;
-            entity.Status = PaymentStatus.Pending.ToString();
-            entity.TotalAmount = request.TotalAmount * (100 - percentage) / 100;
-            entity.CreatedDate = CurrentDateTime();
-            entity.PaymentMethod = "MomoWallet";
-
-            var paymentUrl = MomoPaymentMobile(request, entity.TotalAmount);
-
-            await _paymentRepository.Add(entity);
-
-            // invalid reward when payment is success
-            reward.Status = CommonStatus.Inactive.ToString();
-            await _rewardRepository.UpdateFields(reward, x => x.Status!);
-
-            return new[] { paymentUrl, entity.Id.ToString() };
-        }
-        else
-        {
-            var entity = _mapper.Map<Payment>(request);
-            entity.Status = PaymentStatus.Pending.ToString();
-            entity.RewardId = null;
-            entity.CreatedDate = CurrentDateTime();
-
-            var paymentUrl = MomoPaymentMobile(request, entity.TotalAmount);
-
-            await _paymentRepository.Add(entity);
-
-            return new[] { paymentUrl, entity.Id.ToString() };
-        }
+        return Task.FromResult(new [] { percentage.ToString(), discountAmount.ToString(CultureInfo.InvariantCulture)});
     }
 
     public async Task<PaymentResponseModel> InvalidOrder()

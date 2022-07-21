@@ -100,13 +100,14 @@ public class PaymentController : ControllerBase
     /// <summary>
     ///
     /// </summary>
-    /// <param name="data"></param>
-    /// <param name="discountCode"></param>
+    /// <param name="couponCode"></param>
+    /// <param name="customerId"></param>
+    /// <param name="totalPrice"></param>
     /// <returns></returns>
-    [HttpPost("payment-mobile")]
-    public async Task<ApiResponse<string[]>> PaymentMobile(PaymentRequestModel data, Guid discountCode)
+    [HttpPost("check-coupon")]
+    public async Task<ApiResponse<string[]>> CheckCoupon(Guid couponCode, string customerId, float totalPrice)
     {
-        var entity = await _paymentService.PaymentMobile(data, discountCode);
+        var entity = await _paymentService.CheckCoupon(couponCode, customerId, totalPrice);
         return ApiResponse<Payment>.Created(entity);
     }
 
