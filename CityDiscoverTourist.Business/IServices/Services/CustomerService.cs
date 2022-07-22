@@ -12,11 +12,13 @@ public class CustomerService : BaseService, ICustomerService
 {
     private readonly IMapper _mapper;
     private readonly UserManager<ApplicationUser> _userManager;
+    private readonly IBlobService _blobService;
 
-    public CustomerService(UserManager<ApplicationUser> userManager, IMapper mapper)
+    public CustomerService(UserManager<ApplicationUser> userManager, IMapper mapper, IBlobService blobService)
     {
         _userManager = userManager;
         _mapper = mapper;
+        _blobService = blobService;
     }
 
     public PageList<CustomerResponseModel> GetAll(CustomerParams @params)
@@ -51,11 +53,13 @@ public class CustomerService : BaseService, ICustomerService
     {
         var mappedData = _mapper.Map<ApplicationUser>(request);
 
-        var user = await _userManager.FindByIdAsync(request.Id);
+        var user = await _userManager.FindByIdAsync(mappedData.Id);
 
+        user.ImagePath = await _blobService.UploadAvatarImgPathAsync(request.Image, user.Id, "customer");
         user.Address = mappedData.Address;
         user.Gender = mappedData.Gender;
         user.PhoneNumber = mappedData.PhoneNumber;
+        user.SecurityStamp = mappedData.SecurityStamp;
 
         var entity = await _userManager.UpdateAsync(user);
         return _mapper.Map<CustomerResponseModel>(user);

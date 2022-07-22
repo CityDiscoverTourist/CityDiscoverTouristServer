@@ -73,7 +73,7 @@ public class CustomerController : ControllerBase
     /// <param name="data"></param>
     /// <returns></returns>
     [HttpPut]
-    public async Task<ApiResponse<CustomerResponseModel>> Put([FromBody] CustomerRequestModel data)
+    public async Task<ApiResponse<CustomerResponseModel>> Put([FromForm] CustomerRequestModel data)
     {
         var entity = await _customerService.UpdateAsync(data);
         return ApiResponse<ApplicationUser>.Created(entity);
