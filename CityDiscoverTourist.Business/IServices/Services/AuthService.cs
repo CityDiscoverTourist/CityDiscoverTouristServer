@@ -94,7 +94,7 @@ public class AuthService : BaseService, IAuthService
         {
             JwtToken = new JwtSecurityTokenHandler().WriteToken(accessToken),
             RefreshToken = GenerateRefreshToken(),
-            RefreshTokenExpiryTime = DateTime.Now.AddSeconds(7),
+            RefreshTokenExpiryTime = CurrentDateTime().AddDays(7),
             Email = user.Email,
             AccountId = user.Id,
             FullName = user.UserName
@@ -128,7 +128,7 @@ public class AuthService : BaseService, IAuthService
         {
             JwtToken = new JwtSecurityTokenHandler().WriteToken(accessToken),
             RefreshToken = GenerateRefreshToken(),
-            RefreshTokenExpiryTime = DateTime.Now.AddSeconds(7),
+            RefreshTokenExpiryTime = CurrentDateTime().AddDays(7),
             Email = user.Email,
             AccountId = user.Id,
             FullName = user.UserName
