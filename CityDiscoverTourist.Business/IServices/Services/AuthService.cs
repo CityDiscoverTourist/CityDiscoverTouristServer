@@ -22,7 +22,7 @@ using PasswordGenerator;
 
 namespace CityDiscoverTourist.Business.IServices.Services;
 
-public class AuthService : IAuthService
+public class AuthService : BaseService, IAuthService
 {
     private static  IConfiguration? _configuration;
     private readonly IHubContext<CustomerHub, ICustomerHub> _customerHub;
@@ -85,7 +85,7 @@ public class AuthService : IAuthService
             new (ClaimTypes.Name, user.Email ?? string.Empty),
             new (JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
             new (ClaimTypes.Email, user.Email ?? string.Empty),
-            new (ClaimTypes.Expiration, DateTime.Now.AddHours(1).ToString(CultureInfo.CurrentCulture))
+            new (ClaimTypes.Expiration, CurrentDateTime().AddHours(1).ToString(CultureInfo.CurrentCulture))
         };
 
         var accessToken = GetJwtToken(authClaims);
@@ -119,7 +119,7 @@ public class AuthService : IAuthService
             new (ClaimTypes.Name, user.Email ?? string.Empty),
             new (JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
             new (ClaimTypes.Email, user.Email ?? string.Empty),
-            new (ClaimTypes.Expiration, DateTime.Now.AddHours(3).ToString(CultureInfo.CurrentCulture))
+            new Claim (ClaimTypes.Expiration, CurrentDateTime().AddHours(3).ToString(CultureInfo.CurrentCulture))
         };
 
         var accessToken = GetJwtToken(authClaims);
