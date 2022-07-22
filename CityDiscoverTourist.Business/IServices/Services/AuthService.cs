@@ -55,7 +55,7 @@ public class AuthService : IAuthService
             new (ClaimTypes.Name, userViewModel.Email ?? string.Empty),
             new (JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
             new (ClaimTypes.Email, userViewModel.Email ?? string.Empty),
-            new (ClaimTypes.Expiration, DateTime.Now.AddHours(1).ToString(CultureInfo.CurrentCulture))
+            new (ClaimTypes.Expiration, DateTime.Now.AddHours(3).ToString(CultureInfo.CurrentCulture))
         };
 
         var accessToken = GetJwtToken(authClaims);
