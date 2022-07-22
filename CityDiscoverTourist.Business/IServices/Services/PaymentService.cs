@@ -119,7 +119,7 @@ public class PaymentService : BaseService, IPaymentService
         var crypto = new MoMoSecurity();
         var signature = crypto.SignSha256(rawHash, secretKey!);
 
-        if (signature != momoResponse!.Signature) throw new AppException("Signature is not valid");
+        if (signature != momoResponse.Signature) throw new AppException("Signature is not valid");
 
         if (momoResponse.ResultCode != "0") throw new AppException("Failed when update status");
 
@@ -244,7 +244,7 @@ public class PaymentService : BaseService, IPaymentService
         return _paymentRepository.Get(id).Result.Quantity;
     }
 
-    private MomoResponseModel? ConfirmPayment(MomoRequestModel request)
+    private MomoResponseModel ConfirmPayment(MomoRequestModel request)
     {
         var partnerCode = request.PartnerCode;
         var orderId = request.OrderId;
@@ -275,7 +275,7 @@ public class PaymentService : BaseService, IPaymentService
             { "signature", signature}
         };
 
-        var response = PaymentRequest.sendConfirmPaymentRequest(url!, message.ToString());
+        var response = PaymentRequest.sendConfirmPaymentRequest(url, message.ToString());
         var jMessage = JObject.Parse(response);
 
         return new MomoResponseModel
@@ -343,55 +343,6 @@ public class PaymentService : BaseService, IPaymentService
         var paymentUrl = jMessage.GetValue("payUrl")!.ToString();
         return paymentUrl;
     }
-
-    private string MomoPaymentMobile(PaymentRequestModel request, float totalAmount)
-    {
-
-        var endpoint = _momoSettings.EndPoint;
-        var partnerCode = _momoSettings.PartnerCode;
-        var accessKey = _momoSettings.AccessKey;
-        var secretKey = _momoSettings.SecretKey;
-        var orderInfo = DateTime.Now.ToString("yyyyMMddHHmmss") + "-" + request.QuestId;
-        var redirectUrl = "a";
-        var ipnUrl = "https://citytourist.azurewebsites.net/api/v1/payments/callback";
-        var requestType = "captureWallet";
-
-        var amount = totalAmount.ToString(CultureInfo.InvariantCulture);
-        var orderId = request.Id.ToString();
-        var requestId = Guid.NewGuid();
-        var extraData = "";
-
-        var rawHash = "accessKey=" + accessKey + "&amount=" + amount + "&extraData=" + extraData + "&ipnUrl=" + ipnUrl +
-                      "&orderId=" + orderId + "&orderInfo=" + orderInfo + "&partnerCode=" + partnerCode +
-                      "&redirectUrl=" + redirectUrl + "&requestId=" + requestId + "&requestType=" + requestType;
-
-        var crypto = new MoMoSecurity();
-        var signature = crypto.SignSha256(rawHash, secretKey!);
-
-        var message = new JObject
-        {
-            { "partnerCode", partnerCode },
-            { "partnerName", "City Tour" },
-            { "storeId", "MomoTestStore" },
-            { "requestId", requestId },
-            { "amount", amount },
-            { "orderId", orderId },
-            { "orderInfo", orderInfo },
-            { "redirectUrl", redirectUrl },
-            { "ipnUrl", ipnUrl },
-            { "lang", "en" },
-            { "autoCapture", false},
-            { "extraData", extraData },
-            { "requestType", requestType },
-            { "signature", signature }
-        };
-
-        var response = PaymentRequest.sendPaymentRequest(endpoint!, message.ToString());
-        var jMessage = JObject.Parse(response);
-        var paymentUrl = jMessage.GetValue("payUrl")!.ToString();
-        return paymentUrl;
-    }
-
     private static void Search(ref IQueryable<Payment> entities, PaymentParams param)
     {
         if (!entities.Any()) return;

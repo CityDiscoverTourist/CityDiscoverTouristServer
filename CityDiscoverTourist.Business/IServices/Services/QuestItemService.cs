@@ -63,6 +63,11 @@ public class QuestItemService : BaseService, IQuestItemService
         return mappedData;
     }
 
+    public Task<List<string>> GetListImage(int id)
+    {
+        return _blobService.GetBaseUrl(ContainerName, id);
+    }
+
     public async Task<QuestItemResponseModel> Get(int id)
     {
         var entity = await _taskRepository.Get(id);

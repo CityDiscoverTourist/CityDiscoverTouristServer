@@ -74,6 +74,20 @@ public class QuestItemController : ControllerBase
     }
 
     /// <summary>
+    ///
+    /// </summary>
+    /// <param name="id"></param>
+    /// <returns></returns>
+    [HttpGet("images/{id:int}")]
+    [AllowAnonymous]
+    public async Task<List<string>> GetImages(int id)
+    {
+        var entity = await _taskService.GetListImage(id);
+
+        return entity;
+    }
+
+    /// <summary>
     ///     get quest item by id
     /// </summary>
     /// <param name="id"></param>

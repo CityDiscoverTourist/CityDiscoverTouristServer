@@ -11,6 +11,7 @@ public interface IQuestItemService
 {
     public Task<PageList<QuestItemResponseModel>> GetAll( TaskParams @params, Language language);
     public Task<QuestItemResponseModel> Get(int id, Language language);
+    public Task<List<string>> GetListImage(int id);
     public Task<QuestItemResponseModel> CreateAsync(QuestItemRequestModel request);
     public Task<QuestItemResponseModel> UpdateAsync(QuestItemRequestModel request);
     public Task<QuestItemResponseModel> DeleteAsync(int id);
