@@ -56,7 +56,7 @@ public class RewardService : BaseService, IRewardService
         foreach (var item in entity)
         {
             if (item.Status == CommonStatus.Inactive.ToString()) continue;
-            if (!(item.ExpiredDate < CurrentDateTime())) continue;
+            if (!(item.ExpiredDate!.Value.Date < CurrentDateTime().Date)) continue;
 
             item.Status = CommonStatus.Inactive.ToString();
             await _rewardRepository.UpdateFields(item, x => x.Status!);

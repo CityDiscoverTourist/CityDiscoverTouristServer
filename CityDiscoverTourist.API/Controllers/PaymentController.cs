@@ -117,7 +117,8 @@ public class PaymentController : ControllerBase
     [HttpPut]
     public async Task<OkObjectResult> Put()
     {
-        _recurringJobManager.AddOrUpdate("Payment", () => _paymentService.InvalidOrder(), "0 0 * * *", TimeZoneInfo.FindSystemTimeZoneById("SE Asia Standard Time"));
+        //_recurringJobManager.AddOrUpdate("Payment", () => _paymentService.InvalidOrder(), "0 0 * * *", TimeZoneInfo.FindSystemTimeZoneById("SE Asia Standard Time"));
+        await _paymentService.InvalidOrder();
         return await Task.FromResult(Ok("RecurringJobManager"));
     }
 

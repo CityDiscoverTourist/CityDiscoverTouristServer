@@ -172,6 +172,7 @@ public class PaymentService : BaseService, IPaymentService
                 throw new AppException("Discount code is used");
 
             var entity = _mapper.Map<Payment>(request);
+
             entity.RewardId = reward.Id;
             entity.Status = PaymentStatus.Pending.ToString();
             entity.TotalAmount = request.TotalAmount;
@@ -225,7 +226,10 @@ public class PaymentService : BaseService, IPaymentService
         {
             //if(item.IsValid) RecurringJob.AddOrUpdate(() => _paymentRepository.UpdateFields(item, x=>x.IsValid == false), Cron.Minutely());
             if (!item.IsValid) continue;
-            if (item.CreatedDate.AddDays(2) >= DateTime.Now.Date) continue;
+
+            // if customer buy it on 9.30pm it will be count at 12AM that day
+            // ex: 9h30PM 24/07/2022 -> 12AM 24/07/2022
+            if (item.CreatedDate.AddDays(2).Date >= CurrentDateTime().Date) continue;
             item.IsValid = false;
             await _paymentRepository.UpdateFields(item, x => x.IsValid);
         }

@@ -76,7 +76,7 @@ public class CustomerQuestService : BaseService, ICustomerQuestService
         foreach (var item in entity)
         {
             if (item.IsFinished) continue;
-            if (!(item.CreatedDate < CurrentDateTime())) continue;
+            if (!(item.CreatedDate!.Value.Date < CurrentDateTime().Date)) continue;
 
             item.IsFinished = true;
             item.Status = CommonStatus.Inactive.ToString();
