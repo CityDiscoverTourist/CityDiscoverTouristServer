@@ -21,7 +21,12 @@ public class DashboardService : BaseService, IDashboardService
         _customerQuestRepository = customerQuestRepository;
     }
 
-    public string?[] GetTopCustomer()
+   public class Player
+    {
+        public string email { get; set; }
+        public string point { get; set; }
+    }
+    public Player[] GetTopCustomer()
     {
         /*var list = new List<string>();
         var payments = _paymentRepository.GetAll().Where(x => x.Status == PaymentStatus.Success.ToString());
@@ -38,15 +43,19 @@ public class DashboardService : BaseService, IDashboardService
         // get top 3 customers by total amount of payments
         var topCustomers = _paymentRepository.GetAll().Where(x => x.Status == PaymentStatus.Success.ToString())
             .GroupBy(x => x.CustomerId).Select(x => new { CustomerId = x.Key, TotalAmount = x.Sum(y => y.TotalAmount) })
-            .OrderByDescending(x => x.TotalAmount).Take(3);
-        var list = new List<string>();
+            .OrderByDescending(x => x.TotalAmount).Take(10);
+        var list = new List<Player>();
         foreach (var customer in topCustomers)
         {
             var user = _userManager.FindByIdAsync(customer.CustomerId).Result;
             if (user.Id == customer.CustomerId)
             {
-                list.Add(user.UserName);
-                list.Add(customer.TotalAmount.ToString());
+                Player player = new Player
+                {
+                    email = user.UserName!,
+                    point = customer.TotalAmount.ToString()!
+                };
+                list.Add(player);
             }
         }
 
@@ -74,7 +83,7 @@ public class DashboardService : BaseService, IDashboardService
     {
         // get top quest play most
         var topQuests = _customerQuestRepository.GetAll().GroupBy(x => x.QuestId)
-            .Select(x => new { QuestId = x.Key, TotalPlay = x.Count() }).OrderByDescending(x => x.TotalPlay).Take(3);
+            .Select(x => new { QuestId = x.Key, TotalPlay = x.Count() }).OrderByDescending(x => x.TotalPlay).Take(10);
         var list = new List<string>();
         foreach (var quest in topQuests)
         {

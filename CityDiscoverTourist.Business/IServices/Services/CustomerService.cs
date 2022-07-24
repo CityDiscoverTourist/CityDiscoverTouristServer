@@ -69,7 +69,7 @@ public class CustomerService : BaseService, ICustomerService
     {
         if (!customers.Any()) return;
 
-        if (param.Email != null) customers = customers.Where(x => x.Email.Contains(param.Email));
+        if (param.Email != null) customers = customers.Where(x => x.Email.Contains(param.Email.Trim()));
 
         if (param.IsLock != null) customers = customers.Where(x => x.LockoutEnabled == param.IsLock);
     }

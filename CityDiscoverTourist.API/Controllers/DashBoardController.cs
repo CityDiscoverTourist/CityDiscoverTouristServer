@@ -1,5 +1,6 @@
 using CityDiscoverTourist.Business.IServices;
 using Microsoft.AspNetCore.Mvc;
+using static CityDiscoverTourist.Business.IServices.Services.DashboardService;
 
 namespace CityDiscoverTourist.API.Controllers;
 
@@ -26,7 +27,7 @@ public class DashboardController : ControllerBase
     /// </summary>
     /// <returns></returns>
     [HttpGet]
-    public Task<string?[]> GetTopCustomer()
+    public Task<Player[]> GetTopCustomer()
     {
         return Task.FromResult(_dashBoardService.GetTopCustomer());
     }
