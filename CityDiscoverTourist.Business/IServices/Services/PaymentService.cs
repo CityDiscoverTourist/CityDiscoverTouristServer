@@ -192,9 +192,11 @@ public class PaymentService : BaseService, IPaymentService
         else
         {
             var entity = _mapper.Map<Payment>(request);
+
             entity.Status = PaymentStatus.Pending.ToString();
             entity.RewardId = null;
             entity.CreatedDate = CurrentDateTime();
+            entity.PaymentMethod = "MomoWallet";
 
             var paymentUrl = MomoPayment(request, entity.TotalAmount);
 
