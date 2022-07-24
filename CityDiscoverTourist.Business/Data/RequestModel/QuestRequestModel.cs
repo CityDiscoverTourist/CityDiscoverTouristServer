@@ -15,7 +15,6 @@ public class QuestRequestModel
     public DateTime? UpdatedDate { get; set; }
     public string? Status { get; set; } = "Pending";
     public int QuestTypeId { get; set; }
-    public int? QuestOwnerId { get; set; }
     public int AreaId { get; set; }
 
     public void Validate()

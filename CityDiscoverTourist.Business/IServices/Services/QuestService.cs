@@ -232,9 +232,12 @@ public class QuestService : BaseService, IQuestService
         var imgPath = await _blobService.UploadQuestImgAndReturnImgPathAsync(request.Image, request.Id, "quest");
 
         var entity = _mapper.Map<Quest>(request);
+
         entity.Title = JsonHelper.JsonFormat(request.Title);
         entity.Description = JsonHelper.JsonFormat(request.Description);
+        entity.UpdatedDate = CurrentDateTime();
         entity.ImagePath = imgPath;
+
         if (entity.ImagePath == null)
             entity = await _questRepository.NoneUpdateFields(entity, r => r.CreatedDate!, r => r.ImagePath!);
 
