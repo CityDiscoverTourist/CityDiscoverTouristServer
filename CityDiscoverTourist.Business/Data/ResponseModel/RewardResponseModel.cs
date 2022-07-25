@@ -8,7 +8,5 @@ public class RewardResponseModel
 
     public string? CustomerId { get; set; }
 
-    public int QuestRewardId { get; set; }
-
     public string? Status { get; set; }
 }

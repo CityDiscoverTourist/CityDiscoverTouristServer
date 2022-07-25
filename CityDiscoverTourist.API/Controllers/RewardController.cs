@@ -56,6 +56,31 @@ public class RewardController : ControllerBase
     }
 
     /// <summary>
+    ///
+    /// </summary>
+    /// <param name="param"></param>
+    /// <param name="customerId"></param>
+    /// <returns></returns>
+    [HttpGet("get-by-customer-id")]
+    [AllowAnonymous]
+    //[Cached(600)]
+    public ApiResponse<PageList<RewardResponseModel>> GetByCustomerId([FromQuery] RewardParams param, string customerId)
+    {
+        var entity = _rewardService.GetByCustomerId(param, customerId);
+
+        var metadata = new
+        {
+            entity.TotalCount,
+            entity.TotalPages,
+            entity.PageSize,
+            entity.CurrentPage,
+            entity.HasNext,
+            entity.HasPrevious
+        };
+
+        return ApiResponse<List<RewardResponseModel>>.Success(entity, metadata);
+    }
+    /// <summary>
     /// </summary>
     /// <param name="id"></param>
     /// <returns></returns>

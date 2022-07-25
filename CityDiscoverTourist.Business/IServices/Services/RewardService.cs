@@ -34,6 +34,16 @@ public class RewardService : BaseService, IRewardService
         return PageList<RewardResponseModel>.ToPageList(mappedData, @params.PageNumber, @params.PageSize);
     }
 
+    public PageList<RewardResponseModel> GetByCustomerId(RewardParams @params, string customerId)
+    {
+        var rewards = _rewardRepository.GetByCondition(x => x.CustomerId == customerId);
+
+        var sortedQuests = _sortHelper.ApplySort(rewards, @params.OrderBy);
+        var mappedData = _mapper.Map<IEnumerable<RewardResponseModel>>(sortedQuests);
+
+        return PageList<RewardResponseModel>.ToPageList(mappedData, @params.PageNumber, @params.PageSize);
+    }
+
     public async Task<RewardResponseModel> Get(int id)
     {
         var entity = await _rewardRepository.Get(id);
