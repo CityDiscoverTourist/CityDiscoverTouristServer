@@ -70,9 +70,13 @@ public class AreaService : BaseService, IAreaService
 
     public async Task<AreaResponseModel> DisableAsync(int id)
     {
-        var area = await _areaRepository.Get(id);
-        area.Status = CommonStatus.Inactive.ToString();
+        var area = _areaRepository.GetByCondition(x => x.Id == id)
+            .Include(data => data.Locations).ToList().FirstOrDefault();
+        if (area == null || area.Locations!.Count != 0) return _mapper.Map<AreaResponseModel>(area);
+
+        area!.Status = CommonStatus.Inactive.ToString();
         await _areaRepository.UpdateFields(area, r => r.Status!);
+
         return _mapper.Map<AreaResponseModel>(area);
     }
 

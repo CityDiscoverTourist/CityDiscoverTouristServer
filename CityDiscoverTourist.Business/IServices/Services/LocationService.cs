@@ -101,9 +101,13 @@ public class LocationService : BaseService, ILocationService
 
     public async Task<LocationResponseModel> DisableAsync(int id)
     {
-        var location = await _locationRepository.Get(id);
-        location.Status = CommonStatus.Inactive.ToString();
+        var location = await _locationRepository.GetByCondition(x => x.Id == id).Include(data => data.QuestItems).FirstOrDefaultAsync();
+
+        if (location == null || location.QuestItems!.Count != 0) return _mapper.Map<LocationResponseModel>(location);
+
+        location!.Status = CommonStatus.Inactive.ToString();
         await _locationRepository.UpdateFields(location, r => r.Status!);
+
         return _mapper.Map<LocationResponseModel>(location);
     }
 

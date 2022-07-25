@@ -82,11 +82,11 @@ public class CityService : BaseService, ICityService
     {
         var city = _cityRepository.GetByCondition(x => x.Id == id).Include(data => data.Areas).ToList()
            .FirstOrDefault();
-        if (city != null && city.Areas!.Count == 0)
-        {
-            city.Status = CommonStatus.Inactive.ToString();
-            await _cityRepository.UpdateFields(city, r => r.Status!);
-        }
+        if (city == null || city.Areas!.Count != 0) return _mapper.Map<CityResponseModel>(city);
+
+        city.Status = CommonStatus.Inactive.ToString();
+        await _cityRepository.UpdateFields(city, r => r.Status!);
+
         return _mapper.Map<CityResponseModel>(city);
     }
 

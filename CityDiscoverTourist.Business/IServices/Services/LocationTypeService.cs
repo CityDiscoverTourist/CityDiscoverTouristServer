@@ -72,9 +72,14 @@ public class LocationTypeService : BaseService, ILocationTypeService
 
     public async Task<LocationTypeResponseModel> DisableAsync(int id)
     {
-        var entity = await _locationTypeRepository.Get(id);
+        var entity = _locationTypeRepository.GetByCondition(x => x.Id == id)
+            .Include(data => data.Locations).ToList().FirstOrDefault();
+
+        if(entity == null || entity.Locations!.Count != 0) return _mapper.Map<LocationTypeResponseModel>(entity);
+
         entity.Status = CommonStatus.Inactive.ToString();
         await _locationTypeRepository.UpdateFields(entity, r => r.Status!);
+
         return _mapper.Map<LocationTypeResponseModel>(entity);
     }
 
