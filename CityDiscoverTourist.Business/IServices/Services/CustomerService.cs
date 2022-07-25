@@ -1,6 +1,7 @@
 using AutoMapper;
 using CityDiscoverTourist.Business.Data.RequestModel;
 using CityDiscoverTourist.Business.Data.ResponseModel;
+using CityDiscoverTourist.Business.Exceptions;
 using CityDiscoverTourist.Business.Helper;
 using CityDiscoverTourist.Business.Helper.Params;
 using CityDiscoverTourist.Data.Models;
@@ -57,7 +58,7 @@ public class CustomerService : BaseService, ICustomerService
         var result = await _userManager.ChangePasswordAsync(user, data.OldPassword, data.NewPassword);
         if (!result.Succeeded)
         {
-            throw new Exception(result.Errors.First().Description);
+            throw new AppException(result.Errors.First().Description);
         }
         return _mapper.Map<CustomerResponseModel>(user);
     }
@@ -73,6 +74,7 @@ public class CustomerService : BaseService, ICustomerService
         user.Gender = mappedData.Gender;
         user.PhoneNumber = mappedData.PhoneNumber;
         user.SecurityStamp = mappedData.SecurityStamp;
+        user.FullName = mappedData.FullName;
 
         await _userManager.UpdateAsync(user);
 

@@ -9,5 +9,6 @@ public class CustomerRequestModel
     public string? Email { get; set; }
     public string? Address { get; set; }
     public bool Gender { get; set; }
+    public string? FullName { get; set; }
     public IFormFile? Image { get; set; }
 }
