@@ -49,6 +49,19 @@ public class CustomerService : BaseService, ICustomerService
         return _mapper.Map<CustomerResponseModel>(entity);
     }
 
+    public async Task<CustomerResponseModel> UpdatePassword( UpdatePasswordModel data)
+    {
+        var user = await _userManager.FindByIdAsync(data.CustomerId);
+        CheckDataNotNull("Customer", user);
+
+        var result = await _userManager.ChangePasswordAsync(user, data.OldPassword, data.NewPassword);
+        if (!result.Succeeded)
+        {
+            throw new Exception(result.Errors.First().Description);
+        }
+        return _mapper.Map<CustomerResponseModel>(user);
+    }
+
     public async Task<CustomerResponseModel> UpdateAsync(CustomerRequestModel request)
     {
         var mappedData = _mapper.Map<ApplicationUser>(request);
@@ -61,7 +74,8 @@ public class CustomerService : BaseService, ICustomerService
         user.PhoneNumber = mappedData.PhoneNumber;
         user.SecurityStamp = mappedData.SecurityStamp;
 
-        var entity = await _userManager.UpdateAsync(user);
+        await _userManager.UpdateAsync(user);
+
         return _mapper.Map<CustomerResponseModel>(user);
     }
 

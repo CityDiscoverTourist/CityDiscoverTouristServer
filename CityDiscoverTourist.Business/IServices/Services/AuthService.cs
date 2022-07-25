@@ -254,6 +254,7 @@ public class AuthService : BaseService, IAuthService
         {
             UserName = userViewModel.Email,
             Email = userViewModel.Email,
+            FullName = userViewModel.FullName,
             SecurityStamp = Guid.NewGuid().ToString(),
             EmailConfirmed = true,
             NormalizedEmail = userViewModel.Email?.ToUpper(),

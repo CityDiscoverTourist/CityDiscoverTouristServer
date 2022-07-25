@@ -99,6 +99,7 @@ public class FacebookService : IFacebookService
         {
             UserName = facebookUser.Email,
             Email = facebookUser.Email,
+            FullName = facebookUser.FullName,
             SecurityStamp = Guid.NewGuid().ToString(),
             EmailConfirmed = true,
             NormalizedEmail = facebookUser.Email!.ToUpper(new CultureInfo("en-US", false)),

@@ -80,6 +80,17 @@ public class CustomerController : ControllerBase
     }
 
     /// <summary>
+    ///
+    /// </summary>
+    /// <param name="data"></param>
+    /// <returns></returns>
+    [HttpPut("update-password")]
+    public async Task<ApiResponse<CustomerResponseModel>> UpdatePassword([FromBody] UpdatePasswordModel data)
+    {
+        var entity = await _customerService.UpdatePassword(data);
+        return ApiResponse<ApplicationUser>.Created(entity);
+    }
+    /// <summary>
     ///     update customer status, false = inactive, true = active
     /// </summary>
     /// <param name="id"></param>
