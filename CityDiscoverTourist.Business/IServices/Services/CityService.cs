@@ -108,7 +108,7 @@ public class CityService : BaseService, ICityService
 
     public async Task<bool> CheckExisted(string name)
     {
-        var result = await _areaRepository.GetByCondition(x => x.Name == name.Trim()).AnyAsync();
+        var result = await _cityRepository.GetByCondition(x => x.Name!.Trim() == name.Trim()).AnyAsync();
         return result;
     }
 
