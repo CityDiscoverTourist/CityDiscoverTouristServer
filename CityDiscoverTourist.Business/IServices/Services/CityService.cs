@@ -80,9 +80,13 @@ public class CityService : BaseService, ICityService
 
     public async Task<CityResponseModel> DisableAsync(int id)
     {
-        var city = await _cityRepository.Get(id);
-        city.Status = CommonStatus.Inactive.ToString();
-        await _cityRepository.UpdateFields(city, r => r.Status!);
+        var city = _cityRepository.GetByCondition(x => x.Id == id).Include(data => data.Areas).ToList()
+           .FirstOrDefault();
+        if (city != null && city.Areas!.Count == 0)
+        {
+            city.Status = CommonStatus.Inactive.ToString();
+            await _cityRepository.UpdateFields(city, r => r.Status!);
+        }
         return _mapper.Map<CityResponseModel>(city);
     }
 
