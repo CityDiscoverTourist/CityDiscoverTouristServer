@@ -66,7 +66,12 @@ public class CustomerQuestService : BaseService, ICustomerQuestService
     {
         var entity = await _customerQuestRepository.Get(id);
         CheckDataNotNull("CustomerQuest", entity);
-        return _mapper.Map<CustomerQuestResponseModel>(entity);
+
+        var mappedData = _mapper.Map<CustomerQuestResponseModel>(entity);
+
+        mappedData.CustomerName = _userManager?.FindByIdAsync(mappedData.CustomerId).Result.UserName;
+
+        return mappedData;
     }
 
     public async Task<CustomerQuestResponseModel> InvalidCustomerQuest()
