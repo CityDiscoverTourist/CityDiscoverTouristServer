@@ -39,6 +39,29 @@ public class ImageComparison : IImageComparison
         return CompareImages(listImageBase, listImageScene);
     }
 
+    async Task<bool> IImageComparison.CompareImage(int questItemId, List<IFormFile> image)
+    {
+        var baseUrl = await _blobService.GetBaseUrl("quest-item", questItemId);
+        var listBytes = new List<byte[]>();
+
+        var client = new HttpClient();
+
+        // Get the image base from the blob storage
+        foreach (var url in baseUrl)
+        {
+            var imageBase = await client.GetByteArrayAsync(url);
+            listBytes.Add(imageBase);
+        }
+
+        var listImageBase = ConvertImage(listBytes);
+
+        //get the image from device to compare with the base image
+        var listByteScene = ConvertImageFromUser(image);
+        var listImageScene = ConvertImage(listByteScene);
+
+        return CompareImages(listImageBase, listImageScene) > 5000;
+    }
+
     private static long CompareImages(List<Image<Gray, byte>> listImageBase, List<Image<Gray, byte>> listImageScene)
     {
         var sift = new SIFT();

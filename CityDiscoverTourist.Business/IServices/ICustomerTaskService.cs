@@ -2,6 +2,7 @@ using CityDiscoverTourist.Business.Data.RequestModel;
 using CityDiscoverTourist.Business.Data.ResponseModel;
 using CityDiscoverTourist.Business.Helper;
 using CityDiscoverTourist.Business.Helper.Params;
+using Microsoft.AspNetCore.Http;
 
 namespace CityDiscoverTourist.Business.IServices;
 
@@ -17,7 +18,7 @@ public interface ICustomerTaskService
     public string GetBeginPointsAsync(int customerQuestId);
     public Task<CustomerTaskResponseModel> DecreasePointWhenHitSuggestion(int customerQuestId);
     public Task<CustomerTaskResponseModel> CheckCustomerAnswer(int customerQuestId, string customerReply,
-        int questItemId);
+        int questItemId, List<IFormFile>? files = null);
     public Task<bool> IsLastQuestItem(int customerQuestId);
     public float GetLastPoint(int customerQuestId);
     public IEnumerable<string> GetLongLatFromCurrentQuestItemOfCustomer(int customerQuestId);

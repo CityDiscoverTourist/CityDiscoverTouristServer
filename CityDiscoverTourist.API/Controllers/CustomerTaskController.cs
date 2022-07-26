@@ -183,12 +183,13 @@ public class CustomerTaskController : ControllerBase
     /// <param name="customerQuestId"></param>
     /// <param name="customerReply"></param>
     /// <param name="questItemId"></param>
+    /// <param name="files"></param>
     /// <returns></returns>
     [HttpPut("check-answer/{customerQuestId:int}")]
     public async Task<ApiResponse<CustomerTaskResponseModel>> CheckCustomerAnswer(int customerQuestId,
-        string customerReply, int questItemId)
+        string customerReply, int questItemId ,[FromForm] List<IFormFile>? files = null)
     {
-        var entity = await _customerTaskService.CheckCustomerAnswer(customerQuestId, customerReply, questItemId);
+        var entity = await _customerTaskService.CheckCustomerAnswer(customerQuestId, customerReply, questItemId, files);
         return ApiResponse<CustomerTaskResponseModel>.Ok(entity);
     }
 

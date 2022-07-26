@@ -10,6 +10,7 @@ using CityDiscoverTourist.Business.HubConfig.IHub;
 using CityDiscoverTourist.Business.Settings;
 using CityDiscoverTourist.Data.IRepositories;
 using CityDiscoverTourist.Data.Models;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json.Linq;
@@ -31,13 +32,14 @@ public class CustomerTaskService : BaseService, ICustomerTaskService
     private readonly IQuestItemRepository _questItemRepo;
     private readonly ISortHelper<CustomerTask> _sortHelper;
     private readonly ISuggestionRepository _suggestionRepo;
+    private readonly IImageComparison _imageComparison;
 
 
     public CustomerTaskService(ICustomerTaskRepository customerTaskRepository, IMapper mapper,
         ISortHelper<CustomerTask> sortHelper, ICustomerQuestRepository customerQuestRepo,
         IQuestItemRepository questItemRepo, GoongApiSetting? googleApiSettings,
         ICustomerAnswerService customerAnswerService, ILocationRepository locationRepo,
-        ISuggestionRepository suggestionRepo, IHubContext<CustomerTaskHub, ICustomerTaskHub> hubContext)
+        ISuggestionRepository suggestionRepo, IHubContext<CustomerTaskHub, ICustomerTaskHub> hubContext, IImageComparison imageComparison)
     {
         _customerTaskRepo = customerTaskRepository;
         _mapper = mapper;
@@ -49,6 +51,7 @@ public class CustomerTaskService : BaseService, ICustomerTaskService
         _locationRepo = locationRepo;
         _suggestionRepo = suggestionRepo;
         _hubContext = hubContext;
+        _imageComparison = imageComparison;
     }
 
     public Task<PageList<CustomerTaskResponseModel>> GetAll(CustomerTaskParams @params)
@@ -166,7 +169,7 @@ public class CustomerTaskService : BaseService, ICustomerTaskService
     }
 
     public async Task<CustomerTaskResponseModel> CheckCustomerAnswer(int customerQuestId, string customerReply,
-        int questItemId)
+        int questItemId, List<IFormFile>? files)
     {
         var isCustomerReplyCorrect = true;
 
@@ -178,9 +181,28 @@ public class CustomerTaskService : BaseService, ICustomerTaskService
         var customerTask = await _customerTaskRepo.GetByCondition(x => x.CustomerQuestId == customerQuestId)
             .Where(x => x.QuestItemId == questItemId).OrderByDescending(x => x.CurrentPoint).LastOrDefaultAsync();
 
+        var questItem = await _questItemRepo.Get(customerTask!.QuestItemId);
+
+
+        // if quest item is image compare
+        if (questItem.AnswerImageUrl!.Any())
+        {
+            var matches = await _imageComparison.CompareImage(questItem.Id, files!);
+            if (!matches) isCustomerReplyCorrect = false;
+            else
+            {
+                customerTask.Status = "Finished";
+                customerTask.IsFinished = true;
+
+                await _customerTaskRepo.UpdateFields(customerTask, r => r.Status!, r => r.IsFinished);
+
+                await _hubContext.Clients.All.UpdateCustomerTask(customerTask);
+            }
+
+        }
+
         //compare with correct answer
-        var correctAnswer = await _questItemRepo.Get(customerTask!.QuestItemId);
-        if (!correctAnswer.RightAnswer!.ToLower().Equals(customerReply.ToLower()))
+        if (!questItem.RightAnswer!.ToLower().Equals(customerReply.ToLower()))
         {
             // count number of customer answer wrong
             // if count number of customer answer wrong >= 5
