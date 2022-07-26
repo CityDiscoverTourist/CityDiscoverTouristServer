@@ -111,6 +111,6 @@ public class QuestItemTypeService : BaseService, IQuestItemTypeService
         if (!entities.Any()) return;
 
         if (param.Status != null) entities = entities.Where(x => x.Status == param.Status);
-        if (param.Name != null) entities = entities.Where(x => x.Name!.Contains(param.Name));
+        if (param.Name != null) entities = entities.Where(x => x.Name!.Contains(param.Name.Trim()));
     }
 }
