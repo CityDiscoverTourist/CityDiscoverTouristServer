@@ -22,16 +22,13 @@ namespace CityDiscoverTourist.API.Controllers;
 public class PaymentController : ControllerBase
 {
     private readonly IPaymentService _paymentService;
-    private readonly IRecurringJobManager _recurringJobManager;
 
     /// <summary>
     /// </summary>
     /// <param name="paymentService"></param>
-    /// <param name="recurringJobManager"></param>
-    public PaymentController(IPaymentService paymentService, IRecurringJobManager recurringJobManager)
+    public PaymentController(IPaymentService paymentService)
     {
         _paymentService = paymentService;
-        _recurringJobManager = recurringJobManager;
     }
 
     /// <summary>
@@ -74,15 +71,16 @@ public class PaymentController : ControllerBase
 
     /// <summary>
     /// </summary>
+    /// <param name="params"></param>
     /// <param name="customerId"></param>
     /// <returns></returns>
     [HttpGet("get-by-customer-id")]
     //[Cached(600)]
-    public async Task<ApiResponse<List<PaymentResponseModel>>> GetByCustomerId(string customerId)
+    public Task<ApiResponse<PageList<PaymentResponseModel>>> GetByCustomerId([FromQuery]PaymentParams @params, string customerId)
     {
-        var entity = await _paymentService.GetByCustomerId(customerId);
+        var entity = _paymentService.GetByCustomerId(@params, customerId);
 
-        return ApiResponse<Payment>.Ok(entity);
+        return Task.FromResult(ApiResponse<Payment>.Ok(entity));
     }
 
     /// <summary>

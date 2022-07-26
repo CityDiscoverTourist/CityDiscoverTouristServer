@@ -38,7 +38,7 @@ public class PaymentService : BaseService, IPaymentService
     public PaymentService(IPaymentRepository paymentRepository, IMapper mapper, ISortHelper<Payment> sortHelper,
         MomoSetting momoSettings, IRewardRepository rewardRepository, IQuestRepository questRepository,
         UserManager<ApplicationUser> userManager, IEmailSender emailSender,
-        IHubContext<PaymentHub, IPaymentHub> hubContext, IBackgroundJobClient backgroundJobClient)
+        IHubContext<PaymentHub, IPaymentHub> hubContext, IBackgroundJobClient backgroundJobClient
     {
         _paymentRepository = paymentRepository;
         _mapper = mapper;
@@ -153,19 +153,32 @@ public class PaymentService : BaseService, IPaymentService
         return mappedData;
     }
 
-    public Task<List<PaymentResponseModel>> GetByCustomerId(string customerId)
+    public async Task UpdateIsValidField(Guid paymentId)
     {
-        var entity = _paymentRepository.GetAll().Include(x => x.CustomerQuests).OrderByDescending(x => x.CreatedDate);
+        var entity = _paymentRepository.Get(paymentId).Result;
+        entity.IsValid = false;
+        await _paymentRepository.UpdateFields(entity, x => x.IsValid);
+    }
+
+    public PageList<PaymentResponseModel> GetByCustomerId(PaymentParams @params, string customerId)
+    {
+        var entity = _paymentRepository.GetAll()
+            .Include(x => x.CustomerQuests)
+            .OrderByDescending(x => x.CreatedDate).AsNoTracking();
         CheckDataNotNull("Payment", entity);
 
-        var mappedData = _mapper.Map<List<PaymentResponseModel>>(entity);
+        Search(ref entity, @params);
+
+        var sortedQuests = _sortHelper.ApplySort(entity, @params.OrderBy);
+
+        var mappedData = _mapper.Map<List<PaymentResponseModel>>(sortedQuests);
 
         foreach (var item in mappedData)
         {
             item.ImagePath = _questRepository.Get(item.QuestId).Result.ImagePath;
         }
 
-        return Task.FromResult(mappedData);
+        return PageList<PaymentResponseModel>.ToPageList(mappedData, @params.PageNumber, @params.PageSize);
     }
 
     public async Task<string[]> CreateAsync(PaymentRequestModel request, Guid discountCode)

@@ -99,7 +99,7 @@ public class CustomerQuestService : BaseService, ICustomerQuestService
     {
         var entity = _mapper.Map<CustomerQuest>(request);
 
-        var payment = _paymentService.Get(entity.PaymentId, Language.vi).Result;
+        var payment = await _paymentService.Get(entity.PaymentId, Language.vi);
 
         if (payment.Status == PaymentStatus.Pending.ToString())
             throw new AppException("This transaction is not completed yet");
@@ -112,7 +112,12 @@ public class CustomerQuestService : BaseService, ICustomerQuestService
         var numOfQuantityInCustomerQuest = _customerQuestRepository
             .GetByCondition(x => x.PaymentId == request.PaymentId).Count();
 
-        if (numOfQuantityInCustomerQuest >= ticketQuantity) throw new AppException("Ticket quantity is not enough");
+        // update isValid if the quantity of the order is greater than the number of order show in customer quest
+        if (numOfQuantityInCustomerQuest >= ticketQuantity)
+        {
+            await _paymentService.UpdateIsValidField(entity.PaymentId);
+            throw new AppException("Ticket quantity is not enough");
+        }
 
         //check is previous quest is completed
         var previousQuest =

@@ -117,6 +117,7 @@ public class QuestItemService : BaseService, IQuestItemService
 
         entity.Content = JsonHelper.JsonFormat(request.Content);
         entity.Description = JsonHelper.JsonFormat(request.Description);
+        entity.Status = CommonStatus.Active.ToString();
 
         entity = await _taskRepository.Add(entity);
 
