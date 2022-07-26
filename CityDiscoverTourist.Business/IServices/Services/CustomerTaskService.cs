@@ -185,7 +185,7 @@ public class CustomerTaskService : BaseService, ICustomerTaskService
 
 
         // if quest item is image compare
-        if (questItem.AnswerImageUrl!.Any())
+        if (questItem.AnswerImageUrl != null)
         {
             var matches = await _imageComparison.CompareImage(questItem.Id, files!);
             if (!matches) isCustomerReplyCorrect = false;
