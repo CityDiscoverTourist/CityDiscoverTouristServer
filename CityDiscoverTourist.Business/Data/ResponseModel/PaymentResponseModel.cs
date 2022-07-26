@@ -14,4 +14,5 @@ public class PaymentResponseModel
     public int QuestId { get; set; }
     public string? QuestName { get; set; }
     public string? QuestDescription { get; set; }
+    public string? ImagePath { get; set; }
 }

@@ -22,10 +22,11 @@ public class QuestService : BaseService, IQuestService
     private readonly IQuestRepository _questRepository;
     private readonly ISortHelper<Quest> _sortHelper;
     private readonly INotificationService _notificationService;
+    private readonly IAreaRepository _areaRepository;
 
     public QuestService(IQuestRepository questRepository, ISortHelper<Quest> sortHelper, IMapper mapper,
         IBlobService blobService, ILocationRepository locationRepository, IQuestItemRepository questItemRepository,
-        ICustomerQuestRepository customerQuestRepository, INotificationService notificationService)
+        ICustomerQuestRepository customerQuestRepository, INotificationService notificationService, IAreaRepository areaRepository)
     {
         _questRepository = questRepository;
         _sortHelper = sortHelper;
@@ -35,6 +36,7 @@ public class QuestService : BaseService, IQuestService
         _questItemRepository = questItemRepository;
         _customerQuestRepository = customerQuestRepository;
         _notificationService = notificationService;
+        _areaRepository = areaRepository;
     }
 
 
@@ -69,13 +71,6 @@ public class QuestService : BaseService, IQuestService
 
         var questResponseModels = mappedData as QuestResponseModel[] ?? mappedData.ToArray();
 
-        /*var customerQuests = _customerQuestRepository.GetAll().AsNoTracking().ToList();
-
-        foreach (var customerQuest in customerQuests)
-        {
-            questResponseModels
-        }*/
-
         for (var i = 0; i < questResponseModels.Length; i++)
         {
             //get total feed back and average rate for each quest
@@ -92,6 +87,9 @@ public class QuestService : BaseService, IQuestService
                 questResponseModels[i].AverageStar = 0;
                 questResponseModels[i].TotalFeedback = 0;
             }
+
+            var areaId = questResponseModels[i].AreaId;
+            questResponseModels[i].AreaName = _areaRepository.Get(areaId).Result.Name ?? "K co";
 
             // count quest item for each quest
             for (var j = 0; j < questResponseModels[i].QuestItems!.Count; j++)

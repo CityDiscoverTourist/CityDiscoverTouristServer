@@ -21,5 +21,6 @@ public class QuestResponseModel
     public string? LatLong { get; set; }
     public int? TotalFeedback { get; set; }
     public long? AverageStar { get; set; }
+    public string? AreaName { get; set; }
     public List<QuestItemResponseModel>? QuestItems { get; set; }
 }

@@ -89,6 +89,7 @@ public class CustomerTaskService : BaseService, ICustomerTaskService
         entity.CurrentPoint = Convert.ToSingle(GetBeginPointsAsync(entity.CustomerQuestId));
         entity.IsFinished = false;
         entity.QuestItemId = GetFirstQuestItemIdOfQuest(questId);
+        entity.Status = "Progress";
 
         entity = await _customerTaskRepo.Add(entity);
         await _hubContext.Clients.All.AddCustomerTask(_mapper.Map<CustomerTaskResponseModel>(entity));

@@ -78,6 +78,7 @@ public class CustomerQuestService : BaseService, ICustomerQuestService
             if (item.IsFinished) continue;
             if (!(item.CreatedDate!.Value.Date < CurrentDateTime().Date)) continue;
 
+            item.Rating = 5;
             item.IsFinished = true;
             item.Status = CommonStatus.Inactive.ToString();
             await _customerQuestRepository.UpdateFields(item, x => x.IsFinished, x => x.Status!);
@@ -86,7 +87,7 @@ public class CustomerQuestService : BaseService, ICustomerQuestService
         return null!;
     }
 
-    public  Task<List<CustomerQuestResponseModel>> GetByCustomerId(string id)
+    public Task<List<CustomerQuestResponseModel>> GetByCustomerId(string id)
     {
         var entity = _customerQuestRepository.GetByCondition(x => x.CustomerId == id).ToList();
         CheckDataNotNull("CustomerQuest", entity);

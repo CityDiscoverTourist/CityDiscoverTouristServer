@@ -8,7 +8,7 @@ namespace CityDiscoverTourist.Business.IServices;
 
 public interface IQuestService
 {
-    public PageList<QuestResponseModel> GetAll(QuestParams param, Language language);
+    public PageList<QuestResponseModel> GetAll( QuestParams param, Language language);
     public Task<QuestResponseModel> Get(int id, Language language);
     public Task<QuestResponseModel> CreateAsync(QuestRequestModel request);
     public Task<QuestResponseModel> UpdateAsync(QuestRequestModel request);

@@ -157,7 +157,15 @@ public class PaymentService : BaseService, IPaymentService
     {
         var entity = _paymentRepository.GetAll().Include(x => x.CustomerQuests).OrderByDescending(x => x.CreatedDate);
         CheckDataNotNull("Payment", entity);
-        return Task.FromResult(_mapper.Map<List<PaymentResponseModel>>(entity));
+
+        var mappedData = _mapper.Map<List<PaymentResponseModel>>(entity);
+
+        foreach (var item in mappedData)
+        {
+            item.ImagePath = _questRepository.Get(item.QuestId).Result.ImagePath;
+        }
+
+        return Task.FromResult(mappedData);
     }
 
     public async Task<string[]> CreateAsync(PaymentRequestModel request, Guid discountCode)
