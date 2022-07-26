@@ -103,8 +103,13 @@ public class CustomerTaskService : BaseService, ICustomerTaskService
     public async Task<int> MoveCustomerToNextTask(int questId, int customerQuestId)
     {
         var nextQuestItemId = 0;
+
+        var currentCustomerTask = _customerTaskRepo.GetByCondition(x => x.CustomerQuestId == customerQuestId && x.IsFinished == false);
+        if(currentCustomerTask != null) throw new AppException("Finish current task first before move to next task");
+
         // get last quest item customer has done
         var lastQuestItemCustomerFinished = LastQuestItemCustomerFinished(customerQuestId);
+
 
         var questItems = _questItemRepo.GetByCondition(x => x.QuestId == questId).ToList();
 
@@ -173,6 +178,7 @@ public class CustomerTaskService : BaseService, ICustomerTaskService
         int questItemId, List<IFormFile>? files)
     {
         var isCustomerReplyCorrect = true;
+        var isIdenticalImage = true;
 
         var currentPoint = _customerTaskRepo
             .GetByCondition(x => x.CustomerQuestId == customerQuestId).OrderByDescending(x => x.CurrentPoint)
@@ -189,16 +195,23 @@ public class CustomerTaskService : BaseService, ICustomerTaskService
         if (questItem.AnswerImageUrl != null)
         {
             var matches = await _imageComparison.CompareImage(questItem.Id, files!);
-            if (!matches) isCustomerReplyCorrect = false;
-            else
+            // image is not identical
+            if (!matches)
             {
-                customerTask.Status = "Finished";
-                customerTask.IsFinished = true;
-
-                await _customerTaskRepo.UpdateFields(customerTask, r => r.Status!, r => r.IsFinished);
-
-                await _hubContext.Clients.All.UpdateCustomerTask(customerTask);
+                await SaveCustomerAnswer(customerTask, files.ToString(), NoteCustomerAnswer.WrongAnswer);
+                return _mapper.Map<CustomerTaskResponseModel>(customerTask);
             }
+            // identical image
+            customerTask.Status = "Finished";
+            customerTask.IsFinished = true;
+
+            await _customerTaskRepo.UpdateFields(customerTask, r => r.Status!, r => r.IsFinished);
+
+            await SaveCustomerAnswer(customerTask, files.ToString(), NoteCustomerAnswer.CorrectAnswer);
+
+            await _hubContext.Clients.All.UpdateCustomerTask(customerTask);
+
+            return _mapper.Map<CustomerTaskResponseModel>(customerTask);
 
         }
 
