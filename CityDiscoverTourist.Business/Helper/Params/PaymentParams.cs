@@ -6,4 +6,5 @@ public class PaymentParams : QueryStringParams
     public int CustomerQuestId { get; set; }
     public string? Status { get; set; }
     public string? CustomerId { get; set; }
+    public bool? IsValid { get; set; }
 }
