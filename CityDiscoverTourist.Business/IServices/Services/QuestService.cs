@@ -212,7 +212,7 @@ public class QuestService : BaseService, IQuestService
         //create notification for quest created and push to hub
         await _notificationService.CreateAsync(new Notification
         {
-            Content = "New quest " + entity.Title + " has been created",
+            Content = "New quest " + ConvertLanguage(Language.vi, entity.Title!) + " has been created",
             CreatedDate = CurrentDateTime()
         });
 

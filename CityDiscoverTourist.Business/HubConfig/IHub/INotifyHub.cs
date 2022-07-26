@@ -4,6 +4,6 @@ namespace CityDiscoverTourist.Business.HubConfig.IHub;
 
 public interface INotifyHub
 {
-    Task GetNotifications(IQueryable<Notification> notification);
+    Task GetNotifications(List<Notification> notification);
     Task GetNotification(Notification notification);
 }

@@ -6,7 +6,7 @@ namespace CityDiscoverTourist.Business.HubConfig;
 
 public class NotifyHub : Hub<INotifyHub>
 {
-    public async Task GetNotifications(IQueryable<Notification> notification)
+    public async Task GetNotifications(List<Notification> notification)
     {
         await Clients.All.GetNotifications(notification);
     }

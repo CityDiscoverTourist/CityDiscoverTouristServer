@@ -1,5 +1,6 @@
 using System.Net.Http.Headers;
 using CityDiscoverTourist.Business.Data.ResponseModel;
+using CityDiscoverTourist.Business.Enums;
 using CityDiscoverTourist.Business.HubConfig;
 using CityDiscoverTourist.Business.HubConfig.IHub;
 using CityDiscoverTourist.Business.Settings;
@@ -7,10 +8,11 @@ using CityDiscoverTourist.Data.IRepositories;
 using CityDiscoverTourist.Data.Models;
 using CorePush.Google;
 using Microsoft.AspNetCore.SignalR;
+using Microsoft.EntityFrameworkCore;
 
 namespace CityDiscoverTourist.Business.IServices.Services;
 
-public class NotificationService : INotificationService
+public class NotificationService : BaseService, INotificationService
 {
     private readonly NotificationSetting _notificationSettings;
     private readonly INotificationRepository _notificationRepository;
@@ -66,10 +68,11 @@ public class NotificationService : INotificationService
         return entity;
     }
 
-    public IQueryable<Notification> GetAllAsync()
+    public Task<List<Notification>> GetAllAsync()
     {
         var entity = _notificationRepository.GetAll().OrderByDescending(x => x.CreatedDate);
-        _hubContext.Clients.All.GetNotifications(entity);
-        return entity;
+        _hubContext.Clients.All.GetNotifications(entity.ToList());
+
+        return entity.ToListAsync();
     }
 }

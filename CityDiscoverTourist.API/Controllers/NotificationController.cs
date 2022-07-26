@@ -39,8 +39,9 @@ public class NotificationController : ControllerBase
     /// </summary>
     /// <returns></returns>
     [HttpGet]
-    public IQueryable<Notification> GetAllNotifications()
+    public async Task<ApiResponse<List<Notification>>> GetAllNotifications()
     {
-        return _notificationService.GetAllAsync();
+        var entity = await _notificationService.GetAllAsync();
+        return ApiResponse<Notification>.Ok(entity);
     }
 }
