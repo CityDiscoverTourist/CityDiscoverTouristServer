@@ -75,10 +75,15 @@ public class QuestItemTypeService : BaseService, IQuestItemTypeService
 
     public async Task<QuestItemTypeResponseModel> DisableAsync(int id)
     {
-        var entity = await _questItemTypeRepository.Get(id);
-        entity.Status = CommonStatus.Inactive.ToString();
-        await _questItemTypeRepository.UpdateFields(entity, r => r.Status!);
-        return _mapper.Map<QuestItemTypeResponseModel>(entity);
+        var city = _questItemTypeRepository.GetByCondition(x => x.Id == id).Include(data => data.QuestItems).ToList()
+            .FirstOrDefault();
+
+        if (city == null || city.QuestItems!.Count != 0) return _mapper.Map<QuestItemTypeResponseModel>(city);
+
+        city.Status = CommonStatus.Inactive.ToString();
+        await _questItemTypeRepository.UpdateFields(city, r => r.Status!);
+
+        return _mapper.Map<QuestItemTypeResponseModel>(city);
     }
 
     public async Task<QuestItemTypeResponseModel> EnableAsync(int id)
