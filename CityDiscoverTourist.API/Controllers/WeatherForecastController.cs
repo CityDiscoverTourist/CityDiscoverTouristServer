@@ -1,6 +1,7 @@
 using System.Drawing;
 using CityDiscoverTourist.Business.IServices;
 using CityDiscoverTourist.Business.IServices.Services;
+using Diacritics.Extensions;
 using Emgu.CV;
 using Emgu.CV.CvEnum;
 using Emgu.CV.Features2D;
@@ -226,9 +227,10 @@ public class WeatherForecastController : ControllerBase
     }
 
     [HttpPost("demo2")]
-    public Task<long> Demo2([FromForm]List<IFormFile> file)
+    public OkObjectResult Demo2([FromForm]List<IFormFile> file)
     {
-        return _imageComparison.CompareImages(0, file);
+        var a = "Xin chào";
+        return Ok(a.RemoveDiacritics());
     }
 
     private static Image<Gray, byte> ConvertImage(byte[] image1)

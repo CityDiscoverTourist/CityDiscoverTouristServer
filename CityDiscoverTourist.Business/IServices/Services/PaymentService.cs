@@ -160,7 +160,8 @@ public class PaymentService : BaseService, IPaymentService
         await _paymentRepository.UpdateFields(entity, x => x.IsValid);
     }
 
-    public PageList<PaymentResponseModel> GetByCustomerId(PaymentParams @params, string customerId)
+    public async Task<PageList<PaymentResponseModel>> GetByCustomerId(  PaymentParams @params, string customerId,
+        Language language)
     {
         var entity = _paymentRepository.GetAll()
             .Include(x => x.CustomerQuests)
@@ -175,6 +176,10 @@ public class PaymentService : BaseService, IPaymentService
 
         foreach (var item in mappedData)
         {
+            var quest = await _questRepository.Get(item.QuestId);
+
+            item.QuestName = ConvertLanguage(language, quest.Title);
+            item.QuestDescription = ConvertLanguage(language, quest.Description);
             item.ImagePath = _questRepository.Get(item.QuestId).Result.ImagePath;
         }
 

@@ -73,14 +73,16 @@ public class PaymentController : ControllerBase
     /// </summary>
     /// <param name="params"></param>
     /// <param name="customerId"></param>
+    /// <param name="language"></param>
     /// <returns></returns>
     [HttpGet("get-by-customer-id")]
     //[Cached(600)]
-    public Task<ApiResponse<PageList<PaymentResponseModel>>> GetByCustomerId([FromQuery]PaymentParams @params, string customerId)
+    public async Task<ApiResponse<PageList<PaymentResponseModel>>> GetByCustomerId([FromQuery]PaymentParams @params, string customerId
+    , Language language = Language.vi)
     {
-        var entity = _paymentService.GetByCustomerId(@params, customerId);
+        var entity = await _paymentService.GetByCustomerId(@params, customerId, language);
 
-        return Task.FromResult(ApiResponse<Payment>.Ok(entity));
+        return ApiResponse<Payment>.Ok(entity);
     }
 
     /// <summary>

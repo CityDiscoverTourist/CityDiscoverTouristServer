@@ -17,7 +17,7 @@ public class BaseService
         }
     }
 
-    protected static string ConvertLanguage(Language language, string text)
+    protected static string ConvertLanguage(Language language, string? text)
     {
         return JObject.Parse(text)[language.ToString()]!.ToString();
     }

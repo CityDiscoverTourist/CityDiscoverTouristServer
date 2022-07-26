@@ -10,6 +10,7 @@ using CityDiscoverTourist.Business.HubConfig.IHub;
 using CityDiscoverTourist.Business.Settings;
 using CityDiscoverTourist.Data.IRepositories;
 using CityDiscoverTourist.Data.Models;
+using Diacritics.Extensions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
@@ -202,7 +203,7 @@ public class CustomerTaskService : BaseService, ICustomerTaskService
         }
 
         //compare with correct answer
-        if (!questItem.RightAnswer!.ToLower().Equals(customerReply.ToLower()))
+        if (!questItem.RightAnswer!.ToLower().RemoveDiacritics().Equals(customerReply.ToLower().RemoveDiacritics()))
         {
             // count number of customer answer wrong
             // if count number of customer answer wrong >= 5

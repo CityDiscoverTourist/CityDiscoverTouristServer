@@ -12,7 +12,8 @@ public interface IPaymentService
     public Task<PaymentResponseModel> Get(Guid id, Language language);
     public Task<PaymentResponseModel> UpdateStatusWhenSuccess(MomoRequestModel request);
     public Task UpdateIsValidField(Guid paymentId);
-    public PageList<PaymentResponseModel> GetByCustomerId(PaymentParams @params, string customerId);
+    public Task<PageList<PaymentResponseModel>> GetByCustomerId(  PaymentParams @params, string customerId,
+        Language language);
     public Task<string[]> CreateAsync(PaymentRequestModel request, Guid discountCode = default);
     public Task<string[]> CheckCoupon(Guid couponCode, string customerId, float total);
     public Task<PaymentResponseModel> InvalidOrder();
