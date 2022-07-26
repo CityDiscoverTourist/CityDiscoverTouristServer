@@ -236,10 +236,11 @@ public class CustomerQuestService : BaseService, ICustomerQuestService
             entities = entities.Where(x => x.QuestId == param.QuestId);
         if (param.CustomerEmail != null)
         {
-            var customerId = _userManager!.FindByEmailAsync(param.CustomerEmail).Result.Id;
+            var customerId = _userManager!.FindByEmailAsync(param.CustomerEmail).Result != null
+                ? _userManager.FindByEmailAsync(param.CustomerEmail).Result.Id
+                : null;
             entities = entities.Where(x => x.CustomerId == customerId);
         }
-
         if (param.IsFinished != null)
             entities = entities.Where(x => x.IsFinished == param.IsFinished);
     }
