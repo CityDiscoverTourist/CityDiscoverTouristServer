@@ -29,13 +29,21 @@ public class CustomerService : BaseService, ICustomerService
         Search(ref customers, @params);
 
         var mappedData = _mapper.Map<IEnumerable<CustomerResponseModel>>(customers);
-        return PageList<CustomerResponseModel>.ToPageList(mappedData, @params.PageNumber, @params.PageSize);
+
+        var customerResponseModels = mappedData as CustomerResponseModel[] ?? mappedData.ToArray();
+
+        foreach (var customer in customerResponseModels)
+        {
+            customer.PasswordHash = null;
+        }
+        return PageList<CustomerResponseModel>.ToPageList(customerResponseModels, @params.PageNumber, @params.PageSize);
     }
 
     public async Task<CustomerResponseModel> Get(string id)
     {
         var entity = await _userManager.FindByIdAsync(id);
         CheckDataNotNull("Customer", entity);
+        entity.PasswordHash = null;
         return _mapper.Map<CustomerResponseModel>(entity);
     }
 
