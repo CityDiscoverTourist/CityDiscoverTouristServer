@@ -34,11 +34,12 @@ public class PaymentService : BaseService, IPaymentService
     private readonly IRewardRepository _rewardRepository;
     private readonly ISortHelper<Payment> _sortHelper;
     private readonly UserManager<ApplicationUser> _userManager;
+    private readonly INotificationService _notificationService;
 
     public PaymentService(IPaymentRepository paymentRepository, IMapper mapper, ISortHelper<Payment> sortHelper,
         MomoSetting momoSettings, IRewardRepository rewardRepository, IQuestRepository questRepository,
         UserManager<ApplicationUser> userManager, IEmailSender emailSender,
-        IHubContext<PaymentHub, IPaymentHub> hubContext, IBackgroundJobClient backgroundJobClient)
+        IHubContext<PaymentHub, IPaymentHub> hubContext, IBackgroundJobClient backgroundJobClient, INotificationService notificationService)
     {
         _paymentRepository = paymentRepository;
         _mapper = mapper;
@@ -50,6 +51,7 @@ public class PaymentService : BaseService, IPaymentService
         _emailSender = emailSender;
         _hubContext = hubContext;
         _backgroundJobClient = backgroundJobClient;
+        _notificationService = notificationService;
     }
 
     public PageList<PaymentResponseModel> GetAll(PaymentParams @params, Language language)
@@ -129,8 +131,17 @@ public class PaymentService : BaseService, IPaymentService
         entity.Status = PaymentStatus.Success.ToString();
         await _paymentRepository.Update(entity);
 
-        //send mail to customer when payment success
+        //send notification to client
         var questName = _questRepository.Get(entity.QuestId).Result.Title;
+
+        await _notificationService.CreateAsync(new Notification
+        {
+            Content = "New payment has been made successfully " + entity.TotalAmount + " VND" +
+                      " for quest " + ConvertLanguage(Language.vi, questName!),
+            CreatedDate = CurrentDateTime()
+        });
+
+        //send mail to customer when payment success
         var customerEmail = _userManager.FindByIdAsync(entity.CustomerId).Result.Email;
 
         var message = "<h1>Payment Success</h1>" + "<h3>Dear " + customerEmail + "</h3>" +
