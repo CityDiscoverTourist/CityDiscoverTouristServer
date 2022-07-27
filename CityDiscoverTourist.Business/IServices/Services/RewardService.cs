@@ -6,6 +6,7 @@ using CityDiscoverTourist.Business.Helper;
 using CityDiscoverTourist.Business.Helper.Params;
 using CityDiscoverTourist.Data.IRepositories;
 using CityDiscoverTourist.Data.Models;
+using Microsoft.AspNetCore.Identity;
 
 namespace CityDiscoverTourist.Business.IServices.Services;
 
@@ -14,12 +15,15 @@ public class RewardService : BaseService, IRewardService
     private readonly IMapper _mapper;
     private readonly IRewardRepository  _rewardRepository;
     private readonly ISortHelper<Reward> _sortHelper;
+    private static UserManager<ApplicationUser>? _userManager;
 
-    public RewardService(IRewardRepository rewardRepository, IMapper mapper, ISortHelper<Reward> sortHelper)
+
+    public RewardService(IRewardRepository rewardRepository, IMapper mapper, ISortHelper<Reward> sortHelper, UserManager<ApplicationUser>? userManager)
     {
         _rewardRepository = rewardRepository;
         _mapper = mapper;
         _sortHelper = sortHelper;
+        _userManager = userManager;
     }
 
     public PageList<RewardResponseModel> GetAll(RewardParams @params)
@@ -83,10 +87,17 @@ public class RewardService : BaseService, IRewardService
 
     private static void Search(ref IQueryable<Reward> entities, RewardParams param)
     {
-        if (!entities.Any() || string.IsNullOrWhiteSpace(param.Name) && !param.ExpiredDate.HasValue) return;
+        if (!entities.Any()) return;
 
         if (param.Name != null) entities = entities.Where(x => x.Name!.Equals(param.Name));
         if (param.ExpiredDate != null) entities = entities.Where(x => x.ExpiredDate >= param.ExpiredDate);
         if (param.ReceivedDate != null) entities = entities.Where(x => x.ReceivedDate >= param.ReceivedDate);
+        if (param.CustomerEmail != null)
+        {
+            var customerId = _userManager!.FindByEmailAsync(param.CustomerEmail).Result != null
+                ? _userManager.FindByEmailAsync(param.CustomerEmail).Result.Id
+                : null;
+            entities = entities.Where(x => x.CustomerId == customerId);
+        }
     }
 }
