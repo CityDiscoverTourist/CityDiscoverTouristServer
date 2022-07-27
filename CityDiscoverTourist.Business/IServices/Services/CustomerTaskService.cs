@@ -104,8 +104,8 @@ public class CustomerTaskService : BaseService, ICustomerTaskService
     {
         var nextQuestItemId = 0;
 
-        var currentCustomerTask = _customerTaskRepo.GetByCondition(x => x.CustomerQuestId == customerQuestId && x.IsFinished == false);
-        if(currentCustomerTask != null) throw new AppException("Finish current task first before move to next task");
+        var currentCustomerTask = _customerTaskRepo.GetByCondition(x => x.CustomerQuestId == customerQuestId && x.IsFinished == false).ToList();
+        if(currentCustomerTask.Count > 0) throw new AppException("Finish current task first before move to next task");
 
         // get last quest item customer has done
         var lastQuestItemCustomerFinished = LastQuestItemCustomerFinished(customerQuestId);
