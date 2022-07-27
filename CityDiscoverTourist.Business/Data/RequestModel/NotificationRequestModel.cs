@@ -1,6 +1,6 @@
 using Newtonsoft.Json;
 
-namespace CityDiscoverTourist.Business.Data.ResponseModel;
+namespace CityDiscoverTourist.Business.Data.RequestModel;
 
 public class NotificationRequestModel
 {

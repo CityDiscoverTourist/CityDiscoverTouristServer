@@ -22,6 +22,11 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
             entity.HasIndex(e => e.Code).IsUnique();
         });
 
+        builder.Entity<NotifyUser>().HasKey(x => new {x.UserId, x.NotifyId });
+        builder.Entity<NotifyUser>().HasOne<ApplicationUser>(x => x.User).WithMany(x => x.NotifyUsers)
+            .HasForeignKey(x => x.UserId);
+        builder.Entity<NotifyUser>().HasOne<Notification>(x => x.Notification).WithMany(x => x.NotifyUsers)
+            .HasForeignKey(x => x.NotifyId);
         /*builder.Entity<CustomerAnswer>().HasKey(c => new { c.QuestItemId, c.CustomerTaskId });
 
         builder.Entity<CustomerAnswer>().HasOne(x => x.QuestItem)

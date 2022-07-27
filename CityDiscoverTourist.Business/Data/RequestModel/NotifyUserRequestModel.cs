@@ -1,12 +1,9 @@
-namespace CityDiscoverTourist.Data.Models;
+namespace CityDiscoverTourist.Business.Data.RequestModel;
 
-public class Notification : BaseEntity
+public class NotifyUserRequestModel
 {
     public string? Content { get; set; }
     public DateTime CreatedDate { get; set; }
     public int QuestId { get; set; }
     public Guid PaymentId { get; set; }
-
-    public IList<NotifyUser> NotifyUsers { get; set; }
-
 }

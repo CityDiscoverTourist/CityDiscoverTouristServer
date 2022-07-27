@@ -14,4 +14,6 @@ public class ApplicationUser: IdentityUser
 
      public List<ActivityLog>? ActivityLogs { get; set; }
      public List<Reward>? Rewards { get; set; }
+     public IList<NotifyUser> NotifyUsers { get; set; }
+
 }

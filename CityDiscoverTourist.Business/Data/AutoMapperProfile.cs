@@ -2,6 +2,7 @@
 using CityDiscoverTourist.Business.Data.RequestModel;
 using CityDiscoverTourist.Business.Data.ResponseModel;
 using CityDiscoverTourist.Data.Models;
+using NotificationRequestModel = CityDiscoverTourist.Business.Data.RequestModel.NotificationRequestModel;
 
 namespace CityDiscoverTourist.Business.Data;
 
@@ -79,5 +80,7 @@ public class AutoMapperProfile : Profile
 
         CreateMap<QuestRewardResponseModel, QuestReward>().ReverseMap();
         CreateMap<QuestRewardRequestModel, QuestReward>().ReverseMap();
+
+        CreateMap<NotifyUserRequestModel, Notification>().ReverseMap();
     }
 }

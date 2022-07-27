@@ -134,12 +134,6 @@ public class PaymentService : BaseService, IPaymentService
         //send notification to client
         var questName = _questRepository.Get(entity.QuestId).Result.Title;
 
-        await _notificationService.CreateAsync(new Notification
-        {
-            Content = "New payment has been made successfully " + entity.TotalAmount + " VND" +
-                      " for quest " + ConvertLanguage(Language.vi, questName!),
-            CreatedDate = CurrentDateTime()
-        });
 
         //send mail to customer when payment success
         var customerEmail = _userManager.FindByIdAsync(entity.CustomerId).Result.Email;
@@ -171,7 +165,7 @@ public class PaymentService : BaseService, IPaymentService
         await _paymentRepository.UpdateFields(entity, x => x.IsValid);
     }
 
-    public async Task<PageList<PaymentResponseModel>> GetByCustomerId(  PaymentParams @params, string customerId,
+    public async Task<PageList<PaymentResponseModel>> GetByCustomerId(PaymentParams @params, string customerId,
         Language language)
     {
         var entity = _paymentRepository.GetAll()
@@ -197,8 +191,9 @@ public class PaymentService : BaseService, IPaymentService
         return PageList<PaymentResponseModel>.ToPageList(mappedData, @params.PageNumber, @params.PageSize);
     }
 
-    public async Task<string[]> CreateAsync(PaymentRequestModel request, Guid discountCode)
+    public async Task<string[]> CreateAsync(PaymentRequestModel request, Guid discountCode, string? customerId = null)
     {
+        var questName = _questRepository.Get(request.QuestId).Result.Title;
         //need to check customer id or not?
         if (discountCode != Guid.Empty)
         {
@@ -220,6 +215,16 @@ public class PaymentService : BaseService, IPaymentService
 
             await _paymentRepository.Add(entity);
 
+            // send notification to client
+            await _notificationService.CreateAsync(new NotifyUserRequestModel
+            {
+                Content = "New payment has been made successfully " + entity.TotalAmount + " VND" +
+                          " for quest " + ConvertLanguage(Language.vi, questName!),
+                CreatedDate = CurrentDateTime(),
+                PaymentId = entity.Id,
+                //UserId = customerId,
+            });
+
             // invalid reward when payment is success
             reward.Status = CommonStatus.Inactive.ToString();
             await _rewardRepository.UpdateFields(reward, x => x.Status!);
@@ -238,6 +243,16 @@ public class PaymentService : BaseService, IPaymentService
             var paymentUrl = MomoPayment(request, entity.TotalAmount);
 
             await _paymentRepository.Add(entity);
+
+            // send notification to client
+            await _notificationService.CreateAsync(new NotifyUserRequestModel
+            {
+                Content = "New payment has been made successfully " + entity.TotalAmount + " VND" +
+                          " for quest " + ConvertLanguage(Language.vi, questName!),
+                CreatedDate = CurrentDateTime(),
+                PaymentId = entity.Id,
+                //UserId = customerId,
+            });
 
             return new[] { paymentUrl, entity.Id.ToString() };
         }

@@ -1,5 +1,6 @@
 using System.Net.Http.Headers;
-using CityDiscoverTourist.Business.Data.ResponseModel;
+using AutoMapper;
+using CityDiscoverTourist.Business.Data.RequestModel;
 using CityDiscoverTourist.Business.Enums;
 using CityDiscoverTourist.Business.HubConfig;
 using CityDiscoverTourist.Business.HubConfig.IHub;
@@ -7,8 +8,8 @@ using CityDiscoverTourist.Business.Settings;
 using CityDiscoverTourist.Data.IRepositories;
 using CityDiscoverTourist.Data.Models;
 using CorePush.Google;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.SignalR;
-using Microsoft.EntityFrameworkCore;
 
 namespace CityDiscoverTourist.Business.IServices.Services;
 
@@ -17,12 +18,18 @@ public class NotificationService : BaseService, INotificationService
     private readonly NotificationSetting _notificationSettings;
     private readonly INotificationRepository _notificationRepository;
     private readonly IHubContext<NotifyHub, INotifyHub> _hubContext;
+    private readonly UserManager<ApplicationUser> _userManager;
+    private readonly IMapper _mapper;
+    private readonly INotifyUserRepository _notifyUserRepository;
 
-    public NotificationService(NotificationSetting notificationSettings, INotificationRepository notificationRepository, IHubContext<NotifyHub, INotifyHub> hubContext)
+    public NotificationService(NotificationSetting notificationSettings, INotificationRepository notificationRepository, IHubContext<NotifyHub, INotifyHub> hubContext, UserManager<ApplicationUser> userManager, IMapper mapper, INotifyUserRepository notifyUserRepository)
     {
         _notificationSettings = notificationSettings;
         _notificationRepository = notificationRepository;
         _hubContext = hubContext;
+        _userManager = userManager;
+        _mapper = mapper;
+        _notifyUserRepository = notifyUserRepository;
     }
 
     public async Task<string> SendNotification(NotificationRequestModel notificationRequestModel)
@@ -61,18 +68,52 @@ public class NotificationService : BaseService, INotificationService
         return response.IsSuccess() ? "Success" : "Failed";
     }
 
-    public async Task<Notification> CreateAsync(Notification notification)
+    public Task<List<Notification>> GetAllAsync(string userId)
     {
-        var entity = await _notificationRepository.Add(notification);
-        await _hubContext.Clients.All.GetNotification(entity);
-        return entity;
+        var notifyUser = _notifyUserRepository.GetByCondition(x => x.UserId == userId).Where(x => x.HasRead == false);
+        var notify = new List<Notification>();
+        foreach (var item in notifyUser)
+        {
+            var notification = _notificationRepository.GetByCondition(x => x.Id == item.NotifyId).ToList();
+
+            notify.AddRange(notification);
+        }
+
+        return Task.FromResult(notify);
     }
 
-    public Task<List<Notification>> GetAllAsync()
+    public async Task<bool> UserHasRead(string userId)
     {
-        var entity = _notificationRepository.GetAll().OrderByDescending(x => x.CreatedDate);
-        _hubContext.Clients.All.GetNotifications(entity.ToList());
+        var notifyUser = _notifyUserRepository.GetByCondition(x => x.UserId == userId).Where(x => x.HasRead == false);
+        foreach (var item in notifyUser)
+        {
+            item.HasRead = true;
+            await _notifyUserRepository.Update(item);
+        }
+        return true;
+    }
 
-        return entity.ToListAsync();
+    public async Task CreateAsync(NotifyUserRequestModel request)
+    {
+        var mappedData = _mapper.Map<Notification>(request);
+
+        var notify = await _notificationRepository.Add(mappedData);
+
+        //send notification to client
+        await _hubContext.Clients.All.GetNotification(notify);
+
+        var admin = _userManager.Users.ToList();
+        foreach (var item in admin)
+        {
+            if (await _userManager.IsInRoleAsync(item, Role.Admin.ToString()))
+            {
+                await _notifyUserRepository.Add(new NotifyUser
+                {
+                    NotifyId = notify.Id,
+                    UserId = item.Id,
+                    HasRead = false
+                });
+            }
+        }
     }
 }

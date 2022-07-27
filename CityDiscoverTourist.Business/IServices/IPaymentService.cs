@@ -14,7 +14,7 @@ public interface IPaymentService
     public Task UpdateIsValidField(Guid paymentId);
     public Task<PageList<PaymentResponseModel>> GetByCustomerId(  PaymentParams @params, string customerId,
         Language language);
-    public Task<string[]> CreateAsync(PaymentRequestModel request, Guid discountCode = default);
+    public Task<string[]> CreateAsync(PaymentRequestModel request, Guid discountCode = default, string? customerId = null);
     public Task<string[]> CheckCoupon(Guid couponCode, string customerId, float total);
     public Task<PaymentResponseModel> InvalidOrder();
     public Task<PaymentResponseModel> DeleteAsync(Guid id);

@@ -196,7 +196,7 @@ public class QuestService : BaseService, IQuestService
         return mappedData;
     }
 
-    public async Task<QuestResponseModel> CreateAsync(QuestRequestModel request)
+    public async Task<QuestResponseModel> CreateAsync(QuestRequestModel request, string? userId)
     {
         request.Validate();
         var requestName = GetVietNameseName(request.Title!);
@@ -218,11 +218,18 @@ public class QuestService : BaseService, IQuestService
         entity = await _questRepository.Add(entity);
 
         //create notification for quest created and push to hub
-        await _notificationService.CreateAsync(new Notification
+        /*await _notificationService.CreateAsync(new Notification
         {
-            Content = "New quest " + ConvertLanguage(Language.vi, entity.Title!) + " has been created" +
-                      entity.Id,
-            CreatedDate = CurrentDateTime()
+            Content = "New quest " + ConvertLanguage(Language.vi, entity.Title!) + " has been created",
+            CreatedDate = CurrentDateTime(),
+            QuestId = entity.Id,
+            //UserId = userId ?? "f44ff231-e410-4396-a8d3-11fe6a4cfc73",
+        });*/
+        await _notificationService.CreateAsync(new NotifyUserRequestModel
+        {
+            Content = "New quest " + ConvertLanguage(Language.vi, entity.Title!) + " has been created",
+            CreatedDate = CurrentDateTime(),
+            QuestId = entity.Id,
         });
 
         //return string img from blob, mapped to Quest model and store in db

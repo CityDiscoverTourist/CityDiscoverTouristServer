@@ -91,11 +91,12 @@ public class QuestController : ControllerBase
     ///     create a new quest
     /// </summary>
     /// <param name="data"></param>
+    /// <param name="userId"></param>
     /// <returns></returns>
     [HttpPost]
-    public async Task<ApiResponse<QuestResponseModel>> Post([FromForm] QuestRequestModel data)
+    public async Task<ApiResponse<QuestResponseModel>> Post([FromForm] QuestRequestModel data, string userId)
     {
-        var entity = await _questService.CreateAsync(data);
+        var entity = await _questService.CreateAsync(data, userId);
         return ApiResponse<Quest>.Created(entity);
     }
 
