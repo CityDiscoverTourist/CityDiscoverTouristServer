@@ -120,7 +120,6 @@ public class CustomerQuestService : BaseService, ICustomerQuestService
         // update isValid if the quantity of the order is greater than the number of order show in customer quest
         if (numOfQuantityInCustomerQuest >= ticketQuantity)
         {
-            await _paymentService.UpdateIsValidField(entity.PaymentId);
             throw new AppException("Ticket quantity is not enough");
         }
 
@@ -135,6 +134,11 @@ public class CustomerQuestService : BaseService, ICustomerQuestService
         entity.QuestId = payment.QuestId;
 
         entity = await _customerQuestRepository.Add(entity);
+
+        // trick to update payment isValid field
+        if(numOfQuantityInCustomerQuest + 1 == ticketQuantity) await _paymentService.UpdateIsValidField(entity.PaymentId);
+
+
         return _mapper.Map<CustomerQuestResponseModel>(entity);
     }
 
