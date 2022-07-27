@@ -229,6 +229,9 @@ public class PaymentService : BaseService, IPaymentService
             reward.Status = CommonStatus.Inactive.ToString();
             await _rewardRepository.UpdateFields(reward, x => x.Status!);
 
+            // update payment when over 10 min
+            _backgroundJobClient.Schedule(() => PaymentFailed(entity.Id), TimeSpan.FromMinutes(15));
+
             return new[] { paymentUrl, entity.Id.ToString() };
         }
         else
@@ -253,6 +256,9 @@ public class PaymentService : BaseService, IPaymentService
                 PaymentId = entity.Id,
                 //UserId = customerId,
             });
+
+            // update status when over 10 min
+            _backgroundJobClient.Schedule(() => PaymentFailed(entity.Id), TimeSpan.FromMinutes(15));
 
             return new[] { paymentUrl, entity.Id.ToString() };
         }
@@ -401,6 +407,14 @@ public class PaymentService : BaseService, IPaymentService
         var paymentUrl = jMessage.GetValue("payUrl")!.ToString();
         return paymentUrl;
     }
+
+    public async Task PaymentFailed(Guid paymentId)
+    {
+        var payment = await _paymentRepository.Get(paymentId);
+        payment.Status = PaymentStatus.Failed.ToString();
+        await _paymentRepository.UpdateFields(payment, x => x.Status!);
+    }
+
     private static void Search(ref IQueryable<Payment> entities, PaymentParams param)
     {
         if (!entities.Any()) return;

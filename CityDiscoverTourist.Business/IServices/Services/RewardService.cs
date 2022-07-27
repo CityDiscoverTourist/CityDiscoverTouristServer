@@ -99,5 +99,6 @@ public class RewardService : BaseService, IRewardService
                 : null;
             entities = entities.Where(x => x.CustomerId == customerId);
         }
+        if(param.Status != null) entities = entities.Where(x => x.Status == param.Status);
     }
 }
