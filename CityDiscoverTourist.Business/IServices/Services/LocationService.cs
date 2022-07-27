@@ -51,8 +51,16 @@ public class LocationService : BaseService, ILocationService
     public async Task<LocationResponseModel> CreateAsync(LocationRequestModel request)
     {
         request.Validate();
-        var existValue = _locationRepository.GetByCondition(x => request.Name == x.Name).FirstOrDefaultAsync().Result;
-        if (existValue != null) throw new AppException("Location with this name already exists");
+        var requestName = GetVietNameseName(request.Name!);
+
+        var existValue = _locationRepository.GetAll();
+        foreach (var exist in existValue)
+        {
+            if (Trim(ConvertLanguage(Language.vi, exist.Name)) == Trim(requestName))
+            {
+                throw new AppException("Location name is exist");
+            }
+        }
 
         var entity = _mapper.Map<Location>(request);
 

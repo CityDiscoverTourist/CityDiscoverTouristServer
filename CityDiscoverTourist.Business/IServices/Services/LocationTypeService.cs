@@ -2,6 +2,7 @@ using AutoMapper;
 using CityDiscoverTourist.Business.Data.RequestModel;
 using CityDiscoverTourist.Business.Data.ResponseModel;
 using CityDiscoverTourist.Business.Enums;
+using CityDiscoverTourist.Business.Exceptions;
 using CityDiscoverTourist.Business.Helper;
 using CityDiscoverTourist.Business.Helper.Params;
 using CityDiscoverTourist.Data.IRepositories;
@@ -45,6 +46,18 @@ public class LocationTypeService : BaseService, ILocationTypeService
 
     public async Task<LocationTypeResponseModel> CreateAsync(LocationTypeRequestModel request)
     {
+        request.Validate();
+        var requestName = GetVietNameseName(request.Name!);
+
+        var existValue = _locationTypeRepository.GetAll();
+        foreach (var exist in existValue)
+        {
+            if (Trim(ConvertLanguage(Language.vi, exist.Name)) == Trim(requestName))
+            {
+                throw new AppException("Location type name is exist");
+            }
+        }
+
         var entity = _mapper.Map<LocationType>(request);
         entity = await _locationTypeRepository.Add(entity);
         return _mapper.Map<LocationTypeResponseModel>(entity);

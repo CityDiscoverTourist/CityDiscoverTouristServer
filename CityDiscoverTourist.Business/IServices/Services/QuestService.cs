@@ -199,8 +199,16 @@ public class QuestService : BaseService, IQuestService
     public async Task<QuestResponseModel> CreateAsync(QuestRequestModel request)
     {
         request.Validate();
-        var existValue = _questRepository.GetByCondition(x => request.Title == x.Title).FirstOrDefaultAsync().Result;
-        if (existValue != null) throw new AppException("Quest with this name already exists");
+        var requestName = GetVietNameseName(request.Title!);
+
+        var existValue = _questRepository.GetAll();
+        foreach (var exist in existValue)
+        {
+            if (Trim(ConvertLanguage(Language.vi, exist.Title)) == Trim(requestName))
+            {
+                throw new AppException("Quest name is exist");
+            }
+        }
 
         var entity = _mapper.Map<Quest>(request);
 

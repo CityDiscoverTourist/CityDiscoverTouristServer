@@ -27,4 +27,14 @@ public class BaseService
         return TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow,
             TimeZoneInfo.FindSystemTimeZoneById("SE Asia Standard Time"));
     }
+
+    protected static string Trim(string requestName)
+    {
+        return requestName.Replace(" ", string.Empty).Trim();
+    }
+
+    protected static string GetVietNameseName(string requestName)
+    {
+        return requestName.Split("()")[0];
+    }
 }

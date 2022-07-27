@@ -2,6 +2,7 @@ using AutoMapper;
 using CityDiscoverTourist.Business.Data.RequestModel;
 using CityDiscoverTourist.Business.Data.ResponseModel;
 using CityDiscoverTourist.Business.Enums;
+using CityDiscoverTourist.Business.Exceptions;
 using CityDiscoverTourist.Business.Helper;
 using CityDiscoverTourist.Business.Helper.Params;
 using CityDiscoverTourist.Data.IRepositories;
@@ -47,6 +48,18 @@ public class QuestItemTypeService : BaseService, IQuestItemTypeService
     public async Task<QuestItemTypeResponseModel> CreateAsync(QuestItemTypeRequestModel request)
     {
         request.Validate();
+
+        var requestName = GetVietNameseName(request.Name!);
+
+        var existValue = _questItemTypeRepository.GetAll();
+        foreach (var exist in existValue)
+        {
+            if (Trim(ConvertLanguage(Language.vi, exist.Name)) == Trim(requestName))
+            {
+                throw new AppException("Quest item type is exist");
+            }
+        }
+
         var entity = _mapper.Map<QuestItemType>(request);
         entity = await _questItemTypeRepository.Add(entity);
         return _mapper.Map<QuestItemTypeResponseModel>(entity);

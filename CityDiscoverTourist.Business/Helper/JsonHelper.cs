@@ -7,8 +7,8 @@ public static class JsonHelper
         // format received is vietnamese string()english string
         var result = obj!.Split("()");
         return @"{
-	                'vi': '" + result[0] + @"',
-	                'en': '" + result[1] + @"'
+	                'vi': '" + result[0].Trim() + @"',
+	                'en': '" + result[1].Trim() + @"'
                 }";
     }
 }

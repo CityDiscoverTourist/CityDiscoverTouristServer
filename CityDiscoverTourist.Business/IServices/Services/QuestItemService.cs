@@ -93,10 +93,23 @@ public class QuestItemService : BaseService, IQuestItemService
     public async Task<QuestItemResponseModel> CreateAsync(QuestItemRequestModel request)
     {
         request.Validate();
-        var existValue = _taskRepository
+        /*var existValue = _taskRepository
             .GetByCondition(x => x.Content == request.Content || x.Content == ReverseQuestion(request.Content!))
-            .FirstOrDefaultAsync().Result;
-        if (existValue != null) throw new AppException("Quest item with this name already exists");
+            .FirstOrDefaultAsync().Result;*/
+        //if (existValue != null) throw new AppException("Quest item with this name already exists");
+
+        var requestName = GetVietNameseName(request.Content!);
+
+        var existValue = _taskRepository.GetAll();
+        foreach (var exist in existValue)
+        {
+            if (Trim(ConvertLanguage(Language.vi, exist.Content)) == Trim(requestName)
+                || ConvertLanguage(Language.vi, exist.Content) == ReverseQuestion(request.Content!.Trim()))
+            {
+                throw new AppException("Quest item name is exist");
+            }
+        }
+
 
         // set sequence for new quest item
         var questItems = _taskRepository.GetByCondition(x => x.QuestId == request.QuestId).ToList();
@@ -232,7 +245,7 @@ public class QuestItemService : BaseService, IQuestItemService
         var last = parts[parts.Length - 1];
         reversed = last + " () " + first;
 
-        return reversed;
+        return reversed.Trim();
 
     }
 }
