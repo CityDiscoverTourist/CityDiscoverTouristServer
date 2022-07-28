@@ -74,7 +74,7 @@ public class NotificationService : BaseService, INotificationService
         var notify = new List<Notification>();
         foreach (var item in notifyUser)
         {
-            var notification = _notificationRepository.GetByCondition(x => x.Id == item.NotifyId).ToList();
+            var notification = _notificationRepository.GetByCondition(x => x.Id == item.NotifyId).ToList().OrderByDescending(x => x.CreatedDate);
 
             notify.AddRange(notification);
         }
