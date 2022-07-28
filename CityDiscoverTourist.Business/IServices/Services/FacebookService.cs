@@ -74,6 +74,7 @@ public class FacebookService : IFacebookService
             new (ClaimTypes.Name, facebookUser.FullName!),
             new (JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
             new (ClaimTypes.Email, facebookUser.Email!),
+            new (ClaimTypes.Role, Role.Customer.ToString()),
             new (ClaimTypes.Expiration, DateTime.Now.AddHours(1).ToString(CultureInfo.CurrentCulture))
         };
 

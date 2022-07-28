@@ -55,6 +55,7 @@ public class AuthService : BaseService, IAuthService
             new (ClaimTypes.Name, userViewModel.Email ?? string.Empty),
             new (JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
             new (ClaimTypes.Email, userViewModel.Email ?? string.Empty),
+            new (ClaimTypes.Role, Role.Customer.ToString()),
             new (ClaimTypes.Expiration, DateTime.Now.AddHours(3).ToString(CultureInfo.CurrentCulture))
         };
 
@@ -85,6 +86,7 @@ public class AuthService : BaseService, IAuthService
             new (ClaimTypes.Name, user.Email ?? string.Empty),
             new (JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
             new (ClaimTypes.Email, user.Email ?? string.Empty),
+            new (ClaimTypes.Role, Role.Customer.ToString()),
             new (ClaimTypes.Expiration, CurrentDateTime().AddHours(1).ToString(CultureInfo.CurrentCulture))
         };
 
@@ -119,6 +121,7 @@ public class AuthService : BaseService, IAuthService
             new (ClaimTypes.Name, user.Email ?? string.Empty),
             new (JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
             new (ClaimTypes.Email, user.Email ?? string.Empty),
+            new (ClaimTypes.Role, Role.Admin.ToString()),
             new Claim (ClaimTypes.Expiration, CurrentDateTime().AddHours(3).ToString(CultureInfo.CurrentCulture))
         };
 
