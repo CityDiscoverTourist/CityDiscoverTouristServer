@@ -134,6 +134,15 @@ public class PaymentService : BaseService, IPaymentService
         //send notification to client
         var questName = _questRepository.Get(entity.QuestId).Result.Title;
 
+        // send notification to client
+        await _notificationService.CreateAsync(new NotifyUserRequestModel
+        {
+            Content = "New payment has been made successfully " + entity.TotalAmount + " VND" +
+                      " for quest " + ConvertLanguage(Language.vi, questName!),
+            CreatedDate = CurrentDateTime(),
+            PaymentId = entity.Id,
+            //UserId = customerId,
+        });
 
         //send mail to customer when payment success
         var customerEmail = _userManager.FindByIdAsync(entity.CustomerId).Result.Email;
@@ -215,16 +224,6 @@ public class PaymentService : BaseService, IPaymentService
 
             await _paymentRepository.Add(entity);
 
-            // send notification to client
-            await _notificationService.CreateAsync(new NotifyUserRequestModel
-            {
-                Content = "New payment has been made successfully " + entity.TotalAmount + " VND" +
-                          " for quest " + ConvertLanguage(Language.vi, questName!),
-                CreatedDate = CurrentDateTime(),
-                PaymentId = entity.Id,
-                //UserId = customerId,
-            });
-
             // invalid reward when payment is success
             reward.Status = CommonStatus.Inactive.ToString();
             await _rewardRepository.UpdateFields(reward, x => x.Status!);
@@ -246,16 +245,6 @@ public class PaymentService : BaseService, IPaymentService
             var paymentUrl = MomoPayment(request, entity.TotalAmount);
 
             await _paymentRepository.Add(entity);
-
-            // send notification to client
-            await _notificationService.CreateAsync(new NotifyUserRequestModel
-            {
-                Content = "New payment has been made successfully " + entity.TotalAmount + " VND" +
-                          " for quest " + ConvertLanguage(Language.vi, questName!),
-                CreatedDate = CurrentDateTime(),
-                PaymentId = entity.Id,
-                //UserId = customerId,
-            });
 
             // update status when over 10 min
             _backgroundJobClient.Schedule(() => PaymentFailed(entity.Id), TimeSpan.FromMinutes(15));
