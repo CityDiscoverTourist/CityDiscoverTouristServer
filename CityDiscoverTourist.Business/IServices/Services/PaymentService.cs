@@ -411,8 +411,11 @@ public class PaymentService : BaseService, IPaymentService
     public async Task PaymentFailed(Guid paymentId)
     {
         var payment = await _paymentRepository.Get(paymentId);
-        payment.Status = PaymentStatus.Failed.ToString();
-        await _paymentRepository.UpdateFields(payment, x => x.Status!);
+        if (payment.Status == PaymentStatus.Pending.ToString())
+        {
+            payment.Status = PaymentStatus.Failed.ToString();
+            await _paymentRepository.UpdateFields(payment, x => x.Status!);
+        }
     }
 
     private static void Search(ref IQueryable<Payment> entities, PaymentParams param)
