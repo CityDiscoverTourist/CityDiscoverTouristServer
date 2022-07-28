@@ -260,25 +260,18 @@ public class QuestService : BaseService, IQuestService
         return _mapper.Map<QuestResponseModel>(entity);
     }
 
-    public async Task<QuestResponseModel> DeleteAsync(int questId)
+    public Task<QuestResponseModel> DeleteAsync(int questId)
     {
         var entity = _questRepository.GetByCondition(x => x.Id == questId).Include(data => data.QuestItems).ToList()
             .FirstOrDefault();
-        if (entity != null && entity.QuestItems!.Count == 0)
-        {
-            entity.Status = CommonStatus.Inactive.ToString();
-            await _questRepository.UpdateFields(entity, r => r.Status!);
-        }
 
-        return _mapper.Map<QuestResponseModel>(entity);
+        return Task.FromResult(_mapper.Map<QuestResponseModel>(entity));
     }
 
     public async Task<QuestResponseModel> DisableAsync(int questId)
     {
         var entity = _questRepository.GetByCondition(x => x.Id == questId)
             .Include(data => data.QuestItems).ToList().FirstOrDefault();
-
-        if(entity == null || entity.QuestItems!.Count != 0) return _mapper.Map<QuestResponseModel>(entity);
 
         entity!.Status = CommonStatus.Inactive.ToString();
         await _questRepository.UpdateFields(entity, r => r.Status!);
