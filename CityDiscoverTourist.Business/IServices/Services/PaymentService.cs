@@ -33,12 +33,12 @@ public class PaymentService : BaseService, IPaymentService
     private readonly IQuestRepository _questRepository;
     private readonly IRewardRepository _rewardRepository;
     private readonly ISortHelper<Payment> _sortHelper;
-    private readonly UserManager<ApplicationUser> _userManager;
+    private static  UserManager<ApplicationUser>? _userManager;
     private readonly INotificationService _notificationService;
 
     public PaymentService(IPaymentRepository paymentRepository, IMapper mapper, ISortHelper<Payment> sortHelper,
         MomoSetting momoSettings, IRewardRepository rewardRepository, IQuestRepository questRepository,
-        UserManager<ApplicationUser> userManager, IEmailSender emailSender,
+        UserManager<ApplicationUser>? userManager, IEmailSender emailSender,
         IHubContext<PaymentHub, IPaymentHub> hubContext, IBackgroundJobClient backgroundJobClient, INotificationService notificationService)
     {
         _paymentRepository = paymentRepository;
@@ -70,7 +70,7 @@ public class PaymentService : BaseService, IPaymentService
         //return quest name and description in payment
         foreach (var item in paymentResponseModels)
         {
-            var listCustomer = _userManager.FindByIdAsync(item.CustomerId).Result;
+            var listCustomer = _userManager!.FindByIdAsync(item.CustomerId).Result;
             item.CustomerEmail = listCustomer.UserName;
 
             var listQuest = _questRepository.GetByCondition(x => x.Id == item.QuestId);
@@ -145,7 +145,7 @@ public class PaymentService : BaseService, IPaymentService
         });
 
         //send mail to customer when payment success
-        var customerEmail = _userManager.FindByIdAsync(entity.CustomerId).Result.Email;
+        var customerEmail = _userManager!.FindByIdAsync(entity.CustomerId).Result.Email;
 
         var message = "<h1>Payment Success</h1>" + "<h3>Dear " + customerEmail + "</h3>" +
                       "<p>Your payment has been succeeded</p>" + "<p>Your order is: " + entity.Id + "</p>" +
@@ -202,7 +202,6 @@ public class PaymentService : BaseService, IPaymentService
 
     public async Task<string[]> CreateAsync(PaymentRequestModel request, Guid discountCode, string? customerId = null)
     {
-        var questName = _questRepository.Get(request.QuestId).Result.Title;
         //need to check customer id or not?
         if (discountCode != Guid.Empty)
         {
@@ -402,6 +401,7 @@ public class PaymentService : BaseService, IPaymentService
         var payment = await _paymentRepository.Get(paymentId);
         if (payment.Status == PaymentStatus.Pending.ToString())
         {
+            payment.IsValid = false;
             payment.Status = PaymentStatus.Failed.ToString();
             await _paymentRepository.UpdateFields(payment, x => x.Status!);
         }
@@ -412,8 +412,14 @@ public class PaymentService : BaseService, IPaymentService
         if (!entities.Any()) return;
 
         if (param.PaymentMethod != null) entities = entities.Where(r => r.PaymentMethod!.Equals(param.PaymentMethod));
-        if (param.CustomerId != null) entities = entities.Where(r => r.CustomerId!.Equals(param.CustomerId));
+        if (param.CustomerEmail != null)
+        {
+            var customerId = _userManager!.FindByEmailAsync(param.CustomerEmail).Result != null
+                ? _userManager.FindByEmailAsync(param.CustomerEmail).Result.Id
+                : null;
+            entities = entities.Where(x => x.CustomerId == customerId);
+        }
         if (param.Status != null) entities = entities.Where(r => r.Status!.Equals(param.Status));
-        if (param.IsValid != null) entities = entities.Where(r => r.IsValid!.Equals(param.IsValid));
+        if (param.IsValid != null) entities = entities.Where(r => r.IsValid.Equals(param.IsValid));
     }
 }
