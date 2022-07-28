@@ -74,6 +74,20 @@ public class CustomerQuestService : BaseService, ICustomerQuestService
         return mappedData;
     }
 
+    public async Task<CustomerQuestResponseModel> GiveFeedback(int id, CommentRequestModel comment)
+    {
+        var entity = await _customerQuestRepository.Get(id);
+
+        if(!entity.IsFinished) throw new AppException("Quest is not finished yet");
+
+        entity.Rating = comment.Rating;
+        entity.FeedBack = comment.FeedBack;
+
+        var result = await _customerQuestRepository.UpdateFields(entity, x => x.Rating, x => x.FeedBack!);
+
+        return _mapper.Map<CustomerQuestResponseModel>(result);
+    }
+
     public async Task<CustomerQuestResponseModel> InvalidCustomerQuest()
     {
         var entity = _customerQuestRepository.GetAll();

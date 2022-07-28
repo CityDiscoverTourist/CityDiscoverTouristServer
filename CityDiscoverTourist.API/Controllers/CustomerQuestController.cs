@@ -125,6 +125,19 @@ public class CustomerQuestController : ControllerBase
     }
 
     /// <summary>
+    ///  feedback for customer quest when finish quest
+    /// </summary>
+    /// <param name="id"></param>
+    /// <param name="comment"></param>
+    /// <returns></returns>
+    [HttpPost("feed-back/{id:int}")]
+    public async Task<ApiResponse<CustomerQuestResponseModel>> GiveFeedback(int id,[FromBody] CommentRequestModel comment)
+    {
+        var entity = await _customerQuestService.GiveFeedback(id, comment);
+        return ApiResponse<CustomerQuestResponseModel>.Created(entity);
+    }
+
+    /// <summary>
     ///     update customer end point when customer finish quest
     /// </summary>
     /// <param name="customerQuestId"></param>
