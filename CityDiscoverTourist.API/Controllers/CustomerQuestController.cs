@@ -177,6 +177,18 @@ public class CustomerQuestController : ControllerBase
     }
 
     /// <summary>
+    ///  approve customer feedback
+    /// </summary>
+    /// <param name="id"></param>
+    [HttpPut("approve-feedback/{id:int}")]
+    [Authorize(Roles = "Admin")]
+    public async Task ApproveFeedback(int id)
+    {
+        await _customerQuestService.ApproveFeedback(id);
+    }
+
+
+    /// <summary>
     /// </summary>
     /// <param name="questId"></param>
     /// <param name="customerId"></param>

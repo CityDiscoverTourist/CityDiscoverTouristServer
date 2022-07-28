@@ -16,6 +16,7 @@ public class CustomerQuestResponseModel
     public int QuestId { get; set; }
     public Guid PaymentId { get; set; }
     public string? Status { get; set; }
+    public bool IsFeedbackApproved { get; set; }
 
     //public Payment? PaymentMethod { get; set; }
 }

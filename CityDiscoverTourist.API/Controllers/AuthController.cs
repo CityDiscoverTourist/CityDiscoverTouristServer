@@ -60,7 +60,7 @@ public class AuthController : ControllerBase
 
     //register user
     /// <summary>
-    ///     register admin
+    ///     register user
     /// </summary>
     /// <param name="model"></param>
     /// <returns></returns>
@@ -71,7 +71,7 @@ public class AuthController : ControllerBase
     }
 
     /// <summary>
-    ///     confirm email for admin register
+    ///     confirm email for user register
     /// </summary>
     /// <param name="userId"></param>
     /// <param name="token"></param>

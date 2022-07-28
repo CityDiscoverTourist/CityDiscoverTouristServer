@@ -250,6 +250,14 @@ public class CustomerQuestService : BaseService, ICustomerQuestService
         return GetComment(questId, customerId);
     }
 
+    public async Task ApproveFeedback(int id)
+    {
+        var entity = await _customerQuestRepository.Get(id);
+        entity.IsFeedbackApproved = true;
+
+        await _customerQuestRepository.UpdateFields(entity, x => x.IsFeedbackApproved);
+    }
+
     private static void Search(ref IQueryable<CustomerQuest> entities, CustomerQuestParams param)
     {
         if (!entities.Any()) return;
