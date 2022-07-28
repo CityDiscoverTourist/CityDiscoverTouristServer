@@ -7,7 +7,6 @@ using CityDiscoverTourist.Business.IServices;
 using Hangfire;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json;
 
 namespace CityDiscoverTourist.API.Controllers;
 
@@ -16,6 +15,7 @@ namespace CityDiscoverTourist.API.Controllers;
 [Route("api/v{version:apiVersion}/[controller]s")]
 [ApiVersion("1.0")]
 [ApiController]
+[Authorize]
 public class RewardController : ControllerBase
 {
     private readonly IRecurringJobManager _recurringJobManager;
@@ -56,7 +56,6 @@ public class RewardController : ControllerBase
     }
 
     /// <summary>
-    ///
     /// </summary>
     /// <param name="param"></param>
     /// <param name="customerId"></param>
@@ -80,6 +79,7 @@ public class RewardController : ControllerBase
 
         return ApiResponse<List<RewardResponseModel>>.Success(entity, metadata);
     }
+
     /// <summary>
     /// </summary>
     /// <param name="id"></param>
@@ -111,7 +111,8 @@ public class RewardController : ControllerBase
     [HttpPut]
     public async Task<OkObjectResult> Put()
     {
-        _recurringJobManager.AddOrUpdate("Reward", () => _rewardService.InvalidReward(), "0 0 * * *", TimeZoneInfo.FindSystemTimeZoneById("SE Asia Standard Time"));
+        _recurringJobManager.AddOrUpdate("Reward", () => _rewardService.InvalidReward(), "0 0 * * *",
+            TimeZoneInfo.FindSystemTimeZoneById("SE Asia Standard Time"));
         return await Task.FromResult(Ok("RecurringJobManager"));
     }
 

@@ -8,7 +8,6 @@ using CityDiscoverTourist.Data.Models;
 using Hangfire;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json;
 
 namespace CityDiscoverTourist.API.Controllers;
 
@@ -17,7 +16,7 @@ namespace CityDiscoverTourist.API.Controllers;
 [Route("api/v{version:apiVersion}/[controller]s")]
 [ApiVersion("1.0")]
 [ApiController]
-//[Authorize]
+[Authorize]
 public class CustomerQuestController : ControllerBase
 {
     private readonly ICustomerQuestService _customerQuestService;
@@ -26,6 +25,7 @@ public class CustomerQuestController : ControllerBase
     /// <summary>
     /// </summary>
     /// <param name="customerQuestService"></param>
+    /// <param name="recurringJobManager"></param>
     public CustomerQuestController(ICustomerQuestService customerQuestService, IRecurringJobManager recurringJobManager)
     {
         _customerQuestService = customerQuestService;
@@ -125,13 +125,14 @@ public class CustomerQuestController : ControllerBase
     }
 
     /// <summary>
-    ///  feedback for customer quest when finish quest
+    ///     feedback for customer quest when finish quest
     /// </summary>
     /// <param name="id"></param>
     /// <param name="comment"></param>
     /// <returns></returns>
     [HttpPost("feed-back/{id:int}")]
-    public async Task<ApiResponse<CustomerQuestResponseModel>> GiveFeedback(int id,[FromBody] CommentRequestModel comment)
+    public async Task<ApiResponse<CustomerQuestResponseModel>> GiveFeedback(int id,
+        [FromBody] CommentRequestModel comment)
     {
         var entity = await _customerQuestService.GiveFeedback(id, comment);
         return ApiResponse<CustomerQuestResponseModel>.Created(entity);
@@ -150,13 +151,14 @@ public class CustomerQuestController : ControllerBase
     }
 
     /// <summary>
-    /// back ground job to update status
+    ///     back ground job to update status
     /// </summary>
     /// <returns></returns>
     [HttpPut]
     public async Task<OkObjectResult> Put()
     {
-        _recurringJobManager.AddOrUpdate("CustomerQuest", () => _customerQuestService.InvalidCustomerQuest(), "0 0 * * *", TimeZoneInfo.FindSystemTimeZoneById("SE Asia Standard Time"));
+        _recurringJobManager.AddOrUpdate("CustomerQuest", () => _customerQuestService.InvalidCustomerQuest(),
+            "0 0 * * *", TimeZoneInfo.FindSystemTimeZoneById("SE Asia Standard Time"));
         return await Task.FromResult(Ok("RecurringJobManager"));
     }
 

@@ -1,6 +1,4 @@
-using System.Drawing;
 using CityDiscoverTourist.Business.IServices;
-using CityDiscoverTourist.Business.IServices.Services;
 using Diacritics.Extensions;
 using Emgu.CV;
 using Emgu.CV.CvEnum;
@@ -22,11 +20,10 @@ public class WeatherForecastController : ControllerBase
 
     private readonly IBlobService   _blobService;
     private readonly IImageComparison _imageComparison;
-    private readonly ILogger<WeatherForecastController> _logger;
 
-    public WeatherForecastController(ILogger<WeatherForecastController> logger, IBlobService blobService, IImageComparison imageComparison)
+    public WeatherForecastController(IBlobService blobService,
+        IImageComparison imageComparison)
     {
-        _logger = logger;
         _blobService = blobService;
         _imageComparison = imageComparison;
     }
@@ -227,7 +224,7 @@ public class WeatherForecastController : ControllerBase
     }
 
     [HttpPost("demo2")]
-    public OkObjectResult Demo2([FromForm]List<IFormFile> file)
+    public OkObjectResult Demo2([FromForm] List<IFormFile> file)
     {
         var a = "Xin chào";
         return Ok(a.RemoveDiacritics());

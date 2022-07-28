@@ -7,7 +7,6 @@ using CityDiscoverTourist.Business.IServices;
 using CityDiscoverTourist.Data.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json;
 
 namespace CityDiscoverTourist.API.Controllers;
 
@@ -75,6 +74,7 @@ public class CityController : ControllerBase
     /// <param name="data"></param>
     /// <returns></returns>
     [HttpPost]
+    [Authorize(Roles = "Admin")]
     public async Task<ApiResponse<CityResponseModel>> Post(CityRequestModel data)
     {
         var entity = await _cityService.CreateAsync(data);
@@ -87,6 +87,7 @@ public class CityController : ControllerBase
     /// <param name="data"></param>
     /// <returns></returns>
     [HttpPut]
+    [Authorize(Roles = "Admin")]
     public async Task<ApiResponse<CityResponseModel>> Put([FromBody] CityRequestModel data)
     {
         var entity = await _cityService.UpdateAsync(data);
@@ -99,6 +100,7 @@ public class CityController : ControllerBase
     /// <param name="id"></param>
     /// <returns></returns>
     [HttpDelete("{id:int}")]
+    [Authorize(Roles = "Admin")]
     public async Task<ActionResult<ApiResponse<CityResponseModel>>> Delete(int id)
     {
         var entity = await _cityService.DeleteAsync(id);
@@ -111,6 +113,7 @@ public class CityController : ControllerBase
     /// <param name="id"></param>
     /// <returns></returns>
     [HttpPut("disable/{id:int}")]
+    [Authorize(Roles = "Admin")]
     public async Task<ActionResult<ApiResponse<CityResponseModel>>> Disable(int id)
     {
         var entity = await _cityService.DisableAsync(id);
@@ -123,6 +126,7 @@ public class CityController : ControllerBase
     /// <param name="id"></param>
     /// <returns></returns>
     [HttpPut("enable/{id:int}")]
+    [Authorize(Roles = "Admin")]
     public async Task<ActionResult<ApiResponse<CityResponseModel>>> Enable(int id)
     {
         var entity = await _cityService.EnableAsync(id);
@@ -148,6 +152,7 @@ public class CityController : ControllerBase
     /// <param name="name"></param>
     /// <returns></returns>
     [HttpGet("check")]
+    [Authorize(Roles = "Admin")]
     //[Cached(600)]
     public Task<bool> CheckExist(string name)
     {

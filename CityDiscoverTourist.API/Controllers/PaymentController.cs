@@ -6,10 +6,8 @@ using CityDiscoverTourist.Business.Helper;
 using CityDiscoverTourist.Business.Helper.Params;
 using CityDiscoverTourist.Business.IServices;
 using CityDiscoverTourist.Data.Models;
-using Hangfire;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json;
 
 namespace CityDiscoverTourist.API.Controllers;
 
@@ -18,7 +16,7 @@ namespace CityDiscoverTourist.API.Controllers;
 [Route("api/v{version:apiVersion}/[controller]s")]
 [ApiVersion("1.0")]
 [ApiController]
-//[Authorize]
+[Authorize]
 public class PaymentController : ControllerBase
 {
     private readonly IPaymentService _paymentService;
@@ -38,7 +36,8 @@ public class PaymentController : ControllerBase
     /// <returns></returns>
     [HttpGet]
     //[Cached(600)]
-    public ApiResponse<PageList<PaymentResponseModel>> GetAll([FromQuery] PaymentParams param, Language language = Language.vi)
+    public ApiResponse<PageList<PaymentResponseModel>> GetAll([FromQuery] PaymentParams param,
+        Language language = Language.vi)
     {
         var entity = _paymentService.GetAll(param, language);
 
@@ -77,8 +76,8 @@ public class PaymentController : ControllerBase
     /// <returns></returns>
     [HttpGet("get-by-customer-id")]
     //[Cached(600)]
-    public async Task<ApiResponse<PageList<PaymentResponseModel>>> GetByCustomerId([FromQuery]PaymentParams @params, string customerId
-    , Language language = Language.vi)
+    public async Task<ApiResponse<PageList<PaymentResponseModel>>> GetByCustomerId([FromQuery] PaymentParams @params,
+        string customerId, Language language = Language.vi)
     {
         var entity = await _paymentService.GetByCustomerId(@params, customerId, language);
 
@@ -98,7 +97,6 @@ public class PaymentController : ControllerBase
     }
 
     /// <summary>
-    ///
     /// </summary>
     /// <param name="couponCode"></param>
     /// <param name="customerId"></param>
@@ -115,6 +113,7 @@ public class PaymentController : ControllerBase
     /// </summary>
     /// <returns></returns>
     [HttpPut]
+    [Authorize(Roles = "Admin")]
     public async Task<OkObjectResult> Put()
     {
         //_recurringJobManager.AddOrUpdate("Payment", () => _paymentService.InvalidOrder(), "0 0 * * *", TimeZoneInfo.FindSystemTimeZoneById("SE Asia Standard Time"));
@@ -136,6 +135,7 @@ public class PaymentController : ControllerBase
     /// <param name="id"></param>
     /// <returns></returns>
     [HttpDelete("{id:Guid}")]
+    [Authorize(Roles = "Admin")]
     public async Task<ActionResult<ApiResponse<PaymentResponseModel>>> Delete(Guid id)
     {
         var entity = await _paymentService.DeleteAsync(id);

@@ -16,7 +16,7 @@ namespace CityDiscoverTourist.API.Controllers;
 [Route("api/v{version:apiVersion}/[controller]s")]
 [ApiVersion("1.0")]
 [ApiController]
-//[Authorize]
+[Authorize]
 public class CustomerTaskController : ControllerBase
 {
     private readonly ICustomerTaskService _customerTaskService;
@@ -187,7 +187,7 @@ public class CustomerTaskController : ControllerBase
     /// <returns></returns>
     [HttpPut("check-answer/{customerQuestId:int}")]
     public async Task<ApiResponse<CustomerTaskResponseModel>> CheckCustomerAnswer(int customerQuestId,
-        string customerReply, int questItemId ,[FromForm] List<IFormFile>? files = null)
+        string customerReply, int questItemId , [FromForm] List<IFormFile>? files = null)
     {
         var entity = await _customerTaskService.CheckCustomerAnswer(customerQuestId, customerReply, questItemId, files);
         return ApiResponse<CustomerTaskResponseModel>.Ok(entity);

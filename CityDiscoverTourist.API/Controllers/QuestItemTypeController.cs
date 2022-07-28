@@ -7,7 +7,6 @@ using CityDiscoverTourist.Business.IServices;
 using CityDiscoverTourist.Data.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json;
 
 namespace CityDiscoverTourist.API.Controllers;
 
@@ -74,6 +73,7 @@ public class QuestItemTypeController : ControllerBase
     /// <param name="data"></param>
     /// <returns></returns>
     [HttpPost]
+    [Authorize(Roles = "Admin")]
     public async Task<ApiResponse<QuestItemTypeResponseModel>> Post(QuestItemTypeRequestModel data)
     {
         var entity = await _questItemTypeService.CreateAsync(data);
@@ -86,6 +86,7 @@ public class QuestItemTypeController : ControllerBase
     /// <param name="data"></param>
     /// <returns></returns>
     [HttpPut]
+    [Authorize(Roles = "Admin")]
     public async Task<ApiResponse<QuestItemTypeResponseModel>> Put(QuestItemTypeRequestModel data)
     {
         var entity = await _questItemTypeService.UpdateAsync(data);
@@ -98,6 +99,7 @@ public class QuestItemTypeController : ControllerBase
     /// <param name="id"></param>
     /// <returns></returns>
     [HttpDelete("{id:int}")]
+    [Authorize(Roles = "Admin")]
     public async Task<ActionResult<ApiResponse<QuestItemTypeResponseModel>>> Delete(int id)
     {
         var entity = await _questItemTypeService.DeleteAsync(id);
@@ -110,6 +112,7 @@ public class QuestItemTypeController : ControllerBase
     /// <param name="id"></param>
     /// <returns></returns>
     [HttpPut("disable/{id:int}")]
+    [Authorize(Roles = "Admin")]
     public async Task<ActionResult<ApiResponse<QuestItemTypeResponseModel>>> Disable(int id)
     {
         var entity = await _questItemTypeService.DisableAsync(id);
@@ -122,6 +125,7 @@ public class QuestItemTypeController : ControllerBase
     /// <param name="id"></param>
     /// <returns></returns>
     [HttpPut("enable/{id:int}")]
+    [Authorize(Roles = "Admin")]
     public async Task<ActionResult<ApiResponse<QuestItemTypeResponseModel>>> Enable(int id)
     {
         var entity = await _questItemTypeService.EnableAsync(id);

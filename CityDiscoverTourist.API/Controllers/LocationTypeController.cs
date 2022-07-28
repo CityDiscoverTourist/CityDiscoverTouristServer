@@ -7,7 +7,6 @@ using CityDiscoverTourist.Business.IServices;
 using CityDiscoverTourist.Data.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json;
 
 namespace CityDiscoverTourist.API.Controllers;
 
@@ -73,6 +72,7 @@ public class LocationTypeController : ControllerBase
     /// <param name="data"></param>
     /// <returns></returns>
     [HttpPost]
+    [Authorize(Roles = "Admin")]
     public async Task<ApiResponse<LocationTypeResponseModel>> Post(LocationTypeRequestModel data)
     {
         var entity = await _locationTypeService.CreateAsync(data);
@@ -85,6 +85,7 @@ public class LocationTypeController : ControllerBase
     /// <param name="data"></param>
     /// <returns></returns>
     [HttpPut]
+    [Authorize(Roles = "Admin")]
     public async Task<ApiResponse<LocationTypeResponseModel>> Put([FromBody] LocationTypeRequestModel data)
     {
         var entity = await _locationTypeService.UpdateAsync(data);
@@ -97,6 +98,7 @@ public class LocationTypeController : ControllerBase
     /// <param name="id"></param>
     /// <returns></returns>
     [HttpDelete("{id:int}")]
+    [Authorize(Roles = "Admin")]
     public async Task<ActionResult<ApiResponse<LocationTypeResponseModel>>> Delete(int id)
     {
         var entity = await _locationTypeService.DeleteAsync(id);
@@ -109,6 +111,7 @@ public class LocationTypeController : ControllerBase
     /// <param name="id"></param>
     /// <returns></returns>
     [HttpPut("disable/{id:int}")]
+    [Authorize(Roles = "Admin")]
     public async Task<ActionResult<ApiResponse<LocationTypeResponseModel>>> Disable(int id)
     {
         var entity = await _locationTypeService.DisableAsync(id);
@@ -121,6 +124,7 @@ public class LocationTypeController : ControllerBase
     /// <param name="id"></param>
     /// <returns></returns>
     [HttpPut("enable/{id:int}")]
+    [Authorize(Roles = "Admin")]
     public async Task<ActionResult<ApiResponse<LocationTypeResponseModel>>> Enable(int id)
     {
         var entity = await _locationTypeService.EnableAsync(id);

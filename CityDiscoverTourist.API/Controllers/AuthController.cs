@@ -48,7 +48,7 @@ public class AuthController : ControllerBase
     }
 
     /// <summary>
-    /// login for admin
+    ///     login for admin
     /// </summary>
     /// <param name="model"></param>
     /// <returns></returns>
@@ -95,7 +95,6 @@ public class AuthController : ControllerBase
     }
 
     /// <summary>
-    ///
     /// </summary>
     /// <param name="email"></param>
     /// <returns></returns>

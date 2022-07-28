@@ -7,7 +7,6 @@ using CityDiscoverTourist.Business.IServices;
 using CityDiscoverTourist.Data.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json;
 
 namespace CityDiscoverTourist.API.Controllers;
 
@@ -75,6 +74,7 @@ public class LocationController : ControllerBase
     /// <param name="data"></param>
     /// <returns></returns>
     [HttpPost]
+    [Authorize(Roles = "Admin")]
     public async Task<ApiResponse<LocationResponseModel>> Post(LocationRequestModel data)
     {
         var entity = await _locationService.CreateAsync(data);
@@ -87,6 +87,7 @@ public class LocationController : ControllerBase
     /// <param name="data"></param>
     /// <returns></returns>
     [HttpPut]
+    [Authorize(Roles = "Admin")]
     public async Task<ApiResponse<LocationResponseModel>> Put([FromBody] LocationRequestModel data)
     {
         var entity = await _locationService.UpdateAsync(data);
@@ -111,6 +112,7 @@ public class LocationController : ControllerBase
     /// <param name="id"></param>
     /// <returns></returns>
     [HttpDelete("{id:int}")]
+    [Authorize(Roles = "Admin")]
     public async Task<ActionResult<ApiResponse<LocationResponseModel>>> Delete(int id)
     {
         var entity = await _locationService.DeleteAsync(id);
@@ -123,6 +125,7 @@ public class LocationController : ControllerBase
     /// <param name="id"></param>
     /// <returns></returns>
     [HttpPut("disable/{id:int}")]
+    [Authorize(Roles = "Admin")]
     public async Task<ActionResult<ApiResponse<LocationResponseModel>>> Disable(int id)
     {
         var entity = await _locationService.DisableAsync(id);
@@ -135,6 +138,7 @@ public class LocationController : ControllerBase
     /// <param name="id"></param>
     /// <returns></returns>
     [HttpPut("enable/{id:int}")]
+    [Authorize(Roles = "Admin")]
     public async Task<ActionResult<ApiResponse<LocationResponseModel>>> Enable(int id)
     {
         var entity = await _locationService.EnableAsync(id);
@@ -147,6 +151,7 @@ public class LocationController : ControllerBase
     /// <param name="name"></param>
     /// <returns></returns>
     [HttpGet("check")]
+    [Authorize(Roles = "Admin")]
     //[Cached(600)]
     public Task<bool> CheckExist(string name)
     {

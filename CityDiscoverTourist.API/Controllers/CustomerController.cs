@@ -5,6 +5,7 @@ using CityDiscoverTourist.Business.Helper;
 using CityDiscoverTourist.Business.Helper.Params;
 using CityDiscoverTourist.Business.IServices;
 using CityDiscoverTourist.Data.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CityDiscoverTourist.API.Controllers;
@@ -78,7 +79,6 @@ public class CustomerController : ControllerBase
     }
 
     /// <summary>
-    ///
     /// </summary>
     /// <param name="data"></param>
     /// <returns></returns>
@@ -88,6 +88,7 @@ public class CustomerController : ControllerBase
         var entity = await _customerService.UpdatePassword(data);
         return ApiResponse<ApplicationUser>.Created(entity);
     }
+
     /// <summary>
     ///     update customer status, false = inactive, true = active
     /// </summary>
@@ -95,6 +96,7 @@ public class CustomerController : ControllerBase
     /// <param name="isLock"></param>
     /// <returns></returns>
     [HttpPut("{id}/{isLock:bool}")]
+    [Authorize(Roles = "Admin")]
     public async Task<ApiResponse<CustomerResponseModel>> UpdateLockUser(string id, bool isLock)
     {
         var entity = await _customerService.UpdateUser(id, isLock);

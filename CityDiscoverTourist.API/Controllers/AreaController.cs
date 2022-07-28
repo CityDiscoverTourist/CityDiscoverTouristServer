@@ -7,7 +7,6 @@ using CityDiscoverTourist.Business.IServices;
 using CityDiscoverTourist.Data.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json;
 
 namespace CityDiscoverTourist.API.Controllers;
 
@@ -73,6 +72,7 @@ public class AreaController : ControllerBase
     /// <param name="data"></param>
     /// <returns></returns>
     [HttpPost]
+    [Authorize(Roles = "Admin")]
     public async Task<ApiResponse<AreaResponseModel>> Post(AreaRequestModel data)
     {
         var entity = await _areaService.CreateAsync(data);
@@ -85,6 +85,7 @@ public class AreaController : ControllerBase
     /// <param name="data"></param>
     /// <returns></returns>
     [HttpPut]
+    [Authorize(Roles = "Admin")]
     public async Task<ApiResponse<AreaResponseModel>> Put([FromBody] AreaRequestModel data)
     {
         var entity = await _areaService.UpdateAsync(data);
@@ -109,6 +110,7 @@ public class AreaController : ControllerBase
     /// <param name="id"></param>
     /// <returns></returns>
     [HttpPut("disable/{id:int}")]
+    [Authorize(Roles = "Admin")]
     public async Task<ActionResult<ApiResponse<AreaResponseModel>>> Disable(int id)
     {
         var entity = await _areaService.DisableAsync(id);
@@ -121,6 +123,7 @@ public class AreaController : ControllerBase
     /// <param name="id"></param>
     /// <returns></returns>
     [HttpPut("enable/{id:int}")]
+    [Authorize(Roles = "Admin")]
     public async Task<ActionResult<ApiResponse<AreaResponseModel>>> Enable(int id)
     {
         var entity = await _areaService.EnableAsync(id);
@@ -133,6 +136,7 @@ public class AreaController : ControllerBase
     /// <param name="name"></param>
     /// <returns></returns>
     [HttpGet("check")]
+    [Authorize(Roles = "Admin")]
     //[Cached(600)]
     public Task<bool> CheckExist(string name)
     {

@@ -16,7 +16,7 @@ namespace CityDiscoverTourist.API.Controllers;
 [Route("api/v{version:apiVersion}/[controller]s")]
 [ApiVersion("1.0")]
 [ApiController]
-//[Authorize]
+[Authorize]
 public class QuestItemController : ControllerBase
 {
     private readonly IQuestItemService _taskService;
@@ -73,7 +73,6 @@ public class QuestItemController : ControllerBase
     }
 
     /// <summary>
-    ///
     /// </summary>
     /// <param name="id"></param>
     /// <returns></returns>
@@ -92,6 +91,7 @@ public class QuestItemController : ControllerBase
     /// <param name="id"></param>
     /// <returns></returns>
     [HttpGet("{id:int}/not-language")]
+    [Authorize(Roles = "Admin")]
     //[Cached(600)]
     public async Task<ApiResponse<QuestItemResponseModel>> Get(int id)
     {
@@ -123,6 +123,7 @@ public class QuestItemController : ControllerBase
     /// <param name="data"></param>
     /// <returns></returns>
     [HttpPost]
+    [Authorize(Roles = "Admin")]
     public async Task<ApiResponse<QuestItemResponseModel>> Post([FromForm] QuestItemRequestModel data)
     {
         var entity = await _taskService.CreateAsync(data);
@@ -134,7 +135,8 @@ public class QuestItemController : ControllerBase
     /// <param name="data"></param>
     /// <returns></returns>
     [HttpPut]
-    public async Task<ApiResponse<QuestItemResponseModel>> Put([FromForm]QuestItemRequestModel data)
+    [Authorize(Roles = "Admin")]
+    public async Task<ApiResponse<QuestItemResponseModel>> Put([FromForm] QuestItemRequestModel data)
     {
         var entity = await _taskService.UpdateAsync(data);
         return ApiResponse<QuestItem>.Created(entity);
@@ -146,6 +148,7 @@ public class QuestItemController : ControllerBase
     /// <param name="id"></param>
     /// <returns></returns>
     [HttpDelete("{id:int}")]
+    [Authorize(Roles = "Admin")]
     public async Task<ActionResult<ApiResponse<QuestItemResponseModel>>> Delete(int id)
     {
         var entity = await _taskService.DeleteAsync(id);
@@ -158,6 +161,7 @@ public class QuestItemController : ControllerBase
     /// <param name="id"></param>
     /// <returns></returns>
     [HttpPut("disable/{id:int}")]
+    [Authorize(Roles = "Admin")]
     public async Task<ActionResult<ApiResponse<QuestItemResponseModel>>> Disable(int id)
     {
         var entity = await _taskService.DisableAsync(id);
@@ -170,6 +174,7 @@ public class QuestItemController : ControllerBase
     /// <param name="id"></param>
     /// <returns></returns>
     [HttpPut("enable/{id:int}")]
+    [Authorize(Roles = "Admin")]
     public async Task<ActionResult<ApiResponse<QuestItemResponseModel>>> Enable(int id)
     {
         var entity = await _taskService.EnableAsync(id);

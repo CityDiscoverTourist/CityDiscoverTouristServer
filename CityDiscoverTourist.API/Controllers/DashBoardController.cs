@@ -1,4 +1,5 @@
 using CityDiscoverTourist.Business.IServices;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using static CityDiscoverTourist.Business.IServices.Services.DashboardService;
 
@@ -9,12 +10,12 @@ namespace CityDiscoverTourist.API.Controllers;
 [Route("api/v{version:apiVersion}/[controller]s")]
 [ApiVersion("1.0")]
 [ApiController]
+[Authorize(Roles = "Admin")]
 public class DashboardController : ControllerBase
 {
     private readonly IDashboardService _dashBoardService;
 
     /// <summary>
-    ///
     /// </summary>
     /// <param name="dashBoardService"></param>
     public DashboardController(IDashboardService dashBoardService)
@@ -23,7 +24,6 @@ public class DashboardController : ControllerBase
     }
 
     /// <summary>
-    ///
     /// </summary>
     /// <returns></returns>
     [HttpGet]
@@ -33,7 +33,6 @@ public class DashboardController : ControllerBase
     }
 
     /// <summary>
-    ///
     /// </summary>
     /// <returns></returns>
     [HttpGet("total-revenue")]
@@ -43,7 +42,6 @@ public class DashboardController : ControllerBase
     }
 
     /// <summary>
-    ///
     /// </summary>
     /// <returns></returns>
     [HttpGet("total-user")]
@@ -53,7 +51,6 @@ public class DashboardController : ControllerBase
     }
 
     /// <summary>
-    ///
     /// </summary>
     /// <returns></returns>
     [HttpGet("total-quest")]
@@ -63,7 +60,6 @@ public class DashboardController : ControllerBase
     }
 
     /// <summary>
-    ///
     /// </summary>
     /// <returns></returns>
     [HttpGet("top-play")]

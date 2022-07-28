@@ -8,7 +8,6 @@ using CityDiscoverTourist.Business.IServices;
 using CityDiscoverTourist.Data.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json;
 
 namespace CityDiscoverTourist.API.Controllers;
 
@@ -74,11 +73,12 @@ public class QuestTypeController : ControllerBase
     }
 
     /// <summary>
-    ///   get quest type by id
+    ///     get quest type by id
     /// </summary>
     /// <param name="id"></param>
     /// <returns></returns>
     [HttpGet("{id:int}/not-language")]
+    [Authorize(Roles = "Admin")]
     //[Cached(600)]
     public async Task<ApiResponse<QuestTypeResponseModel>> Get(int id)
     {
@@ -107,6 +107,7 @@ public class QuestTypeController : ControllerBase
     /// <param name="data"></param>
     /// <returns></returns>
     [HttpPost]
+    [Authorize(Roles = "Admin")]
     public async Task<ApiResponse<QuestTypeResponseModel>> Post([FromForm] QuestTypeRequestModel data)
     {
         var entity = await _questTypeService.CreateAsync(data);
@@ -119,6 +120,7 @@ public class QuestTypeController : ControllerBase
     /// <param name="data"></param>
     /// <returns></returns>
     [HttpPut]
+    [Authorize(Roles = "Admin")]
     public async Task<ApiResponse<QuestTypeResponseModel>> Put([FromForm] QuestTypeRequestModel data)
     {
         var entity = await _questTypeService.UpdateAsync(data);
@@ -131,6 +133,7 @@ public class QuestTypeController : ControllerBase
     /// <param name="id"></param>
     /// <returns></returns>
     [HttpDelete("{id:int}")]
+    [Authorize(Roles = "Admin")]
     public async Task<ActionResult<ApiResponse<QuestTypeResponseModel>>> Delete(int id)
     {
         var entity = await _questTypeService.DeleteAsync(id);
@@ -143,6 +146,7 @@ public class QuestTypeController : ControllerBase
     /// <param name="id"></param>
     /// <returns></returns>
     [HttpPut("disable/{id:int}")]
+    [Authorize(Roles = "Admin")]
     public async Task<ActionResult<ApiResponse<QuestTypeResponseModel>>> Disable(int id)
     {
         var entity = await _questTypeService.DisableAsync(id);
@@ -155,6 +159,7 @@ public class QuestTypeController : ControllerBase
     /// <param name="id"></param>
     /// <returns></returns>
     [HttpPut("enable/{id:int}")]
+    [Authorize(Roles = "Admin")]
     public async Task<ActionResult<ApiResponse<QuestTypeResponseModel>>> Enable(int id)
     {
         var entity = await _questTypeService.EnableAsync(id);

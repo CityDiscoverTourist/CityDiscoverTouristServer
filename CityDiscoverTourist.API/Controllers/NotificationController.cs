@@ -1,8 +1,8 @@
 using CityDiscoverTourist.API.Response;
 using CityDiscoverTourist.Business.Data.RequestModel;
-using CityDiscoverTourist.Business.Data.ResponseModel;
 using CityDiscoverTourist.Business.IServices;
 using CityDiscoverTourist.Data.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CityDiscoverTourist.API.Controllers;
@@ -25,7 +25,7 @@ public class NotificationController : ControllerBase
     }
 
     /// <summary>
-    ///  this endpoint use for push notify by mobile device
+    ///     this endpoint use for push notify by mobile device
     /// </summary>
     /// <param name="notificationModel"></param>
     /// <returns></returns>
@@ -41,6 +41,7 @@ public class NotificationController : ControllerBase
     /// </summary>
     /// <returns></returns>
     [HttpGet]
+    [Authorize(Roles = "Admin")]
     public async Task<ApiResponse<List<Notification>>> GetAllNotifications(string userId)
     {
         var entity = await _notificationService.GetAllAsync(userId);
@@ -52,6 +53,7 @@ public class NotificationController : ControllerBase
     /// </summary>
     /// <param name="userId"></param>
     [HttpGet("update-notify-status/{userId}")]
+    [Authorize(Roles = "Admin")]
     public async Task UserHasRead(string userId)
     {
         await _notificationService.UserHasRead(userId);
