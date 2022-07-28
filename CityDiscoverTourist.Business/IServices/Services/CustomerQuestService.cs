@@ -120,7 +120,7 @@ public class CustomerQuestService : BaseService, ICustomerQuestService
 
         var payment = await _paymentService.Get(entity.PaymentId, Language.vi);
 
-        if (payment.Status == PaymentStatus.Pending.ToString())
+        if (payment.Status == PaymentStatus.Pending.ToString() || payment.Status == PaymentStatus.Failed.ToString())
             throw new AppException("This transaction is not completed yet");
         if (!payment.IsValid) throw new AppException("Payment is not valid");
 
@@ -151,7 +151,6 @@ public class CustomerQuestService : BaseService, ICustomerQuestService
 
         // trick to update payment isValid field
         if(numOfQuantityInCustomerQuest + 1 == ticketQuantity) await _paymentService.UpdateIsValidField(entity.PaymentId);
-
 
         return _mapper.Map<CustomerQuestResponseModel>(entity);
     }
