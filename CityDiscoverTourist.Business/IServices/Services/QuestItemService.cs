@@ -153,6 +153,7 @@ public class QuestItemService : BaseService, IQuestItemService
 
         entity.Content = JsonHelper.JsonFormat(request.Content);
         entity.Description = JsonHelper.JsonFormat(request.Description);
+        entity.UpdatedDate = CurrentDateTime();
 
         if(request.QuestItemTypeId == 2)
         {
@@ -170,7 +171,7 @@ public class QuestItemService : BaseService, IQuestItemService
             await _taskRepository.UpdateFields(entity, x => x.AnswerImageUrl!);
         }
 
-        entity = await _taskRepository.Update(entity);
+        entity = await _taskRepository.NoneUpdateFields(entity, x => x.CreatedDate!);
         return _mapper.Map<QuestItemResponseModel>(entity);
     }
 
