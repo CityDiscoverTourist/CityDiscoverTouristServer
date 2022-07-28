@@ -207,6 +207,12 @@ public class CustomerQuestService : BaseService, ICustomerQuestService
         if (reward.PercentDiscount != 0)
             await _rewardRepository.Add(reward);
 
+        var mappedData = _mapper.Map<CustomerQuestResponseModel>(entity);
+
+        mappedData.PercentDiscount = reward.PercentDiscount;
+        mappedData.RewardCode = reward.Code;
+        mappedData.PercentPointRemain = percentPointRemain;
+
         return _mapper.Map<CustomerQuestResponseModel>(entity);
     }
 

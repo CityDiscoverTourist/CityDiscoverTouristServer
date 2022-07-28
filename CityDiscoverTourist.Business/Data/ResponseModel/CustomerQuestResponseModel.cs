@@ -17,6 +17,9 @@ public class CustomerQuestResponseModel
     public Guid PaymentId { get; set; }
     public string? Status { get; set; }
     public bool IsFeedbackApproved { get; set; }
+    public Guid RewardCode { get; set; }
+    public int PercentDiscount { get; set; }
+    public double PercentPointRemain { get; set; }
 
     //public Payment? PaymentMethod { get; set; }
 }
