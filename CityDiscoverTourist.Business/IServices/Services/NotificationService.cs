@@ -2,6 +2,8 @@ using System.Net.Http.Headers;
 using AutoMapper;
 using CityDiscoverTourist.Business.Data.RequestModel;
 using CityDiscoverTourist.Business.Enums;
+using CityDiscoverTourist.Business.Helper;
+using CityDiscoverTourist.Business.Helper.Params;
 using CityDiscoverTourist.Business.HubConfig;
 using CityDiscoverTourist.Business.HubConfig.IHub;
 using CityDiscoverTourist.Business.Settings;
@@ -68,7 +70,7 @@ public class NotificationService : BaseService, INotificationService
         return response.IsSuccess() ? "Success" : "Failed";
     }
 
-    public Task<List<Notification>> GetAllAsync(string userId)
+    public PageList<Notification> GetAllAsync(QueryStringParams @params, string userId)
     {
         var notifyUser = _notifyUserRepository.GetByCondition(x => x.UserId == userId).Where(x => x.HasRead == false);
         var notify = new List<Notification>();
@@ -79,7 +81,7 @@ public class NotificationService : BaseService, INotificationService
             notify.AddRange(notification);
         }
 
-        return Task.FromResult(notify);
+        return PageList<Notification>.ToPageList(notify, @params.PageNumber, @params.PageSize);
     }
 
     public async Task<bool> UserHasRead(string userId)

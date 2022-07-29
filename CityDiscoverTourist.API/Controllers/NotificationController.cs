@@ -1,5 +1,7 @@
 using CityDiscoverTourist.API.Response;
 using CityDiscoverTourist.Business.Data.RequestModel;
+using CityDiscoverTourist.Business.Helper;
+using CityDiscoverTourist.Business.Helper.Params;
 using CityDiscoverTourist.Business.IServices;
 using CityDiscoverTourist.Data.Models;
 using Microsoft.AspNetCore.Authorization;
@@ -42,10 +44,21 @@ public class NotificationController : ControllerBase
     /// <returns></returns>
     [HttpGet]
     [Authorize(Roles = "Admin")]
-    public async Task<ApiResponse<List<Notification>>> GetAllNotifications(string userId)
+    public ApiResponse<PageList<Notification>> GetAllNotifications([FromQuery] QueryStringParams @params, string userId)
     {
-        var entity = await _notificationService.GetAllAsync(userId);
-        return ApiResponse<Notification>.Ok(entity);
+        var entity = _notificationService.GetAllAsync(@params, userId);
+
+        var metadata = new
+        {
+            entity.TotalCount,
+            entity.TotalPages,
+            entity.PageSize,
+            entity.CurrentPage,
+            entity.HasNext,
+            entity.HasPrevious
+        };
+
+        return ApiResponse<List<Notification>>.Success(entity, metadata);
     }
 
     /// <summary>
