@@ -110,7 +110,6 @@ public class QuestItemService : BaseService, IQuestItemService
             }
         }
 
-
         // set sequence for new quest item
         var questItems = _taskRepository.GetByCondition(x => x.QuestId == request.QuestId).ToList();
         if (questItems.Count == 0)
@@ -148,7 +147,6 @@ public class QuestItemService : BaseService, IQuestItemService
     {
         request.Validate();
 
-        request.ItemId ??= null;
         var entity = _mapper.Map<QuestItem>(request);
 
         entity.Content = JsonHelper.JsonFormat(request.Content);
@@ -168,6 +166,8 @@ public class QuestItemService : BaseService, IQuestItemService
 
             var imageUrl = await _blobService.UploadQuestItemImgAsync(request.Image, entity.Id, ContainerName);
             entity.AnswerImageUrl = imageUrl;
+            entity.Status = CommonStatus.Active.ToString();
+
             await _taskRepository.UpdateFields(entity, x => x.AnswerImageUrl!);
         }
 
