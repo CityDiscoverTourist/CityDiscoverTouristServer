@@ -1,6 +1,7 @@
 using CityDiscoverTourist.API.Response;
 using CityDiscoverTourist.Business.Data.RequestModel;
 using CityDiscoverTourist.Business.Data.ResponseModel;
+using CityDiscoverTourist.Business.Enums;
 using CityDiscoverTourist.Business.Helper;
 using CityDiscoverTourist.Business.Helper.Params;
 using CityDiscoverTourist.Business.IServices;
@@ -32,12 +33,14 @@ public class LocationTypeController : ControllerBase
     ///     get all location types
     /// </summary>
     /// <param name="param"></param>
+    /// <param name="language"></param>
     /// <returns></returns>
     [HttpGet]
     //[Cached(600)]
-    public ApiResponse<PageList<LocationTypeResponseModel>> GetAll([FromQuery] LocationTypeParams param)
+    public ApiResponse<PageList<LocationTypeResponseModel>> GetAll([FromQuery] LocationTypeParams param,
+        Language language = Language.vi)
     {
-        var entity = _locationTypeService.GetAll(param);
+        var entity = _locationTypeService.GetAll(param, language);
 
         var metadata = new
         {
@@ -56,12 +59,13 @@ public class LocationTypeController : ControllerBase
     ///     get location type by id
     /// </summary>
     /// <param name="id"></param>
+    /// <param name="language"></param>
     /// <returns></returns>
     [HttpGet("{id:int}")]
     //[Cached(600)]
-    public async Task<ApiResponse<LocationTypeResponseModel>> Get(int id)
+    public async Task<ApiResponse<LocationTypeResponseModel>> Get(int id, Language language = Language.vi)
     {
-        var entity = await _locationTypeService.Get(id);
+        var entity = await _locationTypeService.Get(id, language);
 
         return ApiResponse<LocationType>.Ok(entity);
     }

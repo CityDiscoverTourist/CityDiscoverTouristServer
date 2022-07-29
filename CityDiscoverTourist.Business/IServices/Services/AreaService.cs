@@ -2,6 +2,7 @@ using AutoMapper;
 using CityDiscoverTourist.Business.Data.RequestModel;
 using CityDiscoverTourist.Business.Data.ResponseModel;
 using CityDiscoverTourist.Business.Enums;
+using CityDiscoverTourist.Business.Exceptions;
 using CityDiscoverTourist.Business.Helper;
 using CityDiscoverTourist.Business.Helper.Params;
 using CityDiscoverTourist.Data.IRepositories;
@@ -23,7 +24,7 @@ public class AreaService : BaseService, IAreaService
         _sortHelper = sortHelper;
     }
 
-    public PageList<AreaResponseModel> GetAll(AreaParams @params)
+    public PageList<AreaResponseModel> GetAll(AreaParams @params, Language language)
     {
         var listAll = _areaRepository.GetAll();
 
@@ -31,19 +32,43 @@ public class AreaService : BaseService, IAreaService
 
         var sortedQuests = _sortHelper.ApplySort(listAll, @params.OrderBy);
         var mappedData = _mapper.Map<IEnumerable<AreaResponseModel>>(sortedQuests);
-        return PageList<AreaResponseModel>.ToPageList(mappedData, @params.PageNumber, @params.PageSize);
+
+        var areaResponseModels = mappedData as AreaResponseModel[] ?? mappedData.ToArray();
+        foreach (var item in areaResponseModels)
+        {
+            item.Name = ConvertLanguage(language, item.Name!);
+        }
+
+        return PageList<AreaResponseModel>.ToPageList(areaResponseModels, @params.PageNumber, @params.PageSize);
     }
 
-    public async Task<AreaResponseModel> Get(int id)
+    public async Task<AreaResponseModel> Get(int id, Language language)
     {
         var entity = await _areaRepository.Get(id);
         CheckDataNotNull("Area", entity);
+
+        entity.Name = ConvertLanguage(language, entity.Name!);
+
         return _mapper.Map<AreaResponseModel>(entity);
     }
 
     public async Task<AreaResponseModel> CreateAsync(AreaRequestModel request)
     {
+        var requestName = GetVietNameseName(request.Name!);
+
+        var existValue = _areaRepository.GetAll();
+        foreach (var exist in existValue)
+        {
+            if (Trim(ConvertLanguage(Language.vi, exist.Name)) == Trim(requestName))
+            {
+                throw new AppException("Area name is exist");
+            }
+        }
+
         var entity = _mapper.Map<Area>(request);
+
+        entity.Name = JsonHelper.JsonFormat(request.Name);
+
         entity = await _areaRepository.Add(entity);
         return _mapper.Map<AreaResponseModel>(entity);
     }
@@ -51,6 +76,10 @@ public class AreaService : BaseService, IAreaService
     public async Task<AreaResponseModel> UpdateAsync(AreaRequestModel request)
     {
         var entity = _mapper.Map<Area>(request);
+
+        entity.Name = JsonHelper.JsonFormat(request.Name);
+
+
         entity = await _areaRepository.Update(entity);
         return _mapper.Map<AreaResponseModel>(entity);
     }
@@ -74,7 +103,7 @@ public class AreaService : BaseService, IAreaService
             .Include(data => data.Locations).ToList().FirstOrDefault();
         if (area == null || area.Locations!.Count != 0) return _mapper.Map<AreaResponseModel>(area);
 
-        area!.Status = CommonStatus.Inactive.ToString();
+        area.Status = CommonStatus.Inactive.ToString();
         await _areaRepository.UpdateFields(area, r => r.Status!);
 
         return _mapper.Map<AreaResponseModel>(area);
@@ -90,13 +119,9 @@ public class AreaService : BaseService, IAreaService
 
     public async Task<bool> CheckExisted(string name)
     {
-        var result = await _areaRepository.GetByCondition(x => x.Name == name.Trim()).AnyAsync();
+        var requestName = GetVietNameseName(name);
+        var result = await _areaRepository.GetByCondition(x => x.Name == requestName.Trim()).AnyAsync();
         return result;
-    }
-
-    public Task GetMessage(string message)
-    {
-        throw new NotImplementedException();
     }
 
     private static void Search(ref IQueryable<Area> entities, AreaParams param)

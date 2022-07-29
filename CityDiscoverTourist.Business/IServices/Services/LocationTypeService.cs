@@ -25,7 +25,7 @@ public class LocationTypeService : BaseService, ILocationTypeService
         _sortHelper = sortHelper;
     }
 
-    public PageList<LocationTypeResponseModel> GetAll(LocationTypeParams @params)
+    public PageList<LocationTypeResponseModel> GetAll(LocationTypeParams @params, Language language)
     {
         var listAll = _locationTypeRepository.GetAll();
 
@@ -34,13 +34,23 @@ public class LocationTypeService : BaseService, ILocationTypeService
         var sortedQuests = _sortHelper.ApplySort(listAll, @params.OrderBy);
 
         var mappedData = _mapper.Map<IEnumerable<LocationTypeResponseModel>>(sortedQuests);
-        return PageList<LocationTypeResponseModel>.ToPageList(mappedData, @params.PageNumber, @params.PageSize);
+
+        var locationTypeResponseModels = mappedData as LocationTypeResponseModel[] ?? mappedData.ToArray();
+        foreach (var item in locationTypeResponseModels)
+        {
+            item.Name = ConvertLanguage(language, item.Name!);
+        }
+
+        return PageList<LocationTypeResponseModel>.ToPageList(locationTypeResponseModels, @params.PageNumber, @params.PageSize);
     }
 
-    public async Task<LocationTypeResponseModel> Get(int id)
+    public async Task<LocationTypeResponseModel> Get(int id, Language language)
     {
         var entity = await _locationTypeRepository.Get(id);
         CheckDataNotNull("LocationType", entity);
+
+        entity.Name = ConvertLanguage(language, entity.Name!);
+
         return _mapper.Map<LocationTypeResponseModel>(entity);
     }
 
@@ -59,13 +69,20 @@ public class LocationTypeService : BaseService, ILocationTypeService
         }
 
         var entity = _mapper.Map<LocationType>(request);
+
+        entity.Name = JsonHelper.JsonFormat(request.Name);
+
         entity = await _locationTypeRepository.Add(entity);
+
         return _mapper.Map<LocationTypeResponseModel>(entity);
     }
 
     public async Task<LocationTypeResponseModel> UpdateAsync(LocationTypeRequestModel request)
     {
         var entity = _mapper.Map<LocationType>(request);
+
+        entity.Name = JsonHelper.JsonFormat(request.Name);
+
         entity = await _locationTypeRepository.Update(entity);
         return _mapper.Map<LocationTypeResponseModel>(entity);
     }

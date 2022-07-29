@@ -48,12 +48,12 @@ public class CityService : BaseService, ICityService
     public async Task<CityResponseModel> CreateAsync(CityRequestModel request)
     {
         request.Validate();
-        var requestName = GetVietNameseName(request.Name!);
+        //var requestName = GetVietNameseName(request.Name!);
 
         var existValue = _cityRepository.GetAll();
         foreach (var exist in existValue)
         {
-            if (Trim(ConvertLanguage(Language.vi, exist.Name)) == Trim(requestName))
+            if (Trim(exist.Name!) == Trim(request.Name!))
             {
                 throw new AppException("City name is exist");
             }

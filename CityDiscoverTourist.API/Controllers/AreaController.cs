@@ -1,6 +1,7 @@
 using CityDiscoverTourist.API.Response;
 using CityDiscoverTourist.Business.Data.RequestModel;
 using CityDiscoverTourist.Business.Data.ResponseModel;
+using CityDiscoverTourist.Business.Enums;
 using CityDiscoverTourist.Business.Helper;
 using CityDiscoverTourist.Business.Helper.Params;
 using CityDiscoverTourist.Business.IServices;
@@ -30,13 +31,14 @@ public class AreaController : ControllerBase
     ///     get all areas
     /// </summary>
     /// <param name="param"></param>
+    /// <param name="language"></param>
     /// <returns></returns>
     [HttpGet]
     [AllowAnonymous]
     //[Cached(600)]
-    public ApiResponse<PageList<AreaResponseModel>> GetAll([FromQuery] AreaParams param)
+    public ApiResponse<PageList<AreaResponseModel>> GetAll([FromQuery] AreaParams param, Language language = Language.vi)
     {
-        var entity = _areaService.GetAll(param);
+        var entity = _areaService.GetAll(param, language);
 
         var metadata = new
         {
@@ -55,13 +57,14 @@ public class AreaController : ControllerBase
     ///     get area by id
     /// </summary>
     /// <param name="id"></param>
+    /// <param name="language"></param>
     /// <returns></returns>
     [HttpGet("{id:int}")]
     [AllowAnonymous]
     //[Cached(600)]
-    public async Task<ApiResponse<AreaResponseModel>> Get(int id)
+    public async Task<ApiResponse<AreaResponseModel>> Get(int id, Language language = Language.vi)
     {
-        var entity = await _areaService.Get(id);
+        var entity = await _areaService.Get(id, language);
 
         return ApiResponse<Area>.Ok(entity);
     }

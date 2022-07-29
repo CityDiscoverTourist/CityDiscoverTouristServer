@@ -51,12 +51,11 @@ public class LocationService : BaseService, ILocationService
     public async Task<LocationResponseModel> CreateAsync(LocationRequestModel request)
     {
         request.Validate();
-        var requestName = GetVietNameseName(request.Name!);
 
         var existValue = _locationRepository.GetAll();
         foreach (var exist in existValue)
         {
-            if (Trim(ConvertLanguage(Language.vi, exist.Name)) == Trim(requestName))
+            if (Trim(exist.Name!) == Trim(request.Name!))
             {
                 throw new AppException("Location name is exist");
             }
