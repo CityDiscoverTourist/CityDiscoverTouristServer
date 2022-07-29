@@ -11,7 +11,7 @@ using Newtonsoft.Json;
 
 namespace CityDiscoverTourist.Business.IServices.Services;
 
-public class FacebookService : IFacebookService
+public class FacebookService : BaseService, IFacebookService
 {
     private const string FacebookUri = "https://graph.facebook.com/v2.8/";
     private readonly IAuthService _authService;
@@ -75,7 +75,7 @@ public class FacebookService : IFacebookService
             new (JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
             new (ClaimTypes.Email, facebookUser.Email!),
             new (ClaimTypes.Role, Role.Customer.ToString()),
-            new (ClaimTypes.Expiration, DateTime.Now.AddHours(1).ToString(CultureInfo.CurrentCulture))
+            new (ClaimTypes.Expiration, CurrentDateTime().AddHours(1).ToString(CultureInfo.CurrentCulture))
         };
 
         var accessToken = _authService.GetJwtToken(authClaims);
