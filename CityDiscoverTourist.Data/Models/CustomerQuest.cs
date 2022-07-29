@@ -18,7 +18,7 @@ public class CustomerQuest: BaseEntity
 
     public ApplicationUser? Customer { get; set; }
     public string? CustomerId { get; set; }
-    public bool IsFeedbackApproved { get; set; }
+    public bool IsFeedbackApproved { get; set; } = true;
 
     public List<CustomerTask>? CustomerTasks { get; set; }
 }

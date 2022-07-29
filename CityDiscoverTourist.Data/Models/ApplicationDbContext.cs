@@ -27,6 +27,7 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
             .HasForeignKey(x => x.UserId);
         builder.Entity<NotifyUser>().HasOne<Notification>(x => x.Notification).WithMany(x => x.NotifyUsers)
             .HasForeignKey(x => x.NotifyId);
+        builder.Entity<CustomerQuest>().Property(x => x.IsFeedbackApproved).HasDefaultValueSql("(CONVERT([bit],(1)))");
         /*builder.Entity<CustomerAnswer>().HasKey(c => new { c.QuestItemId, c.CustomerTaskId });
 
         builder.Entity<CustomerAnswer>().HasOne(x => x.QuestItem)

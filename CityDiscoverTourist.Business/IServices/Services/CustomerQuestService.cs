@@ -223,7 +223,9 @@ public class CustomerQuestService : BaseService, ICustomerQuestService
     public Task<PageList<CommentResponseModel>> ShowComments(int questId, CustomerQuestParams param)
     {
         var comments = _customerQuestRepository.GetAll().Where(x => x.QuestId == questId && x.IsFinished == true)
-            .OrderByDescending(x => x.CreatedDate);
+            .OrderByDescending(x => x.CreatedDate).AsNoTracking();
+
+        Search(ref comments, param);
 
         var mappedData = _mapper.Map<IEnumerable<CommentResponseModel>>(comments);
 
@@ -283,6 +285,8 @@ public class CustomerQuestService : BaseService, ICustomerQuestService
         }
         if (param.IsFinished != null)
             entities = entities.Where(x => x.IsFinished == param.IsFinished);
+        if(param.IsFeedbackApproved != null)
+            entities = entities.Where(x => x.IsFeedbackApproved == param.IsFeedbackApproved);
     }
 
     private int CountQuestItemInQuest(int questId)

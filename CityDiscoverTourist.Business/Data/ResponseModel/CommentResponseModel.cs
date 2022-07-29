@@ -9,4 +9,5 @@ public class CommentResponseModel
     public string? FeedBack { get; set; }
     public int Rating { get; set; }
     public DateTime? CreatedDate { get; set; }
+    public bool IsFeedbackApproved { get; set; }
 }

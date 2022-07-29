@@ -13,7 +13,7 @@ namespace CityDiscoverTourist.Data.Migrations
                 table: "CustomerQuests",
                 type: "bit",
                 nullable: false,
-                defaultValue: false);
+                defaultValue: true);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
