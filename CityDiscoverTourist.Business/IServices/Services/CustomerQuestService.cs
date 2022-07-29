@@ -82,8 +82,10 @@ public class CustomerQuestService : BaseService, ICustomerQuestService
 
         entity.Rating = comment.Rating;
         entity.FeedBack = comment.FeedBack;
+        entity.IsFeedbackApproved = true;
 
-        var result = await _customerQuestRepository.UpdateFields(entity, x => x.Rating, x => x.FeedBack!);
+        var result = await _customerQuestRepository.UpdateFields(entity, x => x.Rating,
+            x => x.FeedBack!, x => x.IsFeedbackApproved);
 
         return _mapper.Map<CustomerQuestResponseModel>(result);
     }
