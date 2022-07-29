@@ -9,6 +9,7 @@ using CityDiscoverTourist.Business.Helper.Params;
 using CityDiscoverTourist.Data.IRepositories;
 using CityDiscoverTourist.Data.Models;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using static System.Double;
 
 namespace CityDiscoverTourist.Business.IServices.Services;
@@ -42,7 +43,8 @@ public class CustomerQuestService : BaseService, ICustomerQuestService
 
     public PageList<CustomerQuestResponseModel> GetAll(CustomerQuestParams @params)
     {
-        var listAll = _customerQuestRepository.GetAll();
+        var listAll = _customerQuestRepository.GetAll()
+            .OrderByDescending(x => x.CreatedDate).AsNoTracking();
 
         Search(ref listAll, @params);
 
