@@ -70,7 +70,7 @@ public class NotificationService : BaseService, INotificationService
         return response.IsSuccess() ? "Success" : "Failed";
     }
 
-    public PageList<Notification> GetAllAsync(QueryStringParams @params, string userId)
+    public PageList<Notification> GetAllAsync(BaseParam @params, string userId)
     {
         var notifyUser = _notifyUserRepository.GetByCondition(x => x.UserId == userId).Where(x => x.HasRead == false);
         var notify = new List<Notification>();

@@ -44,7 +44,7 @@ public class NotificationController : ControllerBase
     /// <returns></returns>
     [HttpGet]
     [Authorize(Roles = "Admin")]
-    public ApiResponse<PageList<Notification>> GetAllNotifications([FromQuery] QueryStringParams @params, string userId)
+    public ApiResponse<PageList<Notification>> GetAllNotifications([FromQuery] BaseParam @params, string userId)
     {
         var entity = _notificationService.GetAllAsync(@params, userId);
 

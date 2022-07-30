@@ -9,7 +9,7 @@ namespace CityDiscoverTourist.Business.IServices;
 public interface INotificationService
 {
     public Task<string> SendNotification(NotificationRequestModel notificationRequestModel);
-    public PageList<Notification> GetAllAsync(QueryStringParams @params, string userId);
+    public PageList<Notification> GetAllAsync(BaseParam @params, string userId);
     public Task<bool> UserHasRead(string userId);
     public Task CreateAsync(NotifyUserRequestModel request);
 
