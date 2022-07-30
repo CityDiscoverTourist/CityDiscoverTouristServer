@@ -121,10 +121,17 @@ public class LocationTypeService : BaseService, ILocationTypeService
         return _mapper.Map<LocationTypeResponseModel>(entity);
     }
 
-    public async Task<bool> CheckExisted(string name)
+    public Task<bool> CheckExisted(string name)
     {
-        var result = await _locationTypeRepository.GetByCondition(x => x.Name == name.Trim()).AnyAsync();
-        return result;
+        var existValue = _locationTypeRepository.GetAll();
+        foreach (var exist in existValue)
+        {
+            if (Trim(ConvertLanguage(Language.vi, exist.Name)) == Trim(name))
+            {
+                return Task.FromResult((true));
+            }
+        }
+        return Task.FromResult(false);
     }
 
     private static void Search(ref IQueryable<LocationType> entities, LocationTypeParams param)

@@ -117,11 +117,17 @@ public class AreaService : BaseService, IAreaService
         return _mapper.Map<AreaResponseModel>(area);
     }
 
-    public async Task<bool> CheckExisted(string name)
+    public Task<bool> CheckExisted(string name)
     {
-        var requestName = GetVietNameseName(name);
-        var result = await _areaRepository.GetByCondition(x => x.Name == requestName.Trim()).AnyAsync();
-        return result;
+        var existValue = _areaRepository.GetAll();
+        foreach (var exist in existValue)
+        {
+            if (Trim(ConvertLanguage(Language.vi, exist.Name)) == Trim(name))
+            {
+                return Task.FromResult((true));
+            }
+        }
+        return Task.FromResult(false);
     }
 
     private static void Search(ref IQueryable<Area> entities, AreaParams param)
