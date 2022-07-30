@@ -80,6 +80,7 @@ public class CustomerQuestController : ControllerBase
     /// <returns></returns>
     [HttpGet("show-comments/{questId:int}")]
     //[Cached(600)]
+    [AllowAnonymous]
     public async Task<ApiResponse<PageList<CommentResponseModel>>> GetComments(int questId,
         [FromQuery] CustomerQuestParams param)
     {
@@ -105,6 +106,7 @@ public class CustomerQuestController : ControllerBase
     /// <returns></returns>
     [HttpGet("get-by-customer-id")]
     //[Cached(600)]
+    [AllowAnonymous]
     public async Task<ApiResponse<List<CustomerQuestResponseModel>>> GetByCustomerId(string id)
     {
         var entity = await _customerQuestService.GetByCustomerId(id);
