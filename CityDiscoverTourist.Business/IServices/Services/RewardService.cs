@@ -7,6 +7,7 @@ using CityDiscoverTourist.Business.Helper.Params;
 using CityDiscoverTourist.Data.IRepositories;
 using CityDiscoverTourist.Data.Models;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 
 namespace CityDiscoverTourist.Business.IServices.Services;
 
@@ -28,7 +29,7 @@ public class RewardService : BaseService, IRewardService
 
     public PageList<RewardResponseModel> GetAll(RewardParams @params)
     {
-        var listAll = _rewardRepository.GetAll();
+        var listAll = _rewardRepository.GetAll().OrderByDescending(x => x.ReceivedDate).AsNoTracking();
 
         Search(ref listAll, @params);
 
