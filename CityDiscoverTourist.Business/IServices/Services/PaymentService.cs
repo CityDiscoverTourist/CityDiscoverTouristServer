@@ -195,6 +195,8 @@ public class PaymentService : BaseService, IPaymentService
             item.QuestName = ConvertLanguage(language, quest.Title);
             item.QuestDescription = ConvertLanguage(language, quest.Description);
             item.ImagePath = _questRepository.Get(item.QuestId).Result.ImagePath;
+
+            if(item.CreatedDate.AddDays(2).Date < CurrentDateTime().Date) item.IsValid = false;
         }
 
         return PageList<PaymentResponseModel>.ToPageList(mappedData, @params.PageNumber, @params.PageSize);

@@ -157,7 +157,7 @@ public class QuestTypeService : BaseService, IQuestTypeService
         await _questTypeRepository.UpdateFields(entity, r => r.ImagePath!);
 
         //return quest type name vi
-        var objTitle = JObject.Parse(entity!.Name!);
+        var objTitle = JObject.Parse(entity.Name!);
         var name = (string) objTitle["vi"]!;
         entity.Name = name;
 
