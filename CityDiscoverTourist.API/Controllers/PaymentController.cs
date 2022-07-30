@@ -125,6 +125,7 @@ public class PaymentController : ControllerBase
     /// </summary>
     /// <returns></returns>
     [HttpPost("callback")]
+    [AllowAnonymous]
     public Task<PaymentResponseModel> Callback([FromBody] MomoRequestModel dto)
     {
         return _paymentService.UpdateStatusWhenSuccess(dto);
