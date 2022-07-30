@@ -71,6 +71,19 @@ public class LocationTypeController : ControllerBase
     }
 
     /// <summary>
+    ///
+    /// </summary>
+    /// <param name="id"></param>
+    /// <returns></returns>
+    [HttpGet("{id:int}/not-language")]
+    //[Cached(600)]
+    public async Task<ApiResponse<LocationTypeResponseModel>> Get(int id)
+    {
+        var entity = await _locationTypeService.Get(id);
+
+        return ApiResponse<LocationType>.Ok(entity);
+    }
+    /// <summary>
     ///     create location type
     /// </summary>
     /// <param name="data"></param>

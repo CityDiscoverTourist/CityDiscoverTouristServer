@@ -84,6 +84,20 @@ public class NotificationService : BaseService, INotificationService
         return PageList<Notification>.ToPageList(notify, @params.PageNumber, @params.PageSize);
     }
 
+    public PageList<Notification> GetAllNotifications(BaseParam @params, string userId)
+    {
+        var notifyUser = _notifyUserRepository.GetByCondition(x => x.UserId == userId);
+        var notify = new List<Notification>();
+        foreach (var item in notifyUser)
+        {
+            var notification = _notificationRepository.GetByCondition(x => x.Id == item.NotifyId).ToList().OrderByDescending(x => x.CreatedDate);
+
+            notify.AddRange(notification);
+        }
+
+        return PageList<Notification>.ToPageList(notify, @params.PageNumber, @params.PageSize);
+    }
+
     public async Task<bool> UserHasRead(string userId)
     {
         var notifyUser = _notifyUserRepository.GetByCondition(x => x.UserId == userId).Where(x => x.HasRead == false);

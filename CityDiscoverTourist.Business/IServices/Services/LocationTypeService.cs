@@ -8,6 +8,7 @@ using CityDiscoverTourist.Business.Helper.Params;
 using CityDiscoverTourist.Data.IRepositories;
 using CityDiscoverTourist.Data.Models;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json.Linq;
 
 namespace CityDiscoverTourist.Business.IServices.Services;
 
@@ -50,6 +51,19 @@ public class LocationTypeService : BaseService, ILocationTypeService
         CheckDataNotNull("LocationType", entity);
 
         entity.Name = ConvertLanguage(language, entity.Name!);
+
+        return _mapper.Map<LocationTypeResponseModel>(entity);
+    }
+
+    public async Task<LocationTypeResponseModel> Get(int id)
+    {
+        var entity = await _locationTypeRepository.Get(id);
+        CheckDataNotNull("LocationType", entity);
+
+        var objTitle = JObject.Parse(entity.Name!);
+        var title = (string) objTitle["vi"]! + " | " + (string) objTitle["en"]!;
+
+        entity.Name = title;
 
         return _mapper.Map<LocationTypeResponseModel>(entity);
     }

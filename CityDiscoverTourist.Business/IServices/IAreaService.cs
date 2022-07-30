@@ -10,6 +10,7 @@ public interface IAreaService
 {
     public PageList<AreaResponseModel> GetAll(AreaParams @params, Language language = Language.vi);
     public Task<AreaResponseModel> Get(int id, Language language = Language.vi);
+    public Task<AreaResponseModel> Get(int id);
     public Task<AreaResponseModel> CreateAsync(AreaRequestModel request);
     public Task<AreaResponseModel> UpdateAsync(AreaRequestModel request);
     public Task<AreaResponseModel> DeleteAsync(int id);

@@ -70,6 +70,20 @@ public class AreaController : ControllerBase
     }
 
     /// <summary>
+    ///
+    /// </summary>
+    /// <param name="id"></param>
+    /// <returns></returns>
+    [HttpGet("{id:int}/not-language")]
+    [Authorize(Roles = "Admin")]
+    //[Cached(600)]
+    public async Task<ApiResponse<AreaResponseModel>> Get(int id)
+    {
+        var entity = await _areaService.Get(id);
+
+        return ApiResponse<Area>.Ok(entity);
+    }
+    /// <summary>
     ///     create area
     /// </summary>
     /// <param name="data"></param>

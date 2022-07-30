@@ -10,6 +10,7 @@ public interface ILocationTypeService
 {
     public PageList<LocationTypeResponseModel> GetAll(LocationTypeParams @params, Language language = Language.vi);
     public Task<LocationTypeResponseModel> Get(int id, Language language = Language.vi);
+    public Task<LocationTypeResponseModel> Get(int id);
     public Task<LocationTypeResponseModel> CreateAsync(LocationTypeRequestModel request);
     public Task<LocationTypeResponseModel> UpdateAsync(LocationTypeRequestModel request);
     public Task<LocationTypeResponseModel> DeleteAsync(int id);

@@ -62,6 +62,31 @@ public class NotificationController : ControllerBase
     }
 
     /// <summary>
+    ///
+    /// </summary>
+    /// <param name="params"></param>
+    /// <param name="userId"></param>
+    /// <returns></returns>
+    [HttpGet("get-all")]
+    [Authorize(Roles = "Admin")]
+    public ApiResponse<PageList<Notification>> GetAll([FromQuery] BaseParam @params, string userId)
+    {
+        var entity = _notificationService.GetAllNotifications(@params, userId);
+
+        var metadata = new
+        {
+            entity.TotalCount,
+            entity.TotalPages,
+            entity.PageSize,
+            entity.CurrentPage,
+            entity.HasNext,
+            entity.HasPrevious
+        };
+
+        return ApiResponse<List<Notification>>.Success(entity, metadata);
+    }
+
+    /// <summary>
     ///     use this to update the notification status of admin is read or not
     /// </summary>
     /// <param name="userId"></param>

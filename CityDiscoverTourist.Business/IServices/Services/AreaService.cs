@@ -8,6 +8,7 @@ using CityDiscoverTourist.Business.Helper.Params;
 using CityDiscoverTourist.Data.IRepositories;
 using CityDiscoverTourist.Data.Models;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json.Linq;
 
 namespace CityDiscoverTourist.Business.IServices.Services;
 
@@ -48,6 +49,19 @@ public class AreaService : BaseService, IAreaService
         CheckDataNotNull("Area", entity);
 
         entity.Name = ConvertLanguage(language, entity.Name!);
+
+        return _mapper.Map<AreaResponseModel>(entity);
+    }
+
+    public async Task<AreaResponseModel> Get(int id)
+    {
+        var entity = await _areaRepository.Get(id);
+        CheckDataNotNull("Area", entity);
+
+        var objTitle = JObject.Parse(entity.Name!);
+        var title = (string) objTitle["vi"]! + " | " + (string) objTitle["en"]!;
+
+        entity.Name = title;
 
         return _mapper.Map<AreaResponseModel>(entity);
     }

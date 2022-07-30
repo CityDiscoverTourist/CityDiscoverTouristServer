@@ -36,6 +36,11 @@ public class RewardService : BaseService, IRewardService
         var sortedQuests = _sortHelper.ApplySort(listAll, @params.OrderBy);
         var mappedData = _mapper.Map<IEnumerable<RewardResponseModel>>(sortedQuests);
 
+        foreach (var item in mappedData)
+        {
+            item.CustomerEmail = _userManager!.FindByIdAsync(item.CustomerId).Result.Email;
+        }
+
         return PageList<RewardResponseModel>.ToPageList(mappedData, @params.PageNumber, @params.PageSize);
     }
 
