@@ -16,7 +16,7 @@ namespace CityDiscoverTourist.API.Controllers;
 [Route("api/v{version:apiVersion}/[controller]s")]
 [ApiVersion("1.0")]
 [ApiController]
-//[Authorize]
+[Authorize]
 public class QuestController : ControllerBase
 {
     private readonly IQuestService _questService;
@@ -94,7 +94,7 @@ public class QuestController : ControllerBase
     /// <param name="userId"></param>
     /// <returns></returns>
     [HttpPost]
-    //[Authorize(Roles = "Admin")]
+    [Authorize(Roles = "Admin")]
     public async Task<ApiResponse<QuestResponseModel>> Post([FromForm] QuestRequestModel data)
     {
         var entity = await _questService.CreateAsync(data);
