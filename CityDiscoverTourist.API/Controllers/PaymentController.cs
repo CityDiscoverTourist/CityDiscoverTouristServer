@@ -104,6 +104,7 @@ public class PaymentController : ControllerBase
     /// <param name="totalPrice"></param>
     /// <returns></returns>
     [HttpPost("check-coupon")]
+    [AllowAnonymous]
     public async Task<ApiResponse<string[]>> CheckCoupon(Guid couponCode, string customerId, float totalPrice)
     {
         var entity = await _paymentService.CheckCoupon(couponCode, customerId, totalPrice);
