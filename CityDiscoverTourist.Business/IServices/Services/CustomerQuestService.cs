@@ -150,6 +150,7 @@ public class CustomerQuestService : BaseService, ICustomerQuestService
         entity.Status = CommonStatus.Active.ToString();
         entity.BeginPoint = CalculateBeginPoint(payment.QuestId);
         entity.QuestId = payment.QuestId;
+        entity.CreatedDate = CurrentDateTime();
 
         entity = await _customerQuestRepository.Add(entity);
 
