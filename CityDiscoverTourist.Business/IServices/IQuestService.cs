@@ -10,7 +10,7 @@ public interface IQuestService
 {
     public PageList<QuestResponseModel> GetAll( QuestParams param, Language language);
     public Task<QuestResponseModel> Get(int id, Language language);
-    public Task<QuestResponseModel> CreateAsync(QuestRequestModel request, string? userId = null);
+    public Task<QuestResponseModel> CreateAsync(QuestRequestModel request);
     public Task<QuestResponseModel> UpdateAsync(QuestRequestModel request);
     public Task<QuestResponseModel> DeleteAsync(int questId);
     public Task<QuestResponseModel> DisableAsync(int questId);

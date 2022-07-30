@@ -196,7 +196,7 @@ public class QuestService : BaseService, IQuestService
         return mappedData;
     }
 
-    public async Task<QuestResponseModel> CreateAsync(QuestRequestModel request, string? userId)
+    public async Task<QuestResponseModel> CreateAsync(QuestRequestModel request)
     {
         request.Validate();
         var requestName = GetVietNameseName(request.Title!);
@@ -269,7 +269,7 @@ public class QuestService : BaseService, IQuestService
     }
 
     public async Task<QuestResponseModel> DisableAsync(int questId)
-    {             
+    {
         var entity = await _questRepository.Get(questId);
         entity.Status = CommonStatus.Inactive.ToString();
         await _questRepository.UpdateFields(entity, r => r.Status!);
