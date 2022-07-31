@@ -198,7 +198,7 @@ public class CustomerTaskService : BaseService, ICustomerTaskService
             // image is not identical
             if (!matches)
             {
-                await SaveCustomerAnswer(customerTask, files.ToString(), NoteCustomerAnswer.WrongAnswer);
+                //await SaveCustomerAnswer(customerTask, files.ToString(), NoteCustomerAnswer.WrongAnswer);
                 return _mapper.Map<CustomerTaskResponseModel>(customerTask);
             }
             // identical image
@@ -207,7 +207,7 @@ public class CustomerTaskService : BaseService, ICustomerTaskService
 
             await _customerTaskRepo.UpdateFields(customerTask, r => r.Status!, r => r.IsFinished);
 
-            await SaveCustomerAnswer(customerTask, files.ToString(), NoteCustomerAnswer.CorrectAnswer);
+            //await SaveCustomerAnswer(customerTask, files.ToString(), NoteCustomerAnswer.CorrectAnswer);
 
             await _hubContext.Clients.All.UpdateCustomerTask(customerTask);
 
