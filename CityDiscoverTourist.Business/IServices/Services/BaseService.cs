@@ -41,7 +41,7 @@ public class BaseService
     // check file is image or not
     protected static bool IsImage(string fileName)
     {
-        return fileName.EndsWith(".jpg") || fileName.EndsWith(".png") || fileName.EndsWith(".jpeg") || fileName.EndsWith(".gif")
+            return fileName.EndsWith(".jpg") || fileName.EndsWith(".png") || fileName.EndsWith(".jpeg") || fileName.EndsWith(".gif")
                || fileName.EndsWith(".bmp") || fileName.EndsWith(".tiff");
     }
 }

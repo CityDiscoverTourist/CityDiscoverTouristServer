@@ -145,14 +145,14 @@ public class QuestTypeService : BaseService, IQuestTypeService
                 throw new AppException("QuestType name is exist");
             }
         }
-
         var entity = _mapper.Map<QuestType>(request);
+
+        entity.Name = JsonHelper.JsonFormat(request.Name);
+
         entity = await _questTypeRepository.Add(entity);
 
         var imgPath = await _blobService.UploadQuestImgAndReturnImgPathAsync(request.Image, entity.Id, "quest-type");
         entity.ImagePath = imgPath;
-
-        entity.Name = JsonHelper.JsonFormat(request.Name);
 
         await _questTypeRepository.UpdateFields(entity, r => r.ImagePath!);
 

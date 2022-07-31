@@ -34,7 +34,6 @@ public class BlobService : BaseService, IBlobService
     public async Task<string> UploadQuestImgAndReturnImgPathAsync(IFormFile? file, int questId, string containerName)
     {
         if (file == null) return null!;
-        if (!IsImage(file.Name)) throw new AppException("File is not an image");
 
         var renameFile = file.FileName.Replace(file.FileName, containerName);
 
@@ -48,7 +47,6 @@ public class BlobService : BaseService, IBlobService
     public async Task<string> UploadAvatarImgPathAsync(IFormFile? file, string customerId, string containerName)
     {
         if (file == null) return null!;
-        if (!IsImage(file.Name)) throw new AppException("File is not an image");
 
         var renameFile = file.FileName.Replace(file.FileName, containerName);
 
@@ -70,8 +68,6 @@ public class BlobService : BaseService, IBlobService
 
         for (var i = 0; i < file.Length; i++)
         {
-            if(!IsImage(file[i]!.FileName)) throw new AppException("File is not an image");
-
             var containerClient = _blobServiceClient.GetBlobContainerClient(containerName);
             var blobClient = containerClient.GetBlobClient(questItemId + "/" + file[i]!.FileName);
 
