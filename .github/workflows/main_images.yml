@@ -22,7 +22,7 @@ jobs:
     - name: Docker build and push
       uses: mr-smithers-excellent/docker-build-push@v5
       with:
-        image: donephit/image
+        image: donephit/city-discover-tourist-server
         tags: v1, latest
         registry: docker.io
         username: ${{ secrets.DOCKER_USERNAME }}
@@ -43,4 +43,4 @@ jobs:
         app-name: 'images'
         slot-name: 'production'
         publish-profile: ${{ secrets.AzureAppService_PublishProfile_d5f5a8f867d04147b8198bda71b64980 }}
-        images: donephit/image
+        images: donephit/city-discover-tourist-server
