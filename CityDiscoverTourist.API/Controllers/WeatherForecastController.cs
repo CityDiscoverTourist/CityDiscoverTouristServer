@@ -224,10 +224,9 @@ public class WeatherForecastController : ControllerBase
     }
 
     [HttpPost("demo2")]
-    public OkObjectResult Demo2([FromForm] List<IFormFile> file)
+    public Task<long> Demo2([FromForm] List<IFormFile> file)
     {
-        var a = "Xin chào";
-        return Ok(a.RemoveDiacritics());
+        return _imageComparison.CompareImages(110, file);
     }
 
     private static Image<Gray, byte> ConvertImage(byte[] image1)

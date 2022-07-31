@@ -1,3 +1,4 @@
+using System.Net.Mime;
 using Emgu.CV;
 using Emgu.CV.CvEnum;
 using Emgu.CV.Features2D;
@@ -110,7 +111,8 @@ public class ImageComparison : IImageComparison
         var listImage = new List<Image<Gray, byte>>();
         foreach (var item in image)
         {
-            var mat = new Mat();
+            //re-size the image to match the size of the base image
+            var mat = new Mat(100, 200, DepthType.Cv8U, 0);
             CvInvoke.Imdecode(item, ImreadModes.Grayscale, mat);
             var exampleImage = mat.ToImage<Gray, byte>();
             listImage.Add(exampleImage);
@@ -124,6 +126,7 @@ public class ImageComparison : IImageComparison
         var listImage = new List<byte[]>();
         foreach (var item in file)
         {
+            //re-size image to fit the model
             var image = item.OpenReadStream();
             var bytes = new byte[image.Length];
             image.Read(bytes, 0, bytes.Length);
