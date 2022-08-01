@@ -60,7 +60,7 @@ public class ImageComparison : IImageComparison
         var listByteScene = ConvertImageFromUser(image);
         var listImageScene = ConvertImage(listByteScene);
 
-        return CompareImages(listImageBase, listImageScene) > 1000;
+        return CompareImages(listImageBase, listImageScene) > 500;
     }
 
     private static long CompareImages(List<Image<Gray, byte>> listImageBase, List<Image<Gray, byte>> listImageScene)
