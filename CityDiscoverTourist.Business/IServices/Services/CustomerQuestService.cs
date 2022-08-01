@@ -266,7 +266,7 @@ public class CustomerQuestService : BaseService, ICustomerQuestService
     public async Task ApproveFeedback(int id)
     {
         var entity = await _customerQuestRepository.Get(id);
-        entity.IsFeedbackApproved = true;
+        entity.IsFeedbackApproved = false;
 
         await _customerQuestRepository.UpdateFields(entity, x => x.IsFeedbackApproved);
     }
