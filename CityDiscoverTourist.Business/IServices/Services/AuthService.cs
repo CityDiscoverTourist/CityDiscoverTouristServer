@@ -29,16 +29,18 @@ public class AuthService : BaseService, IAuthService
     private readonly IEmailSender _emailSender;
     private  readonly RoleManager<IdentityRole> _roleManager;
     private readonly UserManager<ApplicationUser> _userManager;
+    private readonly IPaymentService _paymentService;
 
     public AuthService(UserManager<ApplicationUser> userManager, IConfiguration? configuration,
         RoleManager<IdentityRole> roleManager, IEmailSender emailSender,
-        IHubContext<CustomerHub, ICustomerHub> customerHub)
+        IHubContext<CustomerHub, ICustomerHub> customerHub, IPaymentService paymentService)
     {
         _userManager = userManager;
         _configuration = configuration;
         _roleManager = roleManager;
         _emailSender = emailSender;
         _customerHub = customerHub;
+        _paymentService = paymentService;
     }
 
     public async Task<LoginResponseModel> LoginFirebase(LoginFirebaseModel model)
@@ -50,6 +52,10 @@ public class AuthService : BaseService, IAuthService
         if (await CreateUserIfNotExits(user, userViewModel)) return null!;
 
         if (user is {LockoutEnabled: false }) throw new AppException("User is locked");
+
+        user.DeviceId = model.DeviceId;
+        await _userManager.UpdateAsync(user);
+
         var authClaims = new List<Claim>
         {
             new (ClaimTypes.Name, userViewModel.Email ?? string.Empty),
@@ -66,6 +72,8 @@ public class AuthService : BaseService, IAuthService
         userViewModel.RefreshTokenExpiryTime = DateTime.Now.AddSeconds(7);
         userViewModel.AccountId = user.Id;
 
+        await _paymentService.PushNotification(user.DeviceId!, user.Id);
+
         return userViewModel;
     }
 
@@ -80,6 +88,9 @@ public class AuthService : BaseService, IAuthService
         if (!user.LockoutEnabled) throw new AppException("Customer is locked");
 
         if (!user.EmailConfirmed) throw new AppException("Customer is not confirmed");
+
+        user.DeviceId = model.DeviceId;
+        await _userManager.UpdateAsync(user);
 
         var authClaims = new List<Claim>
         {
@@ -101,6 +112,9 @@ public class AuthService : BaseService, IAuthService
             AccountId = user.Id,
             FullName = user.UserName
         };
+
+        await _paymentService.PushNotification(user.DeviceId!, user.Id);
+
         return userViewModel;
     }
 

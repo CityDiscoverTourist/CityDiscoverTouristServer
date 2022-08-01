@@ -25,11 +25,12 @@ public class CustomerQuestService : BaseService, ICustomerQuestService
     private readonly IRewardRepository _rewardRepository;
     private readonly ISortHelper<CustomerQuest> _sortHelper;
     private readonly IQuestItemRepository _taskRepository;
+    private readonly ICustomerTaskRepository _customerTaskRepository;
 
     public CustomerQuestService(ICustomerQuestRepository customerQuestRepository, IMapper mapper,
         IQuestItemRepository taskRepository, ISortHelper<CustomerQuest> sortHelper,
         ICustomerTaskService customerTaskService, UserManager<ApplicationUser>? userManager,
-        IPaymentService paymentService, IRewardRepository rewardRepository)
+        IPaymentService paymentService, IRewardRepository rewardRepository, ICustomerTaskRepository customerTaskRepository)
     {
         _customerQuestRepository = customerQuestRepository;
         _mapper = mapper;
@@ -39,6 +40,7 @@ public class CustomerQuestService : BaseService, ICustomerQuestService
         _userManager = userManager;
         _paymentService = paymentService;
         _rewardRepository = rewardRepository;
+        _customerTaskRepository = customerTaskRepository;
     }
 
     public PageList<CustomerQuestResponseModel> GetAll(CustomerQuestParams @params)
@@ -269,6 +271,33 @@ public class CustomerQuestService : BaseService, ICustomerQuestService
         entity.IsFeedbackApproved = false;
 
         await _customerQuestRepository.UpdateFields(entity, x => x.IsFeedbackApproved);
+    }
+
+    public async Task ForceDelete(int id, bool forceDelete)
+    {
+        if (forceDelete)
+        {
+            var entity = await _customerQuestRepository.Get(id);
+            entity.IsFinished = true;
+            entity.Status = CommonStatus.ForceDelete.ToString();
+            entity.Rating = 5;
+
+            var lastCustomerTask = _customerTaskRepository
+                .GetByCondition(x => x.Id == entity.Id).OrderByDescending(x => x.CreatedDate)
+                .LastOrDefaultAsync().Result;
+
+            // update last customer task status to force delete
+            /*lastCustomerTask!.IsFinished = true;
+            lastCustomerTask.Status = CommonStatus.ForceDelete.ToString();
+
+            //
+            await _customerTaskRepository.UpdateFields(lastCustomerTask, x => x.IsFinished, x => x.Status);
+            */
+
+            entity.EndPoint = lastCustomerTask!.CurrentPoint.ToString(CultureInfo.InvariantCulture);
+
+            await _customerQuestRepository.UpdateFields(entity, x => x.IsFinished, x => x.Status!, x => x.Rating);
+        }
     }
 
     private static void Search(ref IQueryable<CustomerQuest> entities, CustomerQuestParams param)

@@ -4,5 +4,6 @@ public enum CommonStatus
 {
     Done,
     Inactive,
-    Active
+    Active,
+    ForceDelete
 }

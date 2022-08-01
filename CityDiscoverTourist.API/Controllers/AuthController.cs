@@ -86,11 +86,12 @@ public class AuthController : ControllerBase
     ///     login with facebook
     /// </summary>
     /// <param name="resource"></param>
+    /// <param name="deviceId"></param>
     /// <returns></returns>
     [HttpPost("login-facebook")]
-    public async Task<IActionResult> FacebookLoginAsync([FromQuery] string resource)
+    public async Task<IActionResult> FacebookLoginAsync([FromQuery] string resource, string deviceId)
     {
-        var authorizationTokens = await _facebookService.LoginFacebookAsync(resource);
+        var authorizationTokens = await _facebookService.LoginFacebookAsync(resource, deviceId);
         return Ok(authorizationTokens);
     }
 

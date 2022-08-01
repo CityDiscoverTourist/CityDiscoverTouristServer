@@ -35,11 +35,12 @@ public class PaymentService : BaseService, IPaymentService
     private readonly ISortHelper<Payment> _sortHelper;
     private static  UserManager<ApplicationUser>? _userManager;
     private readonly INotificationService _notificationService;
+    private readonly IRecurringJobManager _recurringJobManager;
 
     public PaymentService(IPaymentRepository paymentRepository, IMapper mapper, ISortHelper<Payment> sortHelper,
         MomoSetting momoSettings, IRewardRepository rewardRepository, IQuestRepository questRepository,
         UserManager<ApplicationUser>? userManager, IEmailSender emailSender,
-        IHubContext<PaymentHub, IPaymentHub> hubContext, IBackgroundJobClient backgroundJobClient, INotificationService notificationService)
+        IHubContext<PaymentHub, IPaymentHub> hubContext, IBackgroundJobClient backgroundJobClient, INotificationService notificationService, IRecurringJobManager recurringJobManager)
     {
         _paymentRepository = paymentRepository;
         _mapper = mapper;
@@ -52,6 +53,7 @@ public class PaymentService : BaseService, IPaymentService
         _hubContext = hubContext;
         _backgroundJobClient = backgroundJobClient;
         _notificationService = notificationService;
+        _recurringJobManager = recurringJobManager;
     }
 
     public PageList<PaymentResponseModel> GetAll(PaymentParams @params, Language language)
@@ -165,6 +167,42 @@ public class PaymentService : BaseService, IPaymentService
         await _hubContext.Clients.All.GetPayment(mappedData);
 
         return mappedData;
+    }
+
+    public Task PushNotification(string deviceId, string userId)
+    {
+        var entity = _paymentRepository.GetByCondition(x => x.CustomerId == userId);
+
+        foreach (var item in entity)
+        {
+            //send notification to client when payment has 1 day left to expire
+            if (item.CreatedDate.AddDays(1).Date.ToString("dd/MM/yyyy HH:mm:ss") ==
+                CurrentDateTime().Date.ToString("dd/MM/yyyy HH:mm:ss"))
+            {
+                var questName = _questRepository.Get(item.QuestId).Result.Title;
+
+                // send notification to client
+                _notificationService.SendNotification(new NotificationRequestModel
+                {
+                    DeviceId = deviceId,
+                    Title = "Payment has 1 day left to expire " + item.QuestId,
+                    Body = "Your payment has 1 day left to expire for quest " +
+                           ConvertLanguage(Language.vi, questName!),
+                    IsAndroidDevice = true
+                });
+
+                /*RecurringJob.AddOrUpdate("Notification", () => _notificationService.SendNotification(new NotificationRequestModel
+                {
+                    DeviceId = deviceId,
+                    Title = "Payment has 1 day left to expire " + item.QuestId,
+                    Body = "Your payment has 1 day left to expire for quest " +
+                           ConvertLanguage(Language.vi, questName!),
+                    IsAndroidDevice = true
+                }), "0 0 * * *", TimeZoneInfo.FindSystemTimeZoneById("SE Asia Standard Time"));*/
+            }
+            return Task.CompletedTask;
+        }
+        return Task.CompletedTask;
     }
 
     public async Task UpdateIsValidField(Guid paymentId)

@@ -18,11 +18,13 @@ public class FacebookService : BaseService, IFacebookService
 
     private readonly HttpClient _httpClient;
     private readonly UserManager<ApplicationUser> _userManager;
+    private readonly IPaymentService _paymentService;
 
-    public FacebookService(UserManager<ApplicationUser> userManager, IAuthService authService)
+    public FacebookService(UserManager<ApplicationUser> userManager, IAuthService authService, IPaymentService paymentService)
     {
         _userManager = userManager;
         _authService = authService;
+        _paymentService = paymentService;
         _httpClient = new HttpClient
         {
             BaseAddress = new Uri(FacebookUri)
@@ -58,7 +60,7 @@ public class FacebookService : BaseService, IFacebookService
         return JsonConvert.DeserializeObject<T>(result)!;
     }
 
-    public async Task<LoginResponseModel> LoginFacebookAsync(string token)
+    public async Task<LoginResponseModel> LoginFacebookAsync(string token, string deviceId)
     {
         await _authService.CreateRole();
         if (string.IsNullOrEmpty(token)) throw new KeyNotFoundException("Token is null");
@@ -68,6 +70,9 @@ public class FacebookService : BaseService, IFacebookService
         if (await CreateUserIfNotExits(userDb, facebookUser)) return null!;
 
         if (userDb is {LockoutEnabled: false }) throw new AppException("User is locked");
+
+        userDb.DeviceId = deviceId;
+        await _userManager.UpdateAsync(userDb);
 
         var authClaims = new List<Claim>
         {
@@ -79,6 +84,9 @@ public class FacebookService : BaseService, IFacebookService
         };
 
         var accessToken = _authService.GetJwtToken(authClaims);
+
+        await _paymentService.PushNotification(userDb.DeviceId!, userDb.Id);
+
         return new LoginResponseModel
         {
             IdProvider = facebookUser.FacebookId,

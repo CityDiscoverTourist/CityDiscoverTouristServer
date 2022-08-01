@@ -6,6 +6,7 @@ using CityDiscoverTourist.Business.Helper;
 using CityDiscoverTourist.Business.Helper.Params;
 using CityDiscoverTourist.Business.IServices;
 using CityDiscoverTourist.Data.Models;
+using Hangfire;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -20,13 +21,16 @@ namespace CityDiscoverTourist.API.Controllers;
 public class PaymentController : ControllerBase
 {
     private readonly IPaymentService _paymentService;
+    private readonly IRecurringJobManager _recurringJobManager;
 
     /// <summary>
     /// </summary>
     /// <param name="paymentService"></param>
-    public PaymentController(IPaymentService paymentService)
+    /// <param name="recurringJobManager"></param>
+    public PaymentController(IPaymentService paymentService, IRecurringJobManager recurringJobManager)
     {
         _paymentService = paymentService;
+        _recurringJobManager = recurringJobManager;
     }
 
     /// <summary>
@@ -118,8 +122,7 @@ public class PaymentController : ControllerBase
     [Authorize(Roles = "Admin")]
     public async Task<OkObjectResult> Put()
     {
-        //_recurringJobManager.AddOrUpdate("Payment", () => _paymentService.InvalidOrder(), "0 0 * * *", TimeZoneInfo.FindSystemTimeZoneById("SE Asia Standard Time"));
-        await _paymentService.InvalidOrder();
+        _recurringJobManager.AddOrUpdate("Payment", () => _paymentService.InvalidOrder(), "0 0 * * *", TimeZoneInfo.FindSystemTimeZoneById("SE Asia Standard Time"));
         return await Task.FromResult(Ok("RecurringJobManager"));
     }
 
@@ -131,6 +134,13 @@ public class PaymentController : ControllerBase
     public Task<PaymentResponseModel> Callback([FromBody] MomoRequestModel dto)
     {
         return _paymentService.UpdateStatusWhenSuccess(dto);
+    }
+
+    [HttpPost("notification")]
+    [AllowAnonymous]
+    public async Task Notification(string data, string userId)
+    {
+        await _paymentService.PushNotification(data, userId);
     }
 
     /// <summary>

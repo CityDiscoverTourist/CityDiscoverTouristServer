@@ -20,4 +20,5 @@ public interface ICustomerQuestService
     public Task<List<CommentResponseModel>> UpdateComment(int questId, string customerId, CommentRequestModel comment);
     public IQueryable<CommentResponseModel> GetMyComment( int questId, string customerId);
     public Task ApproveFeedback(int id);
+    public Task ForceDelete(int id, bool forceDelete);
 }

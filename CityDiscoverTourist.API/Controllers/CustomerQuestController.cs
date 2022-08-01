@@ -4,7 +4,6 @@ using CityDiscoverTourist.Business.Data.ResponseModel;
 using CityDiscoverTourist.Business.Helper;
 using CityDiscoverTourist.Business.Helper.Params;
 using CityDiscoverTourist.Business.IServices;
-using CityDiscoverTourist.Data.Models;
 using Hangfire;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -187,6 +186,17 @@ public class CustomerQuestController : ControllerBase
     public async Task ApproveFeedback(int id)
     {
         await _customerQuestService.ApproveFeedback(id);
+    }
+
+    /// <summary>
+    ///
+    /// </summary>
+    /// <param name="id"></param>
+    /// <param name="forceDelete"></param>
+    [HttpPut("force-delete/{id:int}")]
+    public async Task ForceDelete(int id, bool forceDelete)
+    {
+        await _customerQuestService.ForceDelete(id, forceDelete);
     }
 
 
