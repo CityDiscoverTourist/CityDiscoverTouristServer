@@ -6,6 +6,7 @@ using CityDiscoverTourist.Business.Helper;
 using CityDiscoverTourist.Business.Helper.Params;
 using CityDiscoverTourist.Data.IRepositories;
 using CityDiscoverTourist.Data.Models;
+using Newtonsoft.Json.Linq;
 
 namespace CityDiscoverTourist.Business.IServices.Services;
 
@@ -23,7 +24,7 @@ public class SuggestionService : BaseService, ISuggestionService
         _sortHelper = sortHelper;
     }
 
-    public PageList<SuggestionResponseModel> GetAll(SuggestionParams @params)
+    public PageList<SuggestionResponseModel> GetAll(SuggestionParams @params, Language language)
     {
         var listAll = _suggestionRepository.GetAll();
 
@@ -31,13 +32,37 @@ public class SuggestionService : BaseService, ISuggestionService
 
         var sortedQuests = _sortHelper.ApplySort(listAll, @params.OrderBy);
         var mappedData = _mapper.Map<IEnumerable<SuggestionResponseModel>>(sortedQuests);
-        return PageList<SuggestionResponseModel>.ToPageList(mappedData, @params.PageNumber, @params.PageSize);
+
+        var suggestionResponseModels = mappedData as SuggestionResponseModel[] ?? mappedData.ToArray();
+
+        foreach (var suggestion in suggestionResponseModels)
+        {
+            suggestion.Content = ConvertLanguage(language, suggestion.Content!);
+        }
+
+        return PageList<SuggestionResponseModel>.ToPageList(suggestionResponseModels, @params.PageNumber, @params.PageSize);
     }
 
     public async Task<SuggestionResponseModel> Get(int id)
     {
         var entity = await _suggestionRepository.Get(id);
+        CheckDataNotNull("LocationType", entity);
+
+        var objTitle = JObject.Parse(entity.Content!);
+        var title = (string) objTitle["vi"]! + " | " + (string) objTitle["en"]!;
+
+        entity.Content = title;
+
+        return _mapper.Map<SuggestionResponseModel>(entity);
+    }
+
+    public async Task<SuggestionResponseModel> Get(int id, Language language)
+    {
+        var entity = await _suggestionRepository.Get(id);
         CheckDataNotNull("Suggestion", entity);
+
+        entity.Content = ConvertLanguage(language, entity.Content);
+
         return _mapper.Map<SuggestionResponseModel>(entity);
     }
 
@@ -45,6 +70,9 @@ public class SuggestionService : BaseService, ISuggestionService
     {
         request.Validate();
         var entity = _mapper.Map<Suggestion>(request);
+
+        entity.Content = JsonHelper.JsonFormat(request.Content);
+
         entity = await _suggestionRepository.Add(entity);
         return _mapper.Map<SuggestionResponseModel>(entity);
     }
@@ -53,6 +81,9 @@ public class SuggestionService : BaseService, ISuggestionService
     {
         request.Validate();
         var entity = _mapper.Map<Suggestion>(request);
+
+        entity.Content = JsonHelper.JsonFormat(request.Content);
+
         entity = await _suggestionRepository.Update(entity);
         return _mapper.Map<SuggestionResponseModel>(entity);
     }

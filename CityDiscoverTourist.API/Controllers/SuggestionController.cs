@@ -1,6 +1,7 @@
 using CityDiscoverTourist.API.Response;
 using CityDiscoverTourist.Business.Data.RequestModel;
 using CityDiscoverTourist.Business.Data.ResponseModel;
+using CityDiscoverTourist.Business.Enums;
 using CityDiscoverTourist.Business.Helper;
 using CityDiscoverTourist.Business.Helper.Params;
 using CityDiscoverTourist.Business.IServices;
@@ -15,7 +16,7 @@ namespace CityDiscoverTourist.API.Controllers;
 [Route("api/v{version:apiVersion}/[controller]s")]
 [ApiVersion("1.0")]
 [ApiController]
-[Authorize]
+//[Authorize]
 public class SuggestionController : ControllerBase
 {
     private readonly ISuggestionService _suggestionService;
@@ -32,12 +33,13 @@ public class SuggestionController : ControllerBase
     ///     get all suggestions
     /// </summary>
     /// <param name="param"></param>
+    /// <param name="language"></param>
     /// <returns></returns>
     [HttpGet]
     //[Cached(600)]
-    public ApiResponse<PageList<SuggestionResponseModel>> GetAll([FromQuery] SuggestionParams param)
+    public ApiResponse<PageList<SuggestionResponseModel>> GetAll([FromQuery] SuggestionParams param, Language language = Language.vi)
     {
-        var entity = _suggestionService.GetAll(param);
+        var entity = _suggestionService.GetAll(param, language);
 
         var metadata = new
         {
@@ -56,14 +58,29 @@ public class SuggestionController : ControllerBase
     ///     get suggestion by id
     /// </summary>
     /// <param name="id"></param>
+    /// <param name="language"></param>
     /// <returns></returns>
     [HttpGet("{id:int}")]
+    //[Cached(600)]
+    public async Task<ApiResponse<SuggestionResponseModel>> Get(int id, Language language = Language.vi)
+    {
+        var entity = await _suggestionService.Get(id, language);
+
+        return ApiResponse<Suggestion>.Ok(entity);
+    }
+
+    /// <summary>
+    ///
+    /// </summary>
+    /// <param name="id"></param>
+    /// <returns></returns>
+    [HttpGet("{id:int}/not-language")]
     //[Cached(600)]
     public async Task<ApiResponse<SuggestionResponseModel>> Get(int id)
     {
         var entity = await _suggestionService.Get(id);
 
-        return ApiResponse<Suggestion>.Ok(entity);
+        return ApiResponse<SuggestionResponseModel>.Ok(entity);
     }
 
     /// <summary>

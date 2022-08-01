@@ -45,6 +45,7 @@ public class QuestItemService : BaseService, IQuestItemService
             item.Content = ConvertLanguage(language, item.Content!);
             item.Description = ConvertLanguage(language, item.Description!);
             item.Story = ConvertLanguage(language, item.Story!);
+            item.RightAnswer = ConvertLanguage(language, item.RightAnswer!) ?? "";
         }
 
         return PageList<QuestItemResponseModel>.ToPageList(questItemResponseModels, @params.PageNumber, @params.PageSize);
@@ -60,6 +61,7 @@ public class QuestItemService : BaseService, IQuestItemService
         mappedData.Content = ConvertLanguage(language, entity.Content!);
         mappedData.Description = ConvertLanguage(language, entity.Description!);
         mappedData.Story = ConvertLanguage(language, entity.Story!);
+        mappedData.RightAnswer = ConvertLanguage(language, entity.RightAnswer!);
         mappedData.ListImages = await _blobService.GetBaseUrl(ContainerName, mappedData.Id);
 
         return mappedData;
@@ -84,9 +86,13 @@ public class QuestItemService : BaseService, IQuestItemService
         var objStory = JObject.Parse(entity.Story!);
         var story = (string) objStory["vi"]! + " | " + (string) objStory["en"]!;
 
+        var objAnswer = JObject.Parse(entity.RightAnswer!);
+        var rightAnswer = (string) objAnswer["vi"]! + " | " + (string) objAnswer["en"]!;
+
         entity.Content = content;
         entity.Description = description;
         entity.Story = story;
+        entity.RightAnswer = rightAnswer;
 
         var images = await _blobService.GetBaseUrl(ContainerName, entity.Id);
 
@@ -137,6 +143,7 @@ public class QuestItemService : BaseService, IQuestItemService
         entity.Content = JsonHelper.JsonFormat(request.Content);
         entity.Description = JsonHelper.JsonFormat(request.Description);
         entity.Story = JsonHelper.JsonFormat(request.Story);
+        entity.RightAnswer = JsonHelper.JsonFormat(request.RightAnswer);
         entity.Status = CommonStatus.Active.ToString();
 
         entity = await _taskRepository.Add(entity);
@@ -160,6 +167,7 @@ public class QuestItemService : BaseService, IQuestItemService
         entity.Content = JsonHelper.JsonFormat(request.Content);
         entity.Description = JsonHelper.JsonFormat(request.Description);
         entity.Story = JsonHelper.JsonFormat(request.Story);
+        entity.RightAnswer = JsonHelper.JsonFormat(request.RightAnswer);
         entity.UpdatedDate = CurrentDateTime();
 
         if(request.QuestItemTypeId == 2)
@@ -224,6 +232,7 @@ public class QuestItemService : BaseService, IQuestItemService
             item.ListImages = baseUrlImages;
             item.Content = ConvertLanguage(language, item.Content!);
             item.Description = ConvertLanguage(language, item.Description!);
+            item.RightAnswer = ConvertLanguage(language, item.RightAnswer!);
         }
 
 
