@@ -166,6 +166,8 @@ public class QuestItemService : BaseService, IQuestItemService
         request.Validate();
 
         var entity = _mapper.Map<QuestItem>(request);
+        // reverse question
+        if (request.QuestItemTypeId == 3) request.Content = ReverseQuestion(request.Content!);
 
         entity.Content = JsonHelper.JsonFormat(request.Content);
         entity.Description = JsonHelper.JsonFormat(request.Description);
@@ -173,6 +175,7 @@ public class QuestItemService : BaseService, IQuestItemService
         entity.RightAnswer = JsonHelper.JsonFormat(request.RightAnswer);
         entity.UpdatedDate = CurrentDateTime();
 
+        // image compare
         if(request.QuestItemTypeId == 2)
         {
             var baseUrlImages = await _blobService.GetBaseUrl(ContainerName, entity.Id);
@@ -190,6 +193,8 @@ public class QuestItemService : BaseService, IQuestItemService
 
             await _taskRepository.UpdateFields(entity, x => x.AnswerImageUrl!);
         }
+
+
 
         entity = await _taskRepository.NoneUpdateFields(entity, x => x.CreatedDate!);
         return _mapper.Map<QuestItemResponseModel>(entity);
