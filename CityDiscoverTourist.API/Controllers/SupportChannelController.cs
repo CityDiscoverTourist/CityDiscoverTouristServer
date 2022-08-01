@@ -29,11 +29,12 @@ public class SupportChannelController : ControllerBase
     /// </summary>
     /// <param name="message"></param>
     /// <param name="user"></param>
+    /// <param name="myConId"></param>
     /// <returns></returns>
     [HttpPost("to-admin")]
-    public IActionResult Post(string message, string user)
+    public IActionResult PostToAdmin(string message, string user, string myConId)
     {
-        _hubContext.Clients.All.CustomerSendMessageToAdmin(user, message);
+        _hubContext.Clients.All.CustomerSendMessageToAdmin(user, message, myConId);
         return Ok();
     }
 

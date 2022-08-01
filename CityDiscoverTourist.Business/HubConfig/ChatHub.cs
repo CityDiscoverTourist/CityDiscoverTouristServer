@@ -12,8 +12,8 @@ public class ChatHub : Hub<IChatHub>
         await Clients.Client(conId).AdminSendMessageToCustomer(user, message, conId);
     }
 
-    public async Task CustomerSendMessageToAdmin(string user, string message)
+    public async Task CustomerSendMessageToAdmin(string user, string message, string myConId)
     {
-        await Clients.All.CustomerSendMessageToAdmin(user, message);
+        await Clients.All.CustomerSendMessageToAdmin(user, message, myConId);
     }
 }
