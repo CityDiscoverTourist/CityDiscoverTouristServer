@@ -6,7 +6,7 @@ public static class SignalRConfig
     {
         if (envName == "Development")
         {
-            services.AddSignalR();
+            services.AddSignalR().AddMessagePackProtocol();
         }
         else
         {
@@ -16,7 +16,7 @@ public static class SignalRConfig
             {
                 options.ConnectionString = signalRConfig;
                 options.ConnectionCount = 10;
-            });
+            }).AddMessagePackProtocol();
         }
     }
 }
