@@ -1,6 +1,7 @@
 using CityDiscoverTourist.API.Response;
 using CityDiscoverTourist.Business.Data.RequestModel;
 using CityDiscoverTourist.Business.Data.ResponseModel;
+using CityDiscoverTourist.Business.Enums;
 using CityDiscoverTourist.Business.Exceptions;
 using CityDiscoverTourist.Business.Helper;
 using CityDiscoverTourist.Business.Helper.Params;
@@ -16,7 +17,7 @@ namespace CityDiscoverTourist.API.Controllers;
 [Route("api/v{version:apiVersion}/[controller]s")]
 [ApiVersion("1.0")]
 [ApiController]
-[Authorize]
+//[Authorize]
 public class CustomerTaskController : ControllerBase
 {
     private readonly ICustomerTaskService _customerTaskService;
@@ -184,12 +185,13 @@ public class CustomerTaskController : ControllerBase
     /// <param name="customerReply"></param>
     /// <param name="questItemId"></param>
     /// <param name="files"></param>
+    /// <param name="language"></param>
     /// <returns></returns>
     [HttpPut("check-answer/{customerQuestId:int}")]
     public async Task<ApiResponse<CustomerTaskResponseModel>> CheckCustomerAnswer(int customerQuestId,
-        string customerReply, int questItemId , [FromForm] List<IFormFile>? files = null)
+        string customerReply, int questItemId , [FromForm] List<IFormFile>? files = null, Language language = Language.vi)
     {
-        var entity = await _customerTaskService.CheckCustomerAnswer(customerQuestId, customerReply, questItemId, files);
+        var entity = await _customerTaskService.CheckCustomerAnswer(customerQuestId, customerReply, questItemId, files, language);
         return ApiResponse<CustomerTaskResponseModel>.Ok(entity);
     }
 

@@ -175,7 +175,7 @@ public class CustomerTaskService : BaseService, ICustomerTaskService
     }
 
     public async Task<CustomerTaskResponseModel> CheckCustomerAnswer(int customerQuestId, string customerReply,
-        int questItemId, List<IFormFile>? files)
+        int questItemId, List<IFormFile>? files, Language language)
     {
         var isCustomerReplyCorrect = true;
         var isIdenticalImage = true;
@@ -216,7 +216,7 @@ public class CustomerTaskService : BaseService, ICustomerTaskService
         }
 
         //compare with correct answer
-        if (ConvertLanguage(Language.vi, questItem.RightAnswer).ToLower().RemoveDiacritics().Equals(customerReply.ToLower().RemoveDiacritics()))
+        if (!ConvertLanguage(language, questItem.RightAnswer).ToLower().RemoveDiacritics().Trim().Equals(customerReply.ToLower().RemoveDiacritics().Trim()))
         {
             // count number of customer answer wrong
             // if count number of customer answer wrong >= 5
