@@ -12,9 +12,10 @@ public class QuestItem: BaseEntity
 
     public Quest? Quest { get; set; }
     public int QuestId { get; set; }
-
     public string? Content { get; set; }
+    public string? Story { get; set; }
     public string? Description { get; set; }
+    public string? ImageDescription { get; set; }
     public int Duration { get; set; }
     public DateTime? CreatedDate { get; set; }
     public DateTime? UpdatedDate { get; set; }

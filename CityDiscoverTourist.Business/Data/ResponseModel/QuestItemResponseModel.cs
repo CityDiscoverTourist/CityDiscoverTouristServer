@@ -8,8 +8,8 @@ public class QuestItemResponseModel
     public int LocationId { get; set; }
 
     public int QuestId { get; set; }
-
     public string? Content { get; set; }
+    public string? Story { get; set; }
     public string? Description { get; set; }
     public int Duration { get; set; }
     public DateTime? CreatedDate { get; set; }
