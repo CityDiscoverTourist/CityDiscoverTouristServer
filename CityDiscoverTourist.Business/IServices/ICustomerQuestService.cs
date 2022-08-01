@@ -18,6 +18,6 @@ public interface ICustomerQuestService
     public Task<CustomerQuestResponseModel> UpdateEndPointAndStatusWhenFinishQuestAsync(int customerQuestId);
     public Task<PageList<CommentResponseModel>> ShowComments(int questId, CustomerQuestParams param);
     public Task<List<CommentResponseModel>> UpdateComment(int questId, string customerId, CommentRequestModel comment);
-    public IQueryable<CustomerQuest> GetMyComment( int questId, string customerId);
+    public IQueryable<CommentResponseModel> GetMyComment( int questId, string customerId);
     public Task ApproveFeedback(int id);
 }

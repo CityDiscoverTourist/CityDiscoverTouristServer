@@ -16,7 +16,7 @@ namespace CityDiscoverTourist.API.Controllers;
 [Route("api/v{version:apiVersion}/[controller]s")]
 [ApiVersion("1.0")]
 [ApiController]
-[Authorize]
+//[Authorize]
 public class CustomerQuestController : ControllerBase
 {
     private readonly ICustomerQuestService _customerQuestService;
@@ -196,10 +196,10 @@ public class CustomerQuestController : ControllerBase
     /// <param name="customerId"></param>
     /// <returns></returns>
     [HttpGet("get-comment")]
-    public Task<ApiResponse<IQueryable<CustomerQuest>>> GetMyComment(int questId, string customerId)
+    public Task<ApiResponse<IQueryable<CommentResponseModel>>> GetMyComment(int questId, string customerId)
     {
         var entity = _customerQuestService.GetMyComment(questId, customerId);
-        return Task.FromResult(ApiResponse<CustomerQuestResponseModel>.Created(entity));
+        return Task.FromResult(ApiResponse<CommentResponseModel>.Created(entity));
     }
 
     /// <summary>

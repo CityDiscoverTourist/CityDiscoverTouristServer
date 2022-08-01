@@ -258,7 +258,7 @@ public class CustomerQuestService : BaseService, ICustomerQuestService
         return null!;
     }
 
-    public IQueryable<CustomerQuest> GetMyComment( int questId, string customerId)
+    public IQueryable<CommentResponseModel> GetMyComment( int questId, string customerId)
     {
         return GetComment(questId, customerId);
     }
@@ -301,10 +301,23 @@ public class CustomerQuestService : BaseService, ICustomerQuestService
         return (CountQuestItemInQuest(questId) * BaseMultiplier).ToString();
     }
 
-    private IQueryable<CustomerQuest> GetComment(int questId, string customerId)
+    private IQueryable<CommentResponseModel> GetComment(int questId, string customerId)
     {
         var comments = _customerQuestRepository.GetAll()
             .Where(x => x.QuestId == questId && x.IsFinished == true && x.CustomerId == customerId);
-        return comments;
+        var mappedData = _mapper.Map<IEnumerable<CommentResponseModel>>(comments);
+
+        var responseModels = mappedData as CommentResponseModel[] ?? mappedData.ToArray();
+
+        foreach (var comment in responseModels)
+        {
+            var customerName = _userManager!.FindByIdAsync(comment.CustomerId).Result.UserName;
+            var imagePath = _userManager.FindByIdAsync(comment.CustomerId).Result.ImagePath;
+
+            comment.ImagePath = imagePath;
+            comment.Name = customerName;
+        }
+
+        return responseModels.AsQueryable();
     }
 }

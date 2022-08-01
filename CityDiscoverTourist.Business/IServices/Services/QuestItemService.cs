@@ -45,7 +45,7 @@ public class QuestItemService : BaseService, IQuestItemService
             item.Content = ConvertLanguage(language, item.Content!);
             item.Description = ConvertLanguage(language, item.Description!);
             item.Story = ConvertLanguage(language, item.Story!);
-            item.RightAnswer = ConvertLanguage(language, item.RightAnswer!) ?? "";
+            item.RightAnswer = ConvertLanguage(language, item.RightAnswer!);
         }
 
         return PageList<QuestItemResponseModel>.ToPageList(questItemResponseModels, @params.PageNumber, @params.PageSize);
