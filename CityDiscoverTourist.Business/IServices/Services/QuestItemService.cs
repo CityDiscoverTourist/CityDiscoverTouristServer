@@ -44,6 +44,7 @@ public class QuestItemService : BaseService, IQuestItemService
             item.ListImages = await _blobService.GetBaseUrl(ContainerName, item.Id);
             item.Content = ConvertLanguage(language, item.Content!);
             item.Description = ConvertLanguage(language, item.Description!);
+            item.Story = ConvertLanguage(language, item.Story!);
         }
 
         return PageList<QuestItemResponseModel>.ToPageList(questItemResponseModels, @params.PageNumber, @params.PageSize);
@@ -58,6 +59,7 @@ public class QuestItemService : BaseService, IQuestItemService
 
         mappedData.Content = ConvertLanguage(language, entity.Content!);
         mappedData.Description = ConvertLanguage(language, entity.Description!);
+        mappedData.Story = ConvertLanguage(language, entity.Story!);
         mappedData.ListImages = await _blobService.GetBaseUrl(ContainerName, mappedData.Id);
 
         return mappedData;
@@ -75,11 +77,16 @@ public class QuestItemService : BaseService, IQuestItemService
 
         var objContent = JObject.Parse(entity.Content!);
         var content = (string) objContent["vi"]! + " | " + (string) objContent["en"]!;
+
         var objDescription = JObject.Parse(entity.Description!);
         var description = (string) objDescription["vi"]! + " | " + (string) objDescription["en"]!;
 
+        var objStory = JObject.Parse(entity.Story!);
+        var story = (string) objStory["vi"]! + " | " + (string) objStory["en"]!;
+
         entity.Content = content;
         entity.Description = description;
+        entity.Story = story;
 
         var images = await _blobService.GetBaseUrl(ContainerName, entity.Id);
 
@@ -129,6 +136,7 @@ public class QuestItemService : BaseService, IQuestItemService
 
         entity.Content = JsonHelper.JsonFormat(request.Content);
         entity.Description = JsonHelper.JsonFormat(request.Description);
+        entity.Story = JsonHelper.JsonFormat(request.Story);
         entity.Status = CommonStatus.Active.ToString();
 
         entity = await _taskRepository.Add(entity);
@@ -151,6 +159,7 @@ public class QuestItemService : BaseService, IQuestItemService
 
         entity.Content = JsonHelper.JsonFormat(request.Content);
         entity.Description = JsonHelper.JsonFormat(request.Description);
+        entity.Story = JsonHelper.JsonFormat(request.Story);
         entity.UpdatedDate = CurrentDateTime();
 
         if(request.QuestItemTypeId == 2)
