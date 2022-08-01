@@ -216,7 +216,7 @@ public class CustomerTaskService : BaseService, ICustomerTaskService
         }
 
         //compare with correct answer
-        if (!questItem.RightAnswer!.ToLower().RemoveDiacritics().Equals(customerReply.ToLower().RemoveDiacritics()))
+        if (ConvertLanguage(Language.vi, questItem.RightAnswer).ToLower().RemoveDiacritics().Equals(customerReply.ToLower().RemoveDiacritics()))
         {
             // count number of customer answer wrong
             // if count number of customer answer wrong >= 5

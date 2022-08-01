@@ -20,7 +20,7 @@ public class BaseService
     protected static string ConvertLanguage(Language language, string? text)
     {
         //return null if can't convert
-        return text == null ? null : JObject.Parse(text)[language.ToString()]!.ToString();
+        return (text == null ? null : JObject.Parse(text)[language.ToString()]!.ToString()) ?? string.Empty;
     }
 
     protected static DateTime CurrentDateTime()
