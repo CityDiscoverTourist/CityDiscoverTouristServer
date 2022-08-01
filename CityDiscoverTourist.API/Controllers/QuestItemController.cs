@@ -123,7 +123,8 @@ public class QuestItemController : ControllerBase
     /// <param name="data"></param>
     /// <returns></returns>
     [HttpPost]
-    [Authorize(Roles = "Admin")]
+    /*[Authorize(Roles = "Admin")]*/
+    [AllowAnonymous]
     public async Task<ApiResponse<QuestItemResponseModel>> Post([FromForm] QuestItemRequestModel data)
     {
         var entity = await _taskService.CreateAsync(data);

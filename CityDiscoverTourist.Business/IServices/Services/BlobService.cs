@@ -44,6 +44,21 @@ public class BlobService : BaseService, IBlobService
         return blobClient.Uri.AbsoluteUri;
     }
 
+    public async Task<string> UploadImgDescription(IFormFile? file, int id, string containerName)
+    {
+        if (file == null) return null!;
+
+        var renameFile = file.FileName.Replace(file.FileName, containerName);
+
+        var containerClient = _blobServiceClient.GetBlobContainerClient(containerName);
+        //await containerClient.CreateIfNotExistsAsync();
+
+        var blobClient = containerClient.GetBlobClient($"{id}_{renameFile}");
+        await blobClient.UploadAsync(file.OpenReadStream(), true);
+
+        return blobClient.Uri.AbsoluteUri;
+    }
+
     public async Task<string> UploadAvatarImgPathAsync(IFormFile? file, string customerId, string containerName)
     {
         if (file == null) return null!;

@@ -106,10 +106,6 @@ public class QuestItemService : BaseService, IQuestItemService
     public async Task<QuestItemResponseModel> CreateAsync(QuestItemRequestModel request)
     {
         request.Validate();
-        /*var existValue = _taskRepository
-            .GetByCondition(x => x.Content == request.Content || x.Content == ReverseQuestion(request.Content!))
-            .FirstOrDefaultAsync().Result;*/
-        //if (existValue != null) throw new AppException("Quest item with this name already exists");
 
         var requestName = GetVietNameseName(request.Content!);
 
@@ -148,11 +144,18 @@ public class QuestItemService : BaseService, IQuestItemService
 
         entity = await _taskRepository.Add(entity);
 
+        var imgDescription = await _blobService.UploadImgDescription(request.ImageDescription, entity.Id, "quest-img-description");
+        entity.ImageDescription = imgDescription;
+
+        await _taskRepository.UpdateFields(entity, x => x.ImageDescription!);
+
         // quest item type compare image
         if (request.QuestItemTypeId != 2) return _mapper.Map<QuestItemResponseModel>(entity);
 
         var imageUrl = await _blobService.UploadQuestItemImgAsync(request.Image, entity.Id, ContainerName);
+
         entity.AnswerImageUrl = imageUrl;
+
         await _taskRepository.UpdateFields(entity, x => x.AnswerImageUrl!);
 
         return _mapper.Map<QuestItemResponseModel>(entity);
