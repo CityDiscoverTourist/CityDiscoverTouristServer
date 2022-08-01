@@ -1,3 +1,4 @@
+using CityDiscoverTourist.Business.Data.RequestModel;
 using CityDiscoverTourist.Business.HubConfig.IHub;
 using Microsoft.AspNetCore.SignalR;
 
@@ -7,13 +8,13 @@ public class ChatHub : Hub<IChatHub>
 {
     public string GetConnectionId() => Context.ConnectionId;
 
-    public async Task AdminSendMessageToCustomer(string user, string message, string conId)
+    public async Task AdminSendMessageToCustomer(ChatHubRequestModel requestModel)
     {
-        await Clients.Client(conId).AdminSendMessageToCustomer(user, message, conId);
+        await Clients.User(requestModel.ConId).AdminSendMessageToCustomer(requestModel);
     }
 
-    public async Task CustomerSendMessageToAdmin(string user, string message, string myConId)
+    public async Task CustomerSendMessageToAdmin(ChatHubRequestModel request)
     {
-        await Clients.All.CustomerSendMessageToAdmin(user, message, myConId);
+        await Clients.All.CustomerSendMessageToAdmin(request);
     }
 }

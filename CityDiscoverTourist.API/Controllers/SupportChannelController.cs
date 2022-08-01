@@ -1,3 +1,4 @@
+using CityDiscoverTourist.Business.Data.RequestModel;
 using CityDiscoverTourist.Business.HubConfig;
 using CityDiscoverTourist.Business.HubConfig.IHub;
 using Microsoft.AspNetCore.Mvc;
@@ -27,28 +28,24 @@ public class SupportChannelController : ControllerBase
     /// <summary>
     ///
     /// </summary>
-    /// <param name="message"></param>
-    /// <param name="user"></param>
-    /// <param name="myConId"></param>
+    /// <param name="request"></param>
     /// <returns></returns>
     [HttpPost("to-admin")]
-    public IActionResult PostToAdmin(string message, string user, string myConId)
+    public IActionResult PostToAdmin(ChatHubRequestModel request)
     {
-        _hubContext.Clients.All.CustomerSendMessageToAdmin(user, message, myConId);
+        _hubContext.Clients.All.CustomerSendMessageToAdmin(request);
         return Ok();
     }
 
     /// <summary>
     ///
     /// </summary>
-    /// <param name="message"></param>
-    /// <param name="user"></param>
-    /// <param name="conId"></param>
+    /// <param name="request"></param>
     /// <returns></returns>
     [HttpPost("to-customer")]
-    public IActionResult Post(string message, string user, string conId)
+    public IActionResult Post(ChatHubRequestModel request)
     {
-        _hubContext.Clients.All.AdminSendMessageToCustomer(user, message, conId);
+        _hubContext.Clients.All.AdminSendMessageToCustomer(request);
         return Ok();
     }
 }
