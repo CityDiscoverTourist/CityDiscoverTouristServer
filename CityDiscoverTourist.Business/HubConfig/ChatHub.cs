@@ -10,7 +10,7 @@ public class ChatHub : Hub<IChatHub>
 
     public async Task AdminSendMessageToCustomer(ChatHubRequestModel requestModel)
     {
-        await Clients.User(requestModel.ConId).AdminSendMessageToCustomer(requestModel);
+        await Clients.Client(requestModel.ConId).AdminSendMessageToCustomer(requestModel);
     }
 
     public async Task CustomerSendMessageToAdmin(ChatHubRequestModel request)
