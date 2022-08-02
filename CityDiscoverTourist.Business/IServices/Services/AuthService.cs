@@ -49,6 +49,10 @@ public class AuthService : BaseService, IAuthService
         var userViewModel = await VerifyFirebaseToken(model.TokenId);
         var user = await _userManager.FindByNameAsync(userViewModel.Email);
 
+        // check if user is customer
+        if (!await _userManager.IsInRoleAsync(user, Role.Customer.ToString()))
+            throw new UnauthorizedAccessException("Account not allowed to login");
+
         if (await CreateUserIfNotExits(user, userViewModel)) return null!;
 
         if (user is {LockoutEnabled: false }) throw new AppException("User is locked");
@@ -81,6 +85,10 @@ public class AuthService : BaseService, IAuthService
     {
         var user = await _userManager.FindByEmailAsync(model.Email);
         if (user is null) throw new AppException("Customer not found");
+
+        // check if user is customer
+        if (!await _userManager.IsInRoleAsync(user, Role.Customer.ToString()))
+            throw new UnauthorizedAccessException("Account not allowed to login");
 
         if (!await _userManager.CheckPasswordAsync(user, model.Password))
             throw new UnauthorizedAccessException("Invalid credentials");
@@ -150,6 +158,7 @@ public class AuthService : BaseService, IAuthService
             AccountId = user.Id,
             FullName = user.UserName
         };
+        await _paymentService.PushNotification("dMW1h5xgSDyst8uImgfdhf:APA91bHF1yUr1pU-M89pnKKoIWtA5FvvkD-oVNgo3qdxt3yU0cGnA_faTiz9u1S0u_CGPSIrjL1y7an6_EoswPiH8Etewhl0Iuii_AvM1xsm96OXy700kArjamsqI6K27RDyTd3gcOEd", "zxc");
         return userViewModel;
     }
 

@@ -67,6 +67,11 @@ public class FacebookService : BaseService, IFacebookService
 
         var facebookUser = await GetUserFromFacebookAsync(token);
         var userDb = await _userManager.FindByEmailAsync(facebookUser.Email);
+
+        // check if user is customer
+        if (!await _userManager.IsInRoleAsync(userDb, Role.Customer.ToString()))
+            throw new UnauthorizedAccessException("Account not allowed to login");
+
         if (await CreateUserIfNotExits(userDb, facebookUser)) return null!;
 
         if (userDb is {LockoutEnabled: false }) throw new AppException("User is locked");

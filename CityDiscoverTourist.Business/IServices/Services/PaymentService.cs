@@ -188,14 +188,14 @@ public class PaymentService : BaseService, IPaymentService
                            ConvertLanguage(Language.vi, questName!),
                     IsAndroidDevice = true
                 });*/
-                _backgroundJobClient.Enqueue(() => _notificationService.SendNotification(new NotificationRequestModel
+                RecurringJob.AddOrUpdate(() => _notificationService.SendNotification(new NotificationRequestModel
                 {
                     DeviceId = deviceId,
                     Title = "Payment has 1 day left to expire " + item.QuestId,
                     Body = "Your payment has 1 day left to expire for quest " +
                            ConvertLanguage(Language.vi, questName!),
                     IsAndroidDevice = true
-                }));
+                }), "0 0 * * *", TimeZoneInfo.FindSystemTimeZoneById("SE Asia Standard Time"));
             }
         }
         return Task.CompletedTask;
