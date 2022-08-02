@@ -35,12 +35,11 @@ public class PaymentService : BaseService, IPaymentService
     private readonly ISortHelper<Payment> _sortHelper;
     private static  UserManager<ApplicationUser>? _userManager;
     private readonly INotificationService _notificationService;
-    private readonly IRecurringJobManager _recurringJobManager;
 
     public PaymentService(IPaymentRepository paymentRepository, IMapper mapper, ISortHelper<Payment> sortHelper,
         MomoSetting momoSettings, IRewardRepository rewardRepository, IQuestRepository questRepository,
         UserManager<ApplicationUser>? userManager, IEmailSender emailSender,
-        IHubContext<PaymentHub, IPaymentHub> hubContext, IBackgroundJobClient backgroundJobClient, INotificationService notificationService, IRecurringJobManager recurringJobManager)
+        IHubContext<PaymentHub, IPaymentHub> hubContext, IBackgroundJobClient backgroundJobClient, INotificationService notificationService)
     {
         _paymentRepository = paymentRepository;
         _mapper = mapper;
@@ -53,7 +52,6 @@ public class PaymentService : BaseService, IPaymentService
         _hubContext = hubContext;
         _backgroundJobClient = backgroundJobClient;
         _notificationService = notificationService;
-        _recurringJobManager = recurringJobManager;
     }
 
     public PageList<PaymentResponseModel> GetAll(PaymentParams @params, Language language)
@@ -182,25 +180,23 @@ public class PaymentService : BaseService, IPaymentService
                 var questName = _questRepository.Get(item.QuestId).Result.Title;
 
                 // send notification to client
-                _notificationService.SendNotification(new NotificationRequestModel
+                /*_notificationService.SendNotification(new NotificationRequestModel
                 {
                     DeviceId = deviceId,
                     Title = "Payment has 1 day left to expire " + item.QuestId,
                     Body = "Your payment has 1 day left to expire for quest " +
                            ConvertLanguage(Language.vi, questName!),
                     IsAndroidDevice = true
-                });
-
-                /*RecurringJob.AddOrUpdate("Notification", () => _notificationService.SendNotification(new NotificationRequestModel
+                });*/
+                _backgroundJobClient.Enqueue(() => _notificationService.SendNotification(new NotificationRequestModel
                 {
                     DeviceId = deviceId,
                     Title = "Payment has 1 day left to expire " + item.QuestId,
                     Body = "Your payment has 1 day left to expire for quest " +
                            ConvertLanguage(Language.vi, questName!),
                     IsAndroidDevice = true
-                }), "0 0 * * *", TimeZoneInfo.FindSystemTimeZoneById("SE Asia Standard Time"));*/
+                }));
             }
-            return Task.CompletedTask;
         }
         return Task.CompletedTask;
     }
