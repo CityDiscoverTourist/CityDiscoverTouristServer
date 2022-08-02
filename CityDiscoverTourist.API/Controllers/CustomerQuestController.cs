@@ -165,15 +165,14 @@ public class CustomerQuestController : ControllerBase
 
     /// <summary>
     /// </summary>
-    /// <param name="questId"></param>
-    /// <param name="customerId"></param>
+    /// <param name="customerQuestId"></param>
     /// <param name="comment"></param>
     /// <returns></returns>
     [HttpPut("update-comment")]
-    public async Task<ApiResponse<List<CommentResponseModel>>> UpdateComment(int questId, string customerId,
+    public async Task<ApiResponse<List<CommentResponseModel>>> UpdateComment(int customerQuestId,
         CommentRequestModel comment)
     {
-        var entity = await _customerQuestService.UpdateComment(questId, customerId, comment);
+        var entity = await _customerQuestService.UpdateComment(customerQuestId, comment);
         return ApiResponse<CustomerQuestResponseModel>.Created(entity);
     }
 

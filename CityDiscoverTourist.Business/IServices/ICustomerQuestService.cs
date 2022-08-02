@@ -17,7 +17,7 @@ public interface ICustomerQuestService
     public Task<CustomerQuestResponseModel> DeleteAsync(int id);
     public Task<CustomerQuestResponseModel> UpdateEndPointAndStatusWhenFinishQuestAsync(int customerQuestId);
     public Task<PageList<CommentResponseModel>> ShowComments(int questId, CustomerQuestParams param);
-    public Task<List<CommentResponseModel>> UpdateComment(int questId, string customerId, CommentRequestModel comment);
+    public Task<List<CommentResponseModel>> UpdateComment(int customerQuestId, CommentRequestModel comment);
     public IQueryable<CommentResponseModel> GetMyComment( int questId, string customerId);
     public Task ApproveFeedback(int id);
     public Task ForceDelete(int id, bool forceDelete);

@@ -246,16 +246,16 @@ public class CustomerQuestService : BaseService, ICustomerQuestService
             PageList<CommentResponseModel>.ToPageList(commentResponseModels, param.PageNumber, param.PageSize));
     }
 
-    public Task<List<CommentResponseModel>> UpdateComment(int questId, string customerId, CommentRequestModel request)
+    public async Task<List<CommentResponseModel>> UpdateComment(int customerQuestId, CommentRequestModel request)
     {
-        var comments = GetComment(questId, customerId);
+        var comments = await _customerQuestRepository.Get(customerQuestId);
 
-        var mappedData = _mapper.Map<IEnumerable<CustomerQuest>>(comments).FirstOrDefault();
+        var mappedData = _mapper.Map<CustomerQuest>(comments);
 
         mappedData!.FeedBack = request.FeedBack;
         mappedData.Rating = request.Rating;
 
-        _customerQuestRepository.UpdateFields(mappedData, x => x.FeedBack!, x => x.Rating);
+        await _customerQuestRepository.UpdateFields(mappedData, x => x.FeedBack!, x => x.Rating);
 
         return null!;
     }
