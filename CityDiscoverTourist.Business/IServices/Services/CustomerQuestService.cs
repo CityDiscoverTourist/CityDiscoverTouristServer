@@ -103,9 +103,19 @@ public class CustomerQuestService : BaseService, ICustomerQuestService
             if (item.IsFinished) continue;
             if (!(item.CreatedDate!.Value.Date < CurrentDateTime().Date)) continue;
 
+            var lastCustomerTask = _customerTaskRepository
+                .GetByCondition(x => x.Id == item.Id).OrderByDescending(x => x.CreatedDate)
+                .LastOrDefaultAsync().Result;
+
+            lastCustomerTask!.IsFinished = true;
+            lastCustomerTask.Status = CommonStatus.Done.ToString();
+
+            await _customerTaskRepository.UpdateFields(lastCustomerTask, x => x.IsFinished, x => x.Status);
+
             item.Rating = 5;
             item.IsFinished = true;
             item.Status = CommonStatus.Inactive.ToString();
+
             await _customerQuestRepository.UpdateFields(item, x => x.IsFinished, x => x.Status!);
         }
 
