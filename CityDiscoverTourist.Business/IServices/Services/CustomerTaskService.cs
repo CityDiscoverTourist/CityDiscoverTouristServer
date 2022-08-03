@@ -190,7 +190,6 @@ public class CustomerTaskService : BaseService, ICustomerTaskService
 
         var questItem = await _questItemRepo.Get(customerTask!.QuestItemId);
 
-
         // if quest item is image compare
         if (questItem.AnswerImageUrl != null)
         {
@@ -198,7 +197,23 @@ public class CustomerTaskService : BaseService, ICustomerTaskService
             // image is not identical
             if (!matches)
             {
-                //await SaveCustomerAnswer(customerTask, files.ToString(), NoteCustomerAnswer.WrongAnswer);
+                if (customerTask.CountWrongAnswer >= 5)
+                {
+                    // when customer answer wrong 5 times, move to next quest item by trick
+                    customerTask.Status = "Finished";
+                    customerTask.IsFinished = true;
+                    await _customerTaskRepo.UpdateFields(customerTask, r => r.Status!, r => r.IsFinished);
+
+                    throw new AppException("You have already hit 5 wrong answers, We will show the right answer");
+                }
+
+                customerTask.CurrentPoint = currentPoint - PointWhenWrongAnswer;
+                customerTask.CountWrongAnswer++;
+                customerTask = await _customerTaskRepo.UpdateFields(customerTask, r => r.CurrentPoint,
+                    r => r.CountWrongAnswer);
+
+                await _hubContext.Clients.All.UpdateCustomerTask(customerTask);
+
                 return _mapper.Map<CustomerTaskResponseModel>(customerTask);
             }
             // identical image
