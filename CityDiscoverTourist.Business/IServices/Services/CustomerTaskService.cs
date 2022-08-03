@@ -94,6 +94,7 @@ public class CustomerTaskService : BaseService, ICustomerTaskService
         entity.IsFinished = false;
         entity.QuestItemId = GetFirstQuestItemIdOfQuest(questId);
         entity.Status = "Progress";
+        entity.CreatedDate = CurrentDateTime();
 
         entity = await _customerTaskRepo.Add(entity);
         await _hubContext.Clients.All.AddCustomerTask(_mapper.Map<CustomerTaskResponseModel>(entity));
@@ -132,7 +133,8 @@ public class CustomerTaskService : BaseService, ICustomerTaskService
                 QuestItemId = nextQuestItem.Id,
                 IsFinished = false,
                 CurrentPoint = lastQuestItemCustomerFinished.CurrentPoint,
-                Status = "Progress"
+                Status = "Progress",
+                CreatedDate = CurrentDateTime()
             };
             await _customerTaskRepo.Add(_mapper.Map<CustomerTask>(customerTask));
             await _hubContext.Clients.All.CustomerStartNextQuestItem(
