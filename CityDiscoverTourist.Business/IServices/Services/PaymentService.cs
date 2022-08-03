@@ -26,7 +26,6 @@ public class PaymentService : BaseService, IPaymentService
 {
     private readonly IBackgroundJobClient _backgroundJobClient;
     private readonly IEmailSender _emailSender;
-    private readonly IHubContext<PaymentHub, IPaymentHub> _hubContext;
     private readonly IMapper _mapper;
     private readonly MomoSetting _momoSettings;
     private readonly IPaymentRepository _paymentRepository;
@@ -39,7 +38,7 @@ public class PaymentService : BaseService, IPaymentService
     public PaymentService(IPaymentRepository paymentRepository, IMapper mapper, ISortHelper<Payment> sortHelper,
         MomoSetting momoSettings, IRewardRepository rewardRepository, IQuestRepository questRepository,
         UserManager<ApplicationUser>? userManager, IEmailSender emailSender,
-        IHubContext<PaymentHub, IPaymentHub> hubContext, IBackgroundJobClient backgroundJobClient, INotificationService notificationService)
+        IBackgroundJobClient backgroundJobClient, INotificationService notificationService)
     {
         _paymentRepository = paymentRepository;
         _mapper = mapper;
@@ -49,7 +48,6 @@ public class PaymentService : BaseService, IPaymentService
         _questRepository = questRepository;
         _userManager = userManager;
         _emailSender = emailSender;
-        _hubContext = hubContext;
         _backgroundJobClient = backgroundJobClient;
         _notificationService = notificationService;
     }
@@ -160,9 +158,6 @@ public class PaymentService : BaseService, IPaymentService
             _emailSender.SendMailConfirmAsync(customerEmail, "Payment Information", message));
 
         var mappedData = _mapper.Map<PaymentResponseModel>(entity);
-
-        //send hub to client when payment success
-        await _hubContext.Clients.All.GetPayment(mappedData);
 
         return mappedData;
     }

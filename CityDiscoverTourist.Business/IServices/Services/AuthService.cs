@@ -25,7 +25,6 @@ namespace CityDiscoverTourist.Business.IServices.Services;
 public class AuthService : BaseService, IAuthService
 {
     private static  IConfiguration? _configuration;
-    private readonly IHubContext<CustomerHub, ICustomerHub> _customerHub;
     private readonly IEmailSender _emailSender;
     private  readonly RoleManager<IdentityRole> _roleManager;
     private readonly UserManager<ApplicationUser> _userManager;
@@ -33,13 +32,12 @@ public class AuthService : BaseService, IAuthService
 
     public AuthService(UserManager<ApplicationUser> userManager, IConfiguration? configuration,
         RoleManager<IdentityRole> roleManager, IEmailSender emailSender,
-        IHubContext<CustomerHub, ICustomerHub> customerHub, IPaymentService paymentService)
+        IPaymentService paymentService)
     {
         _userManager = userManager;
         _configuration = configuration;
         _roleManager = roleManager;
         _emailSender = emailSender;
-        _customerHub = customerHub;
         _paymentService = paymentService;
     }
 
@@ -197,9 +195,6 @@ public class AuthService : BaseService, IAuthService
 
         user.ConfirmToken = token;
         await _userManager.UpdateAsync(user);
-
-        //send hub notification to client
-        await _customerHub.Clients.All.NewCustomerCreated(user.Email!);
 
         return result.Succeeded;
     }
