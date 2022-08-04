@@ -1,4 +1,5 @@
 using System.Globalization;
+using System.Text.Json.Serialization;
 using System.Text.RegularExpressions;
 using CityDiscoverTourist.Business.Helper;
 using CityDiscoverTourist.Business.IServices;
@@ -191,7 +192,7 @@ public static class ConfigController
         }).AddNewtonsoftJson(options =>
         {
             options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
-        });
+        }).AddJsonOptions(x => x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
     }
 
     internal class LowercaseDashedParameterTransformer : IOutboundParameterTransformer
