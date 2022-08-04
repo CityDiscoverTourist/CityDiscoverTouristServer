@@ -18,13 +18,11 @@ public class FacebookService : BaseService, IFacebookService
 
     private readonly HttpClient _httpClient;
     private readonly UserManager<ApplicationUser> _userManager;
-    private readonly IPaymentService _paymentService;
 
-    public FacebookService(UserManager<ApplicationUser> userManager, IAuthService authService, IPaymentService paymentService)
+    public FacebookService(UserManager<ApplicationUser> userManager, IAuthService authService)
     {
         _userManager = userManager;
         _authService = authService;
-        _paymentService = paymentService;
         _httpClient = new HttpClient
         {
             BaseAddress = new Uri(FacebookUri)
@@ -90,7 +88,7 @@ public class FacebookService : BaseService, IFacebookService
 
         var accessToken = _authService.GetJwtToken(authClaims);
 
-        await _paymentService.PushNotification(userDb.DeviceId!, userDb.Id);
+        //await _paymentService.PushNotification(userDb.DeviceId!, userDb.Id);
 
         return new LoginResponseModel
         {

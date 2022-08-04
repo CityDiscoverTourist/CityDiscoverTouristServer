@@ -161,35 +161,41 @@ public class PaymentService : BaseService, IPaymentService
 
     public Task PushNotification(string deviceId, string userId)
     {
-        var entity = _paymentRepository.GetByCondition(x => x.CustomerId == userId);
-
-        foreach (var item in entity)
+        var users = _userManager!.Users;
+        foreach (var user in users)
         {
-            //send notification to client when payment has 1 day left to expire
-            if (item.CreatedDate.AddDays(1).Date.ToString("dd/MM/yyyy HH:mm:ss") ==
-                CurrentDateTime().Date.ToString("dd/MM/yyyy HH:mm:ss"))
-            {
-                var questName = _questRepository.Get(item.QuestId).Result.Title;
+            var entity = _paymentRepository.GetByCondition(x => x.CustomerId == user.Id);
 
-                // send notification to client
-                /*_notificationService.SendNotification(new NotificationRequestModel
+            foreach (var item in entity)
+            {
+                //send notification to client when payment has 1 day left to expire
+                if (item.CreatedDate.AddDays(1).Date.ToString("dd/MM/yyyy HH:mm:ss") ==
+                    CurrentDateTime().Date.ToString("dd/MM/yyyy HH:mm:ss"))
                 {
-                    DeviceId = deviceId,
-                    Title = "Payment has 1 day left to expire " + item.QuestId,
-                    Body = "Your payment has 1 day left to expire for quest " +
-                           ConvertLanguage(Language.vi, questName!),
-                    IsAndroidDevice = true
-                });*/
-                _backgroundJobClient.Schedule(() => _notificationService.SendNotification(new NotificationRequestModel
-                {
-                    DeviceId = deviceId,
-                    Title = "Payment has 1 day left to expire " + item.QuestId,
-                    Body = "Your payment has 1 day left to expire for quest " +
-                           ConvertLanguage(Language.vi, questName!),
-                    IsAndroidDevice = true
-                }), TimeSpan.FromHours(24));
+                    var questName = _questRepository.Get(item.QuestId).Result.Title;
+
+                    // send notification to client
+                    /*_notificationService.SendNotification(new NotificationRequestModel
+                    {
+                        DeviceId = deviceId,
+                        Title = "Payment has 1 day left to expire " + item.QuestId,
+                        Body = "Your payment has 1 day left to expire for quest " +
+                               ConvertLanguage(Language.vi, questName!),
+                        IsAndroidDevice = true
+                    });*/
+                    var jobId = _backgroundJobClient.Schedule(() => _notificationService.SendNotification(new NotificationRequestModel
+                    {
+                        DeviceId = user.DeviceId,
+                        Title = "Payment has 1 day left to expire " + item.QuestId,
+                        Body = "Your payment has 1 day left to expire for quest " +
+                               ConvertLanguage(Language.vi, questName!),
+                        IsAndroidDevice = true
+                    }), TimeSpan.FromHours(24));
+                    _backgroundJobClient.Delete(jobId);
+                }
             }
         }
+
         return Task.CompletedTask;
     }
 

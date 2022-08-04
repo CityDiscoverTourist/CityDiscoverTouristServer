@@ -25,17 +25,14 @@ public class AuthService : BaseService, IAuthService
     private readonly IEmailSender _emailSender;
     private  readonly RoleManager<IdentityRole> _roleManager;
     private readonly UserManager<ApplicationUser> _userManager;
-    private readonly IPaymentService _paymentService;
 
     public AuthService(UserManager<ApplicationUser> userManager, IConfiguration? configuration,
-        RoleManager<IdentityRole> roleManager, IEmailSender emailSender,
-        IPaymentService paymentService)
+        RoleManager<IdentityRole> roleManager, IEmailSender emailSender)
     {
         _userManager = userManager;
         _configuration = configuration;
         _roleManager = roleManager;
         _emailSender = emailSender;
-        _paymentService = paymentService;
     }
 
     public async Task<LoginResponseModel> LoginFirebase(LoginFirebaseModel model)
@@ -71,7 +68,7 @@ public class AuthService : BaseService, IAuthService
         userViewModel.RefreshTokenExpiryTime = DateTime.Now.AddSeconds(7);
         userViewModel.AccountId = user.Id;
 
-        await _paymentService.PushNotification(user.DeviceId!, user.Id);
+        //await _paymentService.PushNotification(user.DeviceId!, user.Id);
 
         return userViewModel;
     }
@@ -116,7 +113,7 @@ public class AuthService : BaseService, IAuthService
             FullName = user.UserName
         };
 
-        await _paymentService.PushNotification(user.DeviceId!, user.Id);
+        //await _paymentService.PushNotification(user.DeviceId!, user.Id);
 
         return userViewModel;
     }
@@ -153,7 +150,7 @@ public class AuthService : BaseService, IAuthService
             AccountId = user.Id,
             FullName = user.UserName
         };
-        await _paymentService.PushNotification("dOJJNFd5SH-BEwUdgr8tpx:APA91bHV-yTd9jr7Ff_H9JqGQmkivnlcq69zxiCAfU7eon7NphKO3zfpz5aL65QNnO1k_uPfTAyFiWFDBgIwNa_yPGHVCt9qdwHiIFfB0bGRsCl3-zW947Di7EfOATzhwJgZ7hzySCha", "zxc");
+        //await _paymentService.PushNotification("dOJJNFd5SH-BEwUdgr8tpx:APA91bHV-yTd9jr7Ff_H9JqGQmkivnlcq69zxiCAfU7eon7NphKO3zfpz5aL65QNnO1k_uPfTAyFiWFDBgIwNa_yPGHVCt9qdwHiIFfB0bGRsCl3-zW947Di7EfOATzhwJgZ7hzySCha", "zxc");
         return userViewModel;
     }
 
