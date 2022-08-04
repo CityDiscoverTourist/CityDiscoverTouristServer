@@ -159,7 +159,7 @@ public class PaymentService : BaseService, IPaymentService
         return mappedData;
     }
 
-    public Task PushNotification(string deviceId, string userId)
+    public Task PushNotification()
     {
         var users = _userManager!.Users;
         foreach (var user in users)

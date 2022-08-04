@@ -136,11 +136,14 @@ public class PaymentController : ControllerBase
         return _paymentService.UpdateStatusWhenSuccess(dto);
     }
 
+    /// <summary>
+    ///
+    /// </summary>
     [HttpPost("notification")]
     [AllowAnonymous]
-    public async Task Notification(string data, string userId)
+    public async Task Notification()
     {
-        await _paymentService.PushNotification(data, userId);
+        await _paymentService.PushNotification();
     }
 
     /// <summary>
