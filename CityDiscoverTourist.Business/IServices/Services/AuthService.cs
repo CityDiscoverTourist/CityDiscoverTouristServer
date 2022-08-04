@@ -58,7 +58,7 @@ public class AuthService : BaseService, IAuthService
             new (JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
             new (ClaimTypes.Email, userViewModel.Email ?? string.Empty),
             new (ClaimTypes.Role, Role.Customer.ToString()),
-            new (ClaimTypes.Expiration, CurrentDateTime().AddHours(3).ToString(CultureInfo.InvariantCulture))
+            new (ClaimTypes.Expiration, CurrentDateTime().AddHours(4).ToString(CultureInfo.InvariantCulture))
         };
 
         var accessToken = GetJwtToken(authClaims);
@@ -101,7 +101,7 @@ public class AuthService : BaseService, IAuthService
             new (JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
             new (ClaimTypes.Email, user.Email ?? string.Empty),
             new (ClaimTypes.Role, Role.Customer.ToString()),
-            new (ClaimTypes.Expiration, CurrentDateTime().AddHours(3).ToString(CultureInfo.CurrentCulture))
+            new (ClaimTypes.Expiration, CurrentDateTime().AddHours(4).ToString(CultureInfo.CurrentCulture))
         };
 
         var accessToken = GetJwtToken(authClaims);
