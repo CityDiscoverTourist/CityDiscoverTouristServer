@@ -83,7 +83,7 @@ public class FacebookService : BaseService, IFacebookService
             new (JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
             new (ClaimTypes.Email, facebookUser.Email!),
             new (ClaimTypes.Role, Role.Customer.ToString()),
-            new (ClaimTypes.Expiration, CurrentDateTime().AddHours(1).ToString(CultureInfo.CurrentCulture))
+            new (ClaimTypes.Expiration, CurrentDateTime().AddHours(3).ToString(CultureInfo.CurrentCulture))
         };
 
         var accessToken = _authService.GetJwtToken(authClaims);
