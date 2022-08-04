@@ -17,7 +17,7 @@ namespace CityDiscoverTourist.API.Controllers;
 [Route("api/v{version:apiVersion}/[controller]s")]
 [ApiVersion("1.0")]
 [ApiController]
-//[Authorize]
+[Authorize]
 public class CustomerTaskController : ControllerBase
 {
     private readonly ICustomerTaskService _customerTaskService;
@@ -89,6 +89,20 @@ public class CustomerTaskController : ControllerBase
     public async Task<ApiResponse<CustomerTaskResponseModel>> Get(int id)
     {
         var entity = await _customerTaskService.Get(id);
+
+        return ApiResponse<CustomerTaskResponseModel>.Ok(entity);
+    }
+
+    /// <summary>
+    ///  customer want to skip task
+    /// </summary>
+    /// <param name="id"></param>
+    /// <returns></returns>
+    [HttpPut("skip/{id:int}")]
+    //[Cached(600)]
+    public async Task<ApiResponse<CustomerTaskResponseModel>> Skip(int id)
+    {
+        var entity = await _customerTaskService.Skip(id);
 
         return ApiResponse<CustomerTaskResponseModel>.Ok(entity);
     }

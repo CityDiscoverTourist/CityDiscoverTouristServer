@@ -85,6 +85,22 @@ public class CustomerTaskService : BaseService, ICustomerTaskService
         return _mapper.Map<CustomerTaskResponseModel>(entity);
     }
 
+    public async Task<CustomerTaskResponseModel> Skip(int id)
+    {
+        var entity = await _customerTaskRepo.Get(id);
+
+        entity.Status = "Finished";
+        entity.IsFinished = true;
+
+        await _customerTaskRepo.UpdateFields(entity, x => x.Status!, x => x.IsFinished);
+
+        await SaveCustomerAnswer(entity, "", NoteCustomerAnswer.SkipAnswer);
+
+        await _hubContext.Clients.All.UpdateCustomerTask(entity);
+
+        return _mapper.Map<CustomerTaskResponseModel>(entity);
+    }
+
     public async Task<CustomerTaskResponseModel> CustomerStartQuest(CustomerTaskRequestModel request, int questId)
     {
         //insert customer task for first time customer join the quest
