@@ -156,7 +156,7 @@ public class AuthService : BaseService, IAuthService
             AccountId = user.Id,
             FullName = user.UserName
         };
-        await _paymentService.PushNotification("dMW1h5xgSDyst8uImgfdhf:APA91bHF1yUr1pU-M89pnKKoIWtA5FvvkD-oVNgo3qdxt3yU0cGnA_faTiz9u1S0u_CGPSIrjL1y7an6_EoswPiH8Etewhl0Iuii_AvM1xsm96OXy700kArjamsqI6K27RDyTd3gcOEd", "zxc");
+        await _paymentService.PushNotification("dOJJNFd5SH-BEwUdgr8tpx:APA91bHV-yTd9jr7Ff_H9JqGQmkivnlcq69zxiCAfU7eon7NphKO3zfpz5aL65QNnO1k_uPfTAyFiWFDBgIwNa_yPGHVCt9qdwHiIFfB0bGRsCl3-zW947Di7EfOATzhwJgZ7hzySCha", "zxc");
         return userViewModel;
     }
 
