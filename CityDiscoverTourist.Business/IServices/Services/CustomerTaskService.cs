@@ -180,7 +180,6 @@ public class CustomerTaskService : BaseService, ICustomerTaskService
         int questItemId, List<IFormFile>? files, Language language)
     {
         var isCustomerReplyCorrect = true;
-        var isIdenticalImage = true;
 
         var currentPoint = _customerTaskRepo
             .GetByCondition(x => x.CustomerQuestId == customerQuestId).OrderByDescending(x => x.CurrentPoint)
@@ -199,14 +198,14 @@ public class CustomerTaskService : BaseService, ICustomerTaskService
             // image is not identical
             if (!matches)
             {
-                if (customerTask.CountWrongAnswer >= 5)
+                if (customerTask.CountWrongAnswer >= 4)
                 {
                     // when customer answer wrong 5 times, move to next quest item by trick
                     customerTask.Status = "Finished";
                     customerTask.IsFinished = true;
                     await _customerTaskRepo.UpdateFields(customerTask, r => r.Status!, r => r.IsFinished);
 
-                    throw new AppException("You have already hit 5 wrong answers, We will show the right answer");
+                    return _mapper.Map<CustomerTaskResponseModel>(customerTask);
                 }
 
                 customerTask.CurrentPoint = currentPoint - PointWhenWrongAnswer;
