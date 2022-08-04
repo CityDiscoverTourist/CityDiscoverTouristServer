@@ -89,8 +89,11 @@ public class AuthService : BaseService, IAuthService
 
         if (!user.EmailConfirmed) throw new AppException("Customer is not confirmed");
 
-        user.DeviceId = model.DeviceId;
-        await _userManager.UpdateAsync(user);
+        if (model.DeviceId != null)
+        {
+            user.DeviceId = model.DeviceId;
+            await _userManager.UpdateAsync(user);
+        }
 
         var authClaims = new List<Claim>
         {
