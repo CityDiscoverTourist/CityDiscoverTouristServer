@@ -91,8 +91,10 @@ public class CustomerTaskService : BaseService, ICustomerTaskService
 
         entity.Status = "Finished";
         entity.IsFinished = true;
+        entity.CurrentPoint -= 100;
 
-        await _customerTaskRepo.UpdateFields(entity, x => x.Status!, x => x.IsFinished);
+        await _customerTaskRepo.UpdateFields(entity, x => x.Status!,
+            x => x.IsFinished, x => x.CurrentPoint);
 
         await SaveCustomerAnswer(entity, "", NoteCustomerAnswer.SkipAnswer);
 
