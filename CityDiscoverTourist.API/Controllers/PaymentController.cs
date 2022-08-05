@@ -141,9 +141,11 @@ public class PaymentController : ControllerBase
     /// </summary>
     [HttpPost("notification")]
     [AllowAnonymous]
-    public async Task Notification()
+    public Task Notification()
     {
-        await _paymentService.PushNotification();
+        _recurringJobManager.AddOrUpdate("Notification", () => _paymentService.PushNotification(), "0 0 * * *",
+            TimeZoneInfo.FindSystemTimeZoneById("SE Asia Standard Time"));
+        return Task.CompletedTask;
     }
 
     /// <summary>

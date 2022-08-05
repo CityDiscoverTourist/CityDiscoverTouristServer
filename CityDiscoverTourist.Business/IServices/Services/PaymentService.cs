@@ -175,22 +175,22 @@ public class PaymentService : BaseService, IPaymentService
                     var questName = _questRepository.Get(item.QuestId).Result.Title;
 
                     // send notification to client
-                    /*_notificationService.SendNotification(new NotificationRequestModel
-                    {
-                        DeviceId = deviceId,
-                        Title = "Payment has 1 day left to expire " + item.QuestId,
-                        Body = "Your payment has 1 day left to expire for quest " +
-                               ConvertLanguage(Language.vi, questName!),
-                        IsAndroidDevice = true
-                    });*/
-                    RecurringJob.AddOrUpdate(() => _notificationService.SendNotification(new NotificationRequestModel
+                    _notificationService.SendNotification(new NotificationRequestModel
                     {
                         DeviceId = user.DeviceId,
                         Title = "Payment has 1 day left to expire " + item.QuestId,
                         Body = "Your payment has 1 day left to expire for quest " +
                                ConvertLanguage(Language.vi, questName!),
                         IsAndroidDevice = true
-                    }), "0 0 * * *", TimeZoneInfo.FindSystemTimeZoneById("SE Asia Standard Time"));
+                    });
+                    /*RecurringJob.AddOrUpdate(() => _notificationService.SendNotification(new NotificationRequestModel
+                    {
+                        DeviceId = user.DeviceId,
+                        Title = "Payment has 1 day left to expire " + item.QuestId,
+                        Body = "Your payment has 1 day left to expire for quest " +
+                               ConvertLanguage(Language.vi, questName!),
+                        IsAndroidDevice = true
+                    }), "0 0 * * *", TimeZoneInfo.FindSystemTimeZoneById("SE Asia Standard Time"));*/
                 }
             }
         }
