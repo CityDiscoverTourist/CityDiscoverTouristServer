@@ -93,12 +93,18 @@ public class CustomerTaskService : BaseService, ICustomerTaskService
         entity.IsFinished = true;
         entity.CurrentPoint -= 100;
 
-        await _customerTaskRepo.UpdateFields(entity, x => x.Status!,
+        entity = await _customerTaskRepo.UpdateFields(entity, x => x.Status!,
             x => x.IsFinished, x => x.CurrentPoint);
 
-        await SaveCustomerAnswer(entity, "", NoteCustomerAnswer.SkipAnswer);
-
-        await _hubContext.Clients.All.UpdateCustomerTask(entity);
+            var customerAnswer = new CustomerAnswer
+            {
+                Note = NoteCustomerAnswer.SkipAnswer.ToString(),
+                CustomerReply = "",
+                QuestItemId = entity.QuestItemId,
+                CustomerTaskId = entity.Id
+            };
+            await _customerAnswerService.CreateAsync(_mapper.Map<CustomerAnswerRequestModel>(customerAnswer));
+        //await _hubContext.Clients.All.UpdateCustomerTask(entity);
 
         return _mapper.Map<CustomerTaskResponseModel>(entity);
     }
