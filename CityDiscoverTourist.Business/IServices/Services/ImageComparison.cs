@@ -59,7 +59,7 @@ public class ImageComparison : IImageComparison
         var listByteScene = ConvertImageFromUser(image);
         var listImageScene = ConvertImage(listByteScene);
 
-        return CompareImages(listImageBase, listImageScene) > 1000;
+        return CompareImages(listImageBase, listImageScene) > 2000;
     }
 
     private static long CompareImages(List<Image<Gray, byte>> listImageBase, List<Image<Gray, byte>> listImageScene)
@@ -92,10 +92,10 @@ public class ImageComparison : IImageComparison
                 var matches = vectorOfMatches.ToArrayOfArray();
 
                 //matches with distance less than 0.75
-                //var goodMatches = matches.Where(x => x[0].Distance < 0.75 * x[1].Distance).ToArray();
+                var goodMatches = matches.Where(x => x[0].Distance < 0.75 * x[1].Distance).ToArray();
 
                 //number of good matches
-                var numberOfGoodMatches = matches.Length;
+                var numberOfGoodMatches = goodMatches.Length;
 
                 //if number of good matches is greater than most matches, then set most matches to number of good matches
                 if (numberOfGoodMatches > mostMatches) mostMatches = numberOfGoodMatches;

@@ -15,7 +15,7 @@ namespace CityDiscoverTourist.API.Controllers;
 [Route("api/v{version:apiVersion}/[controller]s")]
 [ApiVersion("1.0")]
 [ApiController]
-//[Authorize]
+[Authorize]
 public class CustomerController : ControllerBase
 {
     private readonly ICustomerService _customerService;
