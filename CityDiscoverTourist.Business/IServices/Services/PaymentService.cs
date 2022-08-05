@@ -208,7 +208,7 @@ public class PaymentService : BaseService, IPaymentService
     public async Task<PageList<PaymentResponseModel>> GetByCustomerId(PaymentParams @params, string customerId,
         Language language)
     {
-        var entity = _paymentRepository.GetAll()
+        var entity = _paymentRepository.GetByCondition(x => x.CustomerId == customerId)
             .Include(x => x.CustomerQuests)
             .OrderByDescending(x => x.CreatedDate).AsNoTracking();
         CheckDataNotNull("Payment", entity);
