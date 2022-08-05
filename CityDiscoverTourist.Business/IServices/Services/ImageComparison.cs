@@ -1,4 +1,3 @@
-using System.Net.Mime;
 using Emgu.CV;
 using Emgu.CV.CvEnum;
 using Emgu.CV.Features2D;
@@ -93,10 +92,10 @@ public class ImageComparison : IImageComparison
                 var matches = vectorOfMatches.ToArrayOfArray();
 
                 //matches with distance less than 0.75
-                var goodMatches = matches.Where(x => x[0].Distance < 0.75 * x[1].Distance).ToArray();
+                //var goodMatches = matches.Where(x => x[0].Distance < 0.75 * x[1].Distance).ToArray();
 
                 //number of good matches
-                var numberOfGoodMatches = goodMatches.Length;
+                var numberOfGoodMatches = matches.Length;
 
                 //if number of good matches is greater than most matches, then set most matches to number of good matches
                 if (numberOfGoodMatches > mostMatches) mostMatches = numberOfGoodMatches;

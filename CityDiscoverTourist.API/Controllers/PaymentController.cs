@@ -140,7 +140,7 @@ public class PaymentController : ControllerBase
     ///
     /// </summary>
     [HttpPost("notification")]
-    [AllowAnonymous]
+    [Authorize(Roles = "Admin")]
     public Task Notification()
     {
         _recurringJobManager.AddOrUpdate("Notification", () => _paymentService.PushNotification(), "0 0 * * *",
