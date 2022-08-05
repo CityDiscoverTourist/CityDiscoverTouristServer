@@ -28,18 +28,6 @@ public class DashboardService : BaseService, IDashboardService
     }
     public Player[] GetTopCustomer()
     {
-        /*var list = new List<string>();
-        var payments = _paymentRepository.GetAll().Where(x => x.Status == PaymentStatus.Success.ToString());
-
-        foreach (var payment in payments)
-        {
-            var user = _userManager.FindByIdAsync(payment.CustomerId).Result;
-            if (user.Id == payment.CustomerId)
-            {
-                var customer = "";
-            }
-
-        }*/
         // get top 3 customers by total amount of payments
         var topCustomers = _paymentRepository.GetAll().Where(x => x.Status == PaymentStatus.Success.ToString())
             .GroupBy(x => x.CustomerId).Select(x => new { CustomerId = x.Key, TotalAmount = x.Sum(y => y.TotalAmount) })
@@ -67,6 +55,20 @@ public class DashboardService : BaseService, IDashboardService
         var payments = _paymentRepository.GetAll().Where(x => x.Status == PaymentStatus.Success.ToString()).ToList();
 
         return payments.Sum(payment => payment.TotalAmount);
+    }
+
+    public float GetRevenueByMonthOfYear(int month, int year)
+    {
+        var payments = _paymentRepository.GetAll().Where(x => x.Status == PaymentStatus.Success.ToString()).ToList();
+        var paymentsByMonth = payments.Where(payment => payment.CreatedDate.Month == month && payment.CreatedDate.Year == year).ToList();
+        return paymentsByMonth.Sum(payment => payment.TotalAmount);
+    }
+
+    public float GetRevenueByMonth(int month)
+    {
+        var payments = _paymentRepository.GetAll().Where(x => x.Status == PaymentStatus.Success.ToString()).ToList();
+        var paymentsByMonth = payments.Where(payment => payment.CreatedDate.Month == month).ToList();
+        return paymentsByMonth.Sum(payment => payment.TotalAmount);
     }
 
     public int TotalAccount()

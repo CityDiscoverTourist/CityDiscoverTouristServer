@@ -6,6 +6,7 @@ public interface IDashboardService
 {
     public Player[] GetTopCustomer();
     public float GetTotalRevenue();
+    public float GetRevenueByMonthOfYear(int month, int year);
     public int TotalAccount();
     public int TotalQuest();
     public string[] GetTopQuests();

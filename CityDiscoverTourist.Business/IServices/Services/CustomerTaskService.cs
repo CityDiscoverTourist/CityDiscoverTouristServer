@@ -227,7 +227,16 @@ public class CustomerTaskService : BaseService, ICustomerTaskService
                     // when customer answer wrong 5 times, move to next quest item by trick
                     customerTask.Status = "Finished";
                     customerTask.IsFinished = true;
-                    await _customerTaskRepo.UpdateFields(customerTask, r => r.Status!, r => r.IsFinished);
+                    var entity = await _customerTaskRepo.UpdateFields(customerTask, r => r.Status!, r => r.IsFinished);
+
+                    var customerAnswer = new CustomerAnswer
+                    {
+                        Note = NoteCustomerAnswer.WrongAnswer.ToString(),
+                        CustomerReply = "Image Compare",
+                        QuestItemId = entity.QuestItemId,
+                        CustomerTaskId = entity.Id
+                    };
+                    await _customerAnswerService.CreateAsync(_mapper.Map<CustomerAnswerRequestModel>(customerAnswer));
 
                     return _mapper.Map<CustomerTaskResponseModel>(customerTask);
                 }
@@ -245,9 +254,16 @@ public class CustomerTaskService : BaseService, ICustomerTaskService
             customerTask.Status = "Finished";
             customerTask.IsFinished = true;
 
-            await _customerTaskRepo.UpdateFields(customerTask, r => r.Status!, r => r.IsFinished);
+            var entity2 = await _customerTaskRepo.UpdateFields(customerTask, r => r.Status!, r => r.IsFinished);
 
-            //await SaveCustomerAnswer(customerTask, files.ToString(), NoteCustomerAnswer.CorrectAnswer);
+            var customerAnswer2 = new CustomerAnswer
+            {
+                Note = NoteCustomerAnswer.CorrectAnswer.ToString(),
+                CustomerReply = "Image Compare",
+                QuestItemId = entity2.QuestItemId,
+                CustomerTaskId = entity2.Id
+            };
+            await _customerAnswerService.CreateAsync(_mapper.Map<CustomerAnswerRequestModel>(customerAnswer2));
 
             await _hubContext.Clients.All.UpdateCustomerTask(customerTask);
 
