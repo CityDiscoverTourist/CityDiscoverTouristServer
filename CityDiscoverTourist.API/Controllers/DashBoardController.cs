@@ -54,6 +54,17 @@ public class DashboardController : ControllerBase
     }
 
     /// <summary>
+    ///
+    /// </summary>
+    /// <param name="year"></param>
+    /// <returns></returns>
+    [HttpGet("revenue-all-month")]
+    public Task<float[]> GetRevenueAllMonthOfYear(int year)
+    {
+        return Task.FromResult(_dashBoardService.GetRevenueByAllMonth(year));
+    }
+
+    /// <summary>
     /// </summary>
     /// <returns></returns>
     [HttpGet("total-user")]

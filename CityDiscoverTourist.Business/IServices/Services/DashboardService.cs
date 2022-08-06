@@ -64,6 +64,19 @@ public class DashboardService : BaseService, IDashboardService
         return paymentsByMonth.Sum(payment => payment.TotalAmount);
     }
 
+    public float[] GetRevenueByAllMonth(int year)
+    {
+        var payments = _paymentRepository.GetAll().Where(x => x.Status == PaymentStatus.Success.ToString()).ToList();
+        var paymentsByMonth = payments.Where(payment => payment.CreatedDate.Year == year).ToList();
+        var revenues = new float[12];
+        for (var i = 0; i < 12; i++)
+        {
+            revenues[i] = paymentsByMonth.Where(payment => payment.CreatedDate.Month == i + 1).Sum(payment => payment.TotalAmount);
+        }
+
+        return revenues;
+    }
+
     public float GetRevenueByMonth(int month)
     {
         var payments = _paymentRepository.GetAll().Where(x => x.Status == PaymentStatus.Success.ToString()).ToList();
