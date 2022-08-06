@@ -194,7 +194,8 @@ public class QuestItemService : BaseService, IQuestItemService
             await _taskRepository.UpdateFields(entity, x => x.AnswerImageUrl!);
         }
 
-
+        var imgDescription = await _blobService.UploadImgDescription(request.ImageDescription, entity.Id, "quest-img-description");
+        entity.ImageDescription = imgDescription;
 
         entity = await _taskRepository.NoneUpdateFields(entity, x => x.CreatedDate!);
         return _mapper.Map<QuestItemResponseModel>(entity);
