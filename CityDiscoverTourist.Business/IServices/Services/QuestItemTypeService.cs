@@ -61,6 +61,9 @@ public class QuestItemTypeService : BaseService, IQuestItemTypeService
         }
 
         var entity = _mapper.Map<QuestItemType>(request);
+
+        entity.CreatedDate = CurrentDateTime();
+
         entity = await _questItemTypeRepository.Add(entity);
         return _mapper.Map<QuestItemTypeResponseModel>(entity);
     }

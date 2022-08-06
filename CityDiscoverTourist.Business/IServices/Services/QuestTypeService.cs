@@ -147,6 +147,7 @@ public class QuestTypeService : BaseService, IQuestTypeService
         }
         var entity = _mapper.Map<QuestType>(request);
 
+        entity.CreatedDate = CurrentDateTime();
         entity.Name = JsonHelper.JsonFormat(request.Name);
 
         entity = await _questTypeRepository.Add(entity);

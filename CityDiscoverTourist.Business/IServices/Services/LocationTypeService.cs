@@ -84,6 +84,7 @@ public class LocationTypeService : BaseService, ILocationTypeService
 
         var entity = _mapper.Map<LocationType>(request);
 
+        entity.CreatedDate = CurrentDateTime();
         entity.Name = JsonHelper.JsonFormat(request.Name);
 
         entity = await _locationTypeRepository.Add(entity);

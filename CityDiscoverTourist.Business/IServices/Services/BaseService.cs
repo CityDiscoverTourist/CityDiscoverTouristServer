@@ -31,7 +31,7 @@ public class BaseService
 
     protected static string Trim(string requestName)
     {
-        return requestName.Replace(" ", string.Empty).Trim();
+        return requestName.Replace(" ", string.Empty).Trim().ToLower();
     }
 
     protected static string GetVietNameseName(string requestName)

@@ -4,6 +4,7 @@ public class City: BaseEntity
 {
     public string? Name { get; set; }
     public string? Status { get; set; }
+    public DateTime? CreatedDate { get; set; }
 
     public List<Area>? Areas { get; set; }
 }

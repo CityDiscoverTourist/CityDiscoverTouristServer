@@ -60,6 +60,9 @@ public class CityService : BaseService, ICityService
         }
 
         var entity = _mapper.Map<City>(request);
+
+        entity.CreatedDate = CurrentDateTime();
+
         entity = await _cityRepository.Add(entity);
         return _mapper.Map<CityResponseModel>(entity);
     }

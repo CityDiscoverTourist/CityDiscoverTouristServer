@@ -8,6 +8,7 @@ public class QuestType: BaseEntity
     public string? Name { get; set; }
     public string? Status { get; set; }
     public string? ImagePath { get; set; }
+    public DateTime? CreatedDate { get; set; }
 
     public string? DurationMode { get; set; }
     public string? DistanceMode { get; set; }

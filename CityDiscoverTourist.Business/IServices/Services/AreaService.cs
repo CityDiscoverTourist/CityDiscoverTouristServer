@@ -81,6 +81,7 @@ public class AreaService : BaseService, IAreaService
 
         var entity = _mapper.Map<Area>(request);
 
+        entity.CreatedDate = CurrentDateTime();
         entity.Name = JsonHelper.JsonFormat(request.Name);
 
         entity = await _areaRepository.Add(entity);

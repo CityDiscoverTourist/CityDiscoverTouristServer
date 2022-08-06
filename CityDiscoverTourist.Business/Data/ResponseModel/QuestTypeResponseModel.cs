@@ -8,5 +8,6 @@ public class QuestTypeResponseModel
     public string? DurationMode { get; set; }
     public string? DistanceMode { get; set; }
     public string? ImagePath { get; set; }
+    public DateTime? CreatedDate { get; set; }
     public List<QuestResponseModel>? Quests { get; set; }
 }

@@ -7,6 +7,7 @@ public class Area: BaseEntity
 
     public City? City { get; set; }
     public int CityId { get; set; }
+    public DateTime? CreatedDate { get; set; }
 
     public List<Quest>? Quests { get; set; }
     public List<Location>? Locations { get; set; }

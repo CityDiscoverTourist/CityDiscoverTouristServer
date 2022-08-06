@@ -16,7 +16,7 @@ namespace CityDiscoverTourist.API.Controllers;
 [Route("api/v{version:apiVersion}/[controller]s")]
 [ApiVersion("1.0")]
 [ApiController]
-[Authorize]
+//[Authorize]
 public class LocationTypeController : ControllerBase
 {
     private readonly ILocationTypeService _locationTypeService;
@@ -155,9 +155,9 @@ public class LocationTypeController : ControllerBase
     /// <returns></returns>
     [HttpGet("check")]
     //[Cached(600)]
-    public Task<bool> CheckExist(string name)
+    public async Task<bool> CheckExist(string name)
     {
-        var entity = _locationTypeService.CheckExisted(name);
+        var entity = await _locationTypeService.CheckExisted(name);
 
         return entity;
     }
