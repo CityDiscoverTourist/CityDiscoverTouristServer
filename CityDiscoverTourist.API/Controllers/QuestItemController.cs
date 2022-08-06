@@ -91,7 +91,8 @@ public class QuestItemController : ControllerBase
     /// <param name="id"></param>
     /// <returns></returns>
     [HttpGet("{id:int}/not-language")]
-    [Authorize(Roles = "Admin")]
+    //[Authorize(Roles = "Admin")]
+    [AllowAnonymous]
     //[Cached(600)]
     public async Task<ApiResponse<QuestItemResponseModel>> Get(int id)
     {
@@ -123,8 +124,7 @@ public class QuestItemController : ControllerBase
     /// <param name="data"></param>
     /// <returns></returns>
     [HttpPost]
-    /*[Authorize(Roles = "Admin")]*/
-    [AllowAnonymous]
+    [Authorize(Roles = "Admin")]
     public async Task<ApiResponse<QuestItemResponseModel>> Post([FromForm] QuestItemRequestModel data)
     {
         var entity = await _taskService.CreateAsync(data);
@@ -136,8 +136,7 @@ public class QuestItemController : ControllerBase
     /// <param name="data"></param>
     /// <returns></returns>
     [HttpPut]
-    //[Authorize(Roles = "Admin")]
-    [AllowAnonymous]
+    [Authorize(Roles = "Admin")]
     public async Task<ApiResponse<QuestItemResponseModel>> Put([FromForm] QuestItemRequestModel data)
     {
         var entity = await _taskService.UpdateAsync(data);

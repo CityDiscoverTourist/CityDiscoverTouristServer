@@ -86,13 +86,16 @@ public class QuestItemService : BaseService, IQuestItemService
         var objStory = JObject.Parse(entity.Story!);
         var story = (string) objStory["vi"]! + " | " + (string) objStory["en"]!;
 
-        var objAnswer = JObject.Parse(entity.RightAnswer!);
-        var rightAnswer = (string) objAnswer["vi"]! + " | " + (string) objAnswer["en"]!;
+        if (entity.RightAnswer != null)
+        {
+            var objAnswer = JObject.Parse(entity.RightAnswer!);
+            var rightAnswer = (string) objAnswer["vi"]! + " | " + (string) objAnswer["en"]!;
+            entity.RightAnswer = rightAnswer;
+        }
 
         entity.Content = content;
         entity.Description = description;
         entity.Story = story;
-        entity.RightAnswer = rightAnswer;
 
         var images = await _blobService.GetBaseUrl(ContainerName, entity.Id);
 
