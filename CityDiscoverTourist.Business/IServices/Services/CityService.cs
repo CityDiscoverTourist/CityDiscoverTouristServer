@@ -72,7 +72,7 @@ public class CityService : BaseService, ICityService
         request.Validate();
 
         var entity = _mapper.Map<City>(request);
-        entity = await _cityRepository.Update(entity);
+        entity = await _cityRepository.NoneUpdateFields(entity, x => x.CreatedDate!);
         return _mapper.Map<CityResponseModel>(entity);
     }
 

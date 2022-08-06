@@ -95,7 +95,7 @@ public class AreaService : BaseService, IAreaService
         entity.Name = JsonHelper.JsonFormat(request.Name);
 
 
-        entity = await _areaRepository.Update(entity);
+        entity = await _areaRepository.NoneUpdateFields(entity, x => x.CreatedDate!);
         return _mapper.Map<AreaResponseModel>(entity);
     }
 

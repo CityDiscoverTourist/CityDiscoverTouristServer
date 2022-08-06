@@ -167,6 +167,20 @@ public class QuestTypeController : ControllerBase
     }
 
     /// <summary>
+    ///
+    /// </summary>
+    /// <param name="name"></param>
+    /// <returns></returns>
+    [HttpGet("check")]
+    //[Cached(600)]
+    public async Task<bool> CheckExist(string name)
+    {
+        var entity = await _questTypeService.CheckExisted(name);
+
+        return entity;
+    }
+
+    /// <summary>
     ///     update status of included entity (enable/disable)
     /// </summary>
     /// <param name="id"></param>

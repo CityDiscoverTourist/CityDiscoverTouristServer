@@ -8,7 +8,6 @@ namespace CityDiscoverTourist.Business.IServices;
 public interface IQuestItemTypeService
 {
     public PageList<QuestItemTypeResponseModel> GetAll(TaskTypeParams @params);
-
     public Task<QuestItemTypeResponseModel> Get(int id, string? fields);
     public Task<QuestItemTypeResponseModel> CreateAsync(QuestItemTypeRequestModel request);
     public Task<QuestItemTypeResponseModel> UpdateAsync(QuestItemTypeRequestModel request);
@@ -16,4 +15,6 @@ public interface IQuestItemTypeService
     public Task<QuestItemTypeResponseModel> DisableAsync(int id);
     public Task<QuestItemTypeResponseModel> EnableAsync(int id);
     public Task<QuestItemTypeResponseModel> UpdateStatusForeignKey(int id, string status);
+    public Task<bool> CheckExisted(string name);
+
 }

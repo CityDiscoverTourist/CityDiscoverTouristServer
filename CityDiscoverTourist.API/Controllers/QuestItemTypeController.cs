@@ -145,4 +145,19 @@ public class QuestItemTypeController : ControllerBase
         return Task.FromResult<ActionResult<ApiResponse<QuestItemTypeResponseModel>>>(
             ApiResponse<QuestItemType>.Ok(entity.Result));
     }
+
+    /// <summary>
+    ///
+    /// </summary>
+    /// <param name="name"></param>
+    /// <returns></returns>
+    [HttpGet("check")]
+    //[Cached(600)]
+    public async Task<bool> CheckExist(string name)
+    {
+        var entity = await _questItemTypeService.CheckExisted(name);
+
+        return entity;
+    }
+
 }

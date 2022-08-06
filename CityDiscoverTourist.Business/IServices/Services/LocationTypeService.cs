@@ -98,7 +98,7 @@ public class LocationTypeService : BaseService, ILocationTypeService
 
         entity.Name = JsonHelper.JsonFormat(request.Name);
 
-        entity = await _locationTypeRepository.Update(entity);
+        entity = await _locationTypeRepository.NoneUpdateFields(entity, x => x.CreatedDate!);
         return _mapper.Map<LocationTypeResponseModel>(entity);
     }
 

@@ -72,7 +72,7 @@ public class QuestItemTypeService : BaseService, IQuestItemTypeService
     {
         request.Validate();
         var entity = _mapper.Map<QuestItemType>(request);
-        entity = await _questItemTypeRepository.Update(entity);
+        entity = await _questItemTypeRepository.NoneUpdateFields(entity, x => x.CreatedDate!);
         return _mapper.Map<QuestItemTypeResponseModel>(entity);
     }
 
@@ -120,6 +120,19 @@ public class QuestItemTypeService : BaseService, IQuestItemTypeService
         }
 
         return null!;
+    }
+
+    public Task<bool> CheckExisted(string name)
+    {
+        var existValue = _questItemTypeRepository.GetAll();
+        foreach (var exist in existValue)
+        {
+            if (Trim(ConvertLanguage(Language.vi, exist.Name)) == Trim(name))
+            {
+                return Task.FromResult((true));
+            }
+        }
+        return Task.FromResult(false);
     }
 
     private static void Search(ref IQueryable<QuestItemType> entities, TaskTypeParams param)

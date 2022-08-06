@@ -177,11 +177,11 @@ public class QuestTypeService : BaseService, IQuestTypeService
         entity.ImagePath = imgPath;
         if (entity.ImagePath == null)
         {
-            entity = await _questTypeRepository.NoneUpdateFields(entity, r => r.Id, r => r.ImagePath!);
+            entity = await _questTypeRepository.NoneUpdateFields(entity, r => r.Id, r => r.ImagePath!, x => x.CreatedDate!);
             return _mapper.Map<QuestTypeResponseModel>(entity);
         }
 
-        entity = await _questTypeRepository.NoneUpdateFields(entity, r => r.Id);
+        entity = await _questTypeRepository.NoneUpdateFields(entity, r => r.Id, x => x.CreatedDate!);
 
         return _mapper.Map<QuestTypeResponseModel>(entity);
     }
@@ -218,6 +218,19 @@ public class QuestTypeService : BaseService, IQuestTypeService
         entity.Status = CommonStatus.Active.ToString();
         await _questTypeRepository.UpdateFields(entity, r => r.Status!);
         return _mapper.Map<QuestTypeResponseModel>(entity);
+    }
+
+    public Task<bool> CheckExisted(string name)
+    {
+        var existValue = _questTypeRepository.GetAll();
+        foreach (var exist in existValue)
+        {
+            if (Trim(ConvertLanguage(Language.vi, exist.Name)) == Trim(name))
+            {
+                return Task.FromResult((true));
+            }
+        }
+        return Task.FromResult(false);
     }
 
     public async Task<QuestTypeResponseModel> UpdateStatusForeignKey(int id, string status)
