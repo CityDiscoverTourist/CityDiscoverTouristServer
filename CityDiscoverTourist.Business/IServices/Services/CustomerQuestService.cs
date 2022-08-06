@@ -104,7 +104,7 @@ public class CustomerQuestService : BaseService, ICustomerQuestService
             if (!(item.CreatedDate!.Value.Date < CurrentDateTime().Date)) continue;
 
             var lastCustomerTask = _customerTaskRepository
-                .GetByCondition(x => x.Id == item.Id).OrderByDescending(x => x.CreatedDate)
+                .GetByCondition(x => x.CustomerQuestId == item.Id).OrderByDescending(x => x.CreatedDate)
                 .LastOrDefaultAsync().Result;
 
             lastCustomerTask!.IsFinished = true;
@@ -293,20 +293,20 @@ public class CustomerQuestService : BaseService, ICustomerQuestService
             entity.Rating = 5;
 
             var lastCustomerTask = _customerTaskRepository
-                .GetByCondition(x => x.Id == entity.Id).OrderByDescending(x => x.CreatedDate)
+                .GetByCondition(x => x.CustomerQuestId == entity.Id).OrderByDescending(x => x.CreatedDate)
                 .LastOrDefaultAsync().Result;
 
             // update last customer task status to force delete
-            /*lastCustomerTask!.IsFinished = true;
+            lastCustomerTask!.IsFinished = true;
             lastCustomerTask.Status = CommonStatus.ForceDelete.ToString();
 
             //
-            await _customerTaskRepository.UpdateFields(lastCustomerTask, x => x.IsFinished, x => x.Status);
-            */
+            await _customerTaskRepository.UpdateFields(lastCustomerTask, x => x.IsFinished, x => x.Status!);
 
             entity.EndPoint = lastCustomerTask!.CurrentPoint.ToString(CultureInfo.InvariantCulture);
 
-            await _customerQuestRepository.UpdateFields(entity, x => x.IsFinished, x => x.Status!, x => x.Rating);
+            await _customerQuestRepository.UpdateFields(entity, x => x.IsFinished, x => x.Status!,
+                x => x.Rating, x => x.EndPoint!);
         }
     }
 
