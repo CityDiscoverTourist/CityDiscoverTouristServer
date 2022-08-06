@@ -16,7 +16,7 @@ namespace CityDiscoverTourist.API.Controllers;
 [Route("api/v{version:apiVersion}/[controller]s")]
 [ApiVersion("1.0")]
 [ApiController]
-//[Authorize]
+[Authorize]
 public class LocationTypeController : ControllerBase
 {
     private readonly ILocationTypeService _locationTypeService;
