@@ -11,8 +11,14 @@ public class ChatHub : Hub<IChatHub>
     public async Task AdminSendMessageToCustomer(ChatHubRequestModel requestModel)
     {
         await Clients.Client(requestModel.ConId).AdminSendMessageToCustomer(requestModel);
-        //await Clients.Client(requestModel.AdminId).AdminSendMessageToCustomer(requestModel);
-        await Clients.Clients(requestModel.AdminId).AppendMessage(requestModel);
+        /*//await Clients.Client(requestModel.AdminId).AdminSendMessageToCustomer(requestModel);
+        await Clients.Clients(requestModel.AdminId).AppendMessage(requestModel);*/
+    }
+
+    public async Task AppendMessage(ChatHubRequestModel requestModel)
+    {
+        //await Clients.Client(requestModel.ConId).AppendMessage(requestModel);
+        await Clients.AllExcept(requestModel.AdminId).AppendMessage(requestModel);
     }
 
     public async Task CustomerSendMessageToAdmin(ChatHubRequestModel request)
