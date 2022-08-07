@@ -6,4 +6,5 @@ public interface IChatHub
 {
     Task AdminSendMessageToCustomer(ChatHubRequestModel request);
     Task CustomerSendMessageToAdmin(ChatHubRequestModel request);
+    Task AppendMessage(ChatHubRequestModel request);
 }
