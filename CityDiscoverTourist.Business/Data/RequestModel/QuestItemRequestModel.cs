@@ -8,6 +8,7 @@ public class QuestItemRequestModel
     public int QuestItemTypeId { get; set; }
     public IFormFile[]? Image { get; set; }
     public IFormFile? ImageDescription { get; set; }
+    public string? PathImageDescription { get; set; }
     public List<string>? ListImages { get; set; }
     public int LocationId { get; set; }
     public int QuestId { get; set; }

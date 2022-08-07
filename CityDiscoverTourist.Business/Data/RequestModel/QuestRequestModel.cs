@@ -11,6 +11,7 @@ public class QuestRequestModel
     public string? EstimatedTime { get; set; }
     public string? EstimatedDistance { get; set; }
     public IFormFile? Image { get; set; }
+    public string? ImagePath { get; set; }
     public string? AvailableTime { get; set; }
     public DateTime? UpdatedDate { get; set; }
     public string? Status { get; set; } = "Pending";

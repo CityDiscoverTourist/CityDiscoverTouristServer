@@ -201,6 +201,11 @@ public class QuestItemService : BaseService, IQuestItemService
         var imgDescription = await _blobService.UploadImgDescription(request.ImageDescription, entity.Id, "quest-img-description");
         entity.ImageDescription = imgDescription;
 
+        if (request.ImageDescription == null)
+        {
+            entity.ImageDescription = request.PathImageDescription;
+        }
+
         entity = await _taskRepository.NoneUpdateFields(entity, x => x.CreatedDate!);
         return _mapper.Map<QuestItemResponseModel>(entity);
     }
