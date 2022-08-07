@@ -142,7 +142,8 @@ public class QuestItemService : BaseService, IQuestItemService
         entity.Content = JsonHelper.JsonFormat(request.Content);
         entity.Description = JsonHelper.JsonFormat(request.Description);
         entity.Story = JsonHelper.JsonFormat(request.Story);
-        entity.RightAnswer = JsonHelper.JsonFormat(request.RightAnswer);
+        entity.RightAnswer = entity.RightAnswer != null ? JsonHelper.JsonFormat(request.RightAnswer) : null;
+
         entity.Status = CommonStatus.Active.ToString();
 
         entity = await _taskRepository.Add(entity);
@@ -175,7 +176,7 @@ public class QuestItemService : BaseService, IQuestItemService
         entity.Content = JsonHelper.JsonFormat(request.Content);
         entity.Description = JsonHelper.JsonFormat(request.Description);
         entity.Story = JsonHelper.JsonFormat(request.Story);
-        entity.RightAnswer = JsonHelper.JsonFormat(request.RightAnswer);
+        entity.RightAnswer = entity.RightAnswer != null ? JsonHelper.JsonFormat(request.RightAnswer) : null;
         entity.UpdatedDate = CurrentDateTime();
 
         // image compare
