@@ -252,8 +252,6 @@ public class QuestService : BaseService, IQuestService
         entity.UpdatedDate = CurrentDateTime();
         entity.ImagePath = imgPath;
 
-        /*if (entity.ImagePath == null)
-            entity = await _questRepository.NoneUpdateFields(entity, r => r.CreatedDate!, r => r.ImagePath!);*/
         if (request.Image == null)
         {
             entity.ImagePath = request.ImagePath;

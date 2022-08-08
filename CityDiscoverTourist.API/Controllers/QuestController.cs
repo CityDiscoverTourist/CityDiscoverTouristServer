@@ -107,7 +107,8 @@ public class QuestController : ControllerBase
     /// <param name="data"></param>
     /// <returns></returns>
     [HttpPut]
-    [Authorize(Roles = "Admin")]
+    //[Authorize(Roles = "Admin")]
+    [AllowAnonymous]
     public async Task<ApiResponse<QuestResponseModel>> Put([FromForm] QuestRequestModel data)
     {
         var entity = await _questService.UpdateAsync(data);

@@ -108,7 +108,7 @@ public class CustomerQuestService : BaseService, ICustomerQuestService
                 .LastOrDefaultAsync().Result;
 
             lastCustomerTask!.IsFinished = true;
-            lastCustomerTask.Status = CommonStatus.Done.ToString();
+            lastCustomerTask.Status = CommonStatus.Finished.ToString();
 
             await _customerTaskRepository.UpdateFields(lastCustomerTask, x => x.IsFinished, x => x.Status);
 

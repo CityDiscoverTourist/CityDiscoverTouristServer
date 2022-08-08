@@ -129,12 +129,12 @@ public class CustomerTaskService : BaseService, ICustomerTaskService
     {
         var nextQuestItemId = 0;
 
-        var currentCustomerTask = _customerTaskRepo.GetByCondition(x => x.CustomerQuestId == customerQuestId && x.IsFinished == false).ToList();
-        if(currentCustomerTask.Count > 0) throw new AppException("Finish current task first before move to next task");
+        var currentCustomerTask = _customerTaskRepo.GetByCondition(x => x.CustomerQuestId == customerQuestId && x.IsFinished == false)
+            .OrderByDescending(x => x.Id).LastOrDefaultAsync().Result;
+        if(currentCustomerTask != null) throw new AppException("Finish current task first before move to next task");
 
         // get last quest item customer has done
         var lastQuestItemCustomerFinished = LastQuestItemCustomerFinished(customerQuestId);
-
 
         var questItems = _questItemRepo.GetByCondition(x => x.QuestId == questId).ToList();
 
@@ -351,10 +351,13 @@ public class CustomerTaskService : BaseService, ICustomerTaskService
         return distance < DistanceThreshold;
     }
 
-    public Task<string> ShowSuggestions(int questItemId)
+    public Task<string> ShowSuggestions(int questItemId, Language language)
     {
         var suggestions = _suggestionRepo.GetByCondition(x => x.QuestItemId == questItemId).Select(x => x.Content)
-            .ToList();
+            .FirstOrDefaultAsync().Result;
+
+        suggestions = ConvertLanguage(language, suggestions);
+
         return Task.FromResult(string.Join(",", suggestions));
     }
 

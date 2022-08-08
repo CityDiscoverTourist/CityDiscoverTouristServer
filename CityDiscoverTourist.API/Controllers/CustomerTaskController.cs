@@ -111,11 +111,12 @@ public class CustomerTaskController : ControllerBase
     ///     Get suggestions for the customer
     /// </summary>
     /// <param name="questItemId"></param>
+    /// <param name="language"></param>
     /// <returns></returns>
     [HttpGet("show-suggestion/{questItemId:int}")]
-    public async Task<string> GetSuggestion(int questItemId)
+    public async Task<string> GetSuggestion(int questItemId, Language language)
     {
-        var entity = await _customerTaskService.ShowSuggestions(questItemId);
+        var entity = await _customerTaskService.ShowSuggestions(questItemId, language);
 
         return JsonConvert.SerializeObject(entity);
     }

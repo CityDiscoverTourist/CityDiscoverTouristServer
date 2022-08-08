@@ -25,6 +25,6 @@ public interface ICustomerTaskService
     public float GetLastPoint(int customerQuestId);
     public IEnumerable<string> GetLongLatFromCurrentQuestItemOfCustomer(int customerQuestId);
     public bool IsCustomerAtQuestItemLocation(int customerQuestId, float latitude, float longitude);
-    public Task<string> ShowSuggestions(int questItemId);
+    public Task<string> ShowSuggestions(int questItemId, Language language = Language.vi);
     public bool CheckCustomerLocationWithQuestLocation(int questId, float latitude, float longitude);
 }
