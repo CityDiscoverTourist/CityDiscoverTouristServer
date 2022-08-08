@@ -110,7 +110,7 @@ public class CustomerQuestService : BaseService, ICustomerQuestService
             lastCustomerTask!.IsFinished = true;
             lastCustomerTask.Status = CommonStatus.Finished.ToString();
 
-            await _customerTaskRepository.UpdateFields(lastCustomerTask, x => x.IsFinished, x => x.Status);
+            await _customerTaskRepository.UpdateFields(lastCustomerTask, x => x.IsFinished, x => x.Status!);
 
             item.Rating = 5;
             item.IsFinished = true;
@@ -303,7 +303,7 @@ public class CustomerQuestService : BaseService, ICustomerQuestService
             //
             await _customerTaskRepository.UpdateFields(lastCustomerTask, x => x.IsFinished, x => x.Status!);
 
-            entity.EndPoint = lastCustomerTask!.CurrentPoint.ToString(CultureInfo.InvariantCulture);
+            entity.EndPoint = lastCustomerTask.CurrentPoint.ToString(CultureInfo.InvariantCulture);
 
             await _customerQuestRepository.UpdateFields(entity, x => x.IsFinished, x => x.Status!,
                 x => x.Rating, x => x.EndPoint!);
@@ -331,7 +331,7 @@ public class CustomerQuestService : BaseService, ICustomerQuestService
 
     private int CountQuestItemInQuest(int questId)
     {
-        var questItems = _taskRepository.GetByCondition(x => x.QuestId == questId);
+        var questItems = _taskRepository.GetByCondition(x => x.QuestId == questId && x.Status == CommonStatus.Active.ToString());
         return questItems.Count();
     }
 
