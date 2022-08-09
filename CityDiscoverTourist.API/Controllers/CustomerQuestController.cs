@@ -16,7 +16,7 @@ namespace CityDiscoverTourist.API.Controllers;
 [Route("api/v{version:apiVersion}/[controller]s")]
 [ApiVersion("1.0")]
 [ApiController]
-//[Authorize]
+[Authorize]
 public class CustomerQuestController : ControllerBase
 {
     private readonly ICustomerQuestService _customerQuestService;
@@ -107,7 +107,7 @@ public class CustomerQuestController : ControllerBase
     /// <returns></returns>
     [HttpGet("get-by-customer-id")]
     //[Cached(600)]
-    [AllowAnonymous]
+    //[AllowAnonymous]
     public async Task<ApiResponse<List<CustomerQuestResponseModel>>> GetByCustomerId(string id, Language language = Language.vi)
     {
         var entity = await _customerQuestService.GetByCustomerId(id, language);
