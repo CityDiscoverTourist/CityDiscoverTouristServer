@@ -42,6 +42,19 @@ public class SupportChannelController : ControllerBase
     /// </summary>
     /// <param name="request"></param>
     /// <returns></returns>
+    [HttpPost("admin-to-admin")]
+    public IActionResult AdminToAdmin(ChatHubRequestModel request)
+    {
+        _hubContext.Clients.All.AppendMessage(request);
+        return Ok();
+    }
+
+
+    /// <summary>
+    ///
+    /// </summary>
+    /// <param name="request"></param>
+    /// <returns></returns>
     [HttpPost("to-customer")]
     public IActionResult Post(ChatHubRequestModel request)
     {
