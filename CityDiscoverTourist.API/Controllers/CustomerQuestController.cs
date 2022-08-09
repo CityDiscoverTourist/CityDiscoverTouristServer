@@ -1,6 +1,7 @@
 using CityDiscoverTourist.API.Response;
 using CityDiscoverTourist.Business.Data.RequestModel;
 using CityDiscoverTourist.Business.Data.ResponseModel;
+using CityDiscoverTourist.Business.Enums;
 using CityDiscoverTourist.Business.Helper;
 using CityDiscoverTourist.Business.Helper.Params;
 using CityDiscoverTourist.Business.IServices;
@@ -15,7 +16,7 @@ namespace CityDiscoverTourist.API.Controllers;
 [Route("api/v{version:apiVersion}/[controller]s")]
 [ApiVersion("1.0")]
 [ApiController]
-[Authorize]
+//[Authorize]
 public class CustomerQuestController : ControllerBase
 {
     private readonly ICustomerQuestService _customerQuestService;
@@ -102,13 +103,14 @@ public class CustomerQuestController : ControllerBase
     ///     get customer quest by customer id
     /// </summary>
     /// <param name="id"></param>
+    /// <param name="language"></param>
     /// <returns></returns>
     [HttpGet("get-by-customer-id")]
     //[Cached(600)]
     [AllowAnonymous]
-    public async Task<ApiResponse<List<CustomerQuestResponseModel>>> GetByCustomerId(string id)
+    public async Task<ApiResponse<List<CustomerQuestResponseModel>>> GetByCustomerId(string id, Language language = Language.vi)
     {
-        var entity = await _customerQuestService.GetByCustomerId(id);
+        var entity = await _customerQuestService.GetByCustomerId(id, language);
 
         return ApiResponse<CustomerQuestResponseModel>.Ok(entity);
     }

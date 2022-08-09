@@ -1,5 +1,6 @@
 using CityDiscoverTourist.Business.Data.RequestModel;
 using CityDiscoverTourist.Business.Data.ResponseModel;
+using CityDiscoverTourist.Business.Enums;
 using CityDiscoverTourist.Business.Helper;
 using CityDiscoverTourist.Business.Helper.Params;
 using CityDiscoverTourist.Data.Models;
@@ -12,7 +13,7 @@ public interface ICustomerQuestService
     public Task<CustomerQuestResponseModel> Get(int id);
     public Task<CustomerQuestResponseModel> GiveFeedback(int id, CommentRequestModel comment);
     public Task<CustomerQuestResponseModel> InvalidCustomerQuest();
-    public Task<List<CustomerQuestResponseModel>> GetByCustomerId(string id);
+    public Task<List<CustomerQuestResponseModel>> GetByCustomerId(string id, Language language = Language.vi);
     public Task<CustomerQuestResponseModel> CreateAsync(CustomerQuestRequestModel request);
     public Task<CustomerQuestResponseModel> DeleteAsync(int id);
     public Task<CustomerQuestResponseModel> UpdateEndPointAndStatusWhenFinishQuestAsync(int customerQuestId);

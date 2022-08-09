@@ -26,11 +26,12 @@ public class CustomerQuestService : BaseService, ICustomerQuestService
     private readonly ISortHelper<CustomerQuest> _sortHelper;
     private readonly IQuestItemRepository _taskRepository;
     private readonly ICustomerTaskRepository _customerTaskRepository;
+    private readonly IQuestRepository _questRepository;
 
     public CustomerQuestService(ICustomerQuestRepository customerQuestRepository, IMapper mapper,
         IQuestItemRepository taskRepository, ISortHelper<CustomerQuest> sortHelper,
         ICustomerTaskService customerTaskService, UserManager<ApplicationUser>? userManager,
-        IPaymentService paymentService, IRewardRepository rewardRepository, ICustomerTaskRepository customerTaskRepository)
+        IPaymentService paymentService, IRewardRepository rewardRepository, ICustomerTaskRepository customerTaskRepository, IQuestRepository questRepository)
     {
         _customerQuestRepository = customerQuestRepository;
         _mapper = mapper;
@@ -41,6 +42,7 @@ public class CustomerQuestService : BaseService, ICustomerQuestService
         _paymentService = paymentService;
         _rewardRepository = rewardRepository;
         _customerTaskRepository = customerTaskRepository;
+        _questRepository = questRepository;
     }
 
     public PageList<CustomerQuestResponseModel> GetAll(CustomerQuestParams @params)
@@ -122,12 +124,24 @@ public class CustomerQuestService : BaseService, ICustomerQuestService
         return null!;
     }
 
-    public Task<List<CustomerQuestResponseModel>> GetByCustomerId(string id)
+    public async Task<List<CustomerQuestResponseModel>> GetByCustomerId(string id, Language language = Language.vi)
     {
         var entity = _customerQuestRepository.GetByCondition(x => x.CustomerId == id).ToList();
         CheckDataNotNull("CustomerQuest", entity);
         var mappedData = _mapper.Map<IEnumerable<CustomerQuestResponseModel>>(entity);
-        return Task.FromResult(mappedData.ToList());
+
+        var customerQuestResponseModels = mappedData as CustomerQuestResponseModel[] ?? mappedData.ToArray();
+        foreach (var quest in customerQuestResponseModels)
+        {
+           var questId = quest.QuestId;
+
+           var item = await _questRepository.Get(questId);
+
+           quest.QuestName = ConvertLanguage(language, item.Title!);
+           quest.ImagePath = item.ImagePath;
+        }
+
+        return await Task.FromResult(customerQuestResponseModels.ToList());
     }
 
     public async Task<CustomerQuestResponseModel> CreateAsync(CustomerQuestRequestModel request)
@@ -289,7 +303,7 @@ public class CustomerQuestService : BaseService, ICustomerQuestService
         {
             var entity = await _customerQuestRepository.Get(id);
             entity.IsFinished = true;
-            entity.Status = CommonStatus.ForceDelete.ToString();
+            entity.Status = CommonStatus.Inactive.ToString();
             entity.Rating = 5;
 
             var lastCustomerTask = _customerTaskRepository
@@ -298,7 +312,7 @@ public class CustomerQuestService : BaseService, ICustomerQuestService
 
             // update last customer task status to force delete
             lastCustomerTask!.IsFinished = true;
-            lastCustomerTask.Status = CommonStatus.ForceDelete.ToString();
+            lastCustomerTask.Status = CommonStatus.Finished.ToString();
 
             //
             await _customerTaskRepository.UpdateFields(lastCustomerTask, x => x.IsFinished, x => x.Status!);

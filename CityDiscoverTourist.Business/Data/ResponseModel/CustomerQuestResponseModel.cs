@@ -8,12 +8,13 @@ public class CustomerQuestResponseModel
     public DateTime? CreatedDate { get; set; }
     public int Rating { get; set; }
     public string? FeedBack { get; set; }
-
     public string? CustomerId { get; set; }
     public string? CustomerName { get; set; }
     public bool IsFinished { get; set; }
 
     public int QuestId { get; set; }
+    public string? QuestName { get; set; }
+    public string? ImagePath { get; set; }
     public Guid PaymentId { get; set; }
     public string? Status { get; set; }
     public bool IsFeedbackApproved { get; set; }
