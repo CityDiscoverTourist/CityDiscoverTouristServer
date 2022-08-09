@@ -99,7 +99,7 @@ public class CustomerTaskService : BaseService, ICustomerTaskService
             var customerAnswer = new CustomerAnswer
             {
                 Note = NoteCustomerAnswer.SkipAnswer.ToString(),
-                CustomerReply = "",
+                CustomerReply = "Customer Skip",
                 QuestItemId = entity.QuestItemId,
                 CustomerTaskId = entity.Id
             };
