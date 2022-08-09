@@ -243,10 +243,19 @@ public class CustomerTaskService : BaseService, ICustomerTaskService
 
                 customerTask.CurrentPoint = currentPoint - PointWhenWrongAnswer;
                 customerTask.CountWrongAnswer++;
-                customerTask = await _customerTaskRepo.UpdateFields(customerTask, r => r.CurrentPoint,
+                var entity3 = customerTask = await _customerTaskRepo.UpdateFields(customerTask, r => r.CurrentPoint,
                     r => r.CountWrongAnswer);
 
                 await _hubContext.Clients.All.UpdateCustomerTask(customerTask);
+
+                var customerAnswer3 = new CustomerAnswer
+                {
+                    Note = NoteCustomerAnswer.WrongAnswer.ToString(),
+                    CustomerReply = "Image Compare",
+                    QuestItemId = entity3.QuestItemId,
+                    CustomerTaskId = entity3.Id
+                };
+                await _customerAnswerService.CreateAsync(_mapper.Map<CustomerAnswerRequestModel>(customerAnswer3));
 
                 return _mapper.Map<CustomerTaskResponseModel>(customerTask);
             }
