@@ -148,7 +148,7 @@ public class PaymentService : BaseService, IPaymentService
                       ConvertLanguage(Language.en, questName!) + "</p>" + "<p>Quantity is: " + entity.Quantity +
                       "</p>" + "<p>Your order total amount is: " + entity.TotalAmount + "</p>" +
                       "<p>Your playing code is: " + entity.Id + "</p>" + "<p>Your order ticket will be invalid at " +
-                      entity.CreatedDate.AddDays(2).ToString("dd/MM/yyyy HH:mm:ss") + "</p>" +
+                      entity.CreatedDate.AddDays(2).ToString("dd/MM/yyyy") + "</p>" +
                       "<p>Thank you for using our service</p>";
 
         _backgroundJobClient.Enqueue( () =>
