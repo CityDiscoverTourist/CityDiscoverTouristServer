@@ -74,11 +74,24 @@ public class QuestItemService : BaseService, IQuestItemService
 
     public async Task<QuestItemResponseModel> Get(int id)
     {
+        JObject objContent;
+        string content;
+
         var entity = await _taskRepository.Get(id);
         CheckDataNotNull("QuestItem", entity);
 
-        var objContent = JObject.Parse(entity.Content!);
-        var content = (string) objContent["vi"]! + " | " + (string) objContent["en"]!;
+        if (entity.QuestItemTypeId == 3)
+        {
+            objContent = JObject.Parse(entity.Content!);
+            content = ReverseQuestion2(objContent["vi"]!.ToString()) + " | " + ReverseQuestion2(objContent["en"]!.ToString());
+        }
+        else
+        {
+            objContent = JObject.Parse(entity.Content!);
+            content = (string) objContent["vi"]! + " | " + (string) objContent["en"]!;
+        }
+        /*var objContent = JObject.Parse(entity.Content!);
+        var content = (string) objContent["vi"]! + " | " + (string) objContent["en"]!;*/
 
         var objDescription = JObject.Parse(entity.Description!);
         var description = (string) objDescription["vi"]! + " | " + (string) objDescription["en"]!;
@@ -171,7 +184,10 @@ public class QuestItemService : BaseService, IQuestItemService
 
         var entity = _mapper.Map<QuestItem>(request);
         // reverse question
-        if (request.QuestItemTypeId == 3) request.Content = ReverseQuestion(request.Content!);
+        if (request.QuestItemTypeId == 3)
+        {
+            request.Content = ReverseQuestion(request.Content!);
+        }
 
         entity.Content = JsonHelper.JsonFormat(request.Content);
         entity.Description = JsonHelper.JsonFormat(request.Description);
@@ -279,6 +295,19 @@ public class QuestItemService : BaseService, IQuestItemService
         var first = parts[0];
         var last = parts[parts.Length - 1];
         reversed = last + " () " + first;
+
+        return reversed.Trim();
+
+    }
+
+    private static string ReverseQuestion2(string question)
+    {
+        var reversed = "";
+        for (var i = question.Length - 1; i >= 0; i--) reversed += question[i];
+
+
+
+        // swap the first and last parts
 
         return reversed.Trim();
 

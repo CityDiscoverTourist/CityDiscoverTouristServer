@@ -91,8 +91,8 @@ public class QuestItemController : ControllerBase
     /// <param name="id"></param>
     /// <returns></returns>
     [HttpGet("{id:int}/not-language")]
-    //[Authorize(Roles = "Admin")]
-    [AllowAnonymous]
+    [Authorize(Roles = "Admin")]
+    //[AllowAnonymous]
     //[Cached(600)]
     public async Task<ApiResponse<QuestItemResponseModel>> Get(int id)
     {
