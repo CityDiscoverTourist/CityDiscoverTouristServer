@@ -97,7 +97,7 @@ public class CustomerTaskController : ControllerBase
     ///  customer want to skip task
     /// </summary>
     /// <returns></returns>
-    [HttpPut("skip/{id:int}")]
+    [HttpPut("skip")]
     //[Cached(600)]
     public async Task<ApiResponse<CustomerTaskResponseModel>> Skip(int questItemId, int customerQuestId)
     {
