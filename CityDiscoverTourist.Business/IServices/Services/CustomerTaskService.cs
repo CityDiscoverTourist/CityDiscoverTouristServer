@@ -85,11 +85,11 @@ public class CustomerTaskService : BaseService, ICustomerTaskService
         return _mapper.Map<CustomerTaskResponseModel>(entity);
     }
 
-    public async Task<CustomerTaskResponseModel> Skip(int id)
+    public async Task<CustomerTaskResponseModel> Skip(int questItemId, int customerQuestId)
     {
-        var entity = await _customerTaskRepo.Get(id);
+        var entity = _customerTaskRepo.GetByCondition(x => x.QuestItemId == questItemId && x.CustomerQuestId == customerQuestId).FirstOrDefault();
 
-        entity.Status = "Finished";
+        entity!.Status = "Finished";
         entity.IsFinished = true;
         entity.CurrentPoint -= 100;
 

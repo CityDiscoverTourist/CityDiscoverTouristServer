@@ -96,13 +96,12 @@ public class CustomerTaskController : ControllerBase
     /// <summary>
     ///  customer want to skip task
     /// </summary>
-    /// <param name="id"></param>
     /// <returns></returns>
     [HttpPut("skip/{id:int}")]
     //[Cached(600)]
-    public async Task<ApiResponse<CustomerTaskResponseModel>> Skip(int id)
+    public async Task<ApiResponse<CustomerTaskResponseModel>> Skip(int questItemId, int customerQuestId)
     {
-        var entity = await _customerTaskService.Skip(id);
+        var entity = await _customerTaskService.Skip(questItemId, customerQuestId);
 
         return ApiResponse<CustomerTaskResponseModel>.Ok(entity);
     }

@@ -13,7 +13,7 @@ public interface ICustomerTaskService
     public Task<PageList<CustomerTaskResponseModel>> GetByCustomerQuestId(int customerQuestId,
         CustomerTaskParams @params);
     public Task<CustomerTaskResponseModel> Get(int id);
-    public Task<CustomerTaskResponseModel> Skip(int id);
+    public Task<CustomerTaskResponseModel> Skip(int questItemId, int customerQuestId);
     public Task<CustomerTaskResponseModel> CustomerStartQuest(CustomerTaskRequestModel request, int questId);
     public Task<int> MoveCustomerToNextTask(int questId, int customerQuestId);
     public Task<CustomerTaskResponseModel> DeleteAsync(int id);
