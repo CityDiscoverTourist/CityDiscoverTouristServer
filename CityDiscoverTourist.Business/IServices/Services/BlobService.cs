@@ -2,6 +2,9 @@ using Azure.Storage.Blobs;
 using Microsoft.AspNetCore.Http;
 using System;
 using CityDiscoverTourist.Business.Exceptions;
+using Emgu.CV;
+using Emgu.CV.DepthAI;
+using Emgu.CV.Structure;
 
 namespace CityDiscoverTourist.Business.IServices.Services;
 

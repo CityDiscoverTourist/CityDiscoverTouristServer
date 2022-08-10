@@ -1,3 +1,4 @@
+using System.Drawing;
 using Emgu.CV;
 using Emgu.CV.CvEnum;
 using Emgu.CV.Features2D;
@@ -59,7 +60,7 @@ public class ImageComparison : IImageComparison
         var listByteScene = ConvertImageFromUser(image);
         var listImageScene = ConvertImage(listByteScene);
 
-        return CompareImages(listImageBase, listImageScene) > 2000;
+        return CompareImages(listImageBase, listImageScene) > 300;
     }
 
     private static long CompareImages(List<Image<Gray, byte>> listImageBase, List<Image<Gray, byte>> listImageScene)
@@ -114,6 +115,7 @@ public class ImageComparison : IImageComparison
             var mat = new Mat(100, 200, DepthType.Cv8U, 0);
             CvInvoke.Imdecode(item, ImreadModes.Grayscale, mat);
             var exampleImage = mat.ToImage<Gray, byte>();
+            exampleImage = exampleImage.Resize(200, 400, Inter.Linear);
             listImage.Add(exampleImage);
         }
         return listImage;
@@ -128,7 +130,7 @@ public class ImageComparison : IImageComparison
             //re-size image to fit the model
             var image = item.OpenReadStream();
             var bytes = new byte[image.Length];
-            image.Read(bytes, 0, bytes.Length);
+            image.ReadAsync(bytes, 0, bytes.Length);
             listImage.Add(bytes);
         }
         return listImage;
