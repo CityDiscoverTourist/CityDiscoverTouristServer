@@ -43,7 +43,7 @@ public class NotificationController : ControllerBase
     /// </summary>
     /// <returns></returns>
     [HttpGet]
-    //[Authorize(Roles = "Admin")]
+    [Authorize(Roles = "Admin")]
     public ApiResponse<PageList<Notification>> GetAllNotifications([FromQuery] BaseParam @params, string userId)
     {
         var entity = _notificationService.GetAllAsync(@params, userId);
@@ -68,7 +68,7 @@ public class NotificationController : ControllerBase
     /// <param name="userId"></param>
     /// <returns></returns>
     [HttpGet("get-all")]
-    //[Authorize(Roles = "Admin")]
+    [Authorize(Roles = "Admin")]
     public ApiResponse<PageList<Notification>> GetAll([FromQuery] BaseParam @params, string userId)
     {
         var entity = _notificationService.GetAllNotifications(@params, userId);
