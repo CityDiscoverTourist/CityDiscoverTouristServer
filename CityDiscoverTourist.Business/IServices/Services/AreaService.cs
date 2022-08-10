@@ -59,7 +59,7 @@ public class AreaService : BaseService, IAreaService
         CheckDataNotNull("Area", entity);
 
         var objTitle = JObject.Parse(entity.Name!);
-        var title = (string) objTitle["vi"]! + " | " + (string) objTitle["en"]!;
+        var title = (string) objTitle["vi"]!;
 
         entity.Name = title;
 
@@ -83,6 +83,8 @@ public class AreaService : BaseService, IAreaService
 
         entity.CreatedDate = CurrentDateTime();
         entity.Name = JsonHelper.JsonFormat(request.Name);
+        var objTitle = JObject.Parse(entity.Name!);
+        var title = (string) objTitle["vi"]!;
 
         entity = await _areaRepository.Add(entity);
         return _mapper.Map<AreaResponseModel>(entity);
