@@ -76,12 +76,12 @@ public class NotificationService : BaseService, INotificationService
         var notify = new List<Notification>();
         foreach (var item in notifyUser)
         {
-            var notification = _notificationRepository.GetByCondition(x => x.Id == item.NotifyId).ToList().OrderByDescending(x => x.CreatedDate);
+            var notification = _notificationRepository.GetByCondition(x => x.Id == item.NotifyId).ToList();
 
             notify.AddRange(notification);
         }
 
-        return PageList<Notification>.ToPageList(notify, @params.PageNumber, @params.PageSize);
+        return PageList<Notification>.ToPageList(notify.OrderByDescending(x => x.CreatedDate), @params.PageNumber, @params.PageSize);
     }
 
     public PageList<Notification> GetAllNotifications(BaseParam @params, string userId)
@@ -90,12 +90,12 @@ public class NotificationService : BaseService, INotificationService
         var notify = new List<Notification>();
         foreach (var item in notifyUser)
         {
-            var notification = _notificationRepository.GetByCondition(x => x.Id == item.NotifyId).ToList().OrderByDescending(x => x.CreatedDate);
+            var notification = _notificationRepository.GetByCondition(x => x.Id == item.NotifyId).ToList();
 
             notify.AddRange(notification);
         }
 
-        return PageList<Notification>.ToPageList(notify, @params.PageNumber, @params.PageSize);
+        return PageList<Notification>.ToPageList(notify.OrderByDescending(x => x.CreatedDate), @params.PageNumber, @params.PageSize);
     }
 
     public async Task<bool> UserHasRead(string userId)
