@@ -28,19 +28,20 @@ public class CustomerTaskService : BaseService, ICustomerTaskService
     private readonly ICustomerQuestRepository _customerQuestRepo;
     private readonly ICustomerTaskRepository _customerTaskRepo;
     private readonly IHubContext<CustomerTaskHub, ICustomerTaskHub> _hubContext;
+    private readonly IImageComparison _imageComparison;
     private readonly ILocationRepository _locationRepo;
     private readonly IMapper _mapper;
     private readonly IQuestItemRepository _questItemRepo;
     private readonly ISortHelper<CustomerTask> _sortHelper;
     private readonly ISuggestionRepository _suggestionRepo;
-    private readonly IImageComparison _imageComparison;
 
 
     public CustomerTaskService(ICustomerTaskRepository customerTaskRepository, IMapper mapper,
         ISortHelper<CustomerTask> sortHelper, ICustomerQuestRepository customerQuestRepo,
         IQuestItemRepository questItemRepo, GoongApiSetting? googleApiSettings,
         ICustomerAnswerService customerAnswerService, ILocationRepository locationRepo,
-        ISuggestionRepository suggestionRepo, IHubContext<CustomerTaskHub, ICustomerTaskHub> hubContext, IImageComparison imageComparison)
+        ISuggestionRepository suggestionRepo, IHubContext<CustomerTaskHub, ICustomerTaskHub> hubContext,
+        IImageComparison imageComparison)
     {
         _customerTaskRepo = customerTaskRepository;
         _mapper = mapper;
@@ -87,23 +88,23 @@ public class CustomerTaskService : BaseService, ICustomerTaskService
 
     public async Task<CustomerTaskResponseModel> Skip(int questItemId, int customerQuestId)
     {
-        var entity = _customerTaskRepo.GetByCondition(x => x.QuestItemId == questItemId && x.CustomerQuestId == customerQuestId).FirstOrDefault();
+        var entity = _customerTaskRepo
+            .GetByCondition(x => x.QuestItemId == questItemId && x.CustomerQuestId == customerQuestId).FirstOrDefault();
 
         entity!.Status = "Finished";
         entity.IsFinished = true;
         entity.CurrentPoint -= 100;
 
-        entity = await _customerTaskRepo.UpdateFields(entity, x => x.Status!,
-            x => x.IsFinished, x => x.CurrentPoint);
+        entity = await _customerTaskRepo.UpdateFields(entity, x => x.Status!, x => x.IsFinished, x => x.CurrentPoint);
 
-            var customerAnswer = new CustomerAnswer
-            {
-                Note = NoteCustomerAnswer.SkipAnswer.ToString(),
-                CustomerReply = "Customer Skip",
-                QuestItemId = entity.QuestItemId,
-                CustomerTaskId = entity.Id
-            };
-            await _customerAnswerService.CreateAsync(_mapper.Map<CustomerAnswerRequestModel>(customerAnswer));
+        var customerAnswer = new CustomerAnswer
+        {
+            Note = NoteCustomerAnswer.SkipAnswer.ToString(),
+            CustomerReply = "Customer Skip",
+            QuestItemId = entity.QuestItemId,
+            CustomerTaskId = entity.Id
+        };
+        await _customerAnswerService.CreateAsync(_mapper.Map<CustomerAnswerRequestModel>(customerAnswer));
 
         await _hubContext.Clients.All.UpdateCustomerTask(entity);
 
@@ -132,9 +133,10 @@ public class CustomerTaskService : BaseService, ICustomerTaskService
     {
         var nextQuestItemId = 0;
 
-        var currentCustomerTask = _customerTaskRepo.GetByCondition(x => x.CustomerQuestId == customerQuestId && x.IsFinished == false)
+        var currentCustomerTask = _customerTaskRepo
+            .GetByCondition(x => x.CustomerQuestId == customerQuestId && x.IsFinished == false)
             .OrderByDescending(x => x.Id).LastOrDefaultAsync().Result;
-        if(currentCustomerTask != null) throw new AppException("Finish current task first before move to next task");
+        if (currentCustomerTask != null) throw new AppException("Finish current task first before move to next task");
 
         // get last quest item customer has done
         var lastQuestItemCustomerFinished = LastQuestItemCustomerFinished(customerQuestId);
@@ -239,21 +241,14 @@ public class CustomerTaskService : BaseService, ICustomerTaskService
 
                 customerTask.CurrentPoint = currentPoint - PointWhenWrongAnswer;
                 customerTask.CountWrongAnswer++;
-                var entity3 = customerTask = await _customerTaskRepo.UpdateFields(customerTask, r => r.CurrentPoint,
+                customerTask = await _customerTaskRepo.UpdateFields(customerTask, r => r.CurrentPoint,
                     r => r.CountWrongAnswer);
 
                 await _hubContext.Clients.All.UpdateCustomerTask(customerTask);
 
-                /*var customerAnswer3 = new CustomerAnswer
-                {
-                    Note = NoteCustomerAnswer.WrongAnswer.ToString(),
-                    CustomerReply = "Image Compare",
-                    QuestItemId = entity3.QuestItemId,
-                    CustomerTaskId = entity3.Id
-                };
-                await _customerAnswerService.CreateAsync(_mapper.Map<CustomerAnswerRequestModel>(customerAnswer3));*/
+
                 isCustomerReplyCorrect = false;
-                //return _mapper.Map<CustomerTaskResponseModel>(customerTask);
+
             }
             else
             {
@@ -261,57 +256,52 @@ public class CustomerTaskService : BaseService, ICustomerTaskService
                 customerTask.Status = "Finished";
                 customerTask.IsFinished = true;
 
-                var entity2 = await _customerTaskRepo.UpdateFields(customerTask, r => r.Status!, r => r.IsFinished);
-
-                /*var customerAnswer2 = new CustomerAnswer
-                {
-                    Note = NoteCustomerAnswer.CorrectAnswer.ToString(),
-                    CustomerReply = "Image Compare",
-                    QuestItemId = entity2.QuestItemId,
-                    CustomerTaskId = entity2.Id
-                };
-                await _customerAnswerService.CreateAsync(_mapper.Map<CustomerAnswerRequestModel>(customerAnswer2));*/
+                await _customerTaskRepo.UpdateFields(customerTask, r => r.Status!, r => r.IsFinished);
 
                 await _hubContext.Clients.All.UpdateCustomerTask(customerTask);
 
                 return _mapper.Map<CustomerTaskResponseModel>(customerTask);
-
             }
         }
-
-        //compare with correct answer
-        if (!ConvertLanguage(language, questItem.RightAnswer).ToLower().RemoveDiacritics().Trim().Equals(customerReply.ToLower().RemoveDiacritics().Trim()))
+        // else is normal question and answer
+        else
         {
-            // count number of customer answer wrong
-            // if count number of customer answer wrong >= 5
-            // show right answer move to next quest item
-            if (customerTask.CountWrongAnswer >= 5)
+            //compare with correct answer
+            if (!ConvertLanguage(language, questItem.RightAnswer).ToLower().RemoveDiacritics().Trim()
+                    .Equals(customerReply.ToLower().RemoveDiacritics().Trim()))
             {
-                // when customer answer wrong 5 times, move to next quest item by trick
+                // count number of customer answer wrong
+                // if count number of customer answer wrong >= 5
+                // show right answer move to next quest item
+                if (customerTask.CountWrongAnswer >= 5)
+                {
+                    // when customer answer wrong 5 times, move to next quest item by trick
+                    customerTask.Status = "Finished";
+                    customerTask.IsFinished = true;
+                    await _customerTaskRepo.UpdateFields(customerTask, r => r.Status!, r => r.IsFinished);
+
+                    throw new AppException("You have already hit 5 wrong answers, We will show the right answer");
+                }
+
+                customerTask.CurrentPoint = currentPoint - PointWhenWrongAnswer;
+                customerTask.CountWrongAnswer++;
+                customerTask = await _customerTaskRepo.UpdateFields(customerTask, r => r.CurrentPoint,
+                    r => r.CountWrongAnswer);
+
+                await _hubContext.Clients.All.UpdateCustomerTask(customerTask);
+
+                isCustomerReplyCorrect = false;
+            }
+            else if (ConvertLanguage(language, questItem.RightAnswer).ToLower().RemoveDiacritics().Trim()
+                     .Equals(customerReply.ToLower().RemoveDiacritics().Trim()))
+            {
+                // correct answer
                 customerTask.Status = "Finished";
                 customerTask.IsFinished = true;
                 await _customerTaskRepo.UpdateFields(customerTask, r => r.Status!, r => r.IsFinished);
 
-                throw new AppException("You have already hit 5 wrong answers, We will show the right answer");
+                await _hubContext.Clients.All.UpdateCustomerTask(customerTask);
             }
-
-            customerTask.CurrentPoint = currentPoint - PointWhenWrongAnswer;
-            customerTask.CountWrongAnswer++;
-            customerTask = await _customerTaskRepo.UpdateFields(customerTask, r => r.CurrentPoint,
-                r => r.CountWrongAnswer);
-
-            await _hubContext.Clients.All.UpdateCustomerTask(customerTask);
-
-            isCustomerReplyCorrect = false;
-        }
-        else
-        {
-            // correct answer
-            customerTask.Status = "Finished";
-            customerTask.IsFinished = true;
-            await _customerTaskRepo.UpdateFields(customerTask, r => r.Status!, r => r.IsFinished);
-
-            await _hubContext.Clients.All.UpdateCustomerTask(customerTask);
         }
 
         //save customer answer for each time customer answer wrong/true
