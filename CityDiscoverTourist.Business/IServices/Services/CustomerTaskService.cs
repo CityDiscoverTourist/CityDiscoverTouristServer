@@ -234,14 +234,14 @@ public class CustomerTaskService : BaseService, ICustomerTaskService
 
                     await _hubContext.Clients.All.UpdateCustomerTask(customerTask);
 
-                    var customerAnswer = new CustomerAnswer
+                    /*var customerAnswer = new CustomerAnswer
                     {
                         Note = NoteCustomerAnswer.WrongAnswer.ToString(),
                         CustomerReply = "Image Compare",
                         QuestItemId = entity.QuestItemId,
                         CustomerTaskId = entity.Id
                     };
-                    await _customerAnswerService.CreateAsync(_mapper.Map<CustomerAnswerRequestModel>(customerAnswer));
+                    await _customerAnswerService.CreateAsync(_mapper.Map<CustomerAnswerRequestModel>(customerAnswer));*/
 
                     return _mapper.Map<CustomerTaskResponseModel>(customerTask);
                 }
@@ -253,14 +253,14 @@ public class CustomerTaskService : BaseService, ICustomerTaskService
 
                 await _hubContext.Clients.All.UpdateCustomerTask(customerTask);
 
-                var customerAnswer3 = new CustomerAnswer
+                /*var customerAnswer3 = new CustomerAnswer
                 {
                     Note = NoteCustomerAnswer.WrongAnswer.ToString(),
                     CustomerReply = "Image Compare",
                     QuestItemId = entity3.QuestItemId,
                     CustomerTaskId = entity3.Id
                 };
-                await _customerAnswerService.CreateAsync(_mapper.Map<CustomerAnswerRequestModel>(customerAnswer3));
+                await _customerAnswerService.CreateAsync(_mapper.Map<CustomerAnswerRequestModel>(customerAnswer3));*/
 
                 return _mapper.Map<CustomerTaskResponseModel>(customerTask);
             }
