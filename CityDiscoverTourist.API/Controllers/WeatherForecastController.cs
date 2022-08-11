@@ -125,14 +125,6 @@ public class WeatherForecastController : ControllerBase
         return _imageComparison.CompareImages(110, file);
     }
 
-    private static Image<Gray, byte> ConvertImage(byte[] image1)
-    {
-        var mat = new Mat();
-        CvInvoke.Imdecode(image1, ImreadModes.Grayscale, mat);
-        var exampleImage = mat.ToImage<Gray, byte>();
-        return exampleImage;
-    }
-
 
     /*//total good matches has > 75% accuracy
     long goodMatches = 0;
