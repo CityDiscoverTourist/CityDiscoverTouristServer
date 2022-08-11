@@ -83,8 +83,11 @@ public class AreaService : BaseService, IAreaService
 
         entity.CreatedDate = CurrentDateTime();
         entity.Name = JsonHelper.JsonFormat(request.Name);
+
         var objTitle = JObject.Parse(entity.Name!);
         var title = (string) objTitle["vi"]!;
+
+        entity.Name = title;
 
         entity = await _areaRepository.Add(entity);
         return _mapper.Map<AreaResponseModel>(entity);
@@ -95,7 +98,6 @@ public class AreaService : BaseService, IAreaService
         var entity = _mapper.Map<Area>(request);
 
         entity.Name = JsonHelper.JsonFormat(request.Name);
-
 
         entity = await _areaRepository.NoneUpdateFields(entity, x => x.CreatedDate!);
         return _mapper.Map<AreaResponseModel>(entity);
