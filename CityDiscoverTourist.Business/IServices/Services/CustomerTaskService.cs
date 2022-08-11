@@ -104,7 +104,8 @@ public class CustomerTaskService : BaseService, ICustomerTaskService
                 CustomerTaskId = entity.Id
             };
             await _customerAnswerService.CreateAsync(_mapper.Map<CustomerAnswerRequestModel>(customerAnswer));
-        //await _hubContext.Clients.All.UpdateCustomerTask(entity);
+
+        await _hubContext.Clients.All.UpdateCustomerTask(entity);
 
         return _mapper.Map<CustomerTaskResponseModel>(entity);
     }
@@ -121,7 +122,9 @@ public class CustomerTaskService : BaseService, ICustomerTaskService
         entity.CreatedDate = CurrentDateTime();
 
         entity = await _customerTaskRepo.Add(entity);
+
         await _hubContext.Clients.All.AddCustomerTask(_mapper.Map<CustomerTaskResponseModel>(entity));
+
         return _mapper.Map<CustomerTaskResponseModel>(entity);
     }
 
@@ -228,6 +231,8 @@ public class CustomerTaskService : BaseService, ICustomerTaskService
                     customerTask.Status = "Finished";
                     customerTask.IsFinished = true;
                     var entity = await _customerTaskRepo.UpdateFields(customerTask, r => r.Status!, r => r.IsFinished);
+
+                    await _hubContext.Clients.All.UpdateCustomerTask(customerTask);
 
                     var customerAnswer = new CustomerAnswer
                     {
