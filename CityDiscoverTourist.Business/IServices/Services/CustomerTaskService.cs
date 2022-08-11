@@ -230,18 +230,9 @@ public class CustomerTaskService : BaseService, ICustomerTaskService
                     // when customer answer wrong 5 times, move to next quest item by trick
                     customerTask.Status = "Finished";
                     customerTask.IsFinished = true;
-                    var entity = await _customerTaskRepo.UpdateFields(customerTask, r => r.Status!, r => r.IsFinished);
+                    await _customerTaskRepo.UpdateFields(customerTask, r => r.Status!, r => r.IsFinished);
 
                     await _hubContext.Clients.All.UpdateCustomerTask(customerTask);
-
-                    /*var customerAnswer = new CustomerAnswer
-                    {
-                        Note = NoteCustomerAnswer.WrongAnswer.ToString(),
-                        CustomerReply = "Image Compare",
-                        QuestItemId = entity.QuestItemId,
-                        CustomerTaskId = entity.Id
-                    };
-                    await _customerAnswerService.CreateAsync(_mapper.Map<CustomerAnswerRequestModel>(customerAnswer));*/
 
                     return _mapper.Map<CustomerTaskResponseModel>(customerTask);
                 }
@@ -261,28 +252,31 @@ public class CustomerTaskService : BaseService, ICustomerTaskService
                     CustomerTaskId = entity3.Id
                 };
                 await _customerAnswerService.CreateAsync(_mapper.Map<CustomerAnswerRequestModel>(customerAnswer3));*/
+                isCustomerReplyCorrect = false;
+                //return _mapper.Map<CustomerTaskResponseModel>(customerTask);
+            }
+            else
+            {
+                // identical image
+                customerTask.Status = "Finished";
+                customerTask.IsFinished = true;
+
+                var entity2 = await _customerTaskRepo.UpdateFields(customerTask, r => r.Status!, r => r.IsFinished);
+
+                /*var customerAnswer2 = new CustomerAnswer
+                {
+                    Note = NoteCustomerAnswer.CorrectAnswer.ToString(),
+                    CustomerReply = "Image Compare",
+                    QuestItemId = entity2.QuestItemId,
+                    CustomerTaskId = entity2.Id
+                };
+                await _customerAnswerService.CreateAsync(_mapper.Map<CustomerAnswerRequestModel>(customerAnswer2));*/
+
+                await _hubContext.Clients.All.UpdateCustomerTask(customerTask);
 
                 return _mapper.Map<CustomerTaskResponseModel>(customerTask);
+
             }
-            // identical image
-            customerTask.Status = "Finished";
-            customerTask.IsFinished = true;
-
-            var entity2 = await _customerTaskRepo.UpdateFields(customerTask, r => r.Status!, r => r.IsFinished);
-
-            /*var customerAnswer2 = new CustomerAnswer
-            {
-                Note = NoteCustomerAnswer.CorrectAnswer.ToString(),
-                CustomerReply = "Image Compare",
-                QuestItemId = entity2.QuestItemId,
-                CustomerTaskId = entity2.Id
-            };
-            await _customerAnswerService.CreateAsync(_mapper.Map<CustomerAnswerRequestModel>(customerAnswer2));*/
-
-            await _hubContext.Clients.All.UpdateCustomerTask(customerTask);
-
-            return _mapper.Map<CustomerTaskResponseModel>(customerTask);
-
         }
 
         //compare with correct answer
