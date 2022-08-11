@@ -270,14 +270,14 @@ public class CustomerTaskService : BaseService, ICustomerTaskService
 
             var entity2 = await _customerTaskRepo.UpdateFields(customerTask, r => r.Status!, r => r.IsFinished);
 
-            var customerAnswer2 = new CustomerAnswer
+            /*var customerAnswer2 = new CustomerAnswer
             {
                 Note = NoteCustomerAnswer.CorrectAnswer.ToString(),
                 CustomerReply = "Image Compare",
                 QuestItemId = entity2.QuestItemId,
                 CustomerTaskId = entity2.Id
             };
-            await _customerAnswerService.CreateAsync(_mapper.Map<CustomerAnswerRequestModel>(customerAnswer2));
+            await _customerAnswerService.CreateAsync(_mapper.Map<CustomerAnswerRequestModel>(customerAnswer2));*/
 
             await _hubContext.Clients.All.UpdateCustomerTask(customerTask);
 
