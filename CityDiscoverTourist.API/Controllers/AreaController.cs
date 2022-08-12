@@ -90,6 +90,7 @@ public class AreaController : ControllerBase
     /// <returns></returns>
     [HttpPost]
     [Authorize(Roles = "Admin")]
+    //[AllowAnonymous]
     public async Task<ApiResponse<AreaResponseModel>> Post(AreaRequestModel data)
     {
         var entity = await _areaService.CreateAsync(data);

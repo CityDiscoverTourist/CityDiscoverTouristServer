@@ -34,14 +34,14 @@ public class CustomerTaskService : BaseService, ICustomerTaskService
     private readonly IQuestItemRepository _questItemRepo;
     private readonly ISortHelper<CustomerTask> _sortHelper;
     private readonly ISuggestionRepository _suggestionRepo;
-
+    private readonly ICustomerAnswerRepository _customerAnswerRepo;
 
     public CustomerTaskService(ICustomerTaskRepository customerTaskRepository, IMapper mapper,
         ISortHelper<CustomerTask> sortHelper, ICustomerQuestRepository customerQuestRepo,
         IQuestItemRepository questItemRepo, GoongApiSetting? googleApiSettings,
         ICustomerAnswerService customerAnswerService, ILocationRepository locationRepo,
         ISuggestionRepository suggestionRepo, IHubContext<CustomerTaskHub, ICustomerTaskHub> hubContext,
-        IImageComparison imageComparison)
+        IImageComparison imageComparison, ICustomerAnswerRepository customerAnswerRepo)
     {
         _customerTaskRepo = customerTaskRepository;
         _mapper = mapper;
@@ -54,6 +54,7 @@ public class CustomerTaskService : BaseService, ICustomerTaskService
         _suggestionRepo = suggestionRepo;
         _hubContext = hubContext;
         _imageComparison = imageComparison;
+        _customerAnswerRepo = customerAnswerRepo;
     }
 
     public Task<PageList<CustomerTaskResponseModel>> GetAll(CustomerTaskParams @params)
@@ -97,14 +98,21 @@ public class CustomerTaskService : BaseService, ICustomerTaskService
 
         entity = await _customerTaskRepo.UpdateFields(entity, x => x.Status!, x => x.IsFinished, x => x.CurrentPoint);
 
-        var customerAnswer = new CustomerAnswer
+        /*var isCustomerReplyCorrect = false;
+
+        if (!isCustomerReplyCorrect)
+        {
+            var mappedData = _mapper.Map<CustomerTaskResponseModel>(entity);
+            await SaveCustomerAnswer2(mappedData, "SkipAnswer", NoteCustomerAnswer.SkipAnswer);
+        }*/
+        /*var customerAnswer = new CustomerAnswer
         {
             Note = NoteCustomerAnswer.SkipAnswer.ToString(),
             CustomerReply = "Customer Skip",
             QuestItemId = entity.QuestItemId,
             CustomerTaskId = entity.Id
         };
-        await _customerAnswerService.CreateAsync(_mapper.Map<CustomerAnswerRequestModel>(customerAnswer));
+        await _customerAnswerService.CreateAsync(_mapper.Map<CustomerAnswerRequestModel>(customerAnswer));*/
 
         await _hubContext.Clients.All.UpdateCustomerTask(entity);
 
