@@ -168,6 +168,16 @@ public class CustomerTaskController : ControllerBase
     }
 
     /// <summary>
+    ///
+    /// </summary>
+    /// <param name="data"></param>
+    [HttpPost("internal-save")]
+    public async Task InternalSave(CustomerAnswerRequestModel data)
+    {
+        await _customerTaskService.InternalSave(data);
+    }
+
+    /// <summary>
     ///     if customer correct or they skip the answer then move to next quest item
     /// </summary>
     /// <param name="questId"></param>

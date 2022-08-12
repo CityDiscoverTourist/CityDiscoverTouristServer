@@ -98,25 +98,19 @@ public class CustomerTaskService : BaseService, ICustomerTaskService
 
         entity = await _customerTaskRepo.UpdateFields(entity, x => x.Status!, x => x.IsFinished, x => x.CurrentPoint);
 
-        /*var isCustomerReplyCorrect = false;
-
-        if (!isCustomerReplyCorrect)
-        {
-            var mappedData = _mapper.Map<CustomerTaskResponseModel>(entity);
-            await SaveCustomerAnswer2(mappedData, "SkipAnswer", NoteCustomerAnswer.SkipAnswer);
-        }*/
-        /*var customerAnswer = new CustomerAnswer
-        {
-            Note = NoteCustomerAnswer.SkipAnswer.ToString(),
-            CustomerReply = "Customer Skip",
-            QuestItemId = entity.QuestItemId,
-            CustomerTaskId = entity.Id
-        };
-        await _customerAnswerService.CreateAsync(_mapper.Map<CustomerAnswerRequestModel>(customerAnswer));*/
-
         await _hubContext.Clients.All.UpdateCustomerTask(entity);
 
         return _mapper.Map<CustomerTaskResponseModel>(entity);
+    }
+
+    public async Task InternalSave(CustomerAnswerRequestModel model)
+    {
+        var entity = _mapper.Map<CustomerAnswer>(model);
+
+        entity.Note = NoteCustomerAnswer.SkipAnswer.ToString();
+        entity.CustomerReply = "Customer Skip";
+
+        await _customerAnswerRepo.Add(entity);
     }
 
     public async Task<CustomerTaskResponseModel> CustomerStartQuest(CustomerTaskRequestModel request, int questId)
