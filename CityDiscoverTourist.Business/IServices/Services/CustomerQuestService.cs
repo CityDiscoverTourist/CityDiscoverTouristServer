@@ -307,7 +307,7 @@ public class CustomerQuestService : BaseService, ICustomerQuestService
             entity.Rating = 5;
 
             var lastCustomerTask = _customerTaskRepository
-                .GetByCondition(x => x.CustomerQuestId == entity.Id).OrderByDescending(x => x.CreatedDate)
+                .GetByCondition(x => x.CustomerQuestId == entity.Id).OrderBy(x => x.CreatedDate)
                 .LastOrDefaultAsync().Result;
 
             // update last customer task status to force delete
