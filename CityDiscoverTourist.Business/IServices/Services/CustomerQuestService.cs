@@ -116,7 +116,7 @@ public class CustomerQuestService : BaseService, ICustomerQuestService
 
             item.Rating = 5;
             item.IsFinished = true;
-            item.Status = CommonStatus.Inactive.ToString();
+            item.Status = CommonStatus.Done.ToString();
 
             await _customerQuestRepository.UpdateFields(item, x => x.IsFinished, x => x.Status!);
         }
