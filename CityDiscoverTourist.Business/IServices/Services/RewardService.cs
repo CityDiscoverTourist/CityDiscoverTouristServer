@@ -46,7 +46,8 @@ public class RewardService : BaseService, IRewardService
 
     public PageList<RewardResponseModel> GetByCustomerId(RewardParams @params, string customerId)
     {
-        var rewards = _rewardRepository.GetByCondition(x => x.CustomerId == customerId);
+        var rewards = _rewardRepository.GetByCondition(x => x.CustomerId == customerId && x.Status == CommonStatus.Active.ToString())
+            .OrderByDescending(x => x.ReceivedDate).AsNoTracking();
 
         var sortedQuests = _sortHelper.ApplySort(rewards, @params.OrderBy);
         var mappedData = _mapper.Map<IEnumerable<RewardResponseModel>>(sortedQuests);

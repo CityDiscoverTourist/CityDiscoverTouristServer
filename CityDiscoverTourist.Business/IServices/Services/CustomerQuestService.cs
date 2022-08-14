@@ -244,7 +244,7 @@ public class CustomerQuestService : BaseService, ICustomerQuestService
         mappedData.RewardCode = reward.Code;
         mappedData.PercentPointRemain = percentPointRemain;
 
-        return _mapper.Map<CustomerQuestResponseModel>(entity);
+        return _mapper.Map<CustomerQuestResponseModel>(mappedData);
     }
 
     public Task<PageList<CommentResponseModel>> ShowComments(int questId, CustomerQuestParams param)

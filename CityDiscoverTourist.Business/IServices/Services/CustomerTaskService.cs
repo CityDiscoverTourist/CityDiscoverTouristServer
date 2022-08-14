@@ -321,7 +321,7 @@ public class CustomerTaskService : BaseService, ICustomerTaskService
             .GetByCondition(x => x.CustomerQuestId == customerQuestId).Count();
         var numOfItemInQuest = _questItemRepo
             .GetByCondition(x => x.QuestId == _customerQuestRepo.Get(customerQuestId).Result.QuestId)
-            .Count(x => x.Status == CommonStatus.Active.ToString());
+            .Count(x => x.Status != CommonStatus.Inactive.ToString());
         return Task.FromResult(numOfItemCustomerHasDone == numOfItemInQuest);
     }
 
