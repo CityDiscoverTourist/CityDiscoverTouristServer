@@ -208,7 +208,10 @@ public class AuthService : BaseService, IAuthService
         user.EmailConfirmed = true;
         user.ConfirmToken = null;
         await _userManager.UpdateAsync(user);
-        return "Email confirmed";
+
+        // return html string
+        return "<h1>Email confirmed</h1> <br/>" +
+               "<p>You can now login to your account</p>";
     }
 
     public JwtSecurityToken GetJwtToken(IEnumerable<Claim> claims)
