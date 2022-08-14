@@ -357,6 +357,7 @@ public class CustomerTaskService : BaseService, ICustomerTaskService
         var suggestions = _suggestionRepo.GetByCondition(x => x.QuestItemId == questItemId).Select(x => x.Content)
             .FirstOrDefaultAsync().Result;
 
+        //CheckDataNotNull(nameof(suggestions), suggestions!);
         suggestions = ConvertLanguage(language, suggestions);
 
         return Task.FromResult(string.Join(",", suggestions));

@@ -61,7 +61,7 @@ public class RewardController : ControllerBase
     /// <param name="customerId"></param>
     /// <returns></returns>
     [HttpGet("get-by-customer-id")]
-    [AllowAnonymous]
+    //[AllowAnonymous]
     //[Cached(600)]
     public ApiResponse<PageList<RewardResponseModel>> GetByCustomerId([FromQuery] RewardParams param, string customerId)
     {
