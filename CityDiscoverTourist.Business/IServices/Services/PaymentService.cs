@@ -436,7 +436,7 @@ public class PaymentService : BaseService, IPaymentService
         {
             payment.IsValid = false;
             payment.Status = PaymentStatus.Failed.ToString();
-            await _paymentRepository.UpdateFields(payment, x => x.Status!);
+            await _paymentRepository.UpdateFields(payment, x => x.Status!, x => x.IsValid);
         }
     }
 
