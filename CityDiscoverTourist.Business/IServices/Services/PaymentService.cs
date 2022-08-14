@@ -279,7 +279,7 @@ public class PaymentService : BaseService, IPaymentService
             await _paymentRepository.Add(entity);
 
             // update status when over 10 min
-            _backgroundJobClient.Schedule(() => PaymentFailed(entity.Id), TimeSpan.FromMinutes(15));
+            _backgroundJobClient.Schedule(() => PaymentFailed(entity.Id), TimeSpan.FromMinutes(11));
 
             return new[] { paymentUrl, entity.Id.ToString() };
         }
