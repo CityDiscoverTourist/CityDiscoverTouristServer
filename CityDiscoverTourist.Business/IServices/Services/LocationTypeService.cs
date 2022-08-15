@@ -89,6 +89,10 @@ public class LocationTypeService : BaseService, ILocationTypeService
 
         entity = await _locationTypeRepository.Add(entity);
 
+        var objTitle = JObject.Parse(entity.Name!);
+        var title = (string) objTitle["vi"]!;
+        entity.Name = title;
+
         return _mapper.Map<LocationTypeResponseModel>(entity);
     }
 

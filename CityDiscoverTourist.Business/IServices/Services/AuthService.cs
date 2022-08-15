@@ -188,7 +188,7 @@ public class AuthService : BaseService, IAuthService
 
         //await _emailSender.SendMailConfirmAsync(user.Email!, "Confirm your account", message);
 
-        BackgroundJob.Enqueue( () => _emailSender.SendMailConfirmAsync(user.Email!, "Confirm your account", message));
+        BackgroundJob.Enqueue(() => _emailSender.SendMailConfirmAsync(user.Email!, "Confirm your account", message));
 
         user.ConfirmToken = token;
         await _userManager.UpdateAsync(user);

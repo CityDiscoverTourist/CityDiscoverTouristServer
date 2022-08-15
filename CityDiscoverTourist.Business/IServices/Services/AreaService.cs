@@ -87,9 +87,10 @@ public class AreaService : BaseService, IAreaService
         var objTitle = JObject.Parse(entity.Name!);
         var title = (string) objTitle["vi"]!;
 
+        entity = await _areaRepository.Add(entity);
+
         entity.Name = title;
 
-        entity = await _areaRepository.Add(entity);
         return _mapper.Map<AreaResponseModel>(entity);
     }
 
