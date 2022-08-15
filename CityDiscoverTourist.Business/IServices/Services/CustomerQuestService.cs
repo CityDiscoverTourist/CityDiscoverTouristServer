@@ -1,4 +1,5 @@
 using System.Globalization;
+using System.Text.RegularExpressions;
 using AutoMapper;
 using CityDiscoverTourist.Business.Data.RequestModel;
 using CityDiscoverTourist.Business.Data.ResponseModel;
@@ -150,6 +151,21 @@ public class CustomerQuestService : BaseService, ICustomerQuestService
 
         var payment = await _paymentService.Get(entity.PaymentId, Language.vi);
 
+        var quest = _questRepository.Get(payment.QuestId).Result;
+
+        // check time
+        var availableTime = Regex.Split(quest.AvailableTime!, @"\D+");
+
+        var startTime = Convert.ToString(availableTime[0] + ":" + availableTime[1]) + " AM";
+        var endTime = Convert.ToString(availableTime[2] + ":" + availableTime[3]) + " PM";
+
+        var from = DateTime.Parse(startTime);
+        var to = DateTime.Parse(endTime);
+
+        // check time if quest is available and status
+        if (CurrentDateTime().TimeOfDay < from.TimeOfDay || CurrentDateTime().TimeOfDay > to.TimeOfDay || quest.Status == CommonStatus.Inactive.ToString())
+            throw new AppException("Quest is not available");
+
         if (payment.Status == PaymentStatus.Pending.ToString() || payment.Status == PaymentStatus.Failed.ToString())
             throw new AppException("This transaction is not completed yet");
         if (!payment.IsValid) throw new AppException("Payment is not valid");
@@ -171,6 +187,13 @@ public class CustomerQuestService : BaseService, ICustomerQuestService
         var previousQuest =
             _customerQuestRepository.GetByCondition(x => x.CustomerId == request.CustomerId && x.IsFinished == false);
         if (previousQuest.Any()) throw new AppException("Previous quest is not finished");
+
+        // check time
+
+
+
+        // 7AM - 7PM
+        //var from = DateTime.Parse(availableTime);
 
         entity.IsFinished = false;
         entity.Status = CommonStatus.Active.ToString();
