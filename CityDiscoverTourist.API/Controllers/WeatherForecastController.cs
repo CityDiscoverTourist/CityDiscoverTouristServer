@@ -1,3 +1,5 @@
+using System.Drawing;
+using CityDiscoverTourist.Business.Helper.EmailHelper;
 using CityDiscoverTourist.Business.IServices;
 using Diacritics.Extensions;
 using Emgu.CV;
@@ -6,6 +8,7 @@ using Emgu.CV.Features2D;
 using Emgu.CV.Structure;
 using Emgu.CV.Util;
 using Microsoft.AspNetCore.Mvc;
+using QRCoder;
 
 namespace CityDiscoverTourist.API.Controllers;
 
@@ -20,12 +23,14 @@ public class WeatherForecastController : ControllerBase
 
     private readonly IBlobService   _blobService;
     private readonly IImageComparison _imageComparison;
+    private readonly IEmailSender _emailSender;
 
     public WeatherForecastController(IBlobService blobService,
-        IImageComparison imageComparison)
+        IImageComparison imageComparison, IEmailSender emailSender)
     {
         _blobService = blobService;
         _imageComparison = imageComparison;
+        _emailSender = emailSender;
     }
 
     [HttpGet]
@@ -122,6 +127,23 @@ public class WeatherForecastController : ControllerBase
     [HttpPost("demo2")]
     public Task<long> Demo2([FromForm] List<IFormFile> file)
     {
+        var stream = new MemoryStream();
+        using var ms = stream;
+        QRCodeGenerator qRCodeGenerator = new();
+        var data = qRCodeGenerator.CreateQrCode("input", QRCodeGenerator.ECCLevel.L);
+        QRCode qRCode = new(data);
+        using var bitmap = qRCode.GetGraphic(20);
+        var a = data.GetRawData(QRCodeData.Compression.Deflate);
+        var w = Convert.ToBase64String(a);
+
+        var message = "<h1>Payment Success</h1>" + "<h3>Dear " +   "</h3>" +
+                      "<p>Your payment has been succeeded</p>" + "<p>Your order is: " +  "</p>" +
+                      "<p>Your quest name is: " + "/ " +
+                      "</p>" + "<p>Quantity is: " +
+                      "</p>" + "<p>Your order total amount is: " +  "</p>" +
+                      "<img src=\"data:image/jpeg;base64, " + w + "\"" + "alt=\"Text\""  + "/>";
+
+        _emailSender.SendMailConfirmAsync("datlqse140263@fpt.edu.vn", "ok", message);
         return _imageComparison.CompareImages(110, file);
     }
 

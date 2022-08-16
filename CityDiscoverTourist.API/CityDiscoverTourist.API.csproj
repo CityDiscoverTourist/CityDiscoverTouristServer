@@ -29,6 +29,8 @@
         <PackageReference Include="Emgu.CV.runtime.windows" Version="4.5.5.4823" />
         <PackageReference Include="FirebaseAdmin" Version="2.3.0" />
         <PackageReference Include="Hangfire" Version="1.7.30" />
+        <PackageReference Include="QRCoder" Version="1.4.2" />
+        <PackageReference Include="QRCoderNetCore" Version="1.0.0" />
         <PackageReference Include="Hangfire.Core" Version="1.7.30" />
         <PackageReference Include="Hangfire.Dashboard.Basic.Authentication" Version="5.0.0" />
         <PackageReference Include="Hangfire.Dashboard.BasicAuthorization" Version="1.0.2" />

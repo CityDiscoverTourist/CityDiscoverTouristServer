@@ -28,6 +28,8 @@
         <PackageReference Include="Microsoft.Extensions.Diagnostics.HealthChecks.Abstractions" Version="6.0.5" />
         <PackageReference Include="Microsoft.SqlServer.DacFx" Version="160.6161.0" />
         <PackageReference Include="PasswordGenerator" Version="2.1.0" />
+        <PackageReference Include="QrCode.Net" Version="0.4.0" />
+        <PackageReference Include="QRCoder" Version="1.4.2" />
         <PackageReference Include="StackExchange.Redis" Version="2.0.593" />
         <PackageReference Include="System.Linq.Dynamic" Version="1.0.8" />
         <PackageReference Include="System.Linq.Dynamic.Core" Version="1.2.18" />

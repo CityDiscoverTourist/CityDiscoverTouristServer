@@ -1,3 +1,4 @@
+using System.Drawing.Imaging;
 using System.Globalization;
 using AutoMapper;
 using CityDiscoverTourist.Business.Data.RequestModel;
@@ -142,11 +143,17 @@ public class PaymentService : BaseService, IPaymentService
         //send mail to customer when payment success
         var customerEmail = _userManager!.FindByIdAsync(entity.CustomerId).Result.Email;
 
+        /*var MyQRWithLogo = QRCodeWriter.CreateQrCodeWithLogo("https://ironsoftware.com/csharp/barcode/", "visual-studio-logo.png", 500);
+        MyQRWithLogo.ChangeBarCodeColor(System.Drawing.Color.DarkGreen);
+
+        var barcode = MyQRWithLogo.BinaryValue;*/
+
         var message = "<h1>Payment Success</h1>" + "<h3>Dear " + customerEmail + "</h3>" +
                       "<p>Your payment has been succeeded</p>" + "<p>Your order is: " + entity.Id + "</p>" +
                       "<p>Your quest name is: " + ConvertLanguage(Language.vi, questName!) + "/ " +
                       ConvertLanguage(Language.en, questName!) + "</p>" + "<p>Quantity is: " + entity.Quantity +
                       "</p>" + "<p>Your order total amount is: " + entity.TotalAmount + "</p>" +
+                      //"src=\"data:image/png;base64," + Convert.ToBase64String(barcode) + "\"" +
                       "<p>Your playing code is: " + entity.Id + "</p>" + "<p>Your order ticket will be invalid at " +
                       entity.CreatedDate.AddDays(2).ToString("dd/MM/yyyy") + "</p>" +
                       "<p>Thank you for using our service</p>";
