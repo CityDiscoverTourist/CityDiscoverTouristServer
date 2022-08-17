@@ -175,14 +175,13 @@ public class CustomerTaskService : BaseService, ICustomerTaskService
                 IsFinished = false,
                 CurrentPoint = lastQuestItemCustomerFinished.CurrentPoint,
                 Status = "Progress",
-                CreatedDate = CurrentDateTime()
+                CreatedDate = CurrentDateTime(),
+                CustomerEmail = _userManager.FindByIdAsync(customerQuestId.ToString()).Result.Email
             };
-
-            customerTask.CustomerEmail = _userManager.FindByIdAsync(customerQuestId.ToString()).Result.Email;
 
             await _customerTaskRepo.Add(_mapper.Map<CustomerTask>(customerTask));
 
-            await _hubContext.Clients.All.CustomerStartNextQuestItem(customerTask);
+            await _hubContext.Clients.All.CustomerStartNextQuestItem(_mapper.Map<CustomerTaskResponseModel>(customerTask));
         }
 
         return nextQuestItemId == 0 ? 0 : nextQuestItemId;
