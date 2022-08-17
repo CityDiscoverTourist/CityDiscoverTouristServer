@@ -177,9 +177,12 @@ public class CustomerTaskService : BaseService, ICustomerTaskService
                 Status = "Progress",
                 CreatedDate = CurrentDateTime()
             };
+
+            customerTask.CustomerEmail = _userManager.FindByIdAsync(customerQuestId.ToString()).Result.Email;
+
             await _customerTaskRepo.Add(_mapper.Map<CustomerTask>(customerTask));
-            await _hubContext.Clients.All.CustomerStartNextQuestItem(
-                _mapper.Map<CustomerTaskResponseModel>(customerTask));
+
+            await _hubContext.Clients.All.CustomerStartNextQuestItem(customerTask);
         }
 
         return nextQuestItemId == 0 ? 0 : nextQuestItemId;

@@ -1,6 +1,7 @@
 using CityDiscoverTourist.Business.Data.RequestModel;
 using CityDiscoverTourist.Business.Data.ResponseModel;
 using CityDiscoverTourist.Business.IServices;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CityDiscoverTourist.API.Controllers;
@@ -76,6 +77,7 @@ public class AuthController : ControllerBase
     /// <param name="model"></param>
     /// <returns></returns>
     [HttpPost("register-admin")]
+    [Authorize(Roles = "Admin")]
     public async Task<ActionResult> RegisterAdmin(LoginRequestModel model)
     {
         return Ok(await _authService.RegisterAdmin(model));
