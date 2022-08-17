@@ -176,8 +176,12 @@ public class CustomerTaskService : BaseService, ICustomerTaskService
                 CurrentPoint = lastQuestItemCustomerFinished.CurrentPoint,
                 Status = "Progress",
                 CreatedDate = CurrentDateTime(),
-                CustomerEmail = _userManager.FindByIdAsync(customerQuestId.ToString()).Result.Email
             };
+
+            var userId = _customerQuestRepo.Get(customerQuestId).Result.CustomerId!;
+            var customerEmail = _userManager.FindByIdAsync(userId).Result.Email;
+
+            customerTask.CustomerEmail = customerEmail;
 
             await _customerTaskRepo.Add(_mapper.Map<CustomerTask>(customerTask));
 
