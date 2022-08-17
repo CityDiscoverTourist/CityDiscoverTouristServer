@@ -26,6 +26,13 @@ public class DashboardService : BaseService, IDashboardService
         public string email { get; set; }
         public string point { get; set; }
     }
+
+    public class QuestDashboard
+    {
+        public string name { get; set; }
+        public string count { get; set; }
+    }
+
     public Player[] GetTopCustomer()
     {
         // get top 3 customers by total amount of payments
@@ -104,6 +111,25 @@ public class DashboardService : BaseService, IDashboardService
         {
             var questName = ConvertLanguage(Language.vi, _questRepository.Get(quest.QuestId).Result.Title!);
             list.Add(questName);
+        }
+
+        return list.ToArray();
+    }
+
+    public QuestDashboard[] GetTopQuestByMonth(int month, int year)
+    {
+        var topQuests = _customerQuestRepository.GetAll().Where(x => x.CreatedDate!.Value.Month == month && x.CreatedDate.Value.Year == year)
+            .GroupBy(x => x.QuestId).Select(x => new { QuestId = x.Key, TotalPlay = x.Count() }).OrderByDescending(x => x.TotalPlay).Take(10);
+        var list = new List<QuestDashboard>();
+        foreach (var quest in topQuests)
+        {
+            var questName = ConvertLanguage(Language.vi, _questRepository.Get(quest.QuestId).Result.Title!);
+            QuestDashboard quest1 = new QuestDashboard
+            {
+                name = questName,
+                count = quest.TotalPlay.ToString()
+            };
+            list.Add(quest1);
         }
 
         return list.ToArray();

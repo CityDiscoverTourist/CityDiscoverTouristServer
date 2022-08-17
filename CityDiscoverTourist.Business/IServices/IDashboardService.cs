@@ -11,4 +11,6 @@ public interface IDashboardService
     public int TotalAccount();
     public int TotalQuest();
     public string[] GetTopQuests();
+    public QuestDashboard[] GetTopQuestByMonth(int month, int year);
+
 }

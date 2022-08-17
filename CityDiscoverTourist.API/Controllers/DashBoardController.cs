@@ -10,7 +10,7 @@ namespace CityDiscoverTourist.API.Controllers;
 [Route("api/v{version:apiVersion}/[controller]s")]
 [ApiVersion("1.0")]
 [ApiController]
-[Authorize(Roles = "Admin")]
+//[Authorize(Roles = "Admin")]
 public class DashboardController : ControllerBase
 {
     private readonly IDashboardService _dashBoardService;
@@ -89,5 +89,17 @@ public class DashboardController : ControllerBase
     public Task<string[]> GetTopPlayQuest()
     {
         return Task.FromResult(_dashBoardService.GetTopQuests());
+    }
+
+    /// <summary>
+    ///
+    /// </summary>
+    /// <param name="month"></param>
+    /// <param name="year"></param>
+    /// <returns></returns>
+    [HttpGet("top-quest-by-month")]
+    public Task<QuestDashboard[]> GetTopPlayQuestByMoth(int month, int year)
+    {
+        return Task.FromResult(_dashBoardService.GetTopQuestByMonth(month, year));
     }
 }
