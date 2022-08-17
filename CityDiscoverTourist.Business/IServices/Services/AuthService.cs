@@ -186,9 +186,66 @@ public class AuthService : BaseService, IAuthService
         var message = "<h1>Welcome to City Discover Tourist</h1> <br/>" +
                       $"<p>Please confirm your account by clicking <a href='{confirmationLink}'>here</a></p>";
 
-        //await _emailSender.SendMailConfirmAsync(user.Email!, "Confirm your account", message);
 
         BackgroundJob.Enqueue(() => _emailSender.SendMailConfirmAsync(user.Email!, "Confirm your account", message));
+
+        user.ConfirmToken = token;
+        await _userManager.UpdateAsync(user);
+
+        return result.Succeeded;
+    }
+
+    public async Task ReSendMail(string email)
+    {
+        var user = await _userManager.FindByEmailAsync(email);
+
+        var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+
+        var urlEncode = HttpUtility.UrlEncode(token);
+
+        var confirmationLink =
+            $"{_configuration!["AppUrl"]}/api/v1/auths/confirm-email?userId={user.Id}&token={urlEncode}";
+
+        var message = "<h1>Welcome to City Discover Tourist</h1> <br/>" +
+                      $"<p>Please confirm your account by clicking <a href='{confirmationLink}'>here</a></p>";
+
+        BackgroundJob.Enqueue(() => _emailSender.SendMailConfirmAsync(user.Email!, "Confirm your account", message));
+
+        user.ConfirmToken = token;
+        await _userManager.UpdateAsync(user);
+    }
+
+    public async Task<bool> RegisterAdmin(LoginRequestModel model)
+    {
+        var user = await _userManager.FindByEmailAsync(model.Email);
+        if (user is { }) throw new AppException("Admin already exists");
+
+        user = new ApplicationUser
+        {
+            UserName = model.Email,
+            Email = model.Email,
+            EmailConfirmed = false,
+            LockoutEnabled = false
+        };
+        var result = await _userManager.CreateAsync(user, model.Password);
+        if (!result.Succeeded) throw new AppException(result.Errors.First().Description);
+
+        await _userManager.AddToRoleAsync(user, Role.Admin.ToString());
+
+        // send mail to user with confirmation link to activate account
+        var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+
+        var urlEncode = HttpUtility.UrlEncode(token);
+
+        var confirmationLink =
+            $"{_configuration!["AppUrl"]}/api/v1/auths/confirm-email?userId={user.Id}&token={urlEncode}";
+
+        //create html message template for em
+        var message = "<h1>Welcome to City Discover Tourist - Administration</h1> <br/>" +
+                      $"<p>Please confirm your account by clicking <a href='{confirmationLink}'>here</a></p>"
+                      + "<p>thank you for joining us</p>";
+
+        BackgroundJob.Enqueue(() => _emailSender.SendMailConfirmAsync(user.Email!, "Confirm your account admin", message));
 
         user.ConfirmToken = token;
         await _userManager.UpdateAsync(user);

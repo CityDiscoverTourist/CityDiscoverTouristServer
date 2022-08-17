@@ -71,6 +71,28 @@ public class AuthController : ControllerBase
     }
 
     /// <summary>
+    ///  register for admin
+    /// </summary>
+    /// <param name="model"></param>
+    /// <returns></returns>
+    [HttpPost("register-admin")]
+    public async Task<ActionResult> RegisterAdmin(LoginRequestModel model)
+    {
+        return Ok(await _authService.RegisterAdmin(model));
+    }
+
+    /// <summary>
+    ///
+    /// </summary>
+    /// <param name="email"></param>
+    /// <returns></returns>
+    [HttpPost("resend-mail")]
+    public async Task ResendMail(string email)
+    {
+        await _authService.ReSendMail(email);
+    }
+
+    /// <summary>
     ///     confirm email for user register
     /// </summary>
     /// <param name="userId"></param>

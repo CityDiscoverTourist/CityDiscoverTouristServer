@@ -11,6 +11,8 @@ public interface IAuthService
     public Task<LoginResponseModel> Login(LoginRequestModel model);
     public Task<LoginResponseModel> LoginAdmin(LoginRequestModel model);
     public Task<bool> Register(LoginRequestModel model);
+    public Task ReSendMail(string email);
+    public Task<bool> RegisterAdmin(LoginRequestModel model);
     public Task<string> ConfirmEmail(string userId, string token);
     public JwtSecurityToken GetJwtToken(IEnumerable<Claim> claims);
     public string GenerateRefreshToken();
