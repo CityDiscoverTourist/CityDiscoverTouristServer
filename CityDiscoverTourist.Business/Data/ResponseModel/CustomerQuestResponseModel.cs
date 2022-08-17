@@ -21,6 +21,7 @@ public class CustomerQuestResponseModel
     public Guid RewardCode { get; set; }
     public int PercentDiscount { get; set; }
     public double PercentPointRemain { get; set; }
+    public int CountQuestItem { get; set; }
 
     //public Payment? PaymentMethod { get; set; }
 }

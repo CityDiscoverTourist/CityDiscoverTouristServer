@@ -188,12 +188,9 @@ public class CustomerQuestService : BaseService, ICustomerQuestService
             _customerQuestRepository.GetByCondition(x => x.CustomerId == request.CustomerId && x.IsFinished == false);
         if (previousQuest.Any()) throw new AppException("Previous quest is not finished");
 
-        // check time
-
-
-
-        // 7AM - 7PM
-        //var from = DateTime.Parse(availableTime);
+        //get total quest item
+        var totalQuestItem = _taskRepository
+            .GetByCondition(x => x.QuestId == quest.Id).Count(x => x.Status == CommonStatus.Active.ToString());
 
         entity.IsFinished = false;
         entity.Status = CommonStatus.Active.ToString();
@@ -206,7 +203,10 @@ public class CustomerQuestService : BaseService, ICustomerQuestService
         // trick to update payment isValid field
         if(numOfQuantityInCustomerQuest + 1 == ticketQuantity) await _paymentService.UpdateIsValidField(entity.PaymentId);
 
-        return _mapper.Map<CustomerQuestResponseModel>(entity);
+        var mappedData = _mapper.Map<CustomerQuestResponseModel>(entity);
+        mappedData.CountQuestItem = totalQuestItem;
+
+        return mappedData;
     }
 
     public async Task<CustomerQuestResponseModel> DeleteAsync(int id)
