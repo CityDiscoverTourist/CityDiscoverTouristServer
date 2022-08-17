@@ -1,4 +1,5 @@
 using System.Drawing;
+using System.Drawing.Imaging;
 using CityDiscoverTourist.Business.Helper.EmailHelper;
 using CityDiscoverTourist.Business.IServices;
 using Diacritics.Extensions;
@@ -130,18 +131,19 @@ public class WeatherForecastController : ControllerBase
         var stream = new MemoryStream();
         using var ms = stream;
         QRCodeGenerator qRCodeGenerator = new();
-        var data = qRCodeGenerator.CreateQrCode("input", QRCodeGenerator.ECCLevel.L);
+        var data = qRCodeGenerator.CreateQrCode("input", QRCodeGenerator.ECCLevel.Q);
         QRCode qRCode = new(data);
         using var bitmap = qRCode.GetGraphic(20);
-        var a = data.GetRawData(QRCodeData.Compression.Deflate);
-        var w = Convert.ToBase64String(a);
-
-        var message = "<h1>Payment Success</h1>" + "<h3>Dear " +   "</h3>" +
-                      "<p>Your payment has been succeeded</p>" + "<p>Your order is: " +  "</p>" +
-                      "<p>Your quest name is: " + "/ " +
-                      "</p>" + "<p>Quantity is: " +
+        bitmap.Save(ms, ImageFormat.Png);
+        var q = File(ms.GetBuffer(), "image/png");
+// converting to base64
+        ms.Position = 0;
+        byte[] byteBuffer = ms.ToArray();
+        string base64String = Convert.ToBase64String(byteBuffer);
+        var message = "<h1>Payment Success</h1>" + "<h3>Dear " +   "</h3>" + "<p>Your payment has been succeeded</p>" +
+                      "<p>Your order is: " +  "</p>" + "<p>Your quest name is: " + "/ " + "</p>" + "<p>Quantity is: " +
                       "</p>" + "<p>Your order total amount is: " +  "</p>" +
-                      "<img src=\"data:image/jpeg;base64, " + w + "\"" + "alt=\"Text\""  + "/>";
+                      "<img width='200px' src=\"data:image/png;base64, " + base64String + "\" />";
 
         _emailSender.SendMailConfirmAsync("datlqse140263@fpt.edu.vn", "ok", message);
         return _imageComparison.CompareImages(110, file);

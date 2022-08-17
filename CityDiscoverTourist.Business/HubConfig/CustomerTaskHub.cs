@@ -22,7 +22,7 @@ public class CustomerTaskHub : Hub<ICustomerTaskHub>
         await Clients.All.CustomerAnswer(customerAnswer);
     }
 
-    public async Task UpdateCustomerTask(CustomerTask customerTask)
+    public async Task UpdateCustomerTask(CustomerTaskResponseModel customerTask)
     {
         await Clients.All.UpdateCustomerTask(customerTask);
     }

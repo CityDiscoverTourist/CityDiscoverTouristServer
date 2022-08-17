@@ -12,6 +12,7 @@ using CityDiscoverTourist.Data.IRepositories;
 using CityDiscoverTourist.Data.Models;
 using Diacritics.Extensions;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json.Linq;
@@ -35,13 +36,14 @@ public class CustomerTaskService : BaseService, ICustomerTaskService
     private readonly ISortHelper<CustomerTask> _sortHelper;
     private readonly ISuggestionRepository _suggestionRepo;
     private readonly ICustomerAnswerRepository _customerAnswerRepo;
+    private readonly UserManager<ApplicationUser> _userManager;
 
     public CustomerTaskService(ICustomerTaskRepository customerTaskRepository, IMapper mapper,
         ISortHelper<CustomerTask> sortHelper, ICustomerQuestRepository customerQuestRepo,
         IQuestItemRepository questItemRepo, GoongApiSetting? googleApiSettings,
         ICustomerAnswerService customerAnswerService, ILocationRepository locationRepo,
         ISuggestionRepository suggestionRepo, IHubContext<CustomerTaskHub, ICustomerTaskHub> hubContext,
-        IImageComparison imageComparison, ICustomerAnswerRepository customerAnswerRepo)
+        IImageComparison imageComparison, ICustomerAnswerRepository customerAnswerRepo, UserManager<ApplicationUser> userManager)
     {
         _customerTaskRepo = customerTaskRepository;
         _mapper = mapper;
@@ -55,6 +57,7 @@ public class CustomerTaskService : BaseService, ICustomerTaskService
         _hubContext = hubContext;
         _imageComparison = imageComparison;
         _customerAnswerRepo = customerAnswerRepo;
+        _userManager = userManager;
     }
 
     public Task<PageList<CustomerTaskResponseModel>> GetAll(CustomerTaskParams @params)
@@ -98,9 +101,16 @@ public class CustomerTaskService : BaseService, ICustomerTaskService
 
         entity = await _customerTaskRepo.UpdateFields(entity, x => x.Status!, x => x.IsFinished, x => x.CurrentPoint);
 
-        await _hubContext.Clients.All.UpdateCustomerTask(entity);
+        var mappedData = _mapper.Map<CustomerTaskResponseModel>(entity);
 
-        return _mapper.Map<CustomerTaskResponseModel>(entity);
+        var userId = _customerQuestRepo.Get(customerQuestId).Result.CustomerId!;
+        var customerEmail = _userManager.FindByIdAsync(userId).Result.Email;
+
+        mappedData.CustomerEmail = customerEmail;
+
+        await _hubContext.Clients.All.UpdateCustomerTask(mappedData);
+
+        return mappedData;
     }
 
     public async Task InternalSave(CustomerAnswerRequestModel model)
@@ -202,9 +212,11 @@ public class CustomerTaskService : BaseService, ICustomerTaskService
 
         customerTask = await _customerTaskRepo.UpdateFields(customerTask, r => r.CurrentPoint, r => r.CountSuggestion);
 
-        await _hubContext.Clients.All.UpdateCustomerTask(customerTask);
+        var mappedData = _mapper.Map<CustomerTaskResponseModel>(customerTask);
 
-        return _mapper.Map<CustomerTaskResponseModel>(customerTask);
+        await _hubContext.Clients.All.UpdateCustomerTask(mappedData);
+
+        return mappedData;
     }
 
     public async Task<CustomerTaskResponseModel> CheckCustomerAnswer(int customerQuestId, string customerReply,
@@ -219,6 +231,11 @@ public class CustomerTaskService : BaseService, ICustomerTaskService
         //get current quest item of customer
         var customerTask = await _customerTaskRepo.GetByCondition(x => x.CustomerQuestId == customerQuestId)
             .Where(x => x.QuestItemId == questItemId).OrderByDescending(x => x.CurrentPoint).LastOrDefaultAsync();
+
+        var mappedData = _mapper.Map<CustomerTaskResponseModel>(customerTask);
+
+        var userId = _customerQuestRepo.Get(customerQuestId).Result.CustomerId!;
+        var customerEmail = _userManager.FindByIdAsync(userId).Result.Email;
 
         var questItem = await _questItemRepo.Get(customerTask!.QuestItemId);
 
@@ -236,9 +253,12 @@ public class CustomerTaskService : BaseService, ICustomerTaskService
                     customerTask.IsFinished = true;
                     await _customerTaskRepo.UpdateFields(customerTask, r => r.Status!, r => r.IsFinished);
 
-                    await _hubContext.Clients.All.UpdateCustomerTask(customerTask);
+                    mappedData = _mapper.Map<CustomerTaskResponseModel>(customerTask);
+                    mappedData.CustomerEmail = customerEmail;
 
-                    return _mapper.Map<CustomerTaskResponseModel>(customerTask);
+                    await _hubContext.Clients.All.UpdateCustomerTask(mappedData);
+
+                    return mappedData;
                 }
 
                 customerTask.CurrentPoint = currentPoint - PointWhenWrongAnswer;
@@ -246,8 +266,10 @@ public class CustomerTaskService : BaseService, ICustomerTaskService
                 customerTask = await _customerTaskRepo.UpdateFields(customerTask, r => r.CurrentPoint,
                     r => r.CountWrongAnswer);
 
-                await _hubContext.Clients.All.UpdateCustomerTask(customerTask);
+                mappedData = _mapper.Map<CustomerTaskResponseModel>(customerTask);
+                mappedData.CustomerEmail = customerEmail;
 
+                await _hubContext.Clients.All.UpdateCustomerTask(mappedData);
 
                 isCustomerReplyCorrect = false;
 
@@ -260,9 +282,12 @@ public class CustomerTaskService : BaseService, ICustomerTaskService
 
                 await _customerTaskRepo.UpdateFields(customerTask, r => r.Status!, r => r.IsFinished);
 
-                await _hubContext.Clients.All.UpdateCustomerTask(customerTask);
+                mappedData = _mapper.Map<CustomerTaskResponseModel>(customerTask);
+                mappedData.CustomerEmail = customerEmail;
 
-                return _mapper.Map<CustomerTaskResponseModel>(customerTask);
+                await _hubContext.Clients.All.UpdateCustomerTask(mappedData);
+
+                return mappedData;
             }
         }
         // else is normal question and answer
@@ -290,7 +315,10 @@ public class CustomerTaskService : BaseService, ICustomerTaskService
                 customerTask = await _customerTaskRepo.UpdateFields(customerTask, r => r.CurrentPoint,
                     r => r.CountWrongAnswer);
 
-                await _hubContext.Clients.All.UpdateCustomerTask(customerTask);
+                mappedData = _mapper.Map<CustomerTaskResponseModel>(customerTask);
+                mappedData.CustomerEmail = customerEmail;
+
+                await _hubContext.Clients.All.UpdateCustomerTask(mappedData);
 
                 isCustomerReplyCorrect = false;
             }
@@ -302,7 +330,10 @@ public class CustomerTaskService : BaseService, ICustomerTaskService
                 customerTask.IsFinished = true;
                 await _customerTaskRepo.UpdateFields(customerTask, r => r.Status!, r => r.IsFinished);
 
-                await _hubContext.Clients.All.UpdateCustomerTask(customerTask);
+                mappedData = _mapper.Map<CustomerTaskResponseModel>(customerTask);
+                mappedData.CustomerEmail = customerEmail;
+
+                await _hubContext.Clients.All.UpdateCustomerTask(mappedData);
             }
         }
 
@@ -312,7 +343,7 @@ public class CustomerTaskService : BaseService, ICustomerTaskService
         else
             await SaveCustomerAnswer(customerTask, customerReply, NoteCustomerAnswer.CorrectAnswer);
 
-        return _mapper.Map<CustomerTaskResponseModel>(customerTask);
+        return mappedData;
     }
 
     public Task<bool> IsLastQuestItem(int customerQuestId)

@@ -11,4 +11,5 @@ public class CustomerTaskResponseModel
     public int CountWrongAnswer { get; set; }
     public int CountSuggestion { get; set; }
     public bool IsFinished { get; set; }
+    public string? CustomerEmail { get; set; }
 }

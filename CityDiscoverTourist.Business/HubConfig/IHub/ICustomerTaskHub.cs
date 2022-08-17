@@ -7,6 +7,6 @@ public interface ICustomerTaskHub
 {
     Task AddCustomerTask(CustomerTaskResponseModel customerTask);
     Task CustomerStartNextQuestItem(CustomerTaskResponseModel customerTask);
-    Task UpdateCustomerTask(CustomerTask customerTask);
+    Task UpdateCustomerTask(CustomerTaskResponseModel customerTask);
     Task CustomerAnswer(CustomerAnswerResponseModel customerAnswer);
 }
