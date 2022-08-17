@@ -134,4 +134,23 @@ public class DashboardService : BaseService, IDashboardService
 
         return list.ToArray();
     }
+
+    public QuestDashboard[] GetTopQuestByMonthInYear(int year = 2022)
+    {
+        var topQuests = _customerQuestRepository.GetAll().Where(x => x.CreatedDate!.Value.Year == year)
+            .GroupBy(x => x.QuestId).Select(x => new { QuestId = x.Key, TotalPlay = x.Count() }).OrderByDescending(x => x.TotalPlay).Take(10);
+        var list = new List<QuestDashboard>();
+        foreach (var quest in topQuests)
+        {
+            var questName = ConvertLanguage(Language.vi, _questRepository.Get(quest.QuestId).Result.Title!);
+            QuestDashboard quest1 = new QuestDashboard
+            {
+                name = questName,
+                count = quest.TotalPlay.ToString()
+            };
+            list.Add(quest1);
+        }
+
+        return list.ToArray();
+    }
 }

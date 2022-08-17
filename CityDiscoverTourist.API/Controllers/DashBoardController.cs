@@ -102,4 +102,15 @@ public class DashboardController : ControllerBase
     {
         return Task.FromResult(_dashBoardService.GetTopQuestByMonth(month, year));
     }
+
+    /// <summary>
+    ///
+    /// </summary>
+    /// <param name="year"></param>
+    /// <returns></returns>
+    [HttpGet("top-quest-by-year")]
+    public Task<QuestDashboard[]> GetTopPlayQuestByYear(int year = 2022)
+    {
+        return Task.FromResult(_dashBoardService.GetTopQuestByMonthInYear(year));
+    }
 }
