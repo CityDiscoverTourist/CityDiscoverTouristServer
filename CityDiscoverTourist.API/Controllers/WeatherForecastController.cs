@@ -128,7 +128,7 @@ public class WeatherForecastController : ControllerBase
     [HttpPost("demo2")]
     public Task<long> Demo2([FromForm] List<IFormFile> file)
     {
-        var stream = new MemoryStream();
+        /*var stream = new MemoryStream();
         using var ms = stream;
         QRCodeGenerator qRCodeGenerator = new();
         var data = qRCodeGenerator.CreateQrCode("input", QRCodeGenerator.ECCLevel.Q);
@@ -145,7 +145,7 @@ public class WeatherForecastController : ControllerBase
                       "</p>" + "<p>Your order total amount is: " +  "</p>" +
                       "<img width='200px' src=\"data:image/png;base64, " + base64String + "\" />";
 
-        _emailSender.SendMailConfirmAsync("datlqse140263@fpt.edu.vn", "ok", message);
+        _emailSender.SendMailConfirmAsync("datlqse140263@fpt.edu.vn", "ok", message);*/
         return _imageComparison.CompareImages(110, file);
     }
 

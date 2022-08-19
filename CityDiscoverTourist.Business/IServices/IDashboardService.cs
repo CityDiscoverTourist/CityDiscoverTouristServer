@@ -12,6 +12,6 @@ public interface IDashboardService
     public int TotalQuest();
     public string[] GetTopQuests();
     public QuestDashboard[] GetTopQuestByMonth(int month, int year);
-    public QuestDashboard[] GetTopQuestByMonthInYear(int year = 2022);
+    public Task<QuestDashboard[]> GetTopQuestByMonthInYear(int year = 2022);
 
 }

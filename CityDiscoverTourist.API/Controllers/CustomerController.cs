@@ -35,9 +35,9 @@ public class CustomerController : ControllerBase
     /// <returns></returns>
     [HttpGet]
     //[Cached(600)]
-    public ApiResponse<PageList<CustomerResponseModel>> GetAll([FromQuery] CustomerParams param)
+    public async Task<ApiResponse<PageList<CustomerResponseModel>>> GetAll([FromQuery] CustomerParams param)
     {
-        var entity = _customerService.GetAll(param);
+        var entity = await _customerService.GetAll(param);
 
         var metadata = new
         {

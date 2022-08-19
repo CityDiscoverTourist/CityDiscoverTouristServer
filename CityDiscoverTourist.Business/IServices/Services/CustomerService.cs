@@ -1,6 +1,7 @@
 using AutoMapper;
 using CityDiscoverTourist.Business.Data.RequestModel;
 using CityDiscoverTourist.Business.Data.ResponseModel;
+using CityDiscoverTourist.Business.Enums;
 using CityDiscoverTourist.Business.Exceptions;
 using CityDiscoverTourist.Business.Helper;
 using CityDiscoverTourist.Business.Helper.Params;
@@ -22,9 +23,9 @@ public class CustomerService : BaseService, ICustomerService
         _blobService = blobService;
     }
 
-    public PageList<CustomerResponseModel> GetAll(CustomerParams @params)
+    public Task<PageList<CustomerResponseModel>> GetAll(CustomerParams @params)
     {
-        var customers = _userManager.Users!.AsQueryable();
+        var customers =  _userManager.GetUsersInRoleAsync(Role.Customer.ToString()).Result.AsQueryable();
 
         Search(ref customers, @params);
 
@@ -36,7 +37,7 @@ public class CustomerService : BaseService, ICustomerService
         {
             customer.PasswordHash = null;
         }
-        return PageList<CustomerResponseModel>.ToPageList(customerResponseModels, @params.PageNumber, @params.PageSize);
+        return Task.FromResult(PageList<CustomerResponseModel>.ToPageList(customerResponseModels, @params.PageNumber, @params.PageSize));
     }
 
     public async Task<CustomerResponseModel> Get(string id)

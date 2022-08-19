@@ -84,13 +84,6 @@ public class DashboardService : BaseService, IDashboardService
         return revenues;
     }
 
-    public float GetRevenueByMonth(int month)
-    {
-        var payments = _paymentRepository.GetAll().Where(x => x.Status == PaymentStatus.Success.ToString()).ToList();
-        var paymentsByMonth = payments.Where(payment => payment.CreatedDate.Month == month).ToList();
-        return paymentsByMonth.Sum(payment => payment.TotalAmount);
-    }
-
     public int TotalAccount()
     {
         return _userManager.Users.Count();
@@ -135,22 +128,28 @@ public class DashboardService : BaseService, IDashboardService
         return list.ToArray();
     }
 
-    public QuestDashboard[] GetTopQuestByMonthInYear(int year = 2022)
+    public async Task<QuestDashboard[]> GetTopQuestByMonthInYear(int year = 2022)
     {
-        var topQuests = _customerQuestRepository.GetAll().Where(x => x.CreatedDate!.Value.Year == year)
-            .GroupBy(x => x.QuestId).Select(x => new { QuestId = x.Key, TotalPlay = x.Count() }).OrderByDescending(x => x.TotalPlay).Take(10);
+        var topQuestsByMonth = _customerQuestRepository.GetAll().Where(x => x.CreatedDate!.Value.Year == year).ToList();
         var list = new List<QuestDashboard>();
-        foreach (var quest in topQuests)
-        {
-            var questName = ConvertLanguage(Language.vi, _questRepository.Get(quest.QuestId).Result.Title!);
-            QuestDashboard quest1 = new QuestDashboard
-            {
-                name = questName,
-                count = quest.TotalPlay.ToString()
-            };
-            list.Add(quest1);
-        }
 
-        return list.ToArray();
+        for (var i = 1; i <= 12; i++)
+        {
+            var customerQuest = topQuestsByMonth.Where(x => x.CreatedDate!.Value.Month == i).ToList();
+            foreach (var item in customerQuest)
+            {
+                var quest = await _questRepository.Get(item.QuestId);
+
+                QuestDashboard quest1 = new QuestDashboard
+                {
+                    name = ConvertLanguage(Language.vi, quest.Title!),
+                    count = customerQuest.Where(x => x.QuestId == item.QuestId).Count(x => x.CreatedDate!.Value.Month == i).ToString()
+                };
+                list.Add(quest1);
+            }
+        }
+        // replace duplicate quest name
+        var listDistinct = list.GroupBy(x => x.name).Select(x => new { name = x.Key, count = x.Count() }).OrderByDescending(x => x.count).ToList();
+        return listDistinct.Select(x => new QuestDashboard { name = x.name, count = x.count.ToString() }).ToArray();
     }
 }
