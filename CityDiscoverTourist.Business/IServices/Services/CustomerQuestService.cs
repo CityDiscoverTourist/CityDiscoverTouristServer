@@ -281,7 +281,7 @@ public class CustomerQuestService : BaseService, ICustomerQuestService
 
         var mappedData = _mapper.Map<IEnumerable<CommentResponseModel>>(comments);
 
-        var commentResponseModels = mappedData.ToList();
+        var commentResponseModels = mappedData.ToList().OrderByDescending(x => x.CreatedDate);
         foreach (var comment in commentResponseModels)
         {
             var customerName = _userManager!.FindByIdAsync(comment.CustomerId).Result.UserName;
@@ -292,7 +292,7 @@ public class CustomerQuestService : BaseService, ICustomerQuestService
         }
 
         return Task.FromResult(
-            PageList<CommentResponseModel>.ToPageList(commentResponseModels, param.PageNumber, param.PageSize));
+            PageList<CommentResponseModel>.ToPageList(commentResponseModels.DistinctBy(x => x.CustomerId), param.PageNumber, param.PageSize));
     }
 
     public async Task<List<CommentResponseModel>> UpdateComment(int customerQuestId, CommentRequestModel request)
