@@ -24,9 +24,9 @@ public class AuthService : BaseService, IAuthService
     private static  IConfiguration? _configuration;
     private readonly IEmailSender _emailSender;
     private  readonly RoleManager<IdentityRole> _roleManager;
-    private readonly UserManager<ApplicationUser> _userManager;
+    private readonly UserManager<ApplicationUser?> _userManager;
 
-    public AuthService(UserManager<ApplicationUser> userManager, IConfiguration? configuration,
+    public AuthService(UserManager<ApplicationUser?> userManager, IConfiguration? configuration,
         RoleManager<IdentityRole> roleManager, IEmailSender emailSender)
     {
         _userManager = userManager;
@@ -39,17 +39,16 @@ public class AuthService : BaseService, IAuthService
     {
         await CreateRole();
         var userViewModel = await VerifyFirebaseToken(model.TokenId);
-        var user = await _userManager.FindByNameAsync(userViewModel.Email);
+
+        var user = await _userManager.FindByNameAsync(userViewModel.Email) ?? await CreateUserIfNotExits(userViewModel);
 
         // check if user is customer
         if (!await _userManager.IsInRoleAsync(user, Role.Customer.ToString()))
             throw new UnauthorizedAccessException("Account not allowed to login");
 
-        if (await CreateUserIfNotExits(user, userViewModel)) return null!;
-
         if (user is {LockoutEnabled: false }) throw new AppException("User is locked");
 
-        user.DeviceId = model.DeviceId;
+        user!.DeviceId = model.DeviceId;
         await _userManager.UpdateAsync(user);
 
         var authClaims = new List<Claim>
@@ -204,7 +203,7 @@ public class AuthService : BaseService, IAuthService
         var urlEncode = HttpUtility.UrlEncode(token);
 
         var confirmationLink =
-            $"{_configuration!["AppUrl"]}/api/v1/auths/confirm-email?userId={user.Id}&token={urlEncode}";
+            $"{_configuration!["AppUrl"]}/api/v1/auths/confirm-email?userId={user!.Id}&token={urlEncode}";
 
         var message = "<h1>Welcome to City Discover Tourist</h1> <br/>" +
                       $"<p>Please confirm your account by clicking <a href='{confirmationLink}'>here</a></p>";
@@ -324,10 +323,11 @@ public class AuthService : BaseService, IAuthService
         return password;
     }
 
-    private async Task<bool> CreateUserIfNotExits(ApplicationUser user, LoginResponseModel userViewModel)
+    private async Task<ApplicationUser?> CreateUserIfNotExits(LoginResponseModel userViewModel)
     {
         // ReSharper disable once ConditionIsAlwaysTrueOrFalse
-        if (user != null) return false;
+        ApplicationUser? user = null;
+        if (user != null) return null;
         user = new ApplicationUser
         {
             UserName = userViewModel.Email,
@@ -348,7 +348,7 @@ public class AuthService : BaseService, IAuthService
 
         await _userManager.AddLoginAsync(user, loginInfo);
 
-        return !result.Succeeded;
+        return result.Succeeded ? user : null;
     }
 
     private static async Task<LoginResponseModel> VerifyFirebaseToken(string? token)

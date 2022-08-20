@@ -64,13 +64,11 @@ public class FacebookService : BaseService, IFacebookService
         if (string.IsNullOrEmpty(token)) throw new KeyNotFoundException("Token is null");
 
         var facebookUser = await GetUserFromFacebookAsync(token);
-        var userDb = await _userManager.FindByEmailAsync(facebookUser.Email);
+        var userDb = await _userManager.FindByEmailAsync(facebookUser.Email) ?? await CreateUserIfNotExits(facebookUser);
 
         // check if user is customer
         if (!await _userManager.IsInRoleAsync(userDb, Role.Customer.ToString()))
             throw new UnauthorizedAccessException("Account not allowed to login");
-
-        if (await CreateUserIfNotExits(userDb, facebookUser)) return null!;
 
         if (userDb is {LockoutEnabled: false }) throw new AppException("User is locked");
 
@@ -103,10 +101,12 @@ public class FacebookService : BaseService, IFacebookService
         };
     }
 
-    private async Task<bool> CreateUserIfNotExits(ApplicationUser user, FacebookResponseModel facebookUser)
+    private async Task<ApplicationUser?> CreateUserIfNotExits(FacebookResponseModel facebookUser)
     {
         // ReSharper disable once ConditionIsAlwaysTrueOrFalse
-        if (user != null) return false;
+        ApplicationUser? user = null;
+        if (user != null) return null;
+
         user = new ApplicationUser
         {
             UserName = facebookUser.Email,
@@ -126,6 +126,6 @@ public class FacebookService : BaseService, IFacebookService
 
         await _userManager.AddLoginAsync(user, loginInfo);
 
-        return !result.Succeeded;
+        return result.Succeeded ? user : null;
     }
 }
