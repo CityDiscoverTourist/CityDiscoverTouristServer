@@ -127,7 +127,9 @@ public class CustomerQuestService : BaseService, ICustomerQuestService
 
     public async Task<List<CustomerQuestResponseModel>> GetByCustomerId(string id, Language language = Language.vi)
     {
-        var entity = _customerQuestRepository.GetByCondition(x => x.CustomerId == id).ToList();
+        var entity = _customerQuestRepository.GetByCondition(x => x.CustomerId == id)
+            .OrderByDescending(x => x.CreatedDate).ToList();
+
         CheckDataNotNull("CustomerQuest", entity);
         var mappedData = _mapper.Map<IEnumerable<CustomerQuestResponseModel>>(entity);
 
