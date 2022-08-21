@@ -82,14 +82,13 @@ public class ImageComparison : IImageComparison
                 var vectorOfKeypointsOfScene = new VectorOfKeyPoint();
                 var descriptorsOfScene = new Mat();
 
-
                 sift.DetectAndCompute(image, null, vectorOfKeypointsOfScene, descriptorsOfScene, false);
 
                 var vectorOfMatches = new VectorOfVectorOfDMatch();
 
                 bfMatcher.KnnMatch(descriptorsOfScene, originalDescriptor, vectorOfMatches, 2);
 
-                //every matches alogirthm found
+                //every matches algorithm found
                 var matches = vectorOfMatches.ToArrayOfArray();
 
                 //matches with distance less than 0.75
@@ -102,7 +101,6 @@ public class ImageComparison : IImageComparison
                 if (numberOfGoodMatches > mostMatches) mostMatches = numberOfGoodMatches;
             }
         }
-
         return mostMatches;
     }
 

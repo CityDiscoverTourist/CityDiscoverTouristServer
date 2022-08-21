@@ -17,14 +17,15 @@ public class RewardService : BaseService, IRewardService
     private readonly IRewardRepository  _rewardRepository;
     private readonly ISortHelper<Reward> _sortHelper;
     private static UserManager<ApplicationUser>? _userManager;
+    private readonly INotificationService _notificationService;
 
-
-    public RewardService(IRewardRepository rewardRepository, IMapper mapper, ISortHelper<Reward> sortHelper, UserManager<ApplicationUser>? userManager)
+    public RewardService(IRewardRepository rewardRepository, IMapper mapper, ISortHelper<Reward> sortHelper, UserManager<ApplicationUser>? userManager, INotificationService notificationService)
     {
         _rewardRepository = rewardRepository;
         _mapper = mapper;
         _sortHelper = sortHelper;
         _userManager = userManager;
+        _notificationService = notificationService;
     }
 
     public PageList<RewardResponseModel> GetAll(RewardParams @params)
@@ -90,6 +91,32 @@ public class RewardService : BaseService, IRewardService
     {
         var entity = await _rewardRepository.Delete(id);
         return _mapper.Map<RewardResponseModel>(entity);
+    }
+
+    public Task PushNotification()
+    {
+        var users = _userManager!.Users;
+        foreach (var user in users)
+        {
+            var reward = _rewardRepository.GetByCondition(x => x.Status == CommonStatus.Active.ToString())
+                .Where(x => x.CustomerId == user.Id);
+
+            foreach (var item in reward)
+            {
+                // send notification to user when reward has 1 day left to expire
+                if (item.ExpiredDate!.Value.Date == CurrentDateTime().Date.AddDays(1))
+                {
+                    _notificationService.SendNotification(new NotificationRequestModel
+                    {
+                        DeviceId = user.DeviceId,
+                        IsAndroidDevice = true,
+                        Title = "Your reward has 1 day left to expire",
+                        Body = "Your reward has 1 day left to expire, come back app and use it"
+                    });
+                }
+            }
+        }
+        return Task.CompletedTask;
     }
 
     private static void Search(ref IQueryable<Reward> entities, RewardParams param)

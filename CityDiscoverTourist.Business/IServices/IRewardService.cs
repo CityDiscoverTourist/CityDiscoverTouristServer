@@ -13,4 +13,5 @@ public interface IRewardService
     public Task<RewardResponseModel> CreateAsync(RewardRequestModel request);
     public Task<RewardResponseModel> InvalidReward();
     public Task<RewardResponseModel> DeleteAsync(int id);
+    public Task PushNotification();
 }

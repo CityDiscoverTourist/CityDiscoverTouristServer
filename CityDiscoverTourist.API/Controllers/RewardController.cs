@@ -106,6 +106,19 @@ public class RewardController : ControllerBase
     }
 
     /// <summary>
+    ///
+    /// </summary>
+    /// <returns></returns>
+    [HttpPost("notification")]
+    [Authorize(Roles = "Admin")]
+    public Task Notification()
+    {
+        _recurringJobManager.AddOrUpdate("Reward", () => _rewardService.PushNotification(), "0 0 * * *",
+            TimeZoneInfo.FindSystemTimeZoneById("SE Asia Standard Time"));
+        return Task.CompletedTask;
+    }
+
+    /// <summary>
     /// </summary>
     /// <returns></returns>
     [HttpPut]
