@@ -94,16 +94,21 @@ public class DashboardService : BaseService, IDashboardService
         return _questRepository.GetAll().Count();
     }
 
-    public string[] GetTopQuests()
+    public QuestDashboard[] GetTopQuests(int year)
     {
         // get top quest play most
-        var topQuests = _customerQuestRepository.GetAll().GroupBy(x => x.QuestId)
-            .Select(x => new { QuestId = x.Key, TotalPlay = x.Count() }).OrderByDescending(x => x.TotalPlay).Take(10);
-        var list = new List<string>();
+        var topQuests = _customerQuestRepository.GetAll().Where(x => x.CreatedDate!.Value.Year == year)
+            .GroupBy(x => x.QuestId).Select(x => new { QuestId = x.Key, TotalPlay = x.Count() }).OrderByDescending(x => x.TotalPlay).Take(10);
+        var list = new List<QuestDashboard>();
         foreach (var quest in topQuests)
         {
             var questName = ConvertLanguage(Language.vi, _questRepository.Get(quest.QuestId).Result.Title!);
-            list.Add(questName);
+            QuestDashboard quest1 = new QuestDashboard
+            {
+                name = questName,
+                count = quest.TotalPlay.ToString()
+            };
+            list.Add(quest1);
         }
 
         return list.ToArray();
@@ -111,6 +116,8 @@ public class DashboardService : BaseService, IDashboardService
 
     public QuestDashboard[] GetTopQuestByMonth(int month, int year)
     {
+        if(month == 0) return GetTopQuests(year);
+
         var topQuests = _customerQuestRepository.GetAll().Where(x => x.CreatedDate!.Value.Month == month && x.CreatedDate.Value.Year == year)
             .GroupBy(x => x.QuestId).Select(x => new { QuestId = x.Key, TotalPlay = x.Count() }).OrderByDescending(x => x.TotalPlay).Take(10);
         var list = new List<QuestDashboard>();

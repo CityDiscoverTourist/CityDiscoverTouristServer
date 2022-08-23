@@ -10,8 +10,8 @@ public interface IDashboardService
     public float[] GetRevenueByAllMonth(int year);
     public int TotalAccount();
     public int TotalQuest();
-    public string[] GetTopQuests();
-    public QuestDashboard[] GetTopQuestByMonth(int month, int year);
+    public QuestDashboard[] GetTopQuests(int year);
+    public QuestDashboard[] GetTopQuestByMonth(int month, int year = 2022);
     public Task<QuestDashboard[]> GetTopQuestByMonthInYear(int year = 2022);
 
 }
