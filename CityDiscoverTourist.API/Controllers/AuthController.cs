@@ -1,5 +1,6 @@
 using CityDiscoverTourist.Business.Data.RequestModel;
 using CityDiscoverTourist.Business.Data.ResponseModel;
+using CityDiscoverTourist.Business.Enums;
 using CityDiscoverTourist.Business.IServices;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -75,12 +76,14 @@ public class AuthController : ControllerBase
     ///  register for admin
     /// </summary>
     /// <param name="model"></param>
+    /// <param name="role"></param>
     /// <returns></returns>
     [HttpPost("register-admin")]
     [Authorize(Roles = "Admin")]
-    public async Task<ActionResult> RegisterAdmin(LoginRequestModel model)
+    //[AllowAnonymous]
+    public async Task<ActionResult> RegisterAdmin(LoginRequestModel model, Role role)
     {
-        return Ok(await _authService.RegisterAdmin(model));
+        return Ok(await _authService.RegisterAdmin(model, role));
     }
 
     /// <summary>

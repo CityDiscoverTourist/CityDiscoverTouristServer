@@ -129,17 +129,36 @@ public class AuthService : BaseService, IAuthService
             throw new UnauthorizedAccessException("Invalid credentials");
 
         // check if user is admin
-        if (!await _userManager.IsInRoleAsync(user, Role.Admin.ToString()))
+        var isAdmin = await _userManager.IsInRoleAsync(user, Role.Admin.ToString());
+        var isQuestOwner = await _userManager.IsInRoleAsync(user, Role.QuestOwner.ToString());
+
+        if (!isAdmin && !isQuestOwner)
             throw new UnauthorizedAccessException("Account not allowed to login");
 
-        var authClaims = new List<Claim>
+        var authClaims = new List<Claim>();
+
+        if (isAdmin)
         {
-            new (ClaimTypes.Name, user.Email ?? string.Empty),
-            new (JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-            new (ClaimTypes.Email, user.Email ?? string.Empty),
-            new (ClaimTypes.Role, Role.Admin.ToString()),
-            new Claim (ClaimTypes.Expiration, CurrentDateTime().AddHours(3).ToString(CultureInfo.CurrentCulture))
-        };
+            authClaims = new List<Claim>
+            {
+                new (ClaimTypes.Name, user.Email ?? string.Empty),
+                new (JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+                new (ClaimTypes.Email, user.Email ?? string.Empty),
+                new (ClaimTypes.Role, Role.Admin.ToString()),
+                new  (ClaimTypes.Expiration, CurrentDateTime().AddHours(3).ToString(CultureInfo.CurrentCulture))
+            };
+        }
+        else if (isQuestOwner)
+        {
+            authClaims = new List<Claim>
+            {
+                new (ClaimTypes.Name, user.Email ?? string.Empty),
+                new (JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+                new (ClaimTypes.Email, user.Email ?? string.Empty),
+                new (ClaimTypes.Role, Role.QuestOwner.ToString()),
+                new  (ClaimTypes.Expiration, CurrentDateTime().AddHours(3).ToString(CultureInfo.CurrentCulture))
+            };
+        }
 
         var accessToken = GetJwtToken(authClaims);
 
@@ -206,7 +225,7 @@ public class AuthService : BaseService, IAuthService
             $"{_configuration!["AppUrl"]}/api/v1/auths/confirm-email?userId={user!.Id}&token={urlEncode}";
 
         var message = "<h1>Welcome to City Discover Tourist</h1> <br/>" +
-                      $"<p>Please confirm your account by clicking <a href='{confirmationLink}'>here</a></p>";
+                      $"<p>Please confirm your account by clicking <a href='{confirmationLink}'>Here</a></p>";
 
         BackgroundJob.Enqueue(() => _emailSender.SendMailConfirmAsync(user.Email!, "Confirm your account", message));
 
@@ -214,10 +233,11 @@ public class AuthService : BaseService, IAuthService
         await _userManager.UpdateAsync(user);
     }
 
-    public async Task<bool> RegisterAdmin(LoginRequestModel model)
+    public async Task<bool> RegisterAdmin(LoginRequestModel model, Role role)
     {
+        await CreateRole();
         var user = await _userManager.FindByEmailAsync(model.Email);
-        if (user is { }) throw new AppException("Admin already exists");
+        if (user is { }) throw new AppException("Account already exists");
 
         user = new ApplicationUser
         {
@@ -229,7 +249,7 @@ public class AuthService : BaseService, IAuthService
         var result = await _userManager.CreateAsync(user, model.Password);
         if (!result.Succeeded) throw new AppException(result.Errors.First().Description);
 
-        await _userManager.AddToRoleAsync(user, Role.Admin.ToString());
+        await _userManager.AddToRoleAsync(user, role.ToString());
 
         // send mail to user with confirmation link to activate account
         var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
@@ -242,9 +262,9 @@ public class AuthService : BaseService, IAuthService
         //create html message template for em
         var message = "<h1>Welcome to City Discover Tourist - Administration</h1> <br/>" +
                       $"<p>Please confirm your account by clicking <a href='{confirmationLink}'>here</a></p>"
-                      + "<p>thank you for joining us</p>";
+                      + "<p>Thank you for joining us</p>";
 
-        BackgroundJob.Enqueue(() => _emailSender.SendMailConfirmAsync(user.Email!, "Confirm your account admin", message));
+        BackgroundJob.Enqueue(() => _emailSender.SendMailConfirmAsync(user.Email!, "Confirm your account", message));
 
         user.ConfirmToken = token;
         await _userManager.UpdateAsync(user);
@@ -291,10 +311,11 @@ public class AuthService : BaseService, IAuthService
 
     public async Task CreateRole()
     {
-        if (!_roleManager.RoleExistsAsync(Role.Admin.ToString()).GetAwaiter().GetResult())
+        if (!_roleManager.RoleExistsAsync(Role.QuestOwner.ToString()).GetAwaiter().GetResult())
         {
             await _roleManager.CreateAsync(new IdentityRole(Role.Admin.ToString()));
             await _roleManager.CreateAsync(new IdentityRole(Role.Customer.ToString()));
+            await _roleManager.CreateAsync(new IdentityRole(Role.QuestOwner.ToString()));
         }
     }
 
