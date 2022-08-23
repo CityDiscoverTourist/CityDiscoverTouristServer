@@ -12,4 +12,6 @@ public class CustomerTaskResponseModel
     public int CountSuggestion { get; set; }
     public bool IsFinished { get; set; }
     public string? CustomerEmail { get; set; }
+    public string? QuestName { get; set; }
+    public string? ImagePath { get; set; }
 }

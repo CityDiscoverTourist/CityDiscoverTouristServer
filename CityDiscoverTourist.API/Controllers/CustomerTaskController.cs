@@ -17,7 +17,7 @@ namespace CityDiscoverTourist.API.Controllers;
 [Route("api/v{version:apiVersion}/[controller]s")]
 [ApiVersion("1.0")]
 [ApiController]
-//[Authorize]
+[Authorize]
 public class CustomerTaskController : ControllerBase
 {
     private readonly ICustomerTaskService _customerTaskService;
@@ -228,6 +228,20 @@ public class CustomerTaskController : ControllerBase
     public async Task<ActionResult<ApiResponse<CustomerTaskResponseModel>>> Delete(int id)
     {
         var entity = await _customerTaskService.DeleteAsync(id);
+        return ApiResponse<CustomerTaskResponseModel>.Ok(entity);
+    }
+
+    /// <summary>
+    ///
+    /// </summary>
+    /// <param name="customerQuestId"></param>
+    /// <param name="language"></param>
+    /// <returns></returns>
+    [HttpGet("summary")]
+    public async Task<ApiResponse<CustomerTaskResponseModel>> Summary(int customerQuestId,
+        Language language = Language.vi)
+    {
+        var entity = await _customerTaskService.Summary(customerQuestId, language);
         return ApiResponse<CustomerTaskResponseModel>.Ok(entity);
     }
 }

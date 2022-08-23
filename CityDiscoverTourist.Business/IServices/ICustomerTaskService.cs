@@ -18,6 +18,7 @@ public interface ICustomerTaskService
     public Task<CustomerTaskResponseModel> CustomerStartQuest(CustomerTaskRequestModel request, int questId);
     public Task<int> MoveCustomerToNextTask(int questId, int customerQuestId);
     public Task<CustomerTaskResponseModel> DeleteAsync(int id);
+    public Task<CustomerTaskResponseModel> Summary(int customerQuestId, Language language = Language.vi);
     public string GetBeginPointsAsync(int customerQuestId);
     public Task<CustomerTaskResponseModel> DecreasePointWhenHitSuggestion(int customerQuestId);
     public Task<CustomerTaskResponseModel> CheckCustomerAnswer(int customerQuestId, string customerReply,

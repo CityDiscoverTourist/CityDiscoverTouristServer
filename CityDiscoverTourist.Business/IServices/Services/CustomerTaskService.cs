@@ -37,13 +37,14 @@ public class CustomerTaskService : BaseService, ICustomerTaskService
     private readonly ISuggestionRepository _suggestionRepo;
     private readonly ICustomerAnswerRepository _customerAnswerRepo;
     private readonly UserManager<ApplicationUser> _userManager;
+    private readonly IQuestRepository _questRepo;
 
     public CustomerTaskService(ICustomerTaskRepository customerTaskRepository, IMapper mapper,
         ISortHelper<CustomerTask> sortHelper, ICustomerQuestRepository customerQuestRepo,
         IQuestItemRepository questItemRepo, GoongApiSetting? googleApiSettings,
         ICustomerAnswerService customerAnswerService, ILocationRepository locationRepo,
         ISuggestionRepository suggestionRepo, IHubContext<CustomerTaskHub, ICustomerTaskHub> hubContext,
-        IImageComparison imageComparison, ICustomerAnswerRepository customerAnswerRepo, UserManager<ApplicationUser> userManager)
+        IImageComparison imageComparison, ICustomerAnswerRepository customerAnswerRepo, UserManager<ApplicationUser> userManager, IQuestRepository questRepo)
     {
         _customerTaskRepo = customerTaskRepository;
         _mapper = mapper;
@@ -58,6 +59,7 @@ public class CustomerTaskService : BaseService, ICustomerTaskService
         _imageComparison = imageComparison;
         _customerAnswerRepo = customerAnswerRepo;
         _userManager = userManager;
+        _questRepo = questRepo;
     }
 
     public Task<PageList<CustomerTaskResponseModel>> GetAll(CustomerTaskParams @params)
@@ -195,6 +197,24 @@ public class CustomerTaskService : BaseService, ICustomerTaskService
     {
         var entity = await _customerTaskRepo.Delete(id);
         return _mapper.Map<CustomerTaskResponseModel>(entity);
+    }
+
+    public async Task<CustomerTaskResponseModel> Summary(int customerQuestId, Language language = Language.vi)
+    {
+        var entity = _customerTaskRepo.GetByCondition(x => x.CustomerQuestId == customerQuestId)
+            .OrderBy(x => x.CreatedDate).LastOrDefault();
+
+        CheckDataNotNull("CustomerTask", entity!);
+
+        var questId = _questItemRepo.Get(entity.QuestItemId).Result.QuestId;
+        var quest = await _questRepo.Get(questId);
+
+        var mappedData = _mapper.Map<CustomerTaskResponseModel>(entity);
+
+        mappedData.ImagePath = quest.ImagePath;
+        mappedData.QuestName = ConvertLanguage(language, quest.Title!);
+
+        return mappedData;
     }
 
     public string GetBeginPointsAsync(int customerQuestId)
