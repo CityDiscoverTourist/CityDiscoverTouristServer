@@ -91,7 +91,6 @@ public class QuestController : ControllerBase
     ///     create a new quest
     /// </summary>
     /// <param name="data"></param>
-    /// <param name="userId"></param>
     /// <returns></returns>
     [HttpPost]
     [Authorize(Roles = "Admin")]

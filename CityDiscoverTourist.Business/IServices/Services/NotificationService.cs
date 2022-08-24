@@ -102,7 +102,7 @@ public class NotificationService : BaseService, INotificationService
     {
         var notifyUser = _notifyUserRepository.GetByCondition(x => x.UserId == userId).Where(x => x.HasRead == false);
         foreach (var item in notifyUser)
-        {
+        {   
             item.HasRead = true;
             await _notifyUserRepository.Update(item);
         }

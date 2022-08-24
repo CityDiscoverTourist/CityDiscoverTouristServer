@@ -7,6 +7,7 @@ using CityDiscoverTourist.Business.Helper;
 using CityDiscoverTourist.Business.Helper.Params;
 using CityDiscoverTourist.Data.IRepositories;
 using CityDiscoverTourist.Data.Models;
+using Hangfire;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json.Linq;
 
@@ -23,10 +24,11 @@ public class QuestService : BaseService, IQuestService
     private readonly ISortHelper<Quest> _sortHelper;
     private readonly INotificationService _notificationService;
     private readonly IAreaRepository _areaRepository;
+    private readonly IUserSubscribedService _userSubscribed;
 
     public QuestService(IQuestRepository questRepository, ISortHelper<Quest> sortHelper, IMapper mapper,
         IBlobService blobService, ILocationRepository locationRepository, IQuestItemRepository questItemRepository,
-        ICustomerQuestRepository customerQuestRepository, INotificationService notificationService, IAreaRepository areaRepository)
+        ICustomerQuestRepository customerQuestRepository, INotificationService notificationService, IAreaRepository areaRepository, IUserSubscribedService userSubscribed)
     {
         _questRepository = questRepository;
         _sortHelper = sortHelper;
@@ -37,6 +39,7 @@ public class QuestService : BaseService, IQuestService
         _customerQuestRepository = customerQuestRepository;
         _notificationService = notificationService;
         _areaRepository = areaRepository;
+        _userSubscribed = userSubscribed;
     }
 
 
@@ -217,14 +220,8 @@ public class QuestService : BaseService, IQuestService
 
         entity = await _questRepository.Add(entity);
 
-        //create notification for quest created and push to hub
-        /*await _notificationService.CreateAsync(new Notification
-        {
-            Content = "New quest " + ConvertLanguage(Language.vi, entity.Title!) + " has been created",
-            CreatedDate = CurrentDateTime(),
-            QuestId = entity.Id,
-            //UserId = userId ?? "f44ff231-e410-4396-a8d3-11fe6a4cfc73",
-        });*/
+        BackgroundJob.Enqueue(() => _userSubscribed.SendMailToSubscriber(ConvertLanguage(Language.vi, entity.Title!)));
+
         await _notificationService.CreateAsync(new NotifyUserRequestModel
         {
             Content = "New quest " + ConvertLanguage(Language.vi, entity.Title!) + " has been created",
