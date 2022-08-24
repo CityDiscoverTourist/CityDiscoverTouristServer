@@ -1,4 +1,4 @@
-using System.Linq.Dynamic.Core;
+using System.Globalization;
 using CityDiscoverTourist.Business.Enums;
 using CityDiscoverTourist.Data.IRepositories;
 using CityDiscoverTourist.Data.Models;
@@ -24,14 +24,14 @@ public class DashboardService : BaseService, IDashboardService
 
    public class Player
     {
-        public string email { get; set; }
-        public string point { get; set; }
+        public string Email { get; set; }
+        public string Point { get; set; }
     }
 
     public class QuestDashboard
     {
-        public string name { get; set; }
-        public string count { get; set; }
+        public string Name { get; set; }
+        public string Count { get; set; }
     }
 
     public Player[] GetTopCustomer()
@@ -48,8 +48,8 @@ public class DashboardService : BaseService, IDashboardService
             {
                 Player player = new Player
                 {
-                    email = user.UserName!,
-                    point = customer.TotalAmount.ToString()!
+                    Email = user.UserName!,
+                    Point = customer.TotalAmount.ToString(CultureInfo.InvariantCulture)
                 };
                 list.Add(player);
             }
@@ -98,7 +98,7 @@ public class DashboardService : BaseService, IDashboardService
     public QuestDashboard[] GetTopQuests(int year)
     {
         // get top quest play most
-        var topQuests = _paymentRepository.GetAll().Where(x => x.CreatedDate!.Year == year)
+        var topQuests = _paymentRepository.GetAll().Where(x => x.CreatedDate.Year == year)
             .GroupBy(x => x.QuestId).Select(x => new { QuestId = x.Key, TotalPlay = x.Count() }).OrderByDescending(x => x.TotalPlay).Take(10);
         var list = new List<QuestDashboard>();
         foreach (var quest in topQuests)
@@ -106,8 +106,8 @@ public class DashboardService : BaseService, IDashboardService
             var questName = ConvertLanguage(Language.vi, _questRepository.Get(quest.QuestId).Result.Title!);
             QuestDashboard quest1 = new QuestDashboard
             {
-                name = questName,
-                count = quest.TotalPlay.ToString()
+                Name = questName,
+                Count = quest.TotalPlay.ToString()
             };
             list.Add(quest1);
         }
@@ -120,7 +120,7 @@ public class DashboardService : BaseService, IDashboardService
         var payments = _paymentRepository.GetAll()
             .Where(x => x.Status == PaymentStatus.Success.ToString())
             .Where(x => x.CreatedDate.Month == month && x.CreatedDate.Year == year)
-            .GroupBy(x => x.QuestId).Select(x => new { Id = x.Key, Count = x.Sum(y => y.Quantity), QuestId = x.First().QuestId })
+            .GroupBy(x => x.QuestId).Select(x => new { Id = x.Key, Count = x.Sum(y => y.Quantity), x.First().QuestId })
             .OrderByDescending(x => x.Count).Take(10);
 
         var list = new List<QuestDashboard>();
@@ -129,8 +129,8 @@ public class DashboardService : BaseService, IDashboardService
             var questName = ConvertLanguage(Language.vi, _questRepository.Get(quest.QuestId).Result.Title!);
             QuestDashboard quest1 = new QuestDashboard
             {
-                name = questName,
-                count = quest.Count.ToString()
+                Name = questName,
+                Count = quest.Count.ToString()
             };
             list.Add(quest1);
         }
@@ -151,14 +151,14 @@ public class DashboardService : BaseService, IDashboardService
 
                 QuestDashboard quest1 = new QuestDashboard
                 {
-                    name = ConvertLanguage(Language.vi, quest.Title!),
-                    count = customerQuest.Where(x => x.QuestId == item.QuestId).Count(x => x.CreatedDate!.Value.Month == i).ToString()
+                    Name = ConvertLanguage(Language.vi, quest.Title!),
+                    Count = customerQuest.Where(x => x.QuestId == item.QuestId).Count(x => x.CreatedDate!.Value.Month == i).ToString()
                 };
                 list.Add(quest1);
             }
         }
         // replace duplicate quest name
-        var listDistinct = list.GroupBy(x => x.name).Select(x => new { name = x.Key, count = x.Count() }).OrderByDescending(x => x.count).ToList();
-        return listDistinct.Select(x => new QuestDashboard { name = x.name, count = x.count.ToString() }).ToArray();
+        var listDistinct = list.GroupBy(x => x.Name).Select(x => new { name = x.Key, count = x.Count() }).OrderByDescending(x => x.count).ToList();
+        return listDistinct.Select(x => new QuestDashboard { Name = x.name, Count = x.count.ToString() }).ToArray();
     }
 }
