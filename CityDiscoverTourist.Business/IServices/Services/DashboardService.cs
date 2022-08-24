@@ -1,3 +1,4 @@
+using System.Linq.Dynamic.Core;
 using CityDiscoverTourist.Business.Enums;
 using CityDiscoverTourist.Data.IRepositories;
 using CityDiscoverTourist.Data.Models;
@@ -97,7 +98,7 @@ public class DashboardService : BaseService, IDashboardService
     public QuestDashboard[] GetTopQuests(int year)
     {
         // get top quest play most
-        var topQuests = _customerQuestRepository.GetAll().Where(x => x.CreatedDate!.Value.Year == year)
+        var topQuests = _paymentRepository.GetAll().Where(x => x.CreatedDate!.Year == year)
             .GroupBy(x => x.QuestId).Select(x => new { QuestId = x.Key, TotalPlay = x.Count() }).OrderByDescending(x => x.TotalPlay).Take(10);
         var list = new List<QuestDashboard>();
         foreach (var quest in topQuests)
@@ -116,23 +117,24 @@ public class DashboardService : BaseService, IDashboardService
 
     public QuestDashboard[] GetTopQuestByMonth(int month, int year)
     {
-        if(month == 0) return GetTopQuests(year);
+        var payments = _paymentRepository.GetAll()
+            .Where(x => x.Status == PaymentStatus.Success.ToString())
+            .Where(x => x.CreatedDate.Month == month && x.CreatedDate.Year == year)
+            .GroupBy(x => x.QuestId).Select(x => new { Id = x.Key, Count = x.Sum(y => y.Quantity), QuestId = x.First().QuestId })
+            .OrderByDescending(x => x.Count).Take(10);
 
-        var topQuests = _customerQuestRepository.GetAll().Where(x => x.CreatedDate!.Value.Month == month && x.CreatedDate.Value.Year == year)
-            .GroupBy(x => x.QuestId).Select(x => new { QuestId = x.Key, TotalPlay = x.Count() }).OrderByDescending(x => x.TotalPlay).Take(10);
         var list = new List<QuestDashboard>();
-        foreach (var quest in topQuests)
+        foreach (var quest in payments)
         {
             var questName = ConvertLanguage(Language.vi, _questRepository.Get(quest.QuestId).Result.Title!);
             QuestDashboard quest1 = new QuestDashboard
             {
                 name = questName,
-                count = quest.TotalPlay.ToString()
+                count = quest.Count.ToString()
             };
             list.Add(quest1);
         }
-
-        return list.ToArray();
+        return  list.ToArray();
     }
 
     public async Task<QuestDashboard[]> GetTopQuestByMonthInYear(int year = 2022)
