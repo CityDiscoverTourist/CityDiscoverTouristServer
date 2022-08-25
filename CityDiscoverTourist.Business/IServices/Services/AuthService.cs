@@ -349,6 +349,7 @@ public class AuthService : BaseService, IAuthService
         // ReSharper disable once ConditionIsAlwaysTrueOrFalse
         ApplicationUser? user = null;
         if (user != null) return null;
+
         user = new ApplicationUser
         {
             UserName = userViewModel.Email,

@@ -13,7 +13,7 @@ namespace CityDiscoverTourist.Business.IServices.Services;
 
 public class FacebookService : BaseService, IFacebookService
 {
-    private const string FacebookUri = "https://graph.facebook.com/v2.8/";
+    private const string FacebookUri = "https://graph.facebook.com/v14.0/";
     private readonly IAuthService _authService;
 
     private readonly HttpClient _httpClient;
@@ -67,7 +67,7 @@ public class FacebookService : BaseService, IFacebookService
         var userDb = await _userManager.FindByEmailAsync(facebookUser.Email) ?? await CreateUserIfNotExits(facebookUser);
 
         // check if user is customer
-        if (!await _userManager.IsInRoleAsync(userDb, Role.Customer.ToString()))
+        if (!await _userManager.IsInRoleAsync(userDb!, Role.Customer.ToString()))
             throw new UnauthorizedAccessException("Account not allowed to login");
 
         if (userDb is {LockoutEnabled: false }) throw new AppException("User is locked");
@@ -114,8 +114,8 @@ public class FacebookService : BaseService, IFacebookService
             FullName = facebookUser.FullName,
             SecurityStamp = Guid.NewGuid().ToString(),
             EmailConfirmed = true,
-            NormalizedEmail = facebookUser.Email!.ToUpper(new CultureInfo("en-US", false)),
-            NormalizedUserName = facebookUser.FullName!.ToUpper(new CultureInfo("en-US", false)),
+            NormalizedEmail = facebookUser.Email!.ToUpper(),
+            NormalizedUserName = facebookUser.FullName!.ToUpper(),
             PhoneNumberConfirmed = false,
             ImagePath = facebookUser.ImagePath
         };
