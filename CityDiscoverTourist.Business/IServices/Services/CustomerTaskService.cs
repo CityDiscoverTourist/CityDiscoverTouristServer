@@ -265,6 +265,10 @@ public class CustomerTaskService : BaseService, ICustomerTaskService
 
         var questItem = await _questItemRepo.Get(customerTask!.QuestItemId);
 
+        // trick to set image url if null
+        if(questItem.QuestItemTypeId == 2) questItem.AnswerImageUrl ??= $"https://citytouriststorage.blob.core.windows.net/quest-item/${mappedData.QuestItemId}/";
+
+
         // if quest item is image compare
         if (questItem.AnswerImageUrl != null)
         {
