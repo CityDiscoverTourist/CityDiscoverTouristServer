@@ -8,6 +8,7 @@ using Emgu.CV.CvEnum;
 using Emgu.CV.Features2D;
 using Emgu.CV.Structure;
 using Emgu.CV.Util;
+using Hangfire;
 using Microsoft.AspNetCore.Mvc;
 using QRCoder;
 
@@ -25,13 +26,15 @@ public class WeatherForecastController : ControllerBase
     private readonly IBlobService   _blobService;
     private readonly IImageComparison _imageComparison;
     private readonly IEmailSender _emailSender;
+    private readonly IBackgroundJobClient _backgroundJobClient;
 
     public WeatherForecastController(IBlobService blobService,
-        IImageComparison imageComparison, IEmailSender emailSender)
+        IImageComparison imageComparison, IEmailSender emailSender, IBackgroundJobClient backgroundJobClient)
     {
         _blobService = blobService;
         _imageComparison = imageComparison;
         _emailSender = emailSender;
+        _backgroundJobClient = backgroundJobClient;
     }
 
     [HttpGet]
@@ -143,9 +146,9 @@ public class WeatherForecastController : ControllerBase
         var message = "<h1>Payment Success</h1>" + "<h3>Dear " +   "</h3>" + "<p>Your payment has been succeeded</p>" +
                       "<p>Your order is: " +  "</p>" + "<p>Your quest name is: " + "/ " + "</p>" + "<p>Quantity is: " +
                       "</p>" + "<p>Your order total amount is: " +  "</p>" +
-                      "<img width='200px' src=\"data:image/png;base64, " + base64String + "\" />";
+                      "<img width='200px' src=\"data:image/png;base64, " + base64String + "\" />";*/
 
-        _emailSender.SendMailConfirmAsync("datlqse140263@fpt.edu.vn", "ok", message);*/
+        _backgroundJobClient.Enqueue(() => _emailSender.SendMailConfirmAsync("dominhtuan23102000@gmail.com", "ok", "message"));
         return _imageComparison.CompareImages(110, file);
     }
 

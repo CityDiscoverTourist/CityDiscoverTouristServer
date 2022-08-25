@@ -25,14 +25,17 @@ public class AuthService : BaseService, IAuthService
     private readonly IEmailSender _emailSender;
     private  readonly RoleManager<IdentityRole> _roleManager;
     private readonly UserManager<ApplicationUser?> _userManager;
+    private readonly IBackgroundJobClient _backgroundJobClient;
+
 
     public AuthService(UserManager<ApplicationUser?> userManager, IConfiguration? configuration,
-        RoleManager<IdentityRole> roleManager, IEmailSender emailSender)
+        RoleManager<IdentityRole> roleManager, IEmailSender emailSender, IBackgroundJobClient backgroundJobClient)
     {
         _userManager = userManager;
         _configuration = configuration;
         _roleManager = roleManager;
         _emailSender = emailSender;
+        _backgroundJobClient = backgroundJobClient;
     }
 
     public async Task<LoginResponseModel> LoginFirebase(LoginFirebaseModel model)
@@ -205,7 +208,7 @@ public class AuthService : BaseService, IAuthService
                       $"<p>Please confirm your account by clicking <a href='{confirmationLink}'>here</a></p>";
 
 
-        BackgroundJob.Enqueue(() => _emailSender.SendMailConfirmAsync(user.Email!, "Confirm your account", message));
+        _backgroundJobClient.Enqueue(() => _emailSender.SendMailConfirmAsync(user.Email!, "Confirm your account", message));
 
         user.ConfirmToken = token;
         await _userManager.UpdateAsync(user);
@@ -227,7 +230,7 @@ public class AuthService : BaseService, IAuthService
         var message = "<h1>Welcome to City Discover Tourist</h1> <br/>" +
                       $"<p>Please confirm your account by clicking <a href='{confirmationLink}'>Here</a></p>";
 
-        BackgroundJob.Enqueue(() => _emailSender.SendMailConfirmAsync(user.Email!, "Confirm your account", message));
+        _backgroundJobClient.Enqueue(() => _emailSender.SendMailConfirmAsync(user.Email!, "Confirm your account", message));
 
         user.ConfirmToken = token;
         await _userManager.UpdateAsync(user);
@@ -264,7 +267,7 @@ public class AuthService : BaseService, IAuthService
                       $"<p>Please confirm your account by clicking <a href='{confirmationLink}'>here</a></p>"
                       + "<p>Thank you for joining us</p>";
 
-        BackgroundJob.Enqueue(() => _emailSender.SendMailConfirmAsync(user.Email!, "Confirm your account", message));
+        _backgroundJobClient.Enqueue(() => _emailSender.SendMailConfirmAsync(user.Email!, "Confirm your account", message));
 
         user.ConfirmToken = token;
         await _userManager.UpdateAsync(user);
@@ -286,8 +289,8 @@ public class AuthService : BaseService, IAuthService
         await _userManager.UpdateAsync(user);
 
         // return html string
-        return "<h1>Email confirmed</h1> <br/>" +
-               "<p>You can now login to your account</p>";
+        return "Email confirmed" +
+               "You can now login to your account";
     }
 
     public JwtSecurityToken GetJwtToken(IEnumerable<Claim> claims)
