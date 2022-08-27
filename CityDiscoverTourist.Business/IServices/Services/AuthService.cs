@@ -289,7 +289,7 @@ public class AuthService : BaseService, IAuthService
         await _userManager.UpdateAsync(user);
 
         // return html string
-        return "Email confirmed" +
+        return "Email confirmed " +
                "You can now login to your account";
     }
 
