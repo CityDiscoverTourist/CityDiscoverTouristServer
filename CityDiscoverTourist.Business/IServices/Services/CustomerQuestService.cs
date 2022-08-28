@@ -88,7 +88,7 @@ public class CustomerQuestService : BaseService, ICustomerQuestService
         if(!entity.IsFinished) throw new AppException("Quest is not finished yet");
 
         entity.Rating = comment.Rating;
-        entity.FeedBack = comment.FeedBack;
+        entity.FeedBack = comment.FeedBack ?? "Good Experience";
         entity.IsFeedbackApproved = true;
 
         var result = await _customerQuestRepository.UpdateFields(entity, x => x.Rating,

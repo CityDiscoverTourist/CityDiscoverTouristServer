@@ -145,9 +145,10 @@ public class QuestService : BaseService, IQuestService
         if (customerQuests.Any())
         {
             var averageRating = customerQuests.Average(x => x.Rating);
+            var distinctRating = customerQuests.ToList().OrderByDescending(x => x.CreatedDate);
 
-            mappedData.AverageStar = (long) averageRating;
-            mappedData.TotalFeedback = customerQuests.Count();
+            mappedData.AverageStar = (long?) Math.Round(averageRating);
+            mappedData.TotalFeedback = distinctRating.DistinctBy(x => x.CustomerId).Count();
         }
         else
         {
