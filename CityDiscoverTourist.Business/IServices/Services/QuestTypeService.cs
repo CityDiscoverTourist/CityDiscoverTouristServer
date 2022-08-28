@@ -54,13 +54,13 @@ public class QuestTypeService : BaseService, IQuestTypeService
             foreach (var item in mappedQuest)
             {
                 //get total feed back and average rate for each quest
-                var customerQuests = _customerQuestRepository.GetAll().AsNoTracking().Where(x => x.QuestId == item.Id)
-                    .ToList();
+                var customerQuests = _customerQuestRepository.GetAll().Where(x => x.QuestId == item.Id)
+                    .ToList().OrderByDescending(x => x.CreatedDate);
 
                 if (customerQuests.Any())
                 {
-                    item.TotalFeedback = customerQuests.Count;
-                    item.AverageStar = (long?) customerQuests.Average(x => x.Rating);
+                    item.TotalFeedback = customerQuests.DistinctBy(x => x.CustomerId).Count();
+                    item.AverageStar = (long?) Math.Round(customerQuests.Average(x => x.Rating));
                 }
                 else
                 {

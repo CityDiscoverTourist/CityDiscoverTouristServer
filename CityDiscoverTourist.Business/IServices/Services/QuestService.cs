@@ -82,8 +82,8 @@ public class QuestService : BaseService, IQuestService
 
             if (customerQuest.Any())
             {
-                questResponseModels[i].AverageStar = (long?) customerQuest.Average(x => x.Rating);
-                questResponseModels[i].TotalFeedback = customerQuest.Count();
+                questResponseModels[i].AverageStar = (long?) Math.Round(customerQuest.Average(x => x.Rating));
+                questResponseModels[i].TotalFeedback = customerQuest.ToList().OrderByDescending(x => x.CreatedDate).DistinctBy(x => x.CustomerId).Count();
             }
             else
             {
