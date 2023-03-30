@@ -1,6 +1,5 @@
 ﻿# City-Discover-Tourist-Server
 
-
 # Introduction
 ## City-Discover-Tourist-Server
 
